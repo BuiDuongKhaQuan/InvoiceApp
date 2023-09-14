@@ -57,28 +57,28 @@ export default function Register() {
             </View>
             <View style={styles.container_center}>
                 <Input
-                    handleChangeText={handleChangeEmail}
+                    onChangeText={handleChangeEmail}
                     value={email}
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
-                    horder="G-mail"
+                    holder="G-mail"
                     icon={require('../assets/icons/email.png')}
                 />
                 <Input
-                    handleChangeText={handleChangeName}
+                    onChangeText={handleChangeName}
                     value={name}
                     validate={errorName}
                     validateText="Tên không được để trống"
-                    horder="Họ và tên"
+                    holder="Họ và tên"
                     icon={require('../assets/icons/user.png')}
                 />
                 <Input
-                    handleChangeText={handleChangePass}
+                    onChangeText={handleChangePass}
                     value={pass}
                     validate={errorPass}
                     validateText="Mật khẩu phải đủ 4 ký tự"
                     pass
-                    horder="Mật khẩu"
+                    holder="Mật khẩu"
                     icon={require('../assets/icons/lock.png')}
                 />
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />

@@ -49,20 +49,20 @@ export default function Login() {
             </View>
             <View style={styles.container_center}>
                 <Input
-                    handleChangeText={handleChangeEmail}
+                    onChangeText={handleChangeEmail}
                     value={email}
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
-                    horder="Tài khoản"
+                    holder="Tài khoản"
                     icon={require('../assets/icons/email.png')}
                 />
                 <Input
-                    handleChangeText={handleChangePass}
+                    onChangeText={handleChangePass}
                     value={pass}
                     validate={errorPass}
                     validateText="Mật khẩu phải đủ 4 ký tự"
                     pass
-                    horder="Mật khẩu"
+                    holder="Mật khẩu"
                     icon={require('../assets/icons/lock.png')}
                 />
 

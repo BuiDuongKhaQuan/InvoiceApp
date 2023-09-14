@@ -51,16 +51,16 @@ export default function ChangePassword() {
                     text
                     validate={errorPassOld}
                     validateText="Mật khẩu không đúng"
-                    handleChangeText={handleChangePassOld}
-                    horder="Mật khẩu cũ"
+                    onChangeText={handleChangePassOld}
+                    holder="Mật khẩu cũ"
                     value={passOld}
                 />
                 <Input
                     text
                     validate={errorPassNew}
                     validateText="Mật khẩu không phải trên 4 kí tự"
-                    handleChangeText={handleChangePassNew}
-                    horder="Mật khẩu mới"
+                    onChangeText={handleChangePassNew}
+                    holder="Mật khẩu mới"
                     value={passNew}
                 />
 
@@ -68,8 +68,8 @@ export default function ChangePassword() {
                     text
                     validate={errorConfirmPass}
                     validateText="Mật khẩu không khớp"
-                    handleChangeText={handleChangeConfirm}
-                    horder="Xac nhận"
+                    onChangeText={handleChangeConfirm}
+                    holder="Xac nhận"
                     value={confirmPass}
                 />
 

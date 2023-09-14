@@ -49,22 +49,22 @@ export default function ForgotPassword() {
             </View>
             <View style={styles.container_center}>
                 <Input
-                    handleChangeText={handleChangeEmail}
+                    onChangeText={handleChangeEmail}
                     value={email}
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
-                    horder="Email"
+                    holder="Email"
                     icon={require('../assets/icons/email.png')}
                     btnSend
                 />
                 <Input
-                    handleChangeText={handleChangeCode}
+                    onChangeText={handleChangeCode}
                     value={code}
                     validate={errorCode}
                     validateText="Mã xác nhận phải đủ 4 kí tự!"
                     keyboardType="number-pad"
                     customStylesInput={{ marginLeft: 50 }}
-                    horder="Mã xác nhận"
+                    holder="Mã xác nhận"
                 />
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Xác nhận" />
 
