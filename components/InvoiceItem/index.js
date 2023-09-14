@@ -19,12 +19,14 @@ export default function InvoiceItem({ data, onPress }) {
 
 const styles = StyleSheet.create({
     invoice: {
-        alignItems: 'center',
+        alignItems: 'flex-end',
+        marginHorizontal: 6,
     },
     img: {
-        width: 220,
-        height: 300,
+        width: 180,
+        height: 260,
         resizeMode: 'stretch',
+        borderRadius: 10,
     },
     mode: {
         alignItems: 'flex-end',

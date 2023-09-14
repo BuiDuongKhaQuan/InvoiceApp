@@ -64,6 +64,7 @@ export default function Login() {
                     horder="Mật khẩu"
                     icon={require('../assets/icons/lock.png')}
                 />
+
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng nhập" />
                 {keyboardIsShow && (
                     <View style={styles.register}>

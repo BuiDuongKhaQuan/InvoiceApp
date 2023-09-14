@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#FFFFFF',
         backgroundColor: '#55DF49',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 20,
@@ -16,6 +17,11 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.5, // Điều chỉnh độ trong suốt của bóng (đối với iOS)
         shadowRadius: 5, // Điều chỉnh bán kính của bóng (đối với iOS)
         elevation: 5,
+    },
+    icon: {
+        width: 30,
+        height: 30,
+        marginHorizontal: 10,
     },
     text: {
         fontSize: 25,

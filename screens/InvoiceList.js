@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import InvoiceItem from '../components/InvoiceItem';
 
@@ -27,14 +27,10 @@ export default function InvoiceList() {
     ]);
 
     return (
-        // <ScrollView style={styles.container}>
-        //     {invoices.map((invoice) => (
-        //         <InvoiceItem data={invoice} key={invoice.id} />
-        //     ))}
-        // </ScrollView>
-
         <FlatList
+            style={styles.container}
             data={invoices}
+            numColumns={2}
             renderItem={({ item }) => <InvoiceItem data={item} key={item.id} />}
             keyExtractor={(item) => item.id}
         />
@@ -44,5 +40,7 @@ export default function InvoiceList() {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#E4E8E5',
+        flex: 1,
+        paddingLeft: 5,
     },
 });

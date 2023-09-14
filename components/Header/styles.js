@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StatusBar, StyleSheet } from 'react-native';
 
 const { width } = Dimensions.get('screen');
 
@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomColor: '#707070',
         borderBottomWidth: 1,
+        marginTop: StatusBar.currentHeight || 0,
     },
     header_left: {
         flexDirection: 'row',

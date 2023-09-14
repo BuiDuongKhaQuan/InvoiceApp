@@ -7,9 +7,10 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import InvoiceItem from './components/InvoiceItem';
 import InvoiceList from './screens/InvoiceList';
+import Setting from './screens/Setting';
 
 export default function App() {
-    return <InvoiceList />;
+    return <Setting />;
 }
 
 const styles = StyleSheet.create({
