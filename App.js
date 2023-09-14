@@ -10,8 +10,9 @@ import InvoiceList from './screens/InvoiceList';
 import Setting from './screens/Setting';
 import ForgotPassword from './screens/ForgotPassword';
 import ChangePassword from './screens/ChangePassword';
+import Support from './screens/Support';
 export default function App() {
-    return <ChangePassword />;
+    return <Support />;
 }
 
 const styles = StyleSheet.create({
