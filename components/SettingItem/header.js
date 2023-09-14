@@ -3,15 +3,15 @@ import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
 
-export default function Header({ onPress, data }) {
+export default function Header({ onPress, title }) {
     return (
         <View style={styles.back}>
             <Button
                 onPress={onPress}
                 customStylesText={{ color: 'red' }}
-                iconLeft={require('../../assets/icons/left-arrow.png')}
+                iconLeft={require('../../assets/icons/back.png')}
             />
-            <Text style={styles.title}>Thiết lập</Text>
+            <Text style={styles.title}>{title}</Text>
         </View>
     );
 }
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 25,
-        fontWeight: 'bold',
+        fontWeight: '400',
         textAlign: 'center',
         width: '80%',
     },
