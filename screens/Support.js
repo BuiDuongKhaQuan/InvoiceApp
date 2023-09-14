@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import Header from '../components/SettingItem/header';
 import { backgroundColor } from '../constant/color';
-import { fontSizeMenuTitle } from '../constant/color';
+import { fontSizeMenuTitle } from '../constant/fontSize';
 import Input from '../components/Input';
 
 export default function Support() {
