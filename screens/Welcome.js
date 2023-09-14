@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Button from '../components/Button';
+import { backgroundColor, buttonColor, white } from '../constant/color';
 
 export default function Welcome() {
     return (
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#E4E8E5',
+        backgroundColor: backgroundColor,
     },
     container_top: {
         flex: 5,
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch',
     },
     title: {
-        color: '#55DF49',
+        color: buttonColor,
         fontSize: 35,
         fontWeight: 'bold',
         marginVertical: 20,
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         borderWidth: 2,
-        borderColor: '#FFFFFF',
-        backgroundColor: '#55DF49',
+        borderColor: white,
+        backgroundColor: buttonColor,
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: 'black',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     login_text: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: white,
     },
     container_botom: {
         flex: 4,

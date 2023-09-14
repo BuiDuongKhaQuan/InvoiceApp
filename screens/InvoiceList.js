@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import InvoiceItem from '../components/InvoiceItem';
+import { backgroundColor } from '../constant/color';
 
 export default function InvoiceList() {
     const [invoices, setInvoices] = useState([
@@ -39,7 +40,7 @@ export default function InvoiceList() {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#E4E8E5',
+        backgroundColor: backgroundColor,
         flex: 1,
         paddingLeft: 5,
     },

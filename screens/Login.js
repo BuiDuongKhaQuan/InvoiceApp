@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateEmail, isValidatePass } from '../utilies/validate';
+import { backgroundColor } from '../constant/color';
 
 export default function Login() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(true);
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#E4E8E5',
+        backgroundColor: backgroundColor,
     },
     container_top: {
         flex: 4,

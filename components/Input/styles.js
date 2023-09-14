@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { white } from '../../constant/color';
 
 export const styles = StyleSheet.create({
     input: {
@@ -6,7 +7,7 @@ export const styles = StyleSheet.create({
         width: 340,
         height: 60,
         alignContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: white,
         marginHorizontal: 10,
         marginVertical: 10,
         borderRadius: 50,

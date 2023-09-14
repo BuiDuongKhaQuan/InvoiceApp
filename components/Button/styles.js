@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { buttonColor, white } from '../../constant/color';
 
 export const styles = StyleSheet.create({
     btn: {
@@ -6,8 +7,8 @@ export const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50,
         borderWidth: 2,
-        borderColor: '#FFFFFF',
-        backgroundColor: '#55DF49',
+        borderColor: white,
+        backgroundColor: buttonColor,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -18,14 +19,18 @@ export const styles = StyleSheet.create({
         shadowRadius: 5, // Điều chỉnh bán kính của bóng (đối với iOS)
         elevation: 5,
     },
+    btnLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     icon: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
         marginHorizontal: 10,
     },
     text: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: white,
     },
 });
