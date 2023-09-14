@@ -8,9 +8,10 @@ import Register from './screens/Register';
 import InvoiceItem from './components/InvoiceItem';
 import InvoiceList from './screens/InvoiceList';
 import Setting from './screens/Setting';
-
+import ForgotPassword from './screens/ForgotPassword';
+import ChangePassword from './screens/ChangePassword';
 export default function App() {
-    return <Setting />;
+    return <ChangePassword />;
 }
 
 const styles = StyleSheet.create({

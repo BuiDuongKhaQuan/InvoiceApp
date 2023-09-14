@@ -3,3 +3,4 @@ export const isValidateEmail = (email) => {
 };
 export const isValidatePass = (pass) => pass.length > 3;
 export const isValidateFullName = (name) => name.length > 0;
+export const isValidateCode = (number) => number.length == 4;
