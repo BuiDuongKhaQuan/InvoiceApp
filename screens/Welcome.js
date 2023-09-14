@@ -8,7 +8,7 @@ export default function Welcome() {
             <View style={styles.container_top}>
                 <Image style={styles.welcome} source={require('../assets/images/welcome.png')} />
                 <Text style={styles.title}>Invoice C</Text>
-                <Button text="Đăng nhập" customStyles={{ width: 200 }} />
+                <Button text="Đăng nhập" customStylesBtn={{ width: 200 }} />
             </View>
             <View style={styles.container_botom}>
                 <View style={styles.flower}>

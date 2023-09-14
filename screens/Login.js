@@ -1,11 +1,43 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { isValidateEmail, isValidatePass } from '../utilies/validate';
 
 export default function Login() {
+    const [keyboardIsShow, setKeyboardIsShow] = useState(true);
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPass, setErrorPass] = useState(false);
+
+    useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardIsShow(false);
+        });
+        Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardIsShow(true);
+        });
+    });
+
+    const isValidateLogin = () => email.length > 0 && pass.length > 0 && errorEmail == false && errorPass == false;
+
     const handlePress = () => {
-        alert('you');
+        if (!isValidateLogin()) {
+            return;
+        } else {
+            alert(isValidateLogin());
+        }
+    };
+
+    const handleChangeEmail = (text) => {
+        setErrorEmail(!isValidateEmail(text));
+        setEmail(text);
+    };
+
+    const handleChangePass = (pass) => {
+        setErrorPass(!isValidatePass(pass));
+        setPass(pass);
     };
 
     return (
@@ -15,17 +47,36 @@ export default function Login() {
                 <Text style={styles.title}>Invoice C</Text>
             </View>
             <View style={styles.container_center}>
-                <Input horder="Tài khoản" icon={require('../assets/icons/user.png')} />
-                <Input pass horder="Mật khẩu" icon={require('../assets/icons/lock.png')} />
-                <Button onPress={handlePress} customStyles={{ width: 340, height: 50 }} text="Đăng nhập" />
-                <View style={styles.register}>
-                    <Text style={styles.register_text}>Bạn chưa có tài khoản? </Text>
-                    <Text style={styles.register_btn}>Đăng ký</Text>
+                <Input
+                    handleChangeText={handleChangeEmail}
+                    value={email}
+                    validate={errorEmail}
+                    validateText="Vui lòng nhập đúng định dạng email"
+                    horder="Tài khoản"
+                    icon={require('../assets/icons/email.png')}
+                />
+                <Input
+                    handleChangeText={handleChangePass}
+                    value={pass}
+                    validate={errorPass}
+                    validateText="Mật khẩu phải đủ 4 ký tự"
+                    pass
+                    horder="Mật khẩu"
+                    icon={require('../assets/icons/lock.png')}
+                />
+                <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng nhập" />
+                {keyboardIsShow && (
+                    <View style={styles.register}>
+                        <Text style={styles.register_text}>Bạn chưa có tài khoản? </Text>
+                        <Text style={styles.register_btn}>Đăng ký</Text>
+                    </View>
+                )}
+            </View>
+            {keyboardIsShow && (
+                <View style={styles.container_botom}>
+                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
                 </View>
-            </View>
-            <View style={styles.container_botom}>
-                <Text style={styles.forgot}>Quên mật khẩu?</Text>
-            </View>
+            )}
         </View>
     );
 }

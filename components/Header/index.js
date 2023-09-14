@@ -1,42 +1,16 @@
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-
-const { width, height } = Dimensions.get('screen');
+import Button from '../Button';
+import { styles } from './styles';
 
 export default function Header() {
     return (
         <View style={styles.header}>
             <View style={styles.header_left}>
-                <Image source={require('../../assets/images/logo.png')} />
+                <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
                 <Text>Invoice</Text>
             </View>
-            <TouchableOpacity>
-                <Image style={styles.avatar} source={require('../../assets/images/avatar.png')} />
-            </TouchableOpacity>
+            <Button customStylesText={styles.text} customStylesBtn={styles.btn} text="Nâng cấp" />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    header: {
-        marginTop: 33,
-        height: 67,
-        width: width,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomColor: '#707070',
-        borderBottomWidth: 1,
-    },
-    header_left: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginStart: 5,
-    },
-    avatar: {
-        borderRadius: 50,
-        width: 50,
-        height: 50,
-        marginEnd: 10,
-    },
-});
