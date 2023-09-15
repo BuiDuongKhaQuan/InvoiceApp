@@ -10,6 +10,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
+import InvoiceItem from './components/InvoiceItem';
+import InvoiceList from './screens/InvoiceList';
+import Setting from './screens/Setting';
+import Support from './screens/Support';
 export default function App() {
     const headerNone = { headerShown: false };
     return (
@@ -27,12 +31,4 @@ export default function App() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-    },
-    content: {
-        backgroundColor: 'red',
-    },
-});
+const styles = StyleSheet.create({});

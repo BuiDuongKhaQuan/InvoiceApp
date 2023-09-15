@@ -5,6 +5,7 @@ import { isValidatePass } from '../utilies/validate';
 import Input from '../components/Input';
 import Header from '../components/SettingItem/header';
 import { backgroundColor } from '../constant/color';
+import { fontSizeMenuTitle } from '../constant/fontSize';
 
 export default function ChangePassword() {
     const [passOld, setPassOld] = useState('');
@@ -49,27 +50,30 @@ export default function ChangePassword() {
                 <Text style={styles.content_title}>Đổi mật khẩu</Text>
                 <Input
                     text
+                    customStylesInput={styles.input}
                     validate={errorPassOld}
                     validateText="Mật khẩu không đúng"
-                    handleChangeText={handleChangePassOld}
-                    horder="Mật khẩu cũ"
+                    onChangeText={handleChangePassOld}
+                    holder="Mật khẩu cũ"
                     value={passOld}
                 />
                 <Input
                     text
+                    customStylesInput={styles.input}
                     validate={errorPassNew}
                     validateText="Mật khẩu không phải trên 4 kí tự"
-                    handleChangeText={handleChangePassNew}
-                    horder="Mật khẩu mới"
+                    onChangeText={handleChangePassNew}
+                    holder="Mật khẩu mới"
                     value={passNew}
                 />
 
                 <Input
                     text
+                    customStylesInput={styles.input}
                     validate={errorConfirmPass}
                     validateText="Mật khẩu không khớp"
-                    handleChangeText={handleChangeConfirm}
-                    horder="Xac nhận"
+                    onChangeText={handleChangeConfirm}
+                    holder="Xác nhận"
                     value={confirmPass}
                 />
 
@@ -85,17 +89,22 @@ export default function ChangePassword() {
     );
 }
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     content_center: {
         backgroundColor: backgroundColor,
         height: 1000,
     },
     content_title: {
-        fontSize: 20,
-        marginTop: 30,
+        fontSize: fontSizeMenuTitle,
+        marginTop: 15,
         marginLeft: 10,
-        marginBottom: 10,
+        marginBottom: 7,
     },
-
+    input: {
+        marginLeft: 20,
+    },
     forgot: {
         marginBottom: 20,
         fontSize: 20,

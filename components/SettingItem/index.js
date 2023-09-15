@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
+import { fontSizeMenuTitle } from '../../constant/fontSize';
 
 export default function SettingItem({ data }) {
     return (
@@ -23,7 +24,7 @@ export default function SettingItem({ data }) {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 24,
+        fontSize: fontSizeMenuTitle,
         marginHorizontal: 10,
         marginVertical: 10,
     },

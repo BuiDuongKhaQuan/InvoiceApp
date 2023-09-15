@@ -6,35 +6,37 @@ import Button from '../Button';
 export default function Input({
     icon,
     pass,
-    horder,
+    holder,
     btnSend,
     text,
-    handleChangeText,
-    validate = false,
+    onChangeText,
+    validate,
     validateText,
     customStylesInput,
+    customStylesContainer,
+    customStylesTextValidate,
     ...props
 }) {
-    const combinedSltyesInput = StyleSheet.flatten([styles.input_text, customStylesInput]);
     const isPass = pass ? true : false;
-    const inputStyle = !!text
-        ? {
-              height: 50,
-              backgroundColor: 'white',
 
-              marginVertical: 10,
-          }
-        : styles.input;
+    const inputStyle = !!text ? { backgroundColor: 'white', marginVertical: 10 } : styles.input;
+
+    const combinedSltyesContainer = StyleSheet.flatten([inputStyle, customStylesContainer]);
+
+    const combinedSltyesInput = StyleSheet.flatten([styles.input_text, customStylesInput]);
+
+    const combinedSltyesTextValidate = StyleSheet.flatten([styles.text_validate, customStylesTextValidate]);
+
     return (
-        <View style={inputStyle}>
+        <View style={combinedSltyesContainer}>
             <View style={styles.container}>
                 {icon && <Image style={styles.input_icon} source={icon} />}
                 <TextInput
                     {...props}
-                    onChangeText={handleChangeText}
+                    onChangeText={onChangeText}
                     secureTextEntry={isPass}
                     style={combinedSltyesInput}
-                    placeholder={horder}
+                    placeholder={holder}
                 />
                 {btnSend && (
                     <Button
@@ -44,7 +46,7 @@ export default function Input({
                     />
                 )}
             </View>
-            {validate && <Text style={styles.text_validate}>{validateText}</Text>}
+            {validate && <Text style={combinedSltyesTextValidate}>{validateText}</Text>}
         </View>
     );
 }

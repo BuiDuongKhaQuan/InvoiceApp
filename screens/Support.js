@@ -3,61 +3,42 @@ import React, { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import Header from '../components/SettingItem/header';
 import { backgroundColor } from '../constant/color';
+import { fontSizeMenuTitle } from '../constant/fontSize';
+import Input from '../components/Input';
 
 export default function Support() {
     const [title, setTitle] = useState('');
-    const [sender, setSender] = useState('');
+    const [name, setName] = useState('');
     const [content, setContent] = useState('');
-    const [errorTitle, setErrorTitle] = useState('');
-    const [errorSender, setErrorSender] = useState('');
-    const [errorContent, setErrorContent] = useState('');
+    const [errorTitle, setErrorTitle] = useState(false);
+    const [errorName, setErrorName] = useState(false);
+    const [errorContent, setErrorContent] = useState(false);
+
+    const checkError = () =>
+        title.length > 0 &&
+        name.length > 0 &&
+        content.length > 0 &&
+        errorTitle == false &&
+        errorName == false &&
+        errorContent == false;
 
     const handlePress = () => {
-        let hasError = false;
-
-        if (title.trim() === '') {
-            setErrorTitle('Vui lòng không để trống trường nhập liệu');
-            hasError = true;
-        } else {
-            setErrorTitle('');
-        }
-
-        if (sender.trim() === '') {
-            setErrorSender('Vui lòng không để trống trường nhập liệu');
-            hasError = true;
-        } else {
-            setErrorSender('');
-        }
-
-        if (content.trim() === '') {
-            setErrorContent('Vui lòng không để trống trường nhập liệu');
-            hasError = true;
-        } else {
-            setErrorContent('');
-        }
-
-        if (!hasError) {
-            alert('Gửi thành công');
-        }
+        if (!checkError()) return;
+        alert(checkError());
     };
 
     const handleChangeTitle = (text) => {
+        setErrorTitle(text.trim() === '' ? true : false);
         setTitle(text);
     };
 
-    const handleChangeSender = (text) => {
-        setSender(text);
+    const handleChangeName = (text) => {
+        setErrorName(text.trim() === '' ? true : false);
+        setName(text);
     };
     const handleChangeContent = (text) => {
+        setErrorContent(text.trim() === '' ? true : false);
         setContent(text);
-    };
-
-    const handleBlur = () => {
-        if (content.trim() === '' && !errorContent) {
-            setErrorContent('Vui lòng không để trống trường nhập liệu');
-        } else if (content.trim() !== '' && errorContent) {
-            setErrorContent('');
-        }
     };
 
     return (
@@ -65,72 +46,87 @@ export default function Support() {
             <Header title="Hỗ trợ" />
             <View style={styles.content_center}>
                 <Text style={styles.content_title}>Trung tâm hỗ trợ</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Nhập dữ liệu"
+                <Input
+                    customStylesInput={styles.input}
+                    customStylesContainer={styles.input_container}
+                    customStylesTextValidate={styles.validate}
                     onChangeText={handleChangeTitle}
+                    validateText="Vui lòng không để trống"
+                    validate={errorTitle}
+                    holder="Chủ đề"
                     value={title}
+                    text
                 />
-                {errorTitle !== '' && <Text style={styles.errorText}>{errorTitle}</Text>}
-                <TextInput
-                    style={styles.input}
-                    placeholder="Tên người gửi"
-                    onChangeText={handleChangeSender}
-                    underlineColorAndroid="transparent"
-                    value={sender}
+                <Input
+                    customStylesInput={styles.input}
+                    customStylesContainer={styles.input_container}
+                    customStylesTextValidate={styles.validate}
+                    onChangeText={handleChangeName}
+                    validateText="Vui lòng không để trống"
+                    validate={errorName}
+                    holder="Tên người gửi"
+                    value={name}
+                    text
                 />
-                {errorSender !== '' && <Text style={styles.errorText}>{errorSender}</Text>}
-                <TextInput
-                    style={styles.textArea}
+                <Input
+                    customStylesInput={styles.textArea}
+                    customStylesTextValidate={styles.validate}
                     underlineColorAndroid="transparent"
-                    placeholder="Nội dung"
-                    placeholderTextColor="grey"
+                    validateText="Vui lòng không để trống"
+                    onChangeText={handleChangeContent}
+                    validate={errorContent}
                     numberOfLines={20}
                     multiline={true}
-                    onChangeText={handleChangeContent}
+                    holder="Nội dung"
+                    value={content}
+                    text
                 />
                 {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
+            </View>
+            <View style={styles.content_botom}>
                 <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Gửi" />
             </View>
         </View>
     );
 }
 const styles = StyleSheet.create({
-    content_center: {
+    container: {
+        flex: 1,
+        flexDirection: 'column',
         backgroundColor: backgroundColor,
-        height: 1000,
+    },
+    content_center: {
+        flex: 4,
+    },
+    content_botom: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     content_title: {
-        fontSize: 20,
-        marginTop: 30,
-        marginLeft: 10,
-        marginBottom: 10,
-    },
-
-    send_btn: {
+        fontSize: fontSizeMenuTitle,
         marginHorizontal: 10,
+        marginTop: 10,
+    },
+    send_btn: {
         width: '95%',
-        borderRadius: 50,
-        borderWidth: 0,
-        elevation: 0,
-        marginTop: 200,
     },
     textArea: {
-        height: 200,
+        flex: 1,
+        height: '75%',
         backgroundColor: 'white',
-        justifyContent: 'flex-start',
         textAlignVertical: 'top',
-        paddingTop: 16,
         marginTop: 10,
         paddingHorizontal: 10,
-    },
-    errorText: {
-        color: 'red',
     },
     input: {
-        height: 40,
-        marginTop: 10,
-        backgroundColor: 'white',
-        paddingHorizontal: 10,
+        width: '100%',
+        marginHorizontal: 10,
+    },
+    input_container: {
+        height: 60,
+    },
+    validate: {
+        marginLeft: 10,
     },
 });
