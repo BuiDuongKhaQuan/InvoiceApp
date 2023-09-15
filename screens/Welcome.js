@@ -3,13 +3,17 @@ import React from 'react';
 import Button from '../components/Button';
 import { backgroundColor, buttonColor, white } from '../constant/color';
 
-export default function Welcome() {
+export default function Welcome({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.container_top}>
                 <Image style={styles.welcome} source={require('../assets/images/welcome.png')} />
                 <Text style={styles.title}>Invoice C</Text>
-                <Button text="Đăng nhập" customStylesBtn={{ width: 200 }} />
+                <Button
+                    text="Đăng nhập"
+                    customStylesBtn={{ width: 200 }}
+                    onPress={() => navigation.navigate('Login')}
+                />
             </View>
             <View style={styles.container_botom}>
                 <View style={styles.flower}>
