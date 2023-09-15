@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import { isValidateEmail, isValidatePass } from '../utilies/validate';
 import { backgroundColor } from '../constant/color';
 
-export default function Login() {
+export default function Login({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(true);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -27,7 +27,7 @@ export default function Login() {
         if (!isValidateLogin()) {
             return;
         } else {
-            alert(isValidateLogin());
+            navigation.navigate('TabNavigator');
         }
     };
 
