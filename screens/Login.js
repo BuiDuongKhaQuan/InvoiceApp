@@ -70,13 +70,17 @@ export default function Login({ navigation }) {
                 {keyboardIsShow && (
                     <View style={styles.register}>
                         <Text style={styles.register_text}>Bạn chưa có tài khoản? </Text>
-                        <Text style={styles.register_btn}>Đăng ký</Text>
+                        <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
+                            Đăng ký
+                        </Text>
                     </View>
                 )}
             </View>
             {keyboardIsShow && (
                 <View style={styles.container_botom}>
-                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                        Quên mật khẩu?
+                    </Text>
                 </View>
             )}
         </View>

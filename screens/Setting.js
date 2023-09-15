@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../components/Button';
 import SettingItem from '../components/SettingItem';
 import Header from '../components/SettingItem/header';
-import { backgroundColor } from '../constant/color';
+import { backgroundColor, white } from '../constant/color';
 
 export default function Setting() {
     const [itemSetting, setItemSetting] = useState([
@@ -33,30 +33,36 @@ export default function Setting() {
     return (
         <View style={styles.container}>
             <Header title="Thiết lập" />
-            <FlatList
-                data={itemSetting}
-                renderItem={({ item }) => {
-                    if (itemSetting[itemSetting.length - 1] !== item) {
-                        return <SettingItem data={item} key={item.id} />;
-                    }
-                    return (
-                        <>
-                            <SettingItem
-                                data={itemSetting[itemSetting.length - 1]}
-                                key={itemSetting[itemSetting.length - 1].id}
-                            />
-                            <Button customStylesBtn={styles.logout_btn} text="Đăng xuất" />
-                        </>
-                    );
-                }}
-                keyExtractor={(item) => item.id}
-            />
+            <View style={styles.container_center}>
+                <FlatList
+                    data={itemSetting}
+                    renderItem={({ item }) => {
+                        if (itemSetting[itemSetting.length - 1] !== item) {
+                            return <SettingItem data={item} key={item.id} />;
+                        }
+                        return (
+                            <>
+                                <SettingItem
+                                    data={itemSetting[itemSetting.length - 1]}
+                                    key={itemSetting[itemSetting.length - 1].id}
+                                />
+                                <Button customStylesBtn={styles.logout_btn} text="Đăng xuất" />
+                            </>
+                        );
+                    }}
+                    keyExtractor={(item) => item.id}
+                />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: white,
+    },
+    container_center: {
         flex: 1,
         backgroundColor: backgroundColor,
     },

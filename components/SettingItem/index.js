@@ -6,7 +6,7 @@ import { fontSizeMenuTitle } from '../../constant/fontSize';
 
 export default function SettingItem({ data }) {
     return (
-        <>
+        <View style={styles.container}>
             <Text style={styles.title}>{data.title}</Text>
             {data.data.map((item) => (
                 <Button
@@ -18,7 +18,7 @@ export default function SettingItem({ data }) {
                     text={item.title}
                 />
             ))}
-        </>
+        </View>
     );
 }
 
@@ -32,7 +32,9 @@ const styles = StyleSheet.create({
         marginVertical: 1,
         backgroundColor: white,
         borderRadius: 0,
+        borderWidth: 0,
         width: '100%',
+        elevation: 0,
         justifyContent: 'space-between',
     },
     text: {

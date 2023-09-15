@@ -1,4 +1,5 @@
 import { Dimensions, StatusBar, StyleSheet } from 'react-native';
+import { white } from '../../constant/color';
 
 const { width } = Dimensions.get('screen');
 
@@ -6,6 +7,7 @@ export const styles = StyleSheet.create({
     header: {
         marginTop: 33,
         height: 67,
+        backgroundColor: white,
         width: width,
         flexDirection: 'row',
         alignItems: 'center',

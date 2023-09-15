@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import { isValidateEmail, isValidatePass, isValidateFullName } from '../utilies/validate';
 import { backgroundColor } from '../constant/color';
 
-export default function Register() {
+export default function Register({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(true);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -84,12 +84,16 @@ export default function Register() {
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />
                 <View style={styles.register}>
                     <Text style={styles.register_text}>Bạn đã có tài khoản? </Text>
-                    <Text style={styles.register_btn}>Đăng nhập</Text>
+                    <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                        Đăng nhập
+                    </Text>
                 </View>
             </View>
             {keyboardIsShow && (
                 <View style={styles.container_botom}>
-                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                        Quên mật khẩu?
+                    </Text>
                 </View>
             )}
         </View>

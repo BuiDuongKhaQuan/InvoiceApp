@@ -4,7 +4,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateEmail, isValidateCode } from '../utilies/validate';
 
-export default function ForgotPassword() {
+export default function ForgotPassword({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(true);
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
@@ -71,7 +71,9 @@ export default function ForgotPassword() {
                 {keyboardIsShow && (
                     <View style={styles.register}>
                         <Text style={styles.register_text}>Bạn đã có tài khoản! </Text>
-                        <Text style={styles.register_btn}>Đăng nhập</Text>
+                        <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                            Đăng nhập
+                        </Text>
                     </View>
                 )}
             </View>
