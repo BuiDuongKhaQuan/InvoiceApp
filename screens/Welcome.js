@@ -12,7 +12,7 @@ export default function Welcome({ navigation }) {
                 <Button
                     text="Đăng nhập"
                     customStylesBtn={{ width: 200 }}
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => navigation.navigate('TabNavigator')}
                 />
             </View>
             <View style={styles.container_botom}>
