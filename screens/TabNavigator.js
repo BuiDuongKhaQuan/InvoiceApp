@@ -2,11 +2,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, StyleSheet, Text, View, Icon } from 'react-native';
-import Setting from './Setting';
-import Support from './Support';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Home from './Home';
 import { AntDesign } from '@expo/vector-icons';
+import Home from './Home';
+import Setting from './Setting';
+import Chat from './Chat';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +23,8 @@ const TabNavigator = () => {
                 }}
             />
             <Tab.Screen
-                name="Support"
-                component={Support}
+                name="Chat"
+                component={Chat}
                 options={{
                     headerShown: false,
                     tabBarLabel: '',
