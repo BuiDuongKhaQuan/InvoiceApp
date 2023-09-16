@@ -2,19 +2,29 @@ import { Image, StyleSheet, Text, TouchableOpacity, StatusBar, View } from 'reac
 import React from 'react';
 import { styles } from './styles';
 
-export default function Button({ onPress, customStylesBtn, customStylesText, text, iconLeft, iconRight, ...props }) {
+export default function Button({
+    onPress,
+    customStylesBtn,
+    customStylesText,
+    customStylesIcon,
+    text,
+    iconLeft,
+    iconRight,
+    ...props
+}) {
     const combinedStylesBtn = StyleSheet.flatten([styles.btn, customStylesBtn]);
     const combinedStylesText = StyleSheet.flatten([styles.text, customStylesText]);
+    const combinedStylesIcon = StyleSheet.flatten([styles.icon, customStylesIcon]);
 
     const buttonStyles = !!text ? combinedStylesBtn : {};
 
     return (
         <TouchableOpacity onPress={onPress} style={buttonStyles} {...props}>
             <View style={styles.btnLeft}>
-                {iconLeft && <Image style={styles.icon} source={iconLeft} />}
+                {iconLeft && <Image style={combinedStylesIcon} source={iconLeft} />}
                 <Text style={combinedStylesText}>{text}</Text>
             </View>
-            {iconRight && <Image style={styles.icon} source={iconRight} />}
+            {iconRight && <Image style={combinedStylesIcon} source={iconRight} />}
         </TouchableOpacity>
     );
 }

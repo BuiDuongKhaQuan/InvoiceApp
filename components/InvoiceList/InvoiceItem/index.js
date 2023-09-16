@@ -1,14 +1,14 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import Header from '../Header';
 
 export default function InvoiceItem({ data, onPress }) {
     const handlePress = () => {
-        alert(data.image);
+        alert(data.id);
     };
+    const newStyleInvoice = { ...styles.invoice, ...(data.id == 2 ? { marginTop: 40 } : {}) };
 
     return (
-        <TouchableOpacity style={styles.invoice} onPress={handlePress}>
+        <TouchableOpacity style={newStyleInvoice} onPress={handlePress}>
             <Image style={styles.img} source={{ uri: data.image }} />
             <View style={styles.mode}>
                 <Text style={styles.text}>...</Text>
@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
         height: 260,
         resizeMode: 'stretch',
         borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
     },
     mode: {
         alignItems: 'flex-end',

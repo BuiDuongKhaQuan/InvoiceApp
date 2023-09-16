@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, StatusBar, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Button from '../components/Button';
 import Header from '../components/SettingItem/header';
-import { backgroundColor } from '../constant/color';
+import { backgroundColor, white } from '../constant/color';
 import { fontSizeMenuTitle } from '../constant/fontSize';
 import Input from '../components/Input';
 
@@ -93,13 +93,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: backgroundColor,
+        backgroundColor: white,
     },
     content_center: {
         flex: 4,
+        backgroundColor: backgroundColor,
     },
     content_botom: {
         flex: 1,
+        backgroundColor: backgroundColor,
         alignItems: 'center',
         justifyContent: 'center',
     },

@@ -54,7 +54,7 @@ export default function Login({ navigation }) {
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
                     holder="Tài khoản"
-                    icon={require('../assets/icons/email.png')}
+                    iconLeft={require('../assets/icons/email.png')}
                 />
                 <Input
                     onChangeText={handleChangePass}
@@ -63,7 +63,7 @@ export default function Login({ navigation }) {
                     validateText="Mật khẩu phải đủ 4 ký tự"
                     pass
                     holder="Mật khẩu"
-                    icon={require('../assets/icons/lock.png')}
+                    iconLeft={require('../assets/icons/lock.png')}
                 />
 
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng nhập" />

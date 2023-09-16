@@ -62,7 +62,7 @@ export default function Register({ navigation }) {
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
                     holder="G-mail"
-                    icon={require('../assets/icons/email.png')}
+                    iconLeft={require('../assets/icons/email.png')}
                 />
                 <Input
                     onChangeText={handleChangeName}
@@ -70,7 +70,7 @@ export default function Register({ navigation }) {
                     validate={errorName}
                     validateText="Tên không được để trống"
                     holder="Họ và tên"
-                    icon={require('../assets/icons/user.png')}
+                    iconLeft={require('../assets/icons/user.png')}
                 />
                 <Input
                     onChangeText={handleChangePass}
@@ -79,7 +79,7 @@ export default function Register({ navigation }) {
                     validateText="Mật khẩu phải đủ 4 ký tự"
                     pass
                     holder="Mật khẩu"
-                    icon={require('../assets/icons/lock.png')}
+                    iconLeft={require('../assets/icons/lock.png')}
                 />
                 <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />
                 <View style={styles.register}>

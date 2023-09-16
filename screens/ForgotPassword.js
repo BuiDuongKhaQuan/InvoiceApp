@@ -54,7 +54,7 @@ export default function ForgotPassword({ navigation }) {
                     validate={errorEmail}
                     validateText="Vui lòng nhập đúng định dạng email"
                     holder="Email"
-                    icon={require('../assets/icons/email.png')}
+                    iconLeft={require('../assets/icons/email.png')}
                     btnSend
                 />
                 <Input

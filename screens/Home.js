@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import Header from '../components/Header';
-import InvoiceItem from '../components/InvoiceItem';
+import InvoiceList from '../components/InvoiceList';
+import { white } from '../constant/color';
 
 export default function Home() {
     const [invoices, setInvoices] = useState([
@@ -28,16 +29,20 @@ export default function Home() {
     ]);
     return (
         <View style={styles.container}>
-            <Header title="Hỗ trợ" />
-            <FlatList
-                style={styles.container}
-                data={invoices}
-                numColumns={2}
-                renderItem={({ item }) => <InvoiceItem data={item} key={item.id} />}
-                keyExtractor={(item) => item.id}
-            />
+            <Header />
+            <View style={styles.list}>
+                <InvoiceList data={invoices} />
+            </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: white,
+    },
+    list: {
+        flex: 1,
+    },
+});

@@ -4,7 +4,8 @@ import { styles } from './styles';
 import Button from '../Button';
 
 export default function Input({
-    icon,
+    iconLeft,
+    iconRight,
     pass,
     holder,
     btnSend,
@@ -30,7 +31,7 @@ export default function Input({
     return (
         <View style={combinedSltyesContainer}>
             <View style={styles.container}>
-                {icon && <Image style={styles.input_icon} source={icon} />}
+                {iconLeft && <Image style={styles.input_icon} source={iconLeft} />}
                 <TextInput
                     {...props}
                     onChangeText={onChangeText}
@@ -45,6 +46,7 @@ export default function Input({
                         customStylesBtn={{ width: 75, height: 35, marginHorizontal: -80, marginVertical: 11 }}
                     />
                 )}
+                {iconRight && <Image style={styles.input_icon} source={iconRight} />}
             </View>
             {validate && <Text style={combinedSltyesTextValidate}>{validateText}</Text>}
         </View>
