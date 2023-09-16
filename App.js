@@ -14,20 +14,23 @@ import InvoiceItem from './components/InvoiceItem';
 import InvoiceList from './screens/InvoiceList';
 import Setting from './screens/Setting';
 import Support from './screens/Support';
+import Language from './screens/Language';
+import Home from './screens/Home';
+import QR from './screens/ScanQR';
 export default function App() {
     const headerNone = { headerShown: false };
     return (
-        // <Support />
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcome">
-                <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
-                <Stack.Screen name="Register" component={Register} options={headerNone} />
-                <Stack.Screen name="Login" component={Login} options={headerNone} />
-                <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
-                <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <QR />
+        // <NavigationContainer>
+        //     <Stack.Navigator initialRouteName="Welcome">
+        //         <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+        //         <Stack.Screen name="Register" component={Register} options={headerNone} />
+        //         <Stack.Screen name="Login" component={Login} options={headerNone} />
+        //         <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
+        //         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
+        //         <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+        //     </Stack.Navigator>
+        // </NavigationContainer>
     );
 }
 
