@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { white } from '../../constant/color';
+import { fontSizeDefault } from '../../constant/fontSize';
 
 export const styles = StyleSheet.create({
     input: {
@@ -29,6 +30,7 @@ export const styles = StyleSheet.create({
     },
     input_text: {
         width: 270,
+        fontSize: fontSizeDefault,
         marginVertical: 15,
     },
     text_validate: {

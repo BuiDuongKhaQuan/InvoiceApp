@@ -22,7 +22,7 @@ export default function Button({
         <TouchableOpacity onPress={onPress} style={buttonStyles} {...props}>
             <View style={styles.btnLeft}>
                 {iconLeft && <Image style={combinedStylesIcon} source={iconLeft} />}
-                <Text style={combinedStylesText}>{text}</Text>
+                {text && <Text style={combinedStylesText}>{text}</Text>}
             </View>
             {iconRight && <Image style={combinedStylesIcon} source={iconRight} />}
         </TouchableOpacity>

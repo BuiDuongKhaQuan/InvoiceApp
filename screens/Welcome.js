@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch',
     },
     title: {
-        color: buttonColor,
+        color: '#B3B70A',
         fontSize: 35,
         fontWeight: 'bold',
         marginVertical: 20,
-        textShadowColor: 'rgba(0, 0, 0, 0.3)', // Màu của bóng
-        textShadowOffset: { width: 2, height: 2 }, // Độ dịch chuyển của bóng
-        textShadowRadius: 5, // Bán kính của bóng
+        textShadowColor: '#2AA50B',
+        textShadowRadius: 1,
+        textShadowOffset: { width: 2, height: 2 },
     },
     login_btn: {
         width: 150,

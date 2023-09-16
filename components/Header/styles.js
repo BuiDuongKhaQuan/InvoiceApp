@@ -1,14 +1,12 @@
-import { Dimensions, StatusBar, StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { white } from '../../constant/color';
-
-const { width } = Dimensions.get('screen');
+import { fontSizeDefault } from '../../constant/fontSize';
 
 export const styles = StyleSheet.create({
     header: {
-        marginTop: 33,
         height: 67,
         backgroundColor: white,
-        width: width,
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -24,14 +22,23 @@ export const styles = StyleSheet.create({
     logo: {
         width: 80,
         height: 80,
+        resizeMode: 'stretch',
+    },
+    title: {
+        color: '#B3B70A',
+        fontWeight: 'bold',
+        width: '40%',
+        textShadowColor: '#2AA50B',
+        textShadowRadius: 1,
+        textShadowOffset: { width: 2, height: 2 },
+        fontSize: fontSizeDefault + 7,
     },
     btn: {
         width: 110,
         height: 40,
-        fontSize: 10,
         marginEnd: 7,
     },
     text: {
-        fontSize: 18,
+        fontSize: fontSizeDefault - 2,
     },
 });

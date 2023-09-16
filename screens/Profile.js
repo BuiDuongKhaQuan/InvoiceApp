@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView } from
 import React from 'react';
 import Button from '../components/Button';
 import { backgroundColor, white } from '../constant/color';
+import { fontSizeDefault } from '../constant/fontSize';
 
 const { width } = Dimensions.get('screen');
 
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch',
     },
     setting_icon: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         position: 'absolute',
         top: StatusBar.currentHeight || 20,
         right: 10,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     name: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         fontWeight: 'bold',
     },
     edit_btn: {
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         backgroundColor: white,
     },
     btn_text: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         fontWeight: '700',
         color: 'black',
         marginRight: 10,
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     tab_text: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         fontWeight: 'bold',
         paddingVertical: 10,
         paddingHorizontal: 10,
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     bottom_text: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         color: 'black',
         fontWeight: '600',
         marginRight: 10,

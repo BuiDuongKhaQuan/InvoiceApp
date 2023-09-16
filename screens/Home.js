@@ -29,7 +29,7 @@ export default function Home() {
     ]);
     return (
         <View style={styles.container}>
-            <Header />
+            <Header showButton />
             <View style={styles.list}>
                 <InvoiceList data={invoices} />
             </View>

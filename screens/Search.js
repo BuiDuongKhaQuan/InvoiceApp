@@ -1,8 +1,9 @@
 import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { backgroundColor, white } from '../constant/color';
 import React from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { backgroundColor, white } from '../constant/color';
+import { fontSizeDefault } from '../constant/fontSize';
 
 export default function Search() {
     return (
@@ -60,6 +61,7 @@ export default function Search() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: white,
     },
     container_top: {
         width: '100%',
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     },
     result_itemText: {
         fontWeight: '100',
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         color: 'black',
         marginHorizontal: 10,
     },

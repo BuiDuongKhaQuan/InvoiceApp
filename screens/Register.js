@@ -4,9 +4,10 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateEmail, isValidatePass, isValidateFullName } from '../utilies/validate';
 import { backgroundColor } from '../constant/color';
+import { fontSizeDefault } from '../constant/fontSize';
 
 export default function Register({ navigation }) {
-    const [keyboardIsShow, setKeyboardIsShow] = useState(true);
+    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
@@ -16,12 +17,16 @@ export default function Register({ navigation }) {
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
-            setKeyboardIsShow(false);
-        });
-        Keyboard.addListener('keyboardDidHide', () => {
             setKeyboardIsShow(true);
         });
+        Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardIsShow(false);
+        });
     });
+
+    const centerStyle = keyboardIsShow
+        ? { ...styles.container_center, flex: 3, justifyContent: 'center' }
+        : { ...styles.container_center };
 
     const isValidateLogin = () =>
         email.length > 0 && pass.length > 0 && name.length > 0 && errorEmail == false && errorPass == false;
@@ -55,7 +60,7 @@ export default function Register({ navigation }) {
                 <Image style={styles.logo} source={require('../assets/images/logo.png')} />
                 <Text style={styles.title}>Invoice C</Text>
             </View>
-            <View style={styles.container_center}>
+            <View style={centerStyle}>
                 <Input
                     onChangeText={handleChangeEmail}
                     value={email}
@@ -81,15 +86,19 @@ export default function Register({ navigation }) {
                     holder="Mật khẩu"
                     iconLeft={require('../assets/icons/lock.png')}
                 />
-                <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />
-                <View style={styles.register}>
-                    <Text style={styles.register_text}>Bạn đã có tài khoản? </Text>
-                    <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                        Đăng nhập
-                    </Text>
-                </View>
+                {keyboardIsShow || (
+                    <>
+                        <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />
+                        <View style={styles.register}>
+                            <Text style={styles.register_text}>Bạn đã có tài khoản? </Text>
+                            <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                                Đăng nhập
+                            </Text>
+                        </View>
+                    </>
+                )}
             </View>
-            {keyboardIsShow && (
+            {keyboardIsShow || (
                 <View style={styles.container_botom}>
                     <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
                         Quên mật khẩu?
@@ -108,33 +117,36 @@ const styles = StyleSheet.create({
         backgroundColor: backgroundColor,
     },
     container_top: {
-        flex: 4,
+        flex: 3.5,
         justifyContent: 'center',
         alignItems: 'center',
     },
     logo: {
         width: 200,
         height: 200,
+        resizeMode: 'stretch',
     },
     title: {
         fontSize: 70,
+        marginTop: -10,
         color: '#B3B70A',
         textShadowColor: '#2AA50B',
         textShadowRadius: 5,
         textShadowOffset: { width: 2, height: 2 },
     },
     container_center: {
-        flex: 4,
+        flex: 4.3,
         alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     register: {
         flexDirection: 'row',
     },
     register_text: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
     },
     register_btn: {
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         fontWeight: '700',
         color: '#26B819',
     },
@@ -145,7 +157,7 @@ const styles = StyleSheet.create({
     },
     forgot: {
         marginBottom: 20,
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         color: '#26B819',
     },
 });

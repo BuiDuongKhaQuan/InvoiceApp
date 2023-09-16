@@ -5,7 +5,7 @@ import { isValidatePass } from '../utilies/validate';
 import Input from '../components/Input';
 import Header from '../components/SettingItem/header';
 import { backgroundColor } from '../constant/color';
-import { fontSizeMenuTitle } from '../constant/fontSize';
+import { fontSizeDefault, fontSizeMenuTitle } from '../constant/fontSize';
 
 export default function ChangePassword() {
     const [passOld, setPassOld] = useState('');
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     forgot: {
         marginBottom: 20,
-        fontSize: 20,
+        fontSize: fontSizeDefault,
         color: '#26B819',
         alignItems: 'center',
         textAlign: 'center',
