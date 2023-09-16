@@ -5,7 +5,7 @@ import SwitchCustom from '../components/Switch';
 import { backgroundColor, white } from '../constant/color';
 import { fontSizeMenuTitle } from '../constant/fontSize';
 
-export default function Notification() {
+export default function NotificationSetting() {
     return (
         <View
             style={{
