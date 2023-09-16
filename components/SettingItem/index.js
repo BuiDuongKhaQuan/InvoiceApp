@@ -4,7 +4,7 @@ import Button from '../Button';
 import { white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 
-export default function SettingItem({ data }) {
+export default function SettingItem({ data, iconRight = require('../../assets/icons/right-arrow.png') }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{data.title}</Text>
@@ -14,7 +14,7 @@ export default function SettingItem({ data }) {
                     customStylesBtn={styles.btn}
                     customStylesText={styles.text}
                     iconLeft={item.icon}
-                    iconRight={require('../../assets/icons/right-arrow.png')}
+                    iconRight={iconRight}
                     text={item.title}
                 />
             ))}

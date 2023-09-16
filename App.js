@@ -14,11 +14,21 @@ import InvoiceItem from './components/InvoiceItem';
 import InvoiceList from './screens/InvoiceList';
 import Setting from './screens/Setting';
 import Support from './screens/Support';
+
 import Profile from './screens/Profile';
 export default function App() {
     const headerNone = { headerShown: false };
     return (
         <Profile />
+
+import Language from './screens/Language';
+import Home from './screens/Home';
+import QR from './screens/ScanQR';
+export default function App() {
+    const headerNone = { headerShown: false };
+    return (
+        <QR />
+
         // <NavigationContainer>
         //     <Stack.Navigator initialRouteName="Welcome">
         //         <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
