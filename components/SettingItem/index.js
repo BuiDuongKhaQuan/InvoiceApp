@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
-import { fontSizeMenuTitle } from '../../constant/fontSize';
+import { fontSizeDefault, fontSizeMenuTitle } from '../../constant/fontSize';
 
 export default function SettingItem({ data, iconRight = require('../../assets/icons/right-arrow.png') }) {
     return (
@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
     text: {
         color: '#000000',
         fontWeight: 400,
-        fontSize: 20,
+        fontSize: fontSizeDefault,
     },
 });

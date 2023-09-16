@@ -17,7 +17,7 @@ export default function App() {
     const headerNone = { headerShown: false };
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcome">
+            <Stack.Navigator initialRouteName="Welcom">
                 <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
                 <Stack.Screen name="Register" component={Register} options={headerNone} />
                 <Stack.Screen name="Login" component={Login} options={headerNone} />
