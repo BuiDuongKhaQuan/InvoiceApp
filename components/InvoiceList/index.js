@@ -4,7 +4,7 @@ import React from 'react';
 
 import { backgroundColor } from '../../constant/color';
 
-export default function InvoiceList({ data }) {
+export default function InvoiceList({ data, isLike }) {
     const leftData = data.filter((item) => item.id % 2 !== 0);
     const rightData = data.filter((item) => item.id % 2 === 0);
 
@@ -13,12 +13,12 @@ export default function InvoiceList({ data }) {
             <View style={styles.list}>
                 <View>
                     {leftData.map((item) => (
-                        <InvoiceItem data={item} key={item.id} />
+                        <InvoiceItem isLike={isLike} data={item} key={item.id} />
                     ))}
                 </View>
                 <View>
                     {rightData.map((item) => (
-                        <InvoiceItem data={item} key={item.id} />
+                        <InvoiceItem isLike={isLike} data={item} key={item.id} />
                     ))}
                 </View>
             </View>

@@ -1,12 +1,39 @@
-import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { AntDesign } from '@expo/vector-icons';
 import Button from '../components/Button';
 import { backgroundColor, white } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
+import InvoiceList from '../components/InvoiceList';
 
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
+    const [invoices, setInvoices] = useState([
+        {
+            id: '1',
+            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+        },
+        {
+            id: '2',
+            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+        },
+        {
+            id: '3',
+            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+        },
+        {
+            id: '4',
+            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+        },
+    ]);
+
+    const [selectedTab, setSelectedTab] = useState('history');
+
+    const tabActive = (key) =>
+        selectedTab === key
+            ? { ...styles.tab_text, borderBottomColor: 'black', borderBottomWidth: 1 }
+            : styles.tab_text;
     return (
         <View style={styles.container}>
             <View style={styles.container_top}>
@@ -40,19 +67,48 @@ export default function Profile() {
                     />
                 </View>
                 <View style={styles.center_tab}>
-                    <Text style={styles.tab_text}>Lịch sử</Text>
-                    <Text style={styles.tab_text}>Đối tác</Text>
-                    <Text style={styles.tab_text}>Yêu thích</Text>
+                    <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
+                        Lịch sử
+                    </Text>
+                    <Text onPress={() => setSelectedTab('contact')} style={tabActive('contact')}>
+                        Đối tác
+                    </Text>
+                    <Text onPress={() => setSelectedTab('like')} style={tabActive('like')}>
+                        Yêu thích
+                    </Text>
                 </View>
             </View>
             <View style={styles.container_bottom}>
                 <ScrollView style={styles.bottom_content}>
-                    <Text style={styles.bottom_text}>23 dec</Text>
-                    <Text style={styles.bottom_text}>Hoàn thành hóa đơn</Text>
-                    <Image
-                        style={styles.bottom_image}
-                        source={{ uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg' }}
-                    />
+                    {selectedTab === 'history' && (
+                        <View style={styles.content}>
+                            <Text style={styles.bottom_text}>23 dec</Text>
+                            <Text style={styles.bottom_text}>Hoàn thành hóa đơn</Text>
+                            <Image
+                                style={styles.bottom_image}
+                                source={{ uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg' }}
+                            />
+                        </View>
+                    )}
+                    {selectedTab === 'contact' && (
+                        <View style={styles.content}>
+                            <View style={styles.contact_content}>
+                                <View style={styles.contact_row}>
+                                    <Text style={styles.text_default}>Name:</Text>
+                                    <Text style={styles.text_change}>Quan</Text>
+                                </View>
+                                <View style={styles.contact_row}>
+                                    <Text style={styles.text_default}>Phone:</Text>
+                                    <Text style={styles.text_change}>0328216787</Text>
+                                </View>
+                                <View style={styles.contact_row}>
+                                    <Text style={styles.text_default}>Email:</Text>
+                                    <Text style={styles.text_change}>khaquan9a2.2016@gmail.com</Text>
+                                </View>
+                            </View>
+                        </View>
+                    )}
+                    {selectedTab === 'like' && <InvoiceList data={invoices} isLike />}
                 </ScrollView>
             </View>
         </View>
@@ -62,7 +118,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: white,
+        backgroundColor: backgroundColor,
         flexDirection: 'column',
         justifyContent: 'center',
     },
@@ -145,16 +201,53 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingVertical: 10,
         paddingHorizontal: 10,
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
     },
     container_bottom: {
         flex: 3,
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    content: {
+        marginHorizontal: 20,
+    },
+    contact_content: {
+        flex: 1,
+        width: '100%',
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: white,
+        flexDirection: 'column',
+        marginVertical: 8,
+        shadowOffset: { width: 0, height: 2 }, // Điều chỉnh vị trí bóng (đối với iOS)
+        shadowOpacity: 0.5, // Điều chỉnh độ trong suốt của bóng (đối với iOS)
+        shadowRadius: 5, // Điều chỉnh bán kính của bóng (đối với iOS)
+        elevation: 5,
+    },
+    contact_row: {
+        flex: 1,
+        padding: 5,
+        flexDirection: 'row',
+    },
+    text_default: {
+        fontSize: fontSizeDefault - 5,
+        fontWeight: '700',
+        marginRight: 10,
+    },
+    text_change: {
+        fontSize: fontSizeDefault - 5,
+    },
+    contact_img: {
+        flex: 1,
+    },
+    img: {
+        width: 200,
+        height: 200,
+        resizeMode: 'stretch',
     },
     bottom_content: {
-        width: '90%',
+        width: '100%',
         marginTop: 20,
+        flex: 1,
     },
     bottom_text: {
         fontSize: fontSizeDefault,

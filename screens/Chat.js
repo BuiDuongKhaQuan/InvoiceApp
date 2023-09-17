@@ -18,7 +18,7 @@ export default function Chat() {
         });
     });
 
-    const bottomStyle = showkeyboard ? { ...styles.container_bottom, flex: 1.7 } : { ...styles.container_bottom };
+    const bottomStyle = showkeyboard ? { ...styles.container_bottom, flex: 2 } : { ...styles.container_bottom };
 
     return (
         <View style={styles.container}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
     },
     container_bottom: {
-        flex: 1,
+        flex: 1.4,
         flexDirection: 'row',
         alignItems: 'center',
     },
