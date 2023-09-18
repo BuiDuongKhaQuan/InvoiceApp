@@ -11,19 +11,22 @@ import Setting from './screens/Setting';
 import Support from './screens/Support';
 import Profile from './screens/Profile';
 import Search from './screens/Search';
+import Scanner from './screens/Scanner';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
     const headerNone = { headerShown: false };
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcome">
+            <Stack.Navigator initialRouteName="Welcom">
                 <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+                <Stack.Screen name="Search" component={Search} options={headerNone} />
                 <Stack.Screen name="Register" component={Register} options={headerNone} />
                 <Stack.Screen name="Login" component={Login} options={headerNone} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
                 <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+                <Stack.Screen name="Scanner" component={Scanner} />
             </Stack.Navigator>
         </NavigationContainer>
     );
