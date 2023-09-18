@@ -5,15 +5,21 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { fontSizeDefault } from '../constant/fontSize';
 
-export default function Search() {
+export default function Search({ navigation }) {
     return (
         <View style={styles.container}>
-            <Input
-                customStylesContainer={styles.input}
-                holder="Tìm theo mã hóa đơn, tên khách hàng"
-                iconLeft={require('../assets/icons/search.png')}
-                iconRight={require('../assets/icons/qr-code.png')}
-            />
+            <View style={{ flexDirection: 'row' }}>
+                <Input
+                    customStylesContainer={styles.input}
+                    holder="Tìm theo mã hóa đơn, tên khách hàng"
+                    iconLeft={require('../assets/icons/search.png')}
+                />
+                <Button
+                    style={styles.icon}
+                    iconRight={require('../assets/icons/qr-code.png')}
+                    onPress={() => navigation.navigate('Scanner')}
+                />
+            </View>
             <View style={styles.container_top}>
                 <View style={styles.result}>
                     <Button
@@ -70,6 +76,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     input: {
+        flex: 6,
         width: '100%',
         marginTop: StatusBar.currentHeight || 20,
         borderRadius: 0,
@@ -111,5 +118,11 @@ const styles = StyleSheet.create({
     },
     care: {
         flexDirection: 'column',
+    },
+    icon: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        backgroundColor: 'white',
     },
 });
