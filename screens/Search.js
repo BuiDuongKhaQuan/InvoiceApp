@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { backgroundColor, white } from '../constant/color';
 import React from 'react';
 import Input from '../components/Input';
@@ -13,11 +13,8 @@ export default function Search({ navigation }) {
                     customStylesContainer={styles.input}
                     holder="Tìm theo mã hóa đơn, tên khách hàng"
                     iconLeft={require('../assets/icons/search.png')}
-                />
-                <Button
-                    style={styles.icon}
                     iconRight={require('../assets/icons/qr-code.png')}
-                    onPress={() => navigation.navigate('Scanner')}
+                    onPressIconRight={() => navigation.navigate('Scanner')}
                 />
             </View>
             <View style={styles.container_top}>

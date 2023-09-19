@@ -4,6 +4,9 @@ import { fontSizeDefault } from '../../constant/fontSize';
 
 export const styles = StyleSheet.create({
     header: {
+        position: 'absolute',
+        zIndex: 100,
+        top: StatusBar.currentHeight || 0,
         height: 67,
         backgroundColor: white,
         width: '100%',
@@ -12,7 +15,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomColor: '#707070',
         borderBottomWidth: 1,
-        marginTop: StatusBar.currentHeight || 0,
     },
     header_left: {
         flexDirection: 'row',
