@@ -4,21 +4,17 @@ import Login from './screens/Login';
 import Register from './screens/Register';
 import ForgotPassword from './screens/ForgotPassword';
 import ChangePassword from './screens/ChangePassword';
-import TabNavigator from './screens/TabNavigator';
+import TabNavigator from './components/TabNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Setting from './screens/Setting';
-import Support from './screens/Support';
-import Profile from './screens/Profile';
-import Search from './screens/Search';
-import Invoice from './screens/Invoice';
+
 import Scanner from './screens/Scanner';
+import Profile from './screens/Company/Profile';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
     const headerNone = { headerShown: false };
     return (
-        // <Invoice />
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
                 <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
