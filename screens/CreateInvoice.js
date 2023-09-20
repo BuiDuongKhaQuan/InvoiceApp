@@ -1,20 +1,35 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
+import Popup from '../components/Popup';
 
-export default function CreateInvoice() {
+export default function CreateInvoice({ navigation }) {
+    const [isPopupVisible, setPopupVisible] = useState(false);
+
+    const togglePopup = () => {
+        setPopupVisible(!isPopupVisible);
+    };
+
     return (
-        <View style={styles.container}>
-            <Header title="Name" iconRight={require('../assets/icons/menu.png')} />
-            <View style={styles.top}>
-                <View></View>
+        <>
+            <Popup visible={isPopupVisible} onClose={togglePopup} bottom />
+            <View style={styles.container}>
+                <Header
+                    onPress={togglePopup}
+                    onGoBack={() => navigation.goBack()}
+                    title="Tạo hóa đơn"
+                    iconRight={require('../assets/icons/menu.png')}
+                />
+                <View style={styles.top}>
+                    <View></View>
+                </View>
+                <View style={styles.bottom}>
+                    <Button customStylesBtn={styles.btn} text="Print" />
+                    <Button customStylesBtn={styles.btn} text="Save to PDF" />
+                </View>
             </View>
-            <View style={styles.bottom}>
-                <Button customStylesBtn={styles.btn} text="Print" />
-                <Button customStylesBtn={styles.btn} text="Save to PDF" />
-            </View>
-        </View>
+        </>
     );
 }
 

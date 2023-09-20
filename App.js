@@ -7,22 +7,28 @@ import ChangePassword from './screens/ChangePassword';
 import TabNavigator from './components/TabNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import Scanner from './screens/Scanner';
-import CreateInvoice from './screens/CreateInvoice';
-
-import Profile from './screens/Company/Profile';
-import Invoice from './layouts/Invoice/Invoice';
-import WatchBill from './screens/Company/WatchBill';
+import Profile from './screens/Profile';
 import Bills from './screens/Company/Bills';
-import EditBill from './screens/Company/EditBill';
-import Statistical from './screens/Company/Statistical';
-import BillSample from './screens/Company/BillSample';
 import Search from './screens/Search';
-import ValidateEmail from './screens/ValidateEmail';
+import Scanner from './screens/Scanner';
+import WatchBill from './screens/Company/WatchBill';
+import BillSample from './screens/Company/BillSample';
+import EditBill from './screens/Company/EditBill';
+import Staff from './screens/Company/Staff';
+import Statistical from './screens/Company/Statistical';
+import Language from './screens/Setting/Language';
+import NotificationSetting from './screens/Setting/NotificationSetting';
+import Setting from './screens/Setting/Setting';
+import Support from './screens/Setting/Support';
+import Home from './screens/Home';
+import CreateInvoice from './screens/CreateInvoice';
+import Chat from './screens/Chat';
+import ProfileCompany from './screens/Company/ProfileCompany';
+
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
+    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
@@ -33,8 +39,22 @@ export default function App() {
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
                 <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
                 <Stack.Screen name="Scanner" component={Scanner} />
+                <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
+                <Stack.Screen name="Chat" component={Chat} />
+                <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen name="Bills" component={Bills} />
+                <Stack.Screen name="BillSample" component={BillSample} />
+                <Stack.Screen name="EditBill" component={EditBill} />
+                <Stack.Screen name="ProfileCompany" component={ProfileCompany} />
+                <Stack.Screen name="Staff" component={Staff} />
+                <Stack.Screen name="Statistical" component={Statistical} />
                 <Stack.Screen name="WatchBill" component={WatchBill} />
+                <Stack.Screen name="Language" component={Language} />
+                <Stack.Screen name="NotificationSetting" component={NotificationSetting} />
+                <Stack.Screen name="Setting" component={Setting} />
+                <Stack.Screen name="Support" component={Support} />
             </Stack.Navigator>
         </NavigationContainer>
     );

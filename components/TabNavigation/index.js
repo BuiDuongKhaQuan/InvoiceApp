@@ -5,13 +5,11 @@ import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import Home from '../../screens/Home';
 import Search from '../../screens/Search';
-import Profile from '../../screens/Profile';
 import Chat from '../../screens/Chat';
 import { buttonColor, white } from '../../constant/color';
 import Popup from '../Popup';
 import Button from '../Button';
 import Bills from '../../screens/Company/Bills';
-import WatchBill from '../../screens/Company/WatchBill';
 
 const Tab = createBottomTabNavigator();
 

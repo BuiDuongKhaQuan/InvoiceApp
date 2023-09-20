@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import Header from '../components/SettingItem/header';
-import SwitchCustom from '../components/Switch';
-import { backgroundColor, white } from '../constant/color';
-import { fontSizeMenuTitle } from '../constant/fontSize';
+import Header from '../../components/SettingItem/header';
+import SwitchCustom from '../../components/Switch';
+import { backgroundColor, white } from '../../constant/color';
+import { fontSizeMenuTitle } from '../../constant/fontSize';
 
 export default function NotificationSetting() {
     return (

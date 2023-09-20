@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View, StatusBar, FlatList } from 'react-native';
 import React, { useState } from 'react';
-import Button from '../components/Button';
-import SettingItem from '../components/SettingItem';
-import Header from '../components/SettingItem/header';
-import { backgroundColor } from '../constant/color';
+import SettingItem from '../../components/SettingItem';
+import Header from '../../components/SettingItem/header';
+import { backgroundColor } from '../../constant/color';
 
 export default function Language() {
     const [itemSetting, setItemSetting] = useState([
@@ -31,7 +30,7 @@ export default function Language() {
                             <SettingItem
                                 data={itemSetting[itemSetting.length - 1]}
                                 key={itemSetting[itemSetting.length - 1].id}
-                                iconRight={require('../assets/icons/check.png')}
+                                iconRight={require('../../assets/icons/check.png')}
                             />
                             {/* <Button customStylesBtn={styles.logout_btn} text="Đăng xuất" /> */}
                         </>
