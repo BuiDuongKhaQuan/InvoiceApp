@@ -9,6 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Scanner from './screens/Scanner';
+import Invoice2 from './screens/Invoice2';
+import Bills from './screens/Bills';
+
 import Profile from './screens/Company/Profile';
 
 const Stack = createNativeStackNavigator();
