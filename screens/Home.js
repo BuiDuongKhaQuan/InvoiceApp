@@ -38,7 +38,7 @@ export default function Home() {
     ]);
     return (
         <View style={styles.container}>
-            <Header showButton backgroundHide />
+            <Header backgroundHide />
             <View style={styles.slider}>
                 <Swiper style={styles.wrapper} showsButtons={true} autoplay={true} autoplayTimeout={3}>
                     {imageSliders.map((image, index) => (

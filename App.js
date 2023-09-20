@@ -9,6 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Scanner from './screens/Scanner';
+import Profile from './screens/Company/Profile';
+import CreateInvoice from './screens/CreateInvoice';
 
 import Profile from './screens/Company/Profile';
 import Invoice from './layouts/Invoice/Invoice';
@@ -21,6 +23,7 @@ import Search from './screens/Search';
 export default function App() {
     const headerNone = { headerShown: false };
     return (
+
         <Bills />
         // <NavigationContainer>
         //     <Stack.Navigator initialRouteName="Welcom">
@@ -35,6 +38,7 @@ export default function App() {
         //         <Stack.Screen name="WatchBill" component={WatchBill} />
         //     </Stack.Navigator>
         // </NavigationContainer>
+
     );
 }
 

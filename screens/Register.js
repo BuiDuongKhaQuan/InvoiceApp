@@ -11,9 +11,11 @@ export default function Register({ navigation }) {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
+    const [companyKey, setComapanyKey] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const [errorName, setErrorName] = useState(false);
+    const [errorCompanyKey, setErrorCompanyKey] = useState(false);
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -53,7 +55,10 @@ export default function Register({ navigation }) {
         setErrorName(!isValidateFullName(name));
         setName(name);
     };
-
+    const handleChangeCompanyKey = (key) => {
+        setErrorCompanyKey(!isValidateFullName(key));
+        setComapanyKey(key);
+    };
     return (
         <View style={styles.container}>
             <View style={styles.container_top}>
@@ -84,6 +89,14 @@ export default function Register({ navigation }) {
                     validateText="Mật khẩu phải đủ 4 ký tự"
                     pass
                     holder="Mật khẩu"
+                    iconLeft={require('../assets/icons/lock.png')}
+                />
+                <Input
+                    onChangeText={handleChangeCompanyKey}
+                    value={companyKey}
+                    validate={errorCompanyKey}
+                    validateText="Mã doanh nghiệp không được để trống"
+                    holder="Mã doanh nghiệp"
                     iconLeft={require('../assets/icons/lock.png')}
                 />
                 {keyboardIsShow || (
