@@ -13,23 +13,24 @@ import Profile from './screens/Profile';
 import Search from './screens/Search';
 import Invoice from './screens/Invoice';
 import Scanner from './screens/Scanner';
-
+import Invoice2 from './screens/Invoice2';
+import Bills from './screens/Bills';
 const Stack = createNativeStackNavigator();
 export default function App() {
     const headerNone = { headerShown: false };
     return (
-        // <Invoice />
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcom">
-                <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
-                <Stack.Screen name="Register" component={Register} options={headerNone} />
-                <Stack.Screen name="Login" component={Login} options={headerNone} />
-                <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
-                <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
-                <Stack.Screen name="Scanner" component={Scanner} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Invoice2 />
+        // <NavigationContainer>
+        //     <Stack.Navigator initialRouteName="Bill">
+        //         <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+        //         <Stack.Screen name="Register" component={Register} options={headerNone} />
+        //         <Stack.Screen name="Login" component={Login} options={headerNone} />
+        //         <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
+        //         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
+        //         <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+        //         <Stack.Screen name="Scanner" component={Scanner} />
+        //     </Stack.Navigator>
+        // </NavigationContainer>
     );
 }
 
