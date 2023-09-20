@@ -17,6 +17,7 @@ export default function Input({
     customStylesInput,
     customStylesContainer,
     customStylesTextValidate,
+    customStylesIcon,
     ...props
 }) {
     const isPass = pass ? true : false;
@@ -28,11 +29,12 @@ export default function Input({
     const combinedSltyesInput = StyleSheet.flatten([styles.input_text, customStylesInput]);
 
     const combinedSltyesTextValidate = StyleSheet.flatten([styles.text_validate, customStylesTextValidate]);
+    const combinedSltyesIcon = StyleSheet.flatten([styles.input_icon, customStylesIcon]);
 
     return (
         <View style={combinedSltyesContainer}>
             <View style={styles.container}>
-                {iconLeft && <Image style={styles.input_icon} source={iconLeft} />}
+                {iconLeft && <Image style={combinedSltyesIcon} source={iconLeft} />}
                 <TextInput
                     {...props}
                     onChangeText={onChangeText}
@@ -49,7 +51,7 @@ export default function Input({
                 )}
                 {iconRight && (
                     <TouchableOpacity onPress={onPressIconRight}>
-                        <Image style={styles.input_icon} source={iconRight} />
+                        <Image style={combinedSltyesIcon} source={iconRight} />
                     </TouchableOpacity>
                 )}
             </View>

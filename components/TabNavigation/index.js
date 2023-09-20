@@ -11,6 +11,8 @@ import Chat from '../../screens/Chat';
 import { buttonColor, white } from '../../constant/color';
 import Popup from '../Popup';
 import Button from '../Button';
+import Bills from '../../screens/Company/Bills';
+import WatchBill from '../../screens/Company/WatchBill';
 
 const Tab = createBottomTabNavigator();
 
@@ -79,8 +81,8 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Profile"
-                    component={Profile}
+                    name="Bills"
+                    component={Bills}
                     options={{
                         headerShown: false,
 
