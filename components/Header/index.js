@@ -14,7 +14,13 @@ export default function Header({ showButton, backgroundHide }) {
                 <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
                 <Text style={styles.title}>Invoice</Text>
             </View>
-            {showButton && <Button customStylesText={styles.text} customStylesBtn={styles.btn} text="Nâng cấp" />}
+            {showButton && (
+                <Button
+                    iconRight={require('../../assets/icons/menu.png')}
+                    customStylesText={styles.text}
+                    customStylesBtn={styles.btn}
+                />
+            )}
         </View>
     );
 }

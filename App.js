@@ -10,11 +10,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Scanner from './screens/Scanner';
 import Profile from './screens/Company/Profile';
+import CreateInvoice from './screens/CreateInvoice';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
     const headerNone = { headerShown: false };
     return (
+        // <Register />
+
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
                 <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
