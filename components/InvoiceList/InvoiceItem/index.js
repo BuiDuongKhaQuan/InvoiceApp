@@ -5,7 +5,7 @@ import { backgroundColor } from '../../../constant/color';
 export default function InvoiceItem({ data, onPress, isLike }) {
     const newStyleInvoice = { ...styles.invoice, ...(data.id == 2 ? { marginTop: 40 } : {}) };
     const isStyleContainer = isLike ? { ...styles.container } : {};
-    const [showLike, setShowLike] = useState(false);
+    const [showLike, setShowLike] = useState(true);
     const handleLikeToggle = () => setShowLike(!showLike);
     return (
         <TouchableOpacity

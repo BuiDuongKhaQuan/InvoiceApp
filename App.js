@@ -24,11 +24,11 @@ import Home from './screens/Home';
 import CreateInvoice from './screens/CreateInvoice';
 import Chat from './screens/Chat';
 import ProfileCompany from './screens/Company/ProfileCompany';
+import Header from './components/Header';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
-    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
@@ -55,6 +55,7 @@ export default function App() {
                 <Stack.Screen name="NotificationSetting" component={NotificationSetting} />
                 <Stack.Screen name="Setting" component={Setting} />
                 <Stack.Screen name="Support" component={Support} />
+                <Stack.Screen name="Header" component={Header} />
             </Stack.Navigator>
         </NavigationContainer>
     );
