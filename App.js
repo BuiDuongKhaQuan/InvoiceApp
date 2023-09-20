@@ -24,11 +24,12 @@ import Home from './screens/Home';
 import CreateInvoice from './screens/CreateInvoice';
 import Chat from './screens/Chat';
 import ProfileCompany from './screens/Company/ProfileCompany';
+
 export default function App() {
+    const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
     const Stack = createNativeStackNavigator();
     return (
-        // <Bills />
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
                 <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
@@ -43,7 +44,6 @@ export default function App() {
                 <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
                 <Stack.Screen name="Chat" component={Chat} />
                 <Stack.Screen name="Profile" component={Profile} />
-
                 <Stack.Screen name="Bills" component={Bills} />
                 <Stack.Screen name="BillSample" component={BillSample} />
                 <Stack.Screen name="EditBill" component={EditBill} />

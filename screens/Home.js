@@ -9,10 +9,13 @@ const { width } = Dimensions.get('screen');
 
 export default function Home({ navigation }) {
     const [imageSliders, setImageSliders] = useState([
-        require('../assets/images/1.jpg'),
-        require('../assets/images/2.jpg'),
-        require('../assets/images/3.jpg'),
-        require('../assets/images/4.jpg'),
+        require('../assets/images/Slider/1.jpg'),
+        require('../assets/images/Slider/2.jpg'),
+        require('../assets/images/Slider/3.jpg'),
+        require('../assets/images/Slider/4.jpg'),
+        require('../assets/images/Slider/5.jpg'),
+        require('../assets/images/Slider/6.jpg'),
+        require('../assets/images/Slider/7.jpg'),
     ]);
     const [invoices, setInvoices] = useState([
         {

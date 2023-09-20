@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Home from '../../screens/Home';
 import Search from '../../screens/Search';
 import Chat from '../../screens/Chat';
