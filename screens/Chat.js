@@ -5,9 +5,43 @@ import { Fontisto, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 import Header from '../components/Header';
 import Input from '../components/Input';
 import { white } from '../constant/color';
-
+import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 export default function Chat() {
     const [showkeyboard, setShowkeyboard] = useState(false);
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
+    const pickDocument = async () => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: '*/*', // Loại tệp tin bạn muốn chọn (ví dụ: PDF)
+                copyToCacheDirectory: false, // Set true nếu bạn muốn sao chép tệp tới cache directory của ứng dụng
+            });
+
+            if (result.type === 'success') {
+                console.log(`Selected document: ${result.name} - size: ${result.size} bytes`);
+                // Bạn có thể làm gì đó với tệp tin đã chọn ở đây
+            } else if (result.type === 'cancel') {
+                console.log('Document picking cancelled');
+            }
+        } catch (err) {
+            console.error('Error picking document:', err);
+        }
+    };
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -26,10 +60,10 @@ export default function Chat() {
             <View style={styles.container_center}></View>
             <View style={bottomStyle}>
                 <View style={styles.bottom_left}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={pickDocument}>
                         <SimpleLineIcons name="folder" size={30} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={pickImage}>
                         <Fontisto name="picture" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
