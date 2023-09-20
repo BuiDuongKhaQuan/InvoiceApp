@@ -28,7 +28,6 @@ import ProfileCompany from './screens/Company/ProfileCompany';
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
-    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcom">
