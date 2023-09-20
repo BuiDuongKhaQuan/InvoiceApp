@@ -7,7 +7,7 @@ import Input from '../components/Input';
 import { white } from '../constant/color';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
-export default function Chat() {
+export default function Chat({ navigation }) {
     const [showkeyboard, setShowkeyboard] = useState(false);
     const [image, setImage] = useState(null);
 
@@ -56,7 +56,7 @@ export default function Chat() {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <Header navigation={navigation} />
             <View style={styles.container_center}></View>
             <View style={bottomStyle}>
                 <View style={styles.bottom_left}>

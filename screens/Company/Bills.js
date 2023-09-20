@@ -5,7 +5,7 @@ import Header from '../../components/SettingItem/header';
 import { backgroundColor, white } from '../../constant/color';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-export default function Bills() {
+export default function Bills({ navigation }) {
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -41,7 +41,7 @@ export default function Bills() {
                 />
             </View>
             <View style={styles.list}>
-                <InvoiceList data={invoices} />
+                <InvoiceList navigation={navigation} data={invoices} />
             </View>
         </View>
     );
