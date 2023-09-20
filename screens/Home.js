@@ -7,7 +7,7 @@ import Swiper from 'react-native-swiper';
 
 const { width } = Dimensions.get('screen');
 
-export default function Home() {
+export default function Home({ navigation }) {
     const [imageSliders, setImageSliders] = useState([
         require('../assets/images/1.jpg'),
         require('../assets/images/2.jpg'),
@@ -47,7 +47,7 @@ export default function Home() {
                 </Swiper>
             </View>
             <View style={styles.list}>
-                <InvoiceList data={invoices} />
+                <InvoiceList navigation={navigation} data={invoices} />
             </View>
         </View>
     );

@@ -8,7 +8,7 @@ import SettingItem from '../../components/SettingItem';
 
 const { width } = Dimensions.get('screen');
 
-export default function Profile() {
+export default function ProfileCompany() {
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
