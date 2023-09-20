@@ -3,12 +3,12 @@ import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
 
-export default function Header({ onPress, title, iconRight }) {
+export default function Header({ onGoBack, title, iconRight, onPress }) {
     return (
         <View style={styles.container}>
             <View style={styles.icon}>
                 <Button
-                    onPress={onPress}
+                    onPress={onGoBack}
                     customStylesText={{ color: 'red' }}
                     iconLeft={require('../../assets/icons/back.png')}
                 />
