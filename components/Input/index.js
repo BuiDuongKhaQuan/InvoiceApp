@@ -1,4 +1,4 @@
-import { TextInput, View, StyleSheet, Image, Text } from 'react-native';
+import { TextInput, View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { styles } from './styles';
 import Button from '../Button';
@@ -11,6 +11,7 @@ export default function Input({
     btnSend,
     text,
     onChangeText,
+    onPressIconRight,
     validate,
     validateText,
     customStylesInput,
@@ -46,7 +47,11 @@ export default function Input({
                         customStylesBtn={{ width: 75, height: 35, marginHorizontal: -80, marginVertical: 11 }}
                     />
                 )}
-                {iconRight && <Image style={styles.input_icon} source={iconRight} />}
+                {iconRight && (
+                    <TouchableOpacity onPress={onPressIconRight}>
+                        <Image style={styles.input_icon} source={iconRight} />
+                    </TouchableOpacity>
+                )}
             </View>
             {validate && <Text style={combinedSltyesTextValidate}>{validateText}</Text>}
         </View>

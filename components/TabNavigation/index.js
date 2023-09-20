@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
-import Home from './Home';
-import Search from './Search';
-import Plus from './Plus';
-import Profile from './Profile';
-import Chat from './Chat';
-import { buttonColor, white } from '../constant/color';
-import Popup from '../components/Popup';
-import Button from '../components/Button';
+import Home from '../../screens/Home';
+import Search from '../../screens/Search';
+import Plus from '../../screens/Plus';
+import Profile from '../../screens/Profile';
+import Chat from '../../screens/Chat';
+import { buttonColor, white } from '../../constant/color';
+import Popup from '../Popup';
+import Button from '../Button';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ const TabNavigator = () => {
 
     return (
         <>
-            <Popup visible={isPopupVisible} onClose={togglePopup} />
+            <Popup visible={isPopupVisible} onClose={togglePopup} bottom />
             <Tab.Navigator
                 screenOptions={{
                     tabBarStyle: {
@@ -63,7 +63,7 @@ const TabNavigator = () => {
                         tabBarButton: (props) => (
                             <Button
                                 customStylesIcon={{ width: 35, height: 35, marginVertical: 8, marginHorizontal: 20 }}
-                                iconLeft={require('../assets/icons/plus.png')}
+                                iconLeft={require('../../assets/icons/plus.png')}
                                 onPress={togglePopup}
                             />
                         ),

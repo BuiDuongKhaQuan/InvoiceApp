@@ -19,7 +19,7 @@ export default function Language() {
 
     return (
         <View style={styles.container}>
-            <Header title=" Đỗi Ngôn Ngữ" />
+            <Header title=" Đổi Ngôn Ngữ" />
             <FlatList
                 data={itemSetting}
                 renderItem={({ item }) => {

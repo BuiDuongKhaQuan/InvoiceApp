@@ -3,9 +3,13 @@ import React from 'react';
 import Button from '../Button';
 import { styles } from './styles';
 
-export default function Header({ showButton }) {
+export default function Header({ showButton, backgroundHide }) {
+    const newStyle = backgroundHide
+        ? { ...styles.header, backgroundColor: 'transparent', borderBottomWidth: 0 }
+        : styles.header;
+
     return (
-        <View style={styles.header}>
+        <View style={newStyle}>
             <View style={styles.header_left}>
                 <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
                 <Text style={styles.title}>Invoice</Text>
