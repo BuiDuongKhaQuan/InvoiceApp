@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Platform, Text, StatusBar, TouchableOpacity, TextInput } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
-import { white } from '../constant/color';
+import { white } from '../../constant/color';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import Popup from '../components/Popup';
+import Popup from '../../components/Popup';
 
 export default function Invoice() {
     const currentDate = new Date();

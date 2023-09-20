@@ -12,23 +12,33 @@ import Scanner from './screens/Scanner';
 import Profile from './screens/Company/Profile';
 import CreateInvoice from './screens/CreateInvoice';
 
-const Stack = createNativeStackNavigator();
+import Profile from './screens/Company/Profile';
+import Invoice from './layouts/Invoice/Invoice';
+import WatchBill from './screens/Company/WatchBill';
+import Bills from './screens/Company/Bills';
+import EditBill from './screens/Company/EditBill';
+import Statistical from './screens/Company/Statistical';
+import BillSample from './screens/Company/BillSample';
+import Search from './screens/Search';
 export default function App() {
     const headerNone = { headerShown: false };
     return (
-        // <Register />
 
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcom">
-                <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
-                <Stack.Screen name="Register" component={Register} options={headerNone} />
-                <Stack.Screen name="Login" component={Login} options={headerNone} />
-                <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
-                <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
-                <Stack.Screen name="Scanner" component={Scanner} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Bills />
+        // <NavigationContainer>
+        //     <Stack.Navigator initialRouteName="Welcom">
+        //         <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+        //         <Stack.Screen name="Register" component={Register} options={headerNone} />
+        //         <Stack.Screen name="Login" component={Login} options={headerNone} />
+        //         <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
+        //         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
+        //         <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+        //         <Stack.Screen name="Scanner" component={Scanner} />
+        //         <Stack.Screen name="Bills" component={Bills} />
+        //         <Stack.Screen name="WatchBill" component={WatchBill} />
+        //     </Stack.Navigator>
+        // </NavigationContainer>
+
     );
 }
 
