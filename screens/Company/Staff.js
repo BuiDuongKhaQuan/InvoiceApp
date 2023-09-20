@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
 import TabNavigator from './TabNavigator';
-import Input from '../components/Input';
-import Header from '../components/SettingItem/header';
+import Input from '../../components/Input';
+import Header from '../../components/SettingItem/header';
 
 export default function Staff() {
     return (
