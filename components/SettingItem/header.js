@@ -2,26 +2,23 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Header({ onGoBack, title, iconRight, onPress }) {
+export default function Header({
+    onGoBack,
+    title,
+    iconRight,
+    iconLeft = <Ionicons name="arrow-back" size={24} color="black" />,
+    onPress,
+}) {
     return (
         <View style={styles.container}>
             <View style={styles.icon}>
-                <Button
-                    onPress={onGoBack}
-                    customStylesText={{ color: 'red' }}
-                    iconLeft={require('../../assets/icons/back.png')}
-                />
+                <Button onPress={onGoBack} customStylesText={{ color: 'red' }} iconLeft={iconLeft} />
             </View>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.icon}>
-                {iconRight && (
-                    <Button
-                        onPress={onPress}
-                        customStylesText={{ color: 'red' }}
-                        iconLeft={require('../../assets/icons/menu.png')}
-                    />
-                )}
+                {iconRight && <Button onPress={onPress} customStylesText={{ color: 'red' }} iconLeft={iconRight} />}
             </View>
         </View>
     );
@@ -36,8 +33,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
-        borderColor: 'black',
-        borderBottomWidth: 1,
     },
     title: {
         flex: 5,

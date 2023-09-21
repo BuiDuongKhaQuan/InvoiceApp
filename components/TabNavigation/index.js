@@ -64,7 +64,7 @@ const TabNavigator = () => {
                         tabBarButton: (props) => (
                             <Button
                                 customStylesIcon={{ width: 35, height: 35, marginVertical: 8, marginHorizontal: 20 }}
-                                iconLeft={require('../../assets/icons/plus.png')}
+                                iconLeft={<AntDesign name="plussquareo" size={33} color="black" />}
                                 onPress={togglePopup}
                             />
                         ),

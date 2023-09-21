@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import SettingItem from '../../components/SettingItem';
 import Header from '../../components/SettingItem/header';
 import { backgroundColor } from '../../constant/color';
+import { AntDesign } from '@expo/vector-icons';
+import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function Language() {
     const [itemSetting, setItemSetting] = useState([
@@ -18,26 +20,25 @@ export default function Language() {
 
     return (
         <View style={styles.container}>
-            <Header title=" Đổi Ngôn Ngữ" />
-            <FlatList
-                data={itemSetting}
-                renderItem={({ item }) => {
-                    if (itemSetting[itemSetting.length - 1] !== item) {
-                        return <SettingItem data={item} key={item.id} />;
-                    }
-                    return (
-                        <>
+            <BackgroundImage>
+                <Header title=" Đổi Ngôn Ngữ" />
+                <FlatList
+                    data={itemSetting}
+                    renderItem={({ item }) => {
+                        if (itemSetting[itemSetting.length - 1] !== item) {
+                            return <SettingItem data={item} key={item.id} />;
+                        }
+                        return (
                             <SettingItem
                                 data={itemSetting[itemSetting.length - 1]}
                                 key={itemSetting[itemSetting.length - 1].id}
-                                iconRight={require('../../assets/icons/check.png')}
+                                iconRight={<AntDesign name="check" size={24} color="black" />}
                             />
-                            {/* <Button customStylesBtn={styles.logout_btn} text="Đăng xuất" /> */}
-                        </>
-                    );
-                }}
-                keyExtractor={(item) => item.id}
-            />
+                        );
+                    }}
+                    keyExtractor={(item) => item.id}
+                />
+            </BackgroundImage>
         </View>
     );
 }

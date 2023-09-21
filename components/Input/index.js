@@ -34,7 +34,7 @@ export default function Input({
     return (
         <View style={combinedSltyesContainer}>
             <View style={styles.container}>
-                {iconLeft && <Image style={combinedSltyesIcon} source={iconLeft} />}
+                {iconLeft && <View style={styles.input_icon}>{iconLeft}</View>}
                 <TextInput
                     {...props}
                     onChangeText={onChangeText}
@@ -46,12 +46,12 @@ export default function Input({
                     <Button
                         text="Gửi"
                         customStylesText={{ fontSize: 20 }}
-                        customStylesBtn={{ width: 75, height: 35, marginHorizontal: -80, marginVertical: 11 }}
+                        customStylesBtn={{ width: 75, height: 35, marginHorizontal: -60, marginVertical: 12 }}
                     />
                 )}
                 {iconRight && (
-                    <TouchableOpacity onPress={onPressIconRight}>
-                        <Image style={combinedSltyesIcon} source={iconRight} />
+                    <TouchableOpacity style={styles.input_icon} onPress={onPressIconRight}>
+                        {iconRight}
                     </TouchableOpacity>
                 )}
             </View>

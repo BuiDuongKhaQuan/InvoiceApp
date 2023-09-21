@@ -47,6 +47,6 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
-        backgroundColor: white,
+        backgroundColor: 'rgba(0, 0, 0,0.1)',
     },
 });

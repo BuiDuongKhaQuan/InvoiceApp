@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import Button from '../components/Button';
 import { backgroundColor, white } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
 import InvoiceList from '../components/InvoiceList';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 const { width } = Dimensions.get('screen');
 
@@ -36,81 +37,85 @@ export default function Profile() {
             : styles.tab_text;
     return (
         <View style={styles.container}>
-            <View style={styles.container_top}>
-                <View style={styles.image}>
-                    <Image
-                        style={styles.img_default}
-                        source={{ uri: 'https://www.chudu24.com/wp-content/uploads/2017/03/canh-dep-nhat-ban-5.jpg' }}
-                    />
-                    <Button style={styles.setting_icon} iconLeft={require('../assets/icons/setting.png')} />
-                </View>
-                <View style={styles.top_avatar}>
-                    <View style={styles.top_}>
-                        <Image style={styles.avatar} source={require('../assets/icons/account.png')} />
-                        <Text style={styles.name}>Khả Quân</Text>
+            <BackgroundImage>
+                <View style={styles.container_top}>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.img_default}
+                            source={{
+                                uri: 'https://www.chudu24.com/wp-content/uploads/2017/03/canh-dep-nhat-ban-5.jpg',
+                            }}
+                        />
+                        <Button
+                            style={styles.setting_icon}
+                            iconLeft={<AntDesign name="setting" size={24} color="black" />}
+                        />
                     </View>
-                    <Button
-                        customStylesBtn={styles.edit_btn}
-                        customStylesText={styles.btn_text}
-                        iconLeft={require('../assets/icons/edit.png')}
-                        text="Chỉnh sửa"
-                    />
-                </View>
-            </View>
-            <View style={styles.container_center}>
-                <View style={styles.btn}>
-                    <Button
-                        customStylesBtn={styles.creat_btn}
-                        customStylesText={styles.btn_text}
-                        text="Tạo hóa đơn__________________"
-                        iconRight={require('../assets/icons/paper-clip.png')}
-                    />
-                </View>
-                <View style={styles.center_tab}>
-                    <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
-                        Lịch sử
-                    </Text>
-                    <Text onPress={() => setSelectedTab('contact')} style={tabActive('contact')}>
-                        Đối tác
-                    </Text>
-                    <Text onPress={() => setSelectedTab('like')} style={tabActive('like')}>
-                        Yêu thích
-                    </Text>
-                </View>
-            </View>
-            <View style={styles.container_bottom}>
-                <ScrollView style={styles.bottom_content}>
-                    {selectedTab === 'history' && (
-                        <View style={styles.content}>
-                            <Text style={styles.bottom_text}>23 dec</Text>
-                            <Text style={styles.bottom_text}>Hoàn thành hóa đơn</Text>
-                            <Image
-                                style={styles.bottom_image}
-                                source={{ uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg' }}
-                            />
+                    <View style={styles.top_avatar}>
+                        <View style={styles.top_}>
+                            <Image style={styles.avatar} source={require('../assets/images/avatar.png')} />
+                            <Text style={styles.name}>Khả Quân</Text>
                         </View>
-                    )}
-                    {selectedTab === 'contact' && (
-                        <View style={styles.content}>
-                            <View style={styles.contact_content}>
-                                <View style={styles.contact_row}>
-                                    <Text style={styles.text_default}>Name:</Text>
-                                    <Text style={styles.text_change}>Quan</Text>
-                                </View>
-                                <View style={styles.contact_row}>
-                                    <Text style={styles.text_default}>Phone:</Text>
-                                    <Text style={styles.text_change}>0328216787</Text>
-                                </View>
-                                <View style={styles.contact_row}>
-                                    <Text style={styles.text_default}>Email:</Text>
-                                    <Text style={styles.text_change}>khaquan9a2.2016@gmail.com</Text>
+                        <Button
+                            customStylesBtn={styles.edit_btn}
+                            customStylesText={styles.btn_text}
+                            iconLeft={<Feather name="edit-3" size={24} color="black" />}
+                            text="Chỉnh sửa"
+                        />
+                    </View>
+                </View>
+                <View style={styles.container_center}>
+                    <View style={styles.company}>
+                        <Text style={styles.company_name}> Company: Company</Text>
+                    </View>
+                    <View style={styles.center_tab}>
+                        <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
+                            History
+                        </Text>
+                        <Text onPress={() => setSelectedTab('contact')} style={tabActive('contact')}>
+                            Contact
+                        </Text>
+                        <Text onPress={() => setSelectedTab('like')} style={tabActive('like')}>
+                            Like
+                        </Text>
+                    </View>
+                </View>
+                <View style={styles.container_bottom}>
+                    <ScrollView sr style={styles.bottom_content}>
+                        {selectedTab === 'history' && (
+                            <View style={styles.content}>
+                                <Text style={styles.bottom_text}>23 dec</Text>
+                                <Text style={styles.bottom_text}>Hoàn thành hóa đơn</Text>
+                                <Image
+                                    style={styles.bottom_image}
+                                    source={{
+                                        uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+                                    }}
+                                />
+                            </View>
+                        )}
+                        {selectedTab === 'contact' && (
+                            <View style={styles.content}>
+                                <View style={styles.contact_content}>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>Name:</Text>
+                                        <Text style={styles.text_change}>Quan</Text>
+                                    </View>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>Phone:</Text>
+                                        <Text style={styles.text_change}>0328216787</Text>
+                                    </View>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>Email:</Text>
+                                        <Text style={styles.text_change}>khaquan9a2.2016@gmail.com</Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    )}
-                    {selectedTab === 'like' && <InvoiceList data={invoices} isLike />}
-                </ScrollView>
-            </View>
+                        )}
+                        {selectedTab === 'like' && <InvoiceList data={invoices} isLike />}
+                    </ScrollView>
+                </View>
+            </BackgroundImage>
         </View>
     );
 }
@@ -118,12 +123,10 @@ export default function Profile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: backgroundColor,
-        flexDirection: 'column',
-        justifyContent: 'center',
     },
     container_top: {
-        flex: 1.8,
+        flex: 1.2,
+        position: 'relative',
         flexDirection: 'column',
         alignItems: 'center',
     },
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
     avatar: {
         width: 90,
         height: 90,
+        borderRadius: 50,
         resizeMode: 'stretch',
     },
     top_: {
@@ -176,21 +180,22 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     container_center: {
-        flex: 1.2,
+        flex: 0.6,
         alignItems: 'center',
     },
-    btn: {
-        flex: 2,
-        justifyContent: 'flex-end',
+    company: {
+        flex: 1,
+        justifyContent: 'center',
+        width: '90%',
     },
-    creat_btn: {
-        width: '93%',
-        height: '50%',
-        marginBottom: 10,
-        backgroundColor: white,
+    company_name: {
+        borderColor: 'rgba(0, 0, 0,0.2)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
     },
     center_tab: {
-        flex: 1,
+        flex: 0.6,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -199,7 +204,7 @@ const styles = StyleSheet.create({
     tab_text: {
         fontSize: fontSizeDefault,
         fontWeight: 'bold',
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
     },
     container_bottom: {
@@ -246,7 +251,7 @@ const styles = StyleSheet.create({
     },
     bottom_content: {
         width: '100%',
-        marginTop: 20,
+        marginTop: 10,
         flex: 1,
     },
     bottom_text: {

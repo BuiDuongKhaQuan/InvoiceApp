@@ -4,38 +4,39 @@ import { fontSizeDefault } from '../../constant/fontSize';
 
 export const styles = StyleSheet.create({
     input: {
-        flexDirection: 'column',
-        width: 340,
-        height: 60,
+        width: '90%',
         alignContent: 'center',
         backgroundColor: white,
         marginHorizontal: 10,
-        marginVertical: 10,
-        borderRadius: 50,
+        marginVertical: 7,
+        borderRadius: 15,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 }, // Điều chỉnh vị trí bóng (đối với iOS)
         shadowOpacity: 0.5, // Điều chỉnh độ trong suốt của bóng (đối với iOS)
         shadowRadius: 5, // Điều chỉnh bán kính của bóng (đối với iOS)
-        elevation: 5,
+        elevation: 3,
     },
     container: {
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     input_icon: {
-        width: 30,
-        height: 30,
+        width: 25,
+        height: 25,
         resizeMode: 'stretch',
         marginHorizontal: 14,
-        marginVertical: 14,
     },
     input_text: {
-        width: 270,
+        width: 290,
         fontSize: fontSizeDefault,
         marginVertical: 15,
+        textAlign: 'center',
     },
     text_validate: {
         marginLeft: 50,
-        marginVertical: 3,
+        marginTop: -10,
+        marginBottom: 5,
         color: 'red',
     },
 });

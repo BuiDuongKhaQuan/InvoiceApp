@@ -4,59 +4,62 @@ import React from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { fontSizeDefault } from '../constant/fontSize';
+import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 export default function Search({ navigation }) {
     return (
         <View style={styles.container}>
-            <View style={{ flexDirection: 'row' }}>
-                <Input
-                    customStylesContainer={styles.input}
-                    holder="Tìm theo mã hóa đơn, tên khách hàng"
-                    iconLeft={require('../assets/icons/search.png')}
-                    iconRight={require('../assets/icons/qr-code.png')}
-                    onPressIconRight={() => navigation.navigate('Scanner')}
-                />
-            </View>
-            <View style={styles.container_top}>
-                <View style={styles.result}>
-                    <Button
-                        customStylesBtn={styles.result_item}
-                        customStylesText={styles.result_itemText}
-                        customStylesIcon={styles.result_itemIcon}
-                        text="Hóa đơn bán hàng"
-                        iconRight={require('../assets/icons/close.png')}
-                    />
-                    <Button
-                        customStylesBtn={styles.result_item}
-                        customStylesText={styles.result_itemText}
-                        customStylesIcon={styles.result_itemIcon}
-                        text="Hóa đơn bán hàng"
-                        iconRight={require('../assets/icons/close.png')}
-                    />
-                    <Button
-                        customStylesBtn={styles.result_item}
-                        customStylesText={styles.result_itemText}
-                        customStylesIcon={styles.result_itemIcon}
-                        text="Hóa đơn bán hàng"
-                        iconRight={require('../assets/icons/close.png')}
+            <BackgroundImage>
+                <View style={{ flexDirection: 'row' }}>
+                    <Input
+                        customStylesContainer={styles.input}
+                        holder="Tìm theo mã hóa đơn, tên khách hàng"
+                        iconLeft={<Feather name="search" size={24} color="black" />}
+                        iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
+                        onPressIconRight={() => navigation.navigate('Scanner')}
                     />
                 </View>
-            </View>
-            <View style={styles.container_bottom}>
-                <Text style={styles.title}>Có thể bạn quan tâm</Text>
-                <View style={styles.care}>
-                    <Button
-                        customStylesText={styles.result_itemText}
-                        customStylesBtn={styles.result_item}
-                        text="Mẫu mới sắp ra mắt"
-                    />
-                    <Button
-                        customStylesText={styles.result_itemText}
-                        customStylesBtn={styles.result_item}
-                        text="Thương hiệu nổi tiếng"
-                    />
+                <View style={styles.container_top}>
+                    <View style={styles.result}>
+                        <Button
+                            customStylesBtn={styles.result_item}
+                            customStylesText={styles.result_itemText}
+                            text="Hóa đơn bán hàng"
+                            iconRight={<AntDesign name="close" size={20} color="black" />}
+                        />
+                        <Button
+                            customStylesBtn={styles.result_item}
+                            customStylesText={styles.result_itemText}
+                            customStylesIcon={styles.result_itemIcon}
+                            text="Hóa đơn bán hàng"
+                            iconRight={<AntDesign name="close" size={20} color="black" />}
+                        />
+                        <Button
+                            customStylesBtn={styles.result_item}
+                            customStylesText={styles.result_itemText}
+                            customStylesIcon={styles.result_itemIcon}
+                            text="Hóa đơn bán hàng"
+                            iconRight={<AntDesign name="close" size={20} color="black" />}
+                        />
+                    </View>
                 </View>
-            </View>
+                <View style={styles.container_bottom}>
+                    <Text style={styles.title}>Có thể bạn quan tâm</Text>
+                    <View style={styles.care}>
+                        <Button
+                            customStylesText={styles.result_itemText}
+                            customStylesBtn={styles.result_item}
+                            text="Mẫu mới sắp ra mắt"
+                        />
+                        <Button
+                            customStylesText={styles.result_itemText}
+                            customStylesBtn={styles.result_item}
+                            text="Thương hiệu nổi tiếng"
+                        />
+                    </View>
+                </View>
+            </BackgroundImage>
         </View>
     );
 }
@@ -69,7 +72,6 @@ const styles = StyleSheet.create({
     container_top: {
         width: '100%',
         flex: 1,
-        backgroundColor: backgroundColor,
         flexDirection: 'column',
     },
     input: {
@@ -100,13 +102,8 @@ const styles = StyleSheet.create({
         color: 'black',
         marginHorizontal: 10,
     },
-    result_itemIcon: {
-        width: 15,
-        height: 15,
-    },
     container_bottom: {
         flex: 1,
-        backgroundColor: backgroundColor,
     },
     title: {
         fontSize: 22,

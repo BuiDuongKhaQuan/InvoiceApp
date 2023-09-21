@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateEmail, isValidatePass } from '../utilies/validate';
-import { backgroundColor } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 export default function Login({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -48,48 +49,50 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.container_top}>
-                <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                <Text style={styles.title}>Invoice C</Text>
-            </View>
-            <View style={centerStyle}>
-                <Input
-                    onChangeText={handleChangeEmail}
-                    value={email}
-                    validate={errorEmail}
-                    validateText="Vui lòng nhập đúng định dạng email"
-                    holder="Tài khoản"
-                    iconLeft={require('../assets/icons/email.png')}
-                />
-                <Input
-                    onChangeText={handleChangePass}
-                    value={pass}
-                    validate={errorPass}
-                    validateText="Mật khẩu phải đủ 4 ký tự"
-                    pass
-                    holder="Mật khẩu"
-                    iconLeft={require('../assets/icons/lock.png')}
-                />
-
-                {keyboardIsShow || (
-                    <>
-                        <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng nhập" />
-                        <View style={styles.register}>
-                            <Text style={styles.register_text}>Bạn chưa có tài khoản? </Text>
-                            <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
-                                Đăng ký
-                            </Text>
-                        </View>
-                    </>
-                )}
-            </View>
-            {keyboardIsShow || (
-                <View style={styles.container_botom}>
-                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                        Quên mật khẩu?
-                    </Text>
+            <BackgroundImage>
+                <View style={styles.container_top}>
+                    <Image style={styles.logo} source={require('../assets/images/logo.png')} />
+                    <Text style={styles.title}>Invoice C</Text>
                 </View>
-            )}
+                <View style={centerStyle}>
+                    <Input
+                        onChangeText={handleChangeEmail}
+                        value={email}
+                        validate={errorEmail}
+                        validateText="Vui lòng nhập đúng định dạng email"
+                        holder="example@example.com"
+                        iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangePass}
+                        value={pass}
+                        validate={errorPass}
+                        validateText="Mật khẩu phải đủ 4 ký tự"
+                        pass
+                        holder="Password"
+                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                    />
+
+                    {keyboardIsShow || (
+                        <>
+                            <Button onPress={handlePress} text="Login" />
+                            <View style={styles.register}>
+                                <Text style={styles.register_text}>Do not have an account? </Text>
+                                <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
+                                    Signup
+                                </Text>
+                            </View>
+                        </>
+                    )}
+                </View>
+                {keyboardIsShow || (
+                    <View style={styles.container_botom}>
+                        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                            Forgot Password?
+                        </Text>
+                    </View>
+                )}
+            </BackgroundImage>
         </View>
     );
 }
@@ -97,9 +100,9 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: backgroundColor,
+    },
+    image: {
+        flex: 1,
     },
     container_top: {
         flex: 4,
