@@ -1,19 +1,24 @@
-import { StyleSheet, Text, View, Image, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { isValidateEmail, isValidatePass, isValidateFullName } from '../utilies/validate';
-import { backgroundColor } from '../constant/color';
+import { isValidateEmail, isValidatePass, isValidateFullName, isValidatePhone } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
+import { MaterialCommunityIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 export default function Register({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [repass, setRePass] = useState('');
     const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
     const [companyKey, setComapanyKey] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
+    const [errorRePass, setErrorRePass] = useState(false);
+    const [errorPhone, setErrorPhone] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorCompanyKey, setErrorCompanyKey] = useState(false);
 
@@ -50,7 +55,10 @@ export default function Register({ navigation }) {
         setErrorPass(!isValidatePass(pass));
         setPass(pass);
     };
-
+    const handleChangeRePass = (pass) => {
+        setErrorRePass(!isValidatePass(pass));
+        setRePass(pass);
+    };
     const handleChangeName = (name) => {
         setErrorName(!isValidateFullName(name));
         setName(name);
@@ -59,65 +67,92 @@ export default function Register({ navigation }) {
         setErrorCompanyKey(!isValidateFullName(key));
         setComapanyKey(key);
     };
+    const handleChangePhone = (number) => {
+        setErrorPhone(!isValidatePhone(number));
+        setPhone(number);
+    };
     return (
         <View style={styles.container}>
-            <View style={styles.container_top}>
-                <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                <Text style={styles.title}>Invoice C</Text>
-            </View>
-            <View style={centerStyle}>
-                <Input
-                    onChangeText={handleChangeEmail}
-                    value={email}
-                    validate={errorEmail}
-                    validateText="Vui lòng nhập đúng định dạng email"
-                    holder="G-mail"
-                    iconLeft={require('../assets/icons/email.png')}
-                />
-                <Input
-                    onChangeText={handleChangeName}
-                    value={name}
-                    validate={errorName}
-                    validateText="Tên không được để trống"
-                    holder="Họ và tên"
-                    iconLeft={require('../assets/icons/user.png')}
-                />
-                <Input
-                    onChangeText={handleChangePass}
-                    value={pass}
-                    validate={errorPass}
-                    validateText="Mật khẩu phải đủ 4 ký tự"
-                    pass
-                    holder="Mật khẩu"
-                    iconLeft={require('../assets/icons/lock.png')}
-                />
-                <Input
-                    onChangeText={handleChangeCompanyKey}
-                    value={companyKey}
-                    validate={errorCompanyKey}
-                    validateText="Mã doanh nghiệp không được để trống"
-                    holder="Mã doanh nghiệp"
-                    iconLeft={require('../assets/icons/lock.png')}
-                />
-                {keyboardIsShow || (
-                    <>
-                        <Button onPress={handlePress} customStylesBtn={{ width: 340, height: 50 }} text="Đăng ký" />
-                        <View style={styles.register}>
-                            <Text style={styles.register_text}>Bạn đã có tài khoản? </Text>
-                            <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                Đăng nhập
+            <BackgroundImage>
+                <ScrollView>
+                    <View style={styles.container_top}>
+                        <Image style={styles.logo} source={require('../assets/images/logo.png')} />
+                        <Text style={styles.title}>Invoice C</Text>
+                    </View>
+                    <View style={centerStyle}>
+                        <Input
+                            onChangeText={handleChangeEmail}
+                            value={email}
+                            validate={errorEmail}
+                            validateText="Please enter the correct email format"
+                            holder="example@example.com"
+                            iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
+                        />
+                        <Input
+                            onChangeText={handleChangeName}
+                            value={name}
+                            validate={errorName}
+                            validateText="Name cannot be blank"
+                            holder="Full Name"
+                            iconLeft={<SimpleLineIcons name="user" size={24} color="black" />}
+                        />
+                        <Input
+                            onChangeText={handleChangeCompanyKey}
+                            value={companyKey}
+                            validate={errorCompanyKey}
+                            validateText="Business code cannot be left blank"
+                            holder="Company Key"
+                            iconLeft={
+                                <MaterialCommunityIcons name="office-building-marker-outline" size={24} color="black" />
+                            }
+                        />
+                        <Input
+                            onChangeText={handleChangePass}
+                            value={pass}
+                            validate={errorPass}
+                            validateText="Password must be 4 characters long"
+                            pass
+                            holder="Password"
+                            iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                        />
+                        <Input
+                            onChangeText={handleChangeRePass}
+                            value={repass}
+                            validate={errorRePass}
+                            validateText="Password must be 4 characters long"
+                            pass
+                            holder="Re Password"
+                            iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                        />
+                        <Input
+                            onChangeText={handleChangePhone}
+                            value={phone}
+                            validate={errorPhone}
+                            validateText="Phone number must have 10 digits"
+                            holder="Phone Number"
+                            iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
+                        />
+                        {keyboardIsShow || (
+                            <>
+                                <Button onPress={handlePress} text="Signup" />
+                                <View style={styles.register}>
+                                    <Text style={styles.register_text}>Do you have an account? </Text>
+                                    <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                                        Login
+                                    </Text>
+                                </View>
+                            </>
+                        )}
+                    </View>
+                    {keyboardIsShow || (
+                        <View style={styles.container_botom}>
+                            <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                                Forgot Password?
                             </Text>
                         </View>
-                    </>
-                )}
-            </View>
-            {keyboardIsShow || (
-                <View style={styles.container_botom}>
-                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                        Quên mật khẩu?
-                    </Text>
-                </View>
-            )}
+                    )}
+                </ScrollView>
+            </BackgroundImage>
         </View>
     );
 }
@@ -125,13 +160,12 @@ export default function Register({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: backgroundColor,
+    },
+    image: {
+        flex: 1,
     },
     container_top: {
         flex: 3.5,
-        justifyContent: 'center',
         alignItems: 'center',
     },
     logo: {
@@ -141,7 +175,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 70,
-        marginTop: -10,
+        marginTop: -15,
         color: '#B3B70A',
         textShadowColor: '#2AA50B',
         textShadowRadius: 5,
@@ -150,7 +184,7 @@ const styles = StyleSheet.create({
     container_center: {
         flex: 4.3,
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
     register: {
         flexDirection: 'row',
@@ -169,7 +203,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     forgot: {
-        marginBottom: 20,
+        marginVertical: 15,
         fontSize: fontSizeDefault,
         color: '#26B819',
     },

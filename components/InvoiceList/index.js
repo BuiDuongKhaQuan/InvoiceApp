@@ -4,12 +4,12 @@ import React from 'react';
 
 import { backgroundColor } from '../../constant/color';
 
-export default function InvoiceList({ data, isLike, navigation }) {
+export default function InvoiceList({ data, isLike, navigation, scrollEnabled }) {
     const leftData = data.filter((item) => item.id % 2 !== 0);
     const rightData = data.filter((item) => item.id % 2 === 0);
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView scrollEnabled={scrollEnabled} style={styles.container}>
             <View style={styles.list}>
                 <View>
                     {leftData.map((item) => (
@@ -40,7 +40,6 @@ export default function InvoiceList({ data, isLike, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: backgroundColor,
         flex: 1,
         paddingLeft: 5,
     },
@@ -48,6 +47,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: 15,
     },
 });

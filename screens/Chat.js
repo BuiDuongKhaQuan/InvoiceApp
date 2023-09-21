@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import { white } from '../constant/color';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 export default function Chat({ navigation }) {
     const [showkeyboard, setShowkeyboard] = useState(false);
     const [image, setImage] = useState(null);
@@ -56,26 +57,28 @@ export default function Chat({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Header navigation={navigation} />
-            <View style={styles.container_center}></View>
-            <View style={bottomStyle}>
-                <View style={styles.bottom_left}>
-                    <TouchableOpacity onPress={pickDocument}>
-                        <SimpleLineIcons name="folder" size={30} color="black" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={pickImage}>
-                        <Fontisto name="picture" size={24} color="black" />
-                    </TouchableOpacity>
+            <BackgroundImage>
+                <Header navigation={navigation} />
+                <View style={styles.container_center}></View>
+                <View style={bottomStyle}>
+                    <View style={styles.bottom_left}>
+                        <TouchableOpacity onPress={pickDocument}>
+                            <SimpleLineIcons name="folder" size={30} color="black" />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={pickImage}>
+                            <Fontisto name="picture" size={24} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.bottom_center}>
+                        <Input customStylesContainer={styles.input} customStylesInput={styles.inputLetter} />
+                    </View>
+                    <View style={styles.bottom_right}>
+                        <TouchableOpacity>
+                            <Ionicons name="ios-send" size={30} color="black" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.bottom_center}>
-                    <Input customStylesContainer={styles.input} customStylesInput={styles.inputLetter} />
-                </View>
-                <View style={styles.bottom_right}>
-                    <TouchableOpacity>
-                        <Ionicons name="ios-send" size={30} color="black" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+            </BackgroundImage>
         </View>
     );
 }
@@ -83,16 +86,15 @@ export default function Chat({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: white,
     },
     container_center: {
         flex: 10,
-        backgroundColor: '#ccc',
     },
     container_bottom: {
         flex: 1.4,
         flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0,0.3)',
     },
     bottom_left: {
         flex: 1.3,

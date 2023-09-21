@@ -1,2 +1,2 @@
 export const fontSizeMenuTitle = 22;
-export const fontSizeDefault = 20;
+export const fontSizeDefault = 16;

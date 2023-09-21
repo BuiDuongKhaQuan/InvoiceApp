@@ -5,6 +5,7 @@ import Header from '../../components/SettingItem/header';
 import { backgroundColor, white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import Input from '../../components/Input';
+import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function Support() {
     const [title, setTitle] = useState('');
@@ -43,49 +44,52 @@ export default function Support() {
 
     return (
         <View style={styles.container}>
-            <Header title="Hỗ trợ" />
-            <View style={styles.content_center}>
-                <Text style={styles.content_title}>Trung tâm hỗ trợ</Text>
-                <Input
-                    customStylesInput={styles.input}
-                    customStylesContainer={styles.input_container}
-                    customStylesTextValidate={styles.validate}
-                    onChangeText={handleChangeTitle}
-                    validateText="Vui lòng không để trống"
-                    validate={errorTitle}
-                    holder="Chủ đề"
-                    value={title}
-                    text
-                />
-                <Input
-                    customStylesInput={styles.input}
-                    customStylesContainer={styles.input_container}
-                    customStylesTextValidate={styles.validate}
-                    onChangeText={handleChangeName}
-                    validateText="Vui lòng không để trống"
-                    validate={errorName}
-                    holder="Tên người gửi"
-                    value={name}
-                    text
-                />
-                <Input
-                    customStylesInput={styles.textArea}
-                    customStylesTextValidate={styles.validate}
-                    underlineColorAndroid="transparent"
-                    validateText="Vui lòng không để trống"
-                    onChangeText={handleChangeContent}
-                    validate={errorContent}
-                    numberOfLines={20}
-                    multiline={true}
-                    holder="Nội dung"
-                    value={content}
-                    text
-                />
-                {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
-            </View>
-            <View style={styles.content_botom}>
-                <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Gửi" />
-            </View>
+            <BackgroundImage>
+                <Header title="Hỗ trợ" />
+                <View style={styles.content_center}>
+                    <Text style={styles.content_title}>Trung tâm hỗ trợ</Text>
+                    <Input
+                        customStylesInput={styles.input}
+                        customStylesContainer={styles.input_container}
+                        customStylesTextValidate={styles.validate}
+                        onChangeText={handleChangeTitle}
+                        validateText="Vui lòng không để trống"
+                        validate={errorTitle}
+                        holder="Chủ đề"
+                        value={title}
+                        text
+                    />
+                    <Input
+                        customStylesInput={styles.input}
+                        customStylesContainer={styles.input_container}
+                        customStylesTextValidate={styles.validate}
+                        onChangeText={handleChangeName}
+                        validateText="Vui lòng không để trống"
+                        validate={errorName}
+                        holder="Tên người gửi"
+                        value={name}
+                        text
+                    />
+                    <Input
+                        customStylesInput={styles.textArea}
+                        customStylesTextValidate={styles.validate}
+                        customStylesContainer={styles.input_container}
+                        underlineColorAndroid="transparent"
+                        validateText="Vui lòng không để trống"
+                        onChangeText={handleChangeContent}
+                        validate={errorContent}
+                        numberOfLines={15}
+                        multiline={true}
+                        holder="Nội dung"
+                        value={content}
+                        text
+                    />
+                    {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
+                </View>
+                <View style={styles.content_botom}>
+                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Gửi" />
+                </View>
+            </BackgroundImage>
         </View>
     );
 }
@@ -93,22 +97,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: white,
     },
     content_center: {
         flex: 4,
-        backgroundColor: backgroundColor,
     },
     content_botom: {
         flex: 1,
-        backgroundColor: backgroundColor,
         alignItems: 'center',
         justifyContent: 'center',
     },
     content_title: {
         fontSize: fontSizeMenuTitle,
         marginHorizontal: 10,
-        marginTop: 10,
+        marginVertical: 20,
     },
     send_btn: {
         width: '95%',
@@ -118,15 +119,17 @@ const styles = StyleSheet.create({
         height: '75%',
         backgroundColor: 'white',
         textAlignVertical: 'top',
-        marginTop: 10,
+        textAlign: 'left',
         paddingHorizontal: 10,
     },
     input: {
         width: '100%',
-        marginHorizontal: 10,
+        textAlign: 'left',
+        paddingHorizontal: 10,
     },
     input_container: {
         height: 60,
+        marginTop: -5,
     },
     validate: {
         marginLeft: 10,

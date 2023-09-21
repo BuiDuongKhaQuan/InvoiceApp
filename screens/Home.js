@@ -1,9 +1,10 @@
-import { StyleSheet, View, Dimensions, Image } from 'react-native';
+import { StyleSheet, View, Dimensions, Image, ImageBackground, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import InvoiceList from '../components/InvoiceList';
 import { white } from '../constant/color';
 import Swiper from 'react-native-swiper';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 const { width } = Dimensions.get('screen');
 
@@ -40,19 +41,20 @@ export default function Home({ navigation }) {
         },
     ]);
     return (
-        <View style={styles.container}>
-            <Header backgroundHide />
-            <View style={styles.slider}>
-                <Swiper style={styles.wrapper} showsButtons={true} autoplay={true} autoplayTimeout={3}>
-                    {imageSliders.map((image, index) => (
-                        <Image style={styles.imageSlider} source={image} key={index} />
-                    ))}
-                </Swiper>
-            </View>
-            <View style={styles.list}>
-                <InvoiceList navigation={navigation} data={invoices} />
-            </View>
-        </View>
+        <ScrollView style={styles.container}>
+            <BackgroundImage>
+                <View style={styles.slider}>
+                    <Swiper style={styles.wrapper} autoplay={true} autoplayTimeout={4}>
+                        {imageSliders.map((image, index) => (
+                            <Image style={styles.imageSlider} source={image} key={index} />
+                        ))}
+                    </Swiper>
+                </View>
+                <View style={styles.list}>
+                    <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} />
+                </View>
+            </BackgroundImage>
+        </ScrollView>
     );
 }
 
@@ -65,8 +67,9 @@ const styles = StyleSheet.create({
         flex: 3.5,
     },
     slider: {
-        flex: 1.5,
+        flex: 1.1,
         zIndex: 10,
+        height: 170,
     },
     slide1: {
         flex: 1,

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
 import Popup from '../components/Popup';
+import { AntDesign } from '@expo/vector-icons';
+import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 
 export default function CreateInvoice({ navigation }) {
     const [isPopupVisible, setPopupVisible] = useState(false);
@@ -12,14 +14,14 @@ export default function CreateInvoice({ navigation }) {
     };
 
     return (
-        <>
+        <BackgroundImage>
             <Popup visible={isPopupVisible} onClose={togglePopup} bottom />
             <View style={styles.container}>
                 <Header
                     onPress={togglePopup}
                     onGoBack={() => navigation.goBack()}
                     title="Tạo hóa đơn"
-                    iconRight={require('../assets/icons/menu.png')}
+                    iconRight={<AntDesign name="appstore-o" size={24} color="black" />}
                 />
                 <View style={styles.top}>
                     <View></View>
@@ -29,7 +31,7 @@ export default function CreateInvoice({ navigation }) {
                     <Button customStylesBtn={styles.btn} text="Save to PDF" />
                 </View>
             </View>
-        </>
+        </BackgroundImage>
     );
 }
 
@@ -52,5 +54,7 @@ const styles = StyleSheet.create({
     btn: {
         marginHorizontal: 10,
         height: '60%',
+        width: '40%',
+        borderRadius: 5,
     },
 });
