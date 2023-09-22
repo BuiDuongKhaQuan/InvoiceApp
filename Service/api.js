@@ -1,20 +1,21 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://ec2-3-27-112-252.ap-southeast-2.compute.amazonaws.com:8080/api/v1/', // Thay thế URL bằng URL của API thực tế
+    baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api', // Thay thế URL bằng URL của API thực tế
 });
 
 export const login = async (email, password) => {
     try {
-        const response = await instance.post('auth/login', { email, password });
+        const response = await instance.post('/v1/auth/login', { email, password });
+        console.log(response.data);
         return response.data;
     } catch (error) {
         throw error;
     }
 };
-export const register = async (name, email, password, gender, phone, address, role = 'user', companyKey) => {
+export const register = async (name, email, password, gender, phone, address, role, companyKey) => {
     try {
-        const response = await instance.post('auth/register', {
+        const response = await instance.post('/v1/auth/register', {
             name,
             email,
             password,
@@ -24,6 +25,7 @@ export const register = async (name, email, password, gender, phone, address, ro
             role,
             companyKey,
         });
+        // console.log(response.data);
         return response.data;
     } catch (error) {
         throw error;

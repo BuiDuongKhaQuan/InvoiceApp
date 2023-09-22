@@ -6,6 +6,7 @@ import { isValidateEmail, isValidatePass, isValidateFullName, isValidatePhone } 
 import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { register } from '../Service/api';
 
 export default function Register({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -42,7 +43,7 @@ export default function Register({ navigation }) {
         if (!isValidateLogin()) {
             return;
         } else {
-            alert(isValidateLogin());
+            handleRegister();
         }
     };
 
@@ -71,6 +72,10 @@ export default function Register({ navigation }) {
         setErrorPhone(!isValidatePhone(number));
         setPhone(number);
     };
+
+    const handleRegister = () =>
+        register(name, email, pass, (gender = 'Nam'), phone, (address = 'DC'), (role = 'ROLE_USER'), companyKey);
+
     return (
         <View style={styles.container}>
             <BackgroundImage>
@@ -95,6 +100,14 @@ export default function Register({ navigation }) {
                             validateText="Name cannot be blank"
                             holder="Full Name"
                             iconLeft={<SimpleLineIcons name="user" size={24} color="black" />}
+                        />
+                        <Input
+                            onChangeText={handleChangePhone}
+                            value={phone}
+                            validate={errorPhone}
+                            validateText="Phone number must have 10 digits"
+                            holder="Phone Number"
+                            iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
                         />
                         <Input
                             onChangeText={handleChangeCompanyKey}
@@ -124,14 +137,7 @@ export default function Register({ navigation }) {
                             holder="Re Password"
                             iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                         />
-                        <Input
-                            onChangeText={handleChangePhone}
-                            value={phone}
-                            validate={errorPhone}
-                            validateText="Phone number must have 10 digits"
-                            holder="Phone Number"
-                            iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
-                        />
+
                         {keyboardIsShow || (
                             <>
                                 <Button onPress={handlePress} text="Signup" />

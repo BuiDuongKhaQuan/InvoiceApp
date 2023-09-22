@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     input_icon: {
         width: 25,
@@ -31,7 +30,6 @@ export const styles = StyleSheet.create({
         width: 290,
         fontSize: fontSizeDefault,
         marginVertical: 15,
-        textAlign: 'center',
     },
     text_validate: {
         marginLeft: 50,
