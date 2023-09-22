@@ -4,11 +4,15 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateCode } from '../utilies/validate';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { validateRegister } from '../Service/api';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function ForgotPassword({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [code, setCode] = useState('');
     const [errorCode, setErrorCode] = useState(false);
+    const route = useRoute();
+    const navigation = useNavigation();
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -29,7 +33,20 @@ export default function ForgotPassword({ navigation }) {
         if (!isValidateConfirm()) {
             return;
         } else {
-            alert(isValidateConfirm());
+            handleValidateRegister();
+        }
+    };
+
+    const handleValidateRegister = async () => {
+        try {
+            await validateRegister(route.params?.data, code);
+            navigation.navigate('Login');
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Alert.alert('Login error', error.response.data.message);
+            } else {
+                console.error('Login error:', error);
+            }
         }
     };
 

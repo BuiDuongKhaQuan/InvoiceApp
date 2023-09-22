@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -7,8 +7,9 @@ import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { register } from '../Service/api';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Register({ navigation }) {
+export default function Register() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -22,7 +23,7 @@ export default function Register({ navigation }) {
     const [errorPhone, setErrorPhone] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorCompanyKey, setErrorCompanyKey] = useState(false);
-
+    const navigation = useNavigation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardIsShow(true);
@@ -73,8 +74,28 @@ export default function Register({ navigation }) {
         setPhone(number);
     };
 
-    const handleRegister = () =>
-        register(name, email, pass, (gender = 'Nam'), phone, (address = 'DC'), (role = 'ROLE_USER'), companyKey);
+    const handleRegister = async () => {
+        try {
+            const userData = await register(
+                navigation,
+                name,
+                email,
+                pass,
+                (gender = 'Nam'),
+                phone,
+                (address = 'DC'),
+                (role = 'ROLE_USER'),
+                companyKey,
+            );
+            navigation.navigate('ValidateEmail', { data: email });
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                Alert.alert('Login error', error.response.data.message);
+            } else {
+                console.error('Login error:', error);
+            }
+        }
+    };
 
     return (
         <View style={styles.container}>
