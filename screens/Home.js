@@ -1,10 +1,9 @@
-import { StyleSheet, View, Dimensions, Image, ImageBackground, ScrollView } from 'react-native';
-import React, { useState } from 'react';
-import Header from '../components/Header';
+import { StyleSheet, View, Dimensions, Image, Text, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import InvoiceList from '../components/InvoiceList';
-import { white } from '../constant/color';
 import Swiper from 'react-native-swiper';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 
 const { width } = Dimensions.get('screen');
 
@@ -18,6 +17,7 @@ export default function Home({ navigation }) {
         require('../assets/images/Slider/6.jpg'),
         require('../assets/images/Slider/7.jpg'),
     ]);
+    const { state, dispatch } = useUserContext();
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -40,6 +40,7 @@ export default function Home({ navigation }) {
             image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
         },
     ]);
+
     return (
         <ScrollView style={styles.container}>
             <BackgroundImage>
@@ -50,6 +51,7 @@ export default function Home({ navigation }) {
                         ))}
                     </Swiper>
                 </View>
+                <Text>Xin chào, {state.user.name}!</Text>
                 <View style={styles.list}>
                     <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} />
                 </View>
