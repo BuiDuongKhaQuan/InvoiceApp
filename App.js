@@ -31,35 +31,35 @@ export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
     return (
-        <ChangePassword />
-        // <NavigationContainer>
-        //     <Stack.Navigator initialRouteName="Welcom">
-        //         <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
-        //         <Stack.Screen name="Register" component={Register} options={headerNone} />
-        //         <Stack.Screen name="Login" component={Login} options={headerNone} />
-        //         <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
-        //         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
-        //         <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
-        //         <Stack.Screen name="Scanner" component={Scanner} />
-        //         <Stack.Screen name="Search" component={Search} />
-        //         <Stack.Screen name="Home" component={Home} />
-        //         <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
-        //         <Stack.Screen name="Chat" component={Chat} />
-        //         <Stack.Screen name="Profile" component={Profile} />
-        //         <Stack.Screen name="Bills" component={Bills} />
-        //         <Stack.Screen name="BillSample" component={BillSample} />
-        //         <Stack.Screen name="EditBill" component={EditBill} />
-        //         <Stack.Screen name="ProfileCompany" component={ProfileCompany} />
-        //         <Stack.Screen name="Staff" component={Staff} />
-        //         <Stack.Screen name="Statistical" component={Statistical} />
-        //         <Stack.Screen name="WatchBill" component={WatchBill} />
-        //         <Stack.Screen name="Language" component={Language} />
-        //         <Stack.Screen name="NotificationSetting" component={NotificationSetting} />
-        //         <Stack.Screen name="Setting" component={Setting} />
-        //         <Stack.Screen name="Support" component={Support} />
-        //         <Stack.Screen name="Header" component={Header} />
-        //     </Stack.Navigator>
-        // </NavigationContainer>
+        // <Login />
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Welcom">
+                <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+                <Stack.Screen name="Register" component={Register} options={headerNone} />
+                <Stack.Screen name="Login" component={Login} options={headerNone} />
+                <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
+                <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
+                <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+                <Stack.Screen name="Scanner" component={Scanner} />
+                <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
+                <Stack.Screen name="Chat" component={Chat} />
+                <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="Bills" component={Bills} />
+                <Stack.Screen name="BillSample" component={BillSample} />
+                <Stack.Screen name="EditBill" component={EditBill} />
+                <Stack.Screen name="ProfileCompany" component={ProfileCompany} />
+                <Stack.Screen name="Staff" component={Staff} />
+                <Stack.Screen name="Statistical" component={Statistical} />
+                <Stack.Screen name="WatchBill" component={WatchBill} />
+                <Stack.Screen name="Language" component={Language} />
+                <Stack.Screen name="NotificationSetting" component={NotificationSetting} />
+                <Stack.Screen name="Setting" component={Setting} />
+                <Stack.Screen name="Support" component={Support} />
+                <Stack.Screen name="Header" component={Header} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
 

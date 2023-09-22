@@ -17,7 +17,6 @@ export default function Input({
     customStylesInput,
     customStylesContainer,
     customStylesTextValidate,
-    customStylesIcon,
     ...props
 }) {
     const isPass = pass ? true : false;
@@ -29,11 +28,10 @@ export default function Input({
     const combinedSltyesInput = StyleSheet.flatten([styles.input_text, customStylesInput]);
 
     const combinedSltyesTextValidate = StyleSheet.flatten([styles.text_validate, customStylesTextValidate]);
-    const combinedSltyesIcon = StyleSheet.flatten([styles.input_icon, customStylesIcon]);
 
     return (
         <View style={combinedSltyesContainer}>
-            <View style={styles.container}>
+            <View style={btnSend ? { ...styles.container } : { ...styles.container, justifyContent: 'center' }}>
                 {iconLeft && <View style={styles.input_icon}>{iconLeft}</View>}
                 <TextInput
                     {...props}
@@ -46,7 +44,7 @@ export default function Input({
                     <Button
                         text="Gửi"
                         customStylesText={{ fontSize: 20 }}
-                        customStylesBtn={{ width: 75, height: 35, marginHorizontal: -60, marginVertical: 12 }}
+                        customStylesBtn={{ width: 70, height: 35, marginLeft: -70, marginVertical: 12 }}
                     />
                 )}
                 {iconRight && (

@@ -6,6 +6,7 @@ import { isValidateEmail, isValidatePass } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { login } from '../Service/api';
 
 export default function Login({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -33,10 +34,11 @@ export default function Login({ navigation }) {
         if (!isValidateLogin()) {
             return;
         } else {
-            navigation.navigate('TabNavigator');
+            handleLogin();
+            // navigation.navigate('TabNavigator');
         }
     };
-
+    const handleLogin = () => login(email, pass);
     const handleChangeEmail = (text) => {
         setErrorEmail(!isValidateEmail(text));
         setEmail(text);

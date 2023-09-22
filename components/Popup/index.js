@@ -4,6 +4,7 @@ import Button from '../Button';
 import { backgroundColor, white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import InvoiceList from '../InvoiceList';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
 export default function Popup({ visible, onClose, bottom }) {
     const [invoices, setInvoices] = useState([
@@ -37,14 +38,14 @@ export default function Popup({ visible, onClose, bottom }) {
                         <Button
                             onPress={onClose}
                             customStylesIcon={styles.icon_close}
-                            iconLeft={require('../../assets/icons/close.png')}
+                            iconLeft={<AntDesign name="close" size={20} color="black" />}
                         />
                     </View>
                     {bottom && <Text style={styles.title}>Tạo hóa đơn ngay</Text>}
                     <View style={styles.top_between}>
                         <Button
                             customStylesIcon={{ ...styles.icon_close, width: 25, height: 25 }}
-                            iconLeft={require('../../assets/icons/search.png')}
+                            iconLeft={<Feather name="search" size={24} color="black" />}
                         />
                     </View>
                 </View>

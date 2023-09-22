@@ -1,5 +1,5 @@
 import { StatusBar, StyleSheet, Text, View, Dimensions } from 'react-native';
-import { backgroundColor, white } from '../constant/color';
+import { white } from '../constant/color';
 import React from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
