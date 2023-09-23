@@ -20,10 +20,8 @@ export default function Button({
 
     return (
         <TouchableOpacity onPress={onPress} style={buttonStyles} {...props}>
-            <View style={styles.btnLeft}>
-                {iconLeft && <View style={combinedStylesIcon}>{iconLeft}</View>}
-                {text && <Text style={combinedStylesText}>{text}</Text>}
-            </View>
+            {iconLeft && <View style={combinedStylesIcon}>{iconLeft}</View>}
+            {text && <Text style={combinedStylesText}>{text}</Text>}
             {iconRight && <View style={combinedStylesIcon}>{iconRight}</View>}
         </TouchableOpacity>
     );

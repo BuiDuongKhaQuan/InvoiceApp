@@ -1,15 +1,21 @@
 import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import Button from '../components/Button';
-import { backgroundColor, white } from '../constant/color';
+import { white } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
 import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { useUserContext } from './UserContext';
+import { useNavigation } from '@react-navigation/native';
+import { getCompaniesById } from '../Service/api';
 
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
+    const navigation = useNavigation();
+    const { state } = useUserContext();
+    const [companyName, setCompanyName] = useState('');
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -29,6 +35,18 @@ export default function Profile() {
         },
     ]);
 
+    useEffect(() => {
+        const getCompany = async () => {
+            try {
+                const response = await getCompaniesById(state.user.companyId);
+                setCompanyName(response.name);
+            } catch (error) {
+                console.error('Error while get company information:', error);
+            }
+        };
+        getCompany();
+    });
+
     const [selectedTab, setSelectedTab] = useState('history');
 
     const tabActive = (key) =>
@@ -46,27 +64,24 @@ export default function Profile() {
                                 uri: 'https://www.chudu24.com/wp-content/uploads/2017/03/canh-dep-nhat-ban-5.jpg',
                             }}
                         />
-                        <Button
-                            style={styles.setting_icon}
-                            iconLeft={<AntDesign name="setting" size={24} color="black" />}
-                        />
                     </View>
                     <View style={styles.top_avatar}>
                         <View style={styles.top_}>
                             <Image style={styles.avatar} source={require('../assets/images/avatar.png')} />
-                            <Text style={styles.name}>Khả Quân</Text>
+                            <Text style={styles.name}>{state.user.name}</Text>
                         </View>
                         <Button
                             customStylesBtn={styles.edit_btn}
                             customStylesText={styles.btn_text}
-                            iconLeft={<Feather name="edit-3" size={24} color="black" />}
-                            text="Chỉnh sửa"
+                            onPress={() => navigation.navigate('Setting')}
+                            iconLeft={<AntDesign name="setting" size={24} color="black" />}
+                            text="Settings"
                         />
                     </View>
                 </View>
                 <View style={styles.container_center}>
                     <View style={styles.company}>
-                        <Text style={styles.company_name}> Company: Company</Text>
+                        <Text style={styles.company_name}> Company: {companyName}</Text>
                     </View>
                     <View style={styles.center_tab}>
                         <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
@@ -168,8 +183,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     edit_btn: {
-        width: 150,
-        height: 45,
+        width: '33%',
+        height: '65%',
         marginBottom: 7,
         backgroundColor: white,
     },

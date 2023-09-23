@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { buttonColor, white } from '../../constant/color';
+import { white } from '../../constant/color';
 
 export const styles = StyleSheet.create({
     btn: {
@@ -13,14 +13,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 20,
     },
-    btnLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     icon: {
-        marginRight: 10,
+        marginHorizontal: 10,
     },
     text: {
+        flex: 1,
+        textAlign: 'center',
         fontSize: 25,
         fontWeight: 'bold',
         color: white,

@@ -2,9 +2,15 @@ import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, ScrollView, A
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { isValidateEmail, isValidatePass, isValidateFullName, isValidatePhone } from '../utilies/validate';
+import {
+    isValidateEmail,
+    isValidatePass,
+    isValidateFullName,
+    isValidatePhone,
+    isValidateRePass,
+} from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
-import { MaterialCommunityIcons, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, SimpleLineIcons, Ionicons, Feather } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { register } from '../Service/api';
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +29,11 @@ export default function Register() {
     const [errorPhone, setErrorPhone] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorCompanyKey, setErrorCompanyKey] = useState(false);
+    const [showPass, setShowPass] = useState('eye-off');
+    const [showRePass, setShowRePass] = useState('eye-off');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRePassword, setShowRePassword] = useState(false);
+
     const navigation = useNavigation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -57,9 +68,9 @@ export default function Register() {
         setErrorPass(!isValidatePass(pass));
         setPass(pass);
     };
-    const handleChangeRePass = (pass) => {
-        setErrorRePass(!isValidatePass(pass));
-        setRePass(pass);
+    const handleChangeRePass = (repass) => {
+        setErrorRePass(!isValidateRePass(pass, repass));
+        setRePass(repass);
     };
     const handleChangeName = (name) => {
         setErrorName(!isValidateFullName(name));
@@ -74,9 +85,18 @@ export default function Register() {
         setPhone(number);
     };
 
+    const togglePasswordShow = () => {
+        setShowPassword(!showPassword);
+        showPassword ? setShowPass('eye-off') : setShowPass('eye');
+    };
+    const toggleRePasswordShow = () => {
+        setShowRePassword(!showRePassword);
+        showRePassword ? setShowRePass('eye-off') : setShowRePass('eye');
+    };
+
     const handleRegister = async () => {
         try {
-            const userData = await register(
+            await register(
                 navigation,
                 name,
                 email,
@@ -144,19 +164,23 @@ export default function Register() {
                             onChangeText={handleChangePass}
                             value={pass}
                             validate={errorPass}
-                            validateText="Password must be 4 characters long"
-                            pass
+                            validateText="Password must be 6 to 8 characters"
+                            pass={!showPassword}
                             holder="Password"
+                            onPressIconRight={togglePasswordShow}
                             iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                            iconRight={<Feather name={showPass} size={24} color="black" />}
                         />
                         <Input
                             onChangeText={handleChangeRePass}
                             value={repass}
                             validate={errorRePass}
-                            validateText="Password must be 4 characters long"
-                            pass
+                            validateText="Password incorrect"
+                            pass={!showRePassword}
                             holder="Re Password"
+                            onPressIconRight={toggleRePasswordShow}
                             iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                            iconRight={<Feather name={showRePass} size={24} color="black" />}
                         />
 
                         {keyboardIsShow || (

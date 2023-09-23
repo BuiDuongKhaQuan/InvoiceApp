@@ -10,6 +10,7 @@ export default function Input({
     holder,
     btnSend,
     text,
+    onPressSend,
     onChangeText,
     onPressIconRight,
     validate,
@@ -43,8 +44,14 @@ export default function Input({
                 {btnSend && (
                     <Button
                         text="Gửi"
+                        onPress={onPressSend}
                         customStylesText={{ fontSize: 20 }}
-                        customStylesBtn={{ width: 70, height: 35, marginLeft: -70, marginVertical: 12 }}
+                        customStylesBtn={{
+                            width: 70,
+                            height: 35,
+                            marginRight: 10,
+                            marginVertical: 12,
+                        }}
                     />
                 )}
                 {iconRight && (

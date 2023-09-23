@@ -2,20 +2,20 @@ import { StyleSheet, Text, View, Image, Keyboard, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { isValidateEmail, isValidatePass } from '../utilies/validate';
+import { isValidatePass } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
-import { login } from '../Service/api';
-import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
+import { resetPassword } from '../Service/api';
+import { useRoute } from '@react-navigation/native';
 
-export default function Login({ navigation }) {
+export default function Login() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
-    const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [errorEmail, setErrorEmail] = useState(false);
+    const [repass, setRepass] = useState('');
+    const [errorRepass, setErrorRepass] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
-    const { dispatch } = useUserContext();
+    const route = useRoute();
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -30,41 +30,36 @@ export default function Login({ navigation }) {
         ? { ...styles.container_center, flex: 2, justifyContent: 'center' }
         : { ...styles.container_center };
 
-    const isValidateLogin = () => email.length > 0 && pass.length > 0 && errorEmail == false && errorPass == false;
+    const isValidateSubmit = () => repass.length > 0 && pass.length > 0 && errorRepass == false && errorPass == false;
 
     const handlePress = () => {
-        if (!isValidateLogin()) {
+        if (!isValidateSubmit()) {
             return;
         } else {
-            handleLogin();
+            handleSubmit();
         }
     };
 
-    const handleLogin = async () => {
+    const handleSubmit = async () => {
         try {
-            const userData = await login(email, pass);
-            dispatch({
-                type: 'SIGN_IN',
-                payload: userData,
-            });
-            navigation.navigate('TabNavigator');
+            await resetPassword(route.params?.data, pass, repass);
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Login error', error.response.data.message);
+                Alert.alert('Reset password error', error.response.data.message);
             } else {
-                console.error('Login error:', error);
+                console.error('Reset password error:', error);
             }
         }
     };
-
-    const handleChangeEmail = (text) => {
-        setErrorEmail(!isValidateEmail(text));
-        setEmail(text);
-    };
+    const validateRepass = () => repass === pass;
 
     const handleChangePass = (pass) => {
         setErrorPass(!isValidatePass(pass));
         setPass(pass);
+    };
+    const handleChangeRepass = (text) => {
+        setErrorRepass(!validateRepass);
+        setRepass(text);
     };
 
     return (
@@ -76,42 +71,25 @@ export default function Login({ navigation }) {
                 </View>
                 <View style={centerStyle}>
                     <Input
-                        onChangeText={handleChangeEmail}
-                        value={email}
-                        validate={errorEmail}
-                        validateText="Vui lòng nhập đúng định dạng email"
-                        holder="example@example.com"
-                        iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
-                    />
-                    <Input
                         onChangeText={handleChangePass}
                         value={pass}
                         validate={errorPass}
                         validateText="Mật khẩu phải đủ 6 đến 8 ký tự"
                         pass
-                        holder="Password"
+                        holder="New password"
+                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangeRepass}
+                        value={repass}
+                        validate={errorRepass}
+                        validateText="Mật khẩu mới không khớp"
+                        holder="Re password"
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                     />
 
-                    {keyboardIsShow || (
-                        <>
-                            <Button onPress={handlePress} text="Login" />
-                            <View style={styles.register}>
-                                <Text style={styles.register_text}>Do not have an account? </Text>
-                                <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
-                                    Signup
-                                </Text>
-                            </View>
-                        </>
-                    )}
+                    {keyboardIsShow || <Button onPress={handlePress} text="Confirm" />}
                 </View>
-                {keyboardIsShow || (
-                    <View style={styles.container_botom}>
-                        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                            Forgot Password?
-                        </Text>
-                    </View>
-                )}
             </BackgroundImage>
         </View>
     );
@@ -164,6 +142,5 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: fontSizeDefault,
         color: '#26B819',
-        fontWeight: 'bold',
     },
 });
