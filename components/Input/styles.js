@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
         marginHorizontal: 14,
     },
     input_text: {
-        width: 290,
+        flex: 1,
         fontSize: fontSizeDefault,
         marginVertical: 15,
     },

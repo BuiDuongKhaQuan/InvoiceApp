@@ -61,6 +61,7 @@ export default function Setting() {
                                     <Button
                                         iconLeft={<SimpleLineIcons name="logout" size={24} color="black" />}
                                         customStylesBtn={styles.logout_btn}
+                                        customStylesText={{ justifyContent: 'center' }}
                                         text="Đăng xuất"
                                     />
                                 </>

@@ -27,7 +27,7 @@ import ProfileCompany from './screens/Company/ProfileCompany';
 import Header from './components/Header';
 import ValidateEmail from './screens/ValidateEmail';
 import { UserProvider } from './screens/UserContext';
-
+import ResetPassword from './screens/ResetPassword';
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
@@ -60,6 +60,7 @@ export default function App() {
                     <Stack.Screen name="Support" component={Support} />
                     <Stack.Screen name="Header" component={Header} />
                     <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
+                    <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 </Stack.Navigator>
             </NavigationContainer>
         </UserProvider>

@@ -7,7 +7,7 @@ import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { validateRegister } from '../Service/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
-export default function ForgotPassword({ navigation }) {
+export default function ForgotPassword() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [code, setCode] = useState('');
     const [errorCode, setErrorCode] = useState(false);
