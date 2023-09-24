@@ -56,7 +56,7 @@ export default function App() {
                     <Stack.Screen name="WatchBill" component={WatchBill} />
                     <Stack.Screen name="Language" component={Language} />
                     <Stack.Screen name="NotificationSetting" component={NotificationSetting} />
-                    <Stack.Screen name="Setting" component={Setting} />
+                    <Stack.Screen name="Setting" component={Setting} options={headerNone} />
                     <Stack.Screen name="Support" component={Support} />
                     <Stack.Screen name="Header" component={Header} />
                     <Stack.Screen name="ValidateEmail" component={ValidateEmail} />

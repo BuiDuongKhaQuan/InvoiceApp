@@ -8,6 +8,7 @@ import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { login } from '../Service/api';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
+import Loading from '../components/Loading';
 
 export default function Login({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -16,6 +17,7 @@ export default function Login({ navigation }) {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const { dispatch } = useUserContext();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -41,6 +43,7 @@ export default function Login({ navigation }) {
     };
 
     const handleLogin = async () => {
+        setLoading(true);
         try {
             const userData = await login(email, pass);
             dispatch({
@@ -50,10 +53,14 @@ export default function Login({ navigation }) {
             navigation.navigate('TabNavigator');
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Login error', error.response.data.message);
+                Alert.alert('Login error!', error.response.data.message);
+            } else if (error.response && error.response.status === 404) {
+                Alert.alert('Login error!', error.response.data.message);
             } else {
-                console.error('Login error:', error);
+                Alert.alert('Login error', 'Transmission error, please try again later!!');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -70,6 +77,7 @@ export default function Login({ navigation }) {
     return (
         <View style={styles.container}>
             <BackgroundImage>
+                <Loading loading={loading} />
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
                     <Text style={styles.title}>Invoice C</Text>

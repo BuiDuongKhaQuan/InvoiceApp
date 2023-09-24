@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         backgroundColor: white,
         marginHorizontal: 10,
         marginVertical: 7,
-        borderRadius: 15,
+        borderRadius: 10,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 }, // Điều chỉnh vị trí bóng (đối với iOS)
         shadowOpacity: 0.5, // Điều chỉnh độ trong suốt của bóng (đối với iOS)

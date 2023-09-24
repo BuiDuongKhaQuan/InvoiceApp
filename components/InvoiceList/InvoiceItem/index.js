@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { AntDesign, Feather } from '@expo/vector-icons';
-import { backgroundColor } from '../../../constant/color';
+
 export default function InvoiceItem({ data, onPress, isLike }) {
     const newStyleInvoice = { ...styles.invoice, ...(data.id == 2 ? { marginTop: 20 } : {}) };
     const isStyleContainer = isLike ? { ...styles.container } : {};
@@ -22,7 +22,7 @@ export default function InvoiceItem({ data, onPress, isLike }) {
                         )}
                     </TouchableOpacity>
                 )}
-                <Image style={styles.img} source={{ uri: data.image }} />
+                <Image style={styles.img} source={data.image} />
                 {isLike || (
                     <View style={styles.mode}>
                         <Text style={styles.text}>...</Text>

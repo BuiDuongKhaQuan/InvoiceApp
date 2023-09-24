@@ -3,18 +3,19 @@ import React from 'react';
 import Button from '../Button';
 import { white } from '../../constant/color';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Header({
-    onGoBack,
     title,
     iconRight,
     iconLeft = <Ionicons name="arrow-back" size={24} color="black" />,
     onPress,
 }) {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <View style={styles.icon}>
-                <Button onPress={onGoBack} customStylesText={{ color: 'red' }} iconLeft={iconLeft} />
+                <Button onPress={() => navigation.goBack()} customStylesText={{ color: 'red' }} iconLeft={iconLeft} />
             </View>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.icon}>

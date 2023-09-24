@@ -24,11 +24,6 @@ export default function SettingItem({ data, iconRight = <AntDesign name="arrowri
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: fontSizeMenuTitle,
-        marginHorizontal: 10,
-        marginVertical: 10,
-    },
     btn: {
         marginVertical: 1,
         backgroundColor: white,
@@ -38,9 +33,15 @@ const styles = StyleSheet.create({
         elevation: 0,
         justifyContent: 'space-between',
     },
+    title: {
+        fontSize: fontSizeMenuTitle,
+        marginHorizontal: 10,
+        marginVertical: 10,
+    },
     text: {
         color: '#000000',
         fontWeight: 400,
         fontSize: fontSizeDefault,
+        textAlign: 'left',
     },
 });

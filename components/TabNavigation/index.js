@@ -19,7 +19,6 @@ const TabNavigator = () => {
     const togglePopup = () => {
         setPopupVisible(!isPopupVisible);
     };
-
     const Plus = () => <View></View>;
 
     return (
@@ -32,8 +31,8 @@ const TabNavigator = () => {
                         height: 50,
                     },
                     tabBarActiveTintColor: buttonColor,
-                    tabBarInactiveTintColor: '#5a5a5a',
-                    tabBarShowLabel: false,
+                    tabBarInactiveTintColor: 'black',
+                    tabBarShowLabel: true,
                     keyboardHandlingEnabled: false,
                     unmountOnBlur: true,
                 }}
@@ -43,7 +42,7 @@ const TabNavigator = () => {
                     component={Home}
                     options={{
                         headerShown: false,
-                        tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="home" color={color} size={40} />,
+                        tabBarIcon: ({ color, size }) => <AntDesign name="home" size={size} color={color} />,
                     }}
                 />
                 <Tab.Screen
@@ -52,7 +51,7 @@ const TabNavigator = () => {
                     options={{
                         headerShown: false,
                         tabBarHideOnKeyboard: true,
-                        tabBarIcon: ({ color, size }) => <Feather name="search" color={color} size={33} />,
+                        tabBarIcon: ({ color, size }) => <Feather name="search" color={color} size={size} />,
                     }}
                 />
 
@@ -70,7 +69,7 @@ const TabNavigator = () => {
                                     marginLeft: 20,
                                     marginRight: 20,
                                 }}
-                                iconRight={<AntDesign name="plussquareo" size={33} color="black" />}
+                                iconRight={<AntDesign name="plussquareo" size={30} color="black" />}
                                 onPress={togglePopup}
                             />
                         ),
@@ -82,7 +81,7 @@ const TabNavigator = () => {
                     options={{
                         headerShown: false,
                         tabBarHideOnKeyboard: true,
-                        tabBarIcon: ({ color, size }) => <AntDesign name="message1" size={33} color={color} />,
+                        tabBarIcon: ({ color, size }) => <AntDesign name="message1" size={size} color={color} />,
                     }}
                 />
                 <Tab.Screen
@@ -90,10 +89,7 @@ const TabNavigator = () => {
                     component={Profile}
                     options={{
                         headerShown: false,
-
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="account" color={color} size={33} />
-                        ),
+                        tabBarIcon: ({ color, size }) => <AntDesign name="user" size={size} color={color} />,
                     }}
                 />
             </Tab.Navigator>

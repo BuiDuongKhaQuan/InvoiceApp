@@ -7,7 +7,7 @@ import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { forgotPassword, validateReset } from '../Service/api';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Loading from '../components/Loading';
 
 export default function ForgotPassword({ navigation }) {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -55,41 +55,40 @@ export default function ForgotPassword({ navigation }) {
     };
 
     const handleSendEmail = async () => {
+        setLoading(true);
         try {
-            const response = await forgotPassword(email);
-            if (response.status === 200) {
-                setLoading(false);
-            }
+            await forgotPassword(email);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setLoading(false);
                 Alert.alert('Error', error.response.data.message);
             } else {
-                setLoading(false);
-                console.error('Send email error:', error);
+                Alert.alert('Error', 'Transmission error, please try again later');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSendOTP = async () => {
+        setLoading(true);
         try {
             await validateReset(email, code);
             navigation.navigate('ResetPassword', { data: email });
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setLoading(false);
                 Alert.alert('Error', error.response.data.message);
             } else {
-                setLoading(false);
-                console.error('Send email error:', error);
+                Alert.alert('Error', 'Transmission error, please try again later');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Spinner visible={loading} textContent={'Loading...'} textStyle={styles.spinnerTextStyle} />
+                <Loading loading={loading} />
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
                     <Text style={styles.title}>Invoice C</Text>
@@ -136,9 +135,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    spinnerTextStyle: {
-        color: '#FFF',
-    },
+
     container_top: {
         flex: 4,
         height: 100,
