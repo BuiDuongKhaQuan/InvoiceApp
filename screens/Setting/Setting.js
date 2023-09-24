@@ -61,7 +61,6 @@ export default function Setting() {
                                     <Button
                                         iconLeft={<SimpleLineIcons name="logout" size={24} color="black" />}
                                         customStylesBtn={styles.logout_btn}
-                                        customStylesText={{ justifyContent: 'center' }}
                                         text="Đăng xuất"
                                     />
                                 </>
@@ -89,5 +88,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         backgroundColor: '#B7B7B7',
         elevation: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
