@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
         width: '90%',
         alignContent: 'center',
         backgroundColor: white,
+        justifyContent: 'center',
         marginHorizontal: 10,
         marginVertical: 7,
         borderRadius: 10,
@@ -28,6 +29,7 @@ export const styles = StyleSheet.create({
     },
     input_text: {
         flex: 1,
+        height: '100%',
         fontSize: fontSizeDefault,
         marginVertical: 15,
     },
