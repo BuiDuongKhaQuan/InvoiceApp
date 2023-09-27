@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { white } from '../constant/color';
 import React from 'react';
 import Input from '../components/Input';
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         fontWeight: '100',
         fontSize: fontSizeDefault,
         color: 'black',
+        textAlign: 'left',
         marginHorizontal: 10,
     },
     container_bottom: {

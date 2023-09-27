@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, StatusBar, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Header from '../../components/SettingItem/header';
-import { backgroundColor, white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import Input from '../../components/Input';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
@@ -45,17 +44,17 @@ export default function Support() {
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Header title="Hỗ trợ" />
+                <Header title="Support" />
                 <View style={styles.content_center}>
-                    <Text style={styles.content_title}>Trung tâm hỗ trợ</Text>
+                    <Text style={styles.content_title}>Support center</Text>
                     <Input
                         customStylesInput={styles.input}
                         customStylesContainer={styles.input_container}
                         customStylesTextValidate={styles.validate}
                         onChangeText={handleChangeTitle}
-                        validateText="Vui lòng không để trống"
+                        validateText="Please do not leave it blank"
                         validate={errorTitle}
-                        holder="Chủ đề"
+                        holder="Topic"
                         value={title}
                         text
                     />
@@ -64,9 +63,9 @@ export default function Support() {
                         customStylesContainer={styles.input_container}
                         customStylesTextValidate={styles.validate}
                         onChangeText={handleChangeName}
-                        validateText="Vui lòng không để trống"
+                        validateText="Please do not leave it blank"
                         validate={errorName}
-                        holder="Tên người gửi"
+                        holder="Sender's name"
                         value={name}
                         text
                     />
@@ -75,19 +74,19 @@ export default function Support() {
                         customStylesTextValidate={styles.validate}
                         customStylesContainer={styles.input_container}
                         underlineColorAndroid="transparent"
-                        validateText="Vui lòng không để trống"
+                        validateText="Please do not leave it blank"
                         onChangeText={handleChangeContent}
                         validate={errorContent}
                         numberOfLines={15}
                         multiline={true}
-                        holder="Nội dung"
+                        holder="Content"
                         value={content}
                         text
                     />
                     {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
                 </View>
                 <View style={styles.content_botom}>
-                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Gửi" />
+                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Send" />
                 </View>
             </BackgroundImage>
         </View>

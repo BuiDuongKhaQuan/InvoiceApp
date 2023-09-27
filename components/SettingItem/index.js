@@ -4,8 +4,10 @@ import Button from '../Button';
 import { white } from '../../constant/color';
 import { fontSizeDefault, fontSizeMenuTitle } from '../../constant/fontSize';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SettingItem({ data, iconRight = <AntDesign name="arrowright" size={24} color="black" /> }) {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{data.title}</Text>
@@ -16,6 +18,7 @@ export default function SettingItem({ data, iconRight = <AntDesign name="arrowri
                     customStylesText={styles.text}
                     iconLeft={item.icon}
                     iconRight={iconRight}
+                    onPress={() => navigation.navigate(item.router)}
                     text={item.title}
                 />
             ))}

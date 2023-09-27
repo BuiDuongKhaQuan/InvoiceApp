@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View, StatusBar, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { isValidatePass } from '../../utilies/validate';
 import Input from '../../components/Input';
 import Header from '../../components/SettingItem/header';
-import { backgroundColor } from '../../constant/color';
 import { fontSizeDefault, fontSizeMenuTitle } from '../../constant/fontSize';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ChangePassword() {
+    const navigation = useNavigation();
     const [passOld, setPassOld] = useState('');
     const [passNew, setPassNew] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -25,7 +26,6 @@ export default function ChangePassword() {
         errorConfirmPass == false &&
         confirmPass == passNew;
     const handlePress = () => {
-        // alert(passOld);
         if (!isValidateContrinute()) {
             return;
         } else {
@@ -45,20 +45,20 @@ export default function ChangePassword() {
         setConfirmPass(text);
     };
     return (
-        <View style={styles.container}>
-            <BackgroundImage>
-                <Header title="Mật khẩu" />
+        <BackgroundImage>
+            <Header title="Password" />
+            <ScrollView style={styles.container}>
                 <View style={styles.content_center}>
-                    <Text style={styles.content_title}>Đổi mật khẩu</Text>
+                    <Text style={styles.content_title}>Change password</Text>
                     <Input
                         text
                         customStylesInput={styles.input}
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorPassOld}
-                        validateText="Mật khẩu không đúng"
+                        validateText="Incorrect password"
                         onChangeText={handleChangePassOld}
-                        holder="Mật khẩu cũ"
+                        holder="Old password"
                         value={passOld}
                     />
                     <Input
@@ -67,9 +67,9 @@ export default function ChangePassword() {
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorPassNew}
-                        validateText="Mật khẩu không phải trên 4 kí tự"
+                        validateText="Password must be 6 to 8 characters"
                         onChangeText={handleChangePassNew}
-                        holder="Mật khẩu mới"
+                        holder="New password"
                         value={passNew}
                     />
 
@@ -79,22 +79,24 @@ export default function ChangePassword() {
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorConfirmPass}
-                        validateText="Mật khẩu không khớp"
+                        validateText="Password incorrect"
                         onChangeText={handleChangeConfirm}
-                        holder="Xác nhận"
+                        holder="Re new password"
                         value={confirmPass}
                     />
 
                     <Button
                         onPress={handlePress}
                         customStylesBtn={{ width: 340, height: 50, marginLeft: 24 }}
-                        text="Lưu "
+                        text="Confirm"
                     />
 
-                    <Text style={styles.forgot}>Quên mật khẩu?</Text>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                        Forgot password?
+                    </Text>
                 </View>
-            </BackgroundImage>
-        </View>
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 const styles = StyleSheet.create({
@@ -124,6 +126,7 @@ const styles = StyleSheet.create({
     forgot: {
         marginBottom: 20,
         fontSize: fontSizeDefault,
+        fontWeight: 'bold',
         color: '#26B819',
         alignItems: 'center',
         textAlign: 'center',

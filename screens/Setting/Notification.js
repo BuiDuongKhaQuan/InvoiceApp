@@ -1,26 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import Header from '../../components/SettingItem/header';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import SwitchCustom from '../../components/Switch';
-import { backgroundColor, white } from '../../constant/color';
+import Header from '../../components/SettingItem/header';
+import { white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 
-export default function NotificationSetting() {
+export default function Notification() {
     return (
         <BackgroundImage>
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                }}
-            >
-                <Header title="Thiết lập" />
+            <Header title="Notification" />
+            <ScrollView style={styles.container}>
                 <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
                     <Text style={{ paddingVertical: 15, paddingLeft: 10, fontSize: fontSizeMenuTitle }}>
-                        Cài đặt thông báo
+                        Notifications on and off
                     </Text>
                     <View style={{ paddingVertical: 10, backgroundColor: white, flexDirection: 'column' }}>
                         <View
@@ -30,15 +23,21 @@ export default function NotificationSetting() {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Text style={{ fontSize: 20 }}>Thông báo</Text>
+                            <Text style={{ fontSize: 20 }}>Notifications</Text>
                             <SwitchCustom />
                         </View>
-                        <Text style={{ color: 'gray', paddingHorizontal: 10 }}>Bật để có thông tin sớm nhất</Text>
+                        <Text style={{ color: 'gray', paddingHorizontal: 10 }}>
+                            Turn on to get the earliest information!
+                        </Text>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         </BackgroundImage>
     );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+});
