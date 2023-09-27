@@ -4,154 +4,129 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Entypo } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 import { fontSizeDefault } from '../../constant/fontSize';
-import { invoices1 } from '../../Service/api';
+import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import Header from '../../components/SettingItem/header';
+import * as ImagePicker from 'expo-image-picker';
+import { updateAvatar } from '../../Service/api';
 import { useUserContext } from '../UserContext';
-import Loading from '../../components/Loading';
+
 export default function Information() {
     const genders = ['Male', 'Female'];
+    const [image, setImage] = useState(null);
     const { state } = useUserContext();
-    const { dispatch } = useUserContext();
-    const [photo, setPhoto] = useState(null);
-    const [photoShow, setPhotoShow] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const takePhotoAndUpload = async () => {
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: false,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
 
-        if (result.canceled) {
-            return;
-        }
+        console.log(result);
+        setImage(result.assets[0].uri);
+    };
 
-        let localUri = result.assets[0].uri;
-        setPhotoShow(localUri);
-        let filename = localUri.split('/').pop();
-        console.log(localUri);
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
-
-        let formData = new FormData();
-        formData.append('id', state.user.id);
-        formData.append('avartar', {
-            uri: localUri,
-            name: filename,
-            type,
-        });
-        setLoading(true);
+    const upAvatar = async () => {
         try {
-            const response = await axios.patch(
-                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                },
-            );
-            dispatch({
-                type: 'SIGN_IN',
-                payload: response.data,
-            });
-            console.log('Cập nhật thành công:', response.data);
+            await updateAvatar(state.user.id, image);
         } catch (error) {
-            console.error('Lỗi:', error);
-        } finally {
-            setLoading(false);
+            console.log(error);
         }
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <Loading loading={loading} />
-            <View style={styles.top}>
-                <View style={styles.image}>
-                    <Image
-                        style={styles.avatar_img}
-                        source={{
-                            uri: state.user.image,
-                        }}
-                    />
-
-                    <Button
-                        text="Change avatar"
-                        customStylesText={styles.text}
-                        customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                        onPress={takePhotoAndUpload}
-                    />
-                </View>
-                <View style={styles.image}>
-                    <Image
-                        style={styles.wallpaper_img}
-                        source={{
-                            uri: photoShow,
-                        }}
-                    />
-                    <Button
-                        text="Change wallpaper"
-                        customStylesText={styles.text}
-                        customStylesBtn={styles.change_btn}
-                    />
-                </View>
-            </View>
-            <View style={styles.bottom}>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Name:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="Bui Duong Kha Quan" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Email:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="khaquan9a2.2016@gmail.com" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Phone:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="0132456789" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Birthday:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="29/08/2002" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Gender:</Text>
-                    <View style={styles.dropdown}>
-                        <SelectDropdown
-                            data={genders}
-                            onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index);
+        <BackgroundImage>
+            <Header title="Information" />
+            <ScrollView style={styles.container}>
+                <View style={styles.top}>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.avatar_img}
+                            source={{
+                                uri: image
+                                    ? image
+                                    : 'https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/348464898_612727004250189_6267958016901660133_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=KQnRkH45wocAX9J0eEN&_nc_ht=scontent.fsgn2-9.fna&_nc_e2o=s&oh=00_AfC-TL8j4ktTEogegxuA3VS9MriZpb6eN7VdB4Fo9QfUyg&oe=6516C49C',
                             }}
-                            buttonStyle={styles.dropdown_btn}
-                            defaultButtonText="Gender"
-                            renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                            dropdownIconPosition="right"
-                            buttonTextAfterSelection={(selectedItem, index) => {
-                                // text represented after item is selected
-                                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                                return selectedItem;
+                        />
+                        <Button
+                            text="Change avatar"
+                            onPress={pickImage}
+                            customStylesText={styles.text}
+                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                        />
+                    </View>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.wallpaper_img}
+                            source={{
+                                uri: 'https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/348464898_612727004250189_6267958016901660133_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=KQnRkH45wocAX9J0eEN&_nc_ht=scontent.fsgn2-9.fna&_nc_e2o=s&oh=00_AfC-TL8j4ktTEogegxuA3VS9MriZpb6eN7VdB4Fo9QfUyg&oe=6516C49C',
                             }}
-                            rowTextForSelection={(item, index) => {
-                                // text represented for each item in dropdown
-                                // if data array is an array of objects then return item.property to represent item in dropdown
-                                return item;
-                            }}
+                        />
+                        <Button
+                            text="Change wallpaper"
+                            customStylesText={styles.text}
+                            customStylesBtn={styles.change_btn}
                         />
                     </View>
                 </View>
-            </View>
-            <View style={styles.btn}>
-                <Button text="Save" />
-            </View>
-        </ScrollView>
+                <View style={styles.bottom}>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Name:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="Bui Duong Kha Quan" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Email:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="khaquan9a2.2016@gmail.com" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Phone:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="0132456789" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Birthday:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="29/08/2002" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Gender:</Text>
+                        <View style={styles.dropdown}>
+                            <SelectDropdown
+                                data={genders}
+                                onSelect={(selectedItem, index) => {
+                                    console.log(selectedItem, index);
+                                }}
+                                buttonStyle={styles.dropdown_btn}
+                                defaultButtonText="Gender"
+                                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
+                                dropdownIconPosition="right"
+                                buttonTextAfterSelection={(selectedItem, index) => {
+                                    // text represented after item is selected
+                                    // if data array is an array of objects then return selectedItem.property to render after item is selected
+                                    return selectedItem;
+                                }}
+                                rowTextForSelection={(item, index) => {
+                                    // text represented for each item in dropdown
+                                    // if data array is an array of objects then return item.property to represent item in dropdown
+                                    return item;
+                                }}
+                            />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.btn}>
+                    <Button text="Save" onPress={upAvatar} />
+                </View>
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 30,
+        marginTop: 10,
     },
     top: {
         flex: 2,

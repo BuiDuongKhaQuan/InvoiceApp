@@ -10,32 +10,49 @@ export default function Setting() {
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
-            title: 'Tài khoản',
+            title: 'Account',
             data: [
-                { id: '1', icon: <AntDesign name="user" size={24} color="black" />, title: 'Thông tin và liên hệ' },
-                { id: '2', icon: <Ionicons name="key-outline" size={24} color="black" />, title: 'Mật khẩu' },
+                {
+                    id: '1',
+                    icon: <AntDesign name="user" size={24} color="black" />,
+                    title: 'Information and contact',
+                    router: 'Information',
+                },
+                {
+                    id: '2',
+                    icon: <Ionicons name="key-outline" size={24} color="black" />,
+                    title: 'Password',
+                    router: 'ChangePassword',
+                },
             ],
         },
         {
             id: '2',
-            title: 'Ứng dụng',
+            title: 'Application',
             data: [
-                { id: '1', icon: <MaterialIcons name="language" size={24} color="black" />, title: 'Đổi ngôn ngữ' },
+                {
+                    id: '1',
+                    icon: <MaterialIcons name="language" size={24} color="black" />,
+                    title: 'Language',
+                    router: 'Language',
+                },
                 {
                     id: '2',
                     icon: <Ionicons name="notifications-outline" size={24} color="black" />,
-                    title: 'Cài đặt thông báo',
+                    title: 'Notification',
+                    router: 'Notification',
                 },
             ],
         },
         {
             id: '3',
-            title: 'Hỗ trợ',
+            title: 'Support',
             data: [
                 {
                     id: '1',
                     icon: <AntDesign name="questioncircleo" size={24} color="black" />,
-                    title: 'Yêu cầu hỗ trợ',
+                    title: 'Support',
+                    router: 'Support',
                 },
             ],
         },
@@ -44,7 +61,7 @@ export default function Setting() {
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Header title="Thiết lập" />
+                <Header title="Settings" />
                 <View style={styles.container_center}>
                     <FlatList
                         data={itemSetting}
@@ -61,7 +78,7 @@ export default function Setting() {
                                     <Button
                                         iconLeft={<SimpleLineIcons name="logout" size={24} color="black" />}
                                         customStylesBtn={styles.logout_btn}
-                                        text="Đăng xuất"
+                                        text="Logout"
                                     />
                                 </>
                             );
