@@ -4,32 +4,91 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Entypo } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 import { fontSizeDefault } from '../../constant/fontSize';
+import { invoices1 } from '../../Service/api';
+import { useUserContext } from '../UserContext';
+import Loading from '../../components/Loading';
 export default function Information() {
-    const [selected, setSelected] = useState(undefined);
     const genders = ['Male', 'Female'];
+    const { state } = useUserContext();
+    const { dispatch } = useUserContext();
+    const [photo, setPhoto] = useState(null);
+    const [photoShow, setPhotoShow] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const takePhotoAndUpload = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: false,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (result.canceled) {
+            return;
+        }
+
+        let localUri = result.assets[0].uri;
+        setPhotoShow(localUri);
+        let filename = localUri.split('/').pop();
+        console.log(localUri);
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        let formData = new FormData();
+        formData.append('id', state.user.id);
+        formData.append('avartar', {
+            uri: localUri,
+            name: filename,
+            type,
+        });
+        setLoading(true);
+        try {
+            const response = await axios.patch(
+                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            dispatch({
+                type: 'SIGN_IN',
+                payload: response.data,
+            });
+            console.log('Cập nhật thành công:', response.data);
+        } catch (error) {
+            console.error('Lỗi:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <ScrollView style={styles.container}>
+            <Loading loading={loading} />
             <View style={styles.top}>
                 <View style={styles.image}>
                     <Image
                         style={styles.avatar_img}
                         source={{
-                            uri: 'https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/348464898_612727004250189_6267958016901660133_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=KQnRkH45wocAX9J0eEN&_nc_ht=scontent.fsgn2-9.fna&_nc_e2o=s&oh=00_AfC-TL8j4ktTEogegxuA3VS9MriZpb6eN7VdB4Fo9QfUyg&oe=6516C49C',
+                            uri: state.user.image,
                         }}
                     />
+
                     <Button
                         text="Change avatar"
                         customStylesText={styles.text}
                         customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                        onPress={takePhotoAndUpload}
                     />
                 </View>
                 <View style={styles.image}>
                     <Image
                         style={styles.wallpaper_img}
                         source={{
-                            uri: 'https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/348464898_612727004250189_6267958016901660133_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=KQnRkH45wocAX9J0eEN&_nc_ht=scontent.fsgn2-9.fna&_nc_e2o=s&oh=00_AfC-TL8j4ktTEogegxuA3VS9MriZpb6eN7VdB4Fo9QfUyg&oe=6516C49C',
+                            uri: photoShow,
                         }}
                     />
                     <Button
