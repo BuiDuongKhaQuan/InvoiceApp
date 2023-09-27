@@ -14,9 +14,14 @@ import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Information() {
     const genders = ['Male', 'Female'];
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [selectedGender, setSelectedGender] = useState('');
     const { state } = useUserContext();
     const { dispatch } = useUserContext();
     const [photoShow, setPhotoShow] = useState(null);
+    const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
     const [loading, setLoading] = useState(false);
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -65,6 +70,93 @@ export default function Information() {
             setLoading(false);
         }
     };
+    const uploadWallpaper = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (result.canceled) {
+            return;
+        }
+
+        let localUri = result.assets[0].uri;
+        setPhotoShowWallpaper(localUri);
+        let filename = localUri.split('/').pop();
+        console.log(localUri);
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        let formData = new FormData();
+        formData.append('id', state.user.id);
+        formData.append('wallpaper', {
+            uri: localUri,
+            name: filename,
+            type,
+        });
+        setLoading(true);
+        try {
+            const response = await axios.patch(
+                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            dispatch({
+                type: 'SIGN_IN',
+                payload: response.data,
+            });
+            console.log('Cập nhật thành công:', response.data);
+        } catch (error) {
+            console.error('Lỗi:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const handlerSend = async () => {
+        let formData = new FormData();
+        formData.append('id', state.user.id);
+        // Kiểm tra và thêm tên nếu đã nhập
+        if (name) {
+            formData.append('name', name);
+        }
+
+        // Kiểm tra và thêm email nếu đã nhập
+        if (email) {
+            formData.append('email', email);
+        }
+        if (phone) {
+            formData.append('phone', phone);
+        }
+        if (selectedGender) {
+            formData.append('gender', selectedGender);
+        }
+        setLoading(true);
+        try {
+            const response = await axios.patch(
+                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            dispatch({
+                type: 'SIGN_IN',
+                payload: response.data,
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error(' error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <BackgroundImage>
@@ -91,32 +183,44 @@ export default function Information() {
                         <Image
                             style={styles.wallpaper_img}
                             source={{
-                                uri: photoShow,
+                                uri: state.user.wallpaper,
                             }}
                         />
                         <Button
                             text="Change wallpaper"
                             customStylesText={styles.text}
                             customStylesBtn={styles.change_btn}
+                            onPress={uploadWallpaper}
                         />
                     </View>
                 </View>
                 <View style={styles.bottom}>
                     <View style={styles.bottom_item}>
                         <Text style={styles.text}>Name:</Text>
-                        <Input customStylesContainer={styles.container_input} holder="Bui Duong Kha Quan" />
+                        <Input
+                            customStylesContainer={styles.container_input}
+                            holder={state.user.name}
+                            value={name}
+                            onChangeText={(text) => setName(text)}
+                        />
                     </View>
                     <View style={styles.bottom_item}>
                         <Text style={styles.text}>Email:</Text>
-                        <Input customStylesContainer={styles.container_input} holder="khaquan9a2.2016@gmail.com" />
+                        <Input
+                            customStylesContainer={styles.container_input}
+                            holder={state.user.email}
+                            value={email}
+                            onChangeText={(text) => setEmail(text)}
+                        />
                     </View>
                     <View style={styles.bottom_item}>
                         <Text style={styles.text}>Phone:</Text>
-                        <Input customStylesContainer={styles.container_input} holder="0132456789" />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Birthday:</Text>
-                        <Input customStylesContainer={styles.container_input} holder="29/08/2002" />
+                        <Input
+                            customStylesContainer={styles.container_input}
+                            holder={state.user.phone}
+                            value={phone}
+                            onChangeText={(text) => setPhone(text)}
+                        />
                     </View>
                     <View style={styles.bottom_item}>
                         <Text style={styles.text}>Gender:</Text>
@@ -124,7 +228,7 @@ export default function Information() {
                             <SelectDropdown
                                 data={genders}
                                 onSelect={(selectedItem, index) => {
-                                    console.log(selectedItem, index);
+                                    setSelectedGender(selectedItem);
                                 }}
                                 buttonStyle={styles.dropdown_btn}
                                 defaultButtonText="Gender"
@@ -145,7 +249,7 @@ export default function Information() {
                     </View>
                 </View>
                 <View style={styles.btn}>
-                    <Button text="Save" />
+                    <Button text="Save" onPress={handlerSend} />
                 </View>
             </ScrollView>
         </BackgroundImage>
@@ -154,7 +258,7 @@ export default function Information() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 30,
+        paddingTop: 10,
     },
     top: {
         flex: 2,

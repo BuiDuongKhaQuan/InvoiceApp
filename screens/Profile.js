@@ -61,13 +61,18 @@ export default function Profile() {
                         <Image
                             style={styles.img_default}
                             source={{
-                                uri: 'https://www.chudu24.com/wp-content/uploads/2017/03/canh-dep-nhat-ban-5.jpg',
+                                uri: state.user.wallpaper,
                             }}
                         />
                     </View>
                     <View style={styles.top_avatar}>
                         <View style={styles.top_}>
-                            <Image style={styles.avatar} source={require('../assets/images/avatar.png')} />
+                            <Image
+                                style={styles.avatar}
+                                source={{
+                                    uri: state.user.image,
+                                }}
+                            />
                             <Text style={styles.name}>{state.user.name}</Text>
                         </View>
                         <Button
