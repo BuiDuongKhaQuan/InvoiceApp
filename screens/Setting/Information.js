@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Entypo } from '@expo/vector-icons';
@@ -6,6 +8,10 @@ import axios from 'axios';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
+import SelectDropdown from 'react-native-select-dropdown';
+import { StatusBar } from 'expo-status-bar';
+import Header from '../../components/SettingItem/header';
+import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Information() {
     const genders = ['Male', 'Female'];
     const { state } = useUserContext();
@@ -61,85 +67,88 @@ export default function Information() {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <Loading loading={loading} />
-            <View style={styles.top}>
-                <View style={styles.image}>
-                    <Image
-                        style={styles.avatar_img}
-                        source={{
-                            uri: state.user.image,
-                        }}
-                    />
+        <BackgroundImage>
+            <Header title="Information" />
+            <ScrollView style={styles.container}>
+                <Loading loading={loading} />
+                <View style={styles.top}>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.avatar_img}
+                            source={{
+                                uri: state.user.image,
+                            }}
+                        />
 
-                    <Button
-                        text="Change avatar"
-                        customStylesText={styles.text}
-                        customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                        onPress={takePhotoAndUpload}
-                    />
-                </View>
-                <View style={styles.image}>
-                    <Image
-                        style={styles.wallpaper_img}
-                        source={{
-                            uri: photoShow,
-                        }}
-                    />
-                    <Button
-                        text="Change wallpaper"
-                        customStylesText={styles.text}
-                        customStylesBtn={styles.change_btn}
-                    />
-                </View>
-            </View>
-            <View style={styles.bottom}>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Name:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="Bui Duong Kha Quan" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Email:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="khaquan9a2.2016@gmail.com" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Phone:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="0132456789" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Birthday:</Text>
-                    <Input customStylesContainer={styles.container_input} holder="29/08/2002" />
-                </View>
-                <View style={styles.bottom_item}>
-                    <Text style={styles.text}>Gender:</Text>
-                    <View style={styles.dropdown}>
-                        <SelectDropdown
-                            data={genders}
-                            onSelect={(selectedItem, index) => {
-                                console.log(selectedItem, index);
+                        <Button
+                            text="Change avatar"
+                            customStylesText={styles.text}
+                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                            onPress={takePhotoAndUpload}
+                        />
+                    </View>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.wallpaper_img}
+                            source={{
+                                uri: photoShow,
                             }}
-                            buttonStyle={styles.dropdown_btn}
-                            defaultButtonText="Gender"
-                            renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                            dropdownIconPosition="right"
-                            buttonTextAfterSelection={(selectedItem, index) => {
-                                // text represented after item is selected
-                                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                                return selectedItem;
-                            }}
-                            rowTextForSelection={(item, index) => {
-                                // text represented for each item in dropdown
-                                // if data array is an array of objects then return item.property to represent item in dropdown
-                                return item;
-                            }}
+                        />
+                        <Button
+                            text="Change wallpaper"
+                            customStylesText={styles.text}
+                            customStylesBtn={styles.change_btn}
                         />
                     </View>
                 </View>
-            </View>
-            <View style={styles.btn}>
-                <Button text="Save" />
-            </View>
-        </ScrollView>
+                <View style={styles.bottom}>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Name:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="Bui Duong Kha Quan" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Email:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="khaquan9a2.2016@gmail.com" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Phone:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="0132456789" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Birthday:</Text>
+                        <Input customStylesContainer={styles.container_input} holder="29/08/2002" />
+                    </View>
+                    <View style={styles.bottom_item}>
+                        <Text style={styles.text}>Gender:</Text>
+                        <View style={styles.dropdown}>
+                            <SelectDropdown
+                                data={genders}
+                                onSelect={(selectedItem, index) => {
+                                    console.log(selectedItem, index);
+                                }}
+                                buttonStyle={styles.dropdown_btn}
+                                defaultButtonText="Gender"
+                                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
+                                dropdownIconPosition="right"
+                                buttonTextAfterSelection={(selectedItem, index) => {
+                                    // text represented after item is selected
+                                    // if data array is an array of objects then return selectedItem.property to render after item is selected
+                                    return selectedItem;
+                                }}
+                                rowTextForSelection={(item, index) => {
+                                    // text represented for each item in dropdown
+                                    // if data array is an array of objects then return item.property to represent item in dropdown
+                                    return item;
+                                }}
+                            />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.btn}>
+                    <Button text="Save" />
+                </View>
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 const styles = StyleSheet.create({
