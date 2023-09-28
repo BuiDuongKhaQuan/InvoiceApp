@@ -15,155 +15,8 @@ import {
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-const html = `
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        margin-left: 10;
-        margin-right: 10;
-      }
-      .container_top {
-        align-items: "center";
-        flex: 1;
-        text-align: center;
-        justify-content: "center";
-      }
-      
-      table, th, td {
-        
-  
-  border-collapse: collapse;
-}
-      p {
-        margin: 3px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="container_top" style="margin-top: 40px;">
-        <div style="text-align: center">
-          <p>TMART KTX DHQG</p>
-        </div>
-        <div style="text-align: center">
-          <p>HCM</p>
-        </div>
-        <div style="text-align: center">
-          <p>0970238648</p>
-        </div>
-        <div style="text-align: center">
-          <p>hong@gmail.com</p>
-        </div>
-        <div style="text-align: center; font-weight: 600">
-          <p>HÓA ĐƠN THANH TOÁN</p>
-        </div>
-        <div style="text-align: center; ">
-          <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
-        </div>
-        
-      </div>
-      <div class="container_center">
-        <div style="display: flex; flex-direction: row">
-          <p style="flex: 1">Ngày: 18/09/2023</p>
-          <p style="flex: 1">09:00</p>
-        </div>
-        <div class="cashier" style="display: flex; flex-direction: row">
-          <p style="margin-right: 20">Thu ngân:</p>
-          <p>Nguyễn Thị Thanh Tâm</p>
-        </div>
-        <div class="customer" style="display: flex; flex-direction: row">
-          <p style="margin-right: 20">Khách hàng:</p>
-          <p>Siêm</p>
-        </div>
-        <div style="display: flex; flex-direction: row">
-          <div style="display: flex; flex-direction: row; flex: 2">
-            <p style="margin-right: 20">Điện thoại:</p>
-            <p>0983681</p>
-          </div>
-          <div style="display: flex; flex-direction: row; flex: 1">
-            <p style="margin-right: 20">Điểm:</p>
-            <p>0.0</p>
-          </div>
-        </div>
-        <table style="width:100%">
-          <tr style="border-bottom: 1px dashed  black;">
-            <th>#</th>
-            <th>Tên hàng</th> 
-            <th>SL</th>
-            <th>D.G</th>
-            <th>CK</th>
-            <th>T.Tiền</th>
-          </tr>
-        
-          <tr>
-            <td style="font-weight: 700" > 1</td>
-            <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
-            <tr >
-              <td></td>
-              <td style="padding-left: 30px;">2</td>
-              <td>50.000</td>
-              <td style="padding-left: 6px">0%</td><td></td>
-              <td>100.000</td>
-            </tr> 
-          </tr>
-          <tr>
-            <td style="font-weight: 700" > 2</td>
-            <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
-            <tr >
-              <td></td>
-              <td style="padding-left: 30px;">2</td>
-              <td>50.000</td>
-              <td style="padding-left: 6px">0%</td><td></td>
-              <td>100.000</td>
-            </tr> 
-          </tr>
-        </table>
-        <p style="border-bottom: 1px dashed  black;"></p>
-      </div>
-      <div class="container_bottom" style="justify-content: right; ;">
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
-          <p>50.000</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
-          <p>0.0</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
-          <p>50.000</p>
-        </div>
-        <p style="text-align: center;">Hai mươi bốn ngìn đồng</p>
-        <p style="border-bottom: 1px dashed  black;"></p>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
-          <p>TM</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
-          <p>50.000</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại:</p>
-          <p></p>
-        </div>
-        <p style="border-bottom: 1px dashed  black;"></p>
-<p style="text-align: center;">Design by....</p>
-      </div>
-    </div>
-  </body>
-</html>
 
-`;
-export default function Invoice2() {
+export default function Invoice2({ data }) {
     const [selectedPrinter, setSelectedPrinter] = useState();
     const [products, setProducts] = useState([]);
     const [idProduct, setIdProduct] = useState('');
@@ -173,7 +26,151 @@ export default function Invoice2() {
     const [ck, setCk] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalBillPrice, setTotalBillPrice] = useState(0);
-
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+          .container {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            margin-left: 10;
+            margin-right: 10;
+          }
+          .container_top {
+            align-items: "center";
+            flex: 1;
+            text-align: center;
+            justify-content: "center";
+          }
+          
+          table, th, td {
+            border-collapse: collapse;
+            }
+          p {
+            margin: 3px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="container_top" style="margin-top: 40px;">
+            <div style="text-align: center">
+              <p>TMART KTX DHQG</p>
+            </div>
+            <div style="text-align: center">
+              <p>HCM</p>
+            </div>
+            <div style="text-align: center">
+              <p>0970238648</p>
+            </div>
+            <div style="text-align: center">
+              <p>hong@gmail.com</p>
+            </div>
+            <div style="text-align: center; font-weight: 600">
+              <p>HÓA ĐƠN THANH TOÁN</p>
+            </div>
+            <div style="text-align: center; ">
+              <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
+            </div>
+            
+          </div>
+          <div class="container_center">
+            <div style="display: flex; flex-direction: row">
+              <p style="flex: 1">Ngày: 18/09/2023</p>
+              <p style="flex: 1">09:00</p>
+            </div>
+            <div class="cashier" style="display: flex; flex-direction: row">
+              <p style="margin-right: 20">Thu ngân:</p>
+              <p>Nguyễn Thị Thanh Tâm</p>
+            </div>
+            <div class="customer" style="display: flex; flex-direction: row">
+              <p style="margin-right: 20">Khách hàng:</p>
+              <p>Siêm</p>
+            </div>
+            <div style="display: flex; flex-direction: row">
+              <div style="display: flex; flex-direction: row; flex: 2">
+                <p style="margin-right: 20">Điện thoại:</p>
+                <p>0983681</p>
+              </div>
+              <div style="display: flex; flex-direction: row; flex: 1">
+                <p style="margin-right: 20">Điểm:</p>
+                <p>0.0</p>
+              </div>
+            </div>
+            <table style="width:100%">
+              <tr style="border-bottom: 1px dashed  black;">
+                <th>#</th>
+                <th>Tên hàng</th> 
+                <th>SL</th>
+                <th>D.G</th>
+                <th>CK</th>
+                <th>T.Tiền</th>
+              </tr>
+            
+              <tr>
+                <td style="font-weight: 700" > 1</td>
+                <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
+                <tr >
+                  <td></td>
+                  <td style="padding-left: 30px;">2</td>
+                  <td>50.000</td>
+                  <td style="padding-left: 6px">0%</td><td></td>
+                  <td>100.000</td>
+                </tr> 
+              </tr>
+              <tr>
+                <td style="font-weight: 700" > 2</td>
+                <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
+                <tr >
+                  <td></td>
+                  <td style="padding-left: 30px;">2</td>
+                  <td>50.000</td>
+                  <td style="padding-left: 6px">0%</td><td></td>
+                  <td>100.000</td>
+                </tr> 
+              </tr>
+            </table>
+            <p style="border-bottom: 1px dashed  black;"></p>
+          </div>
+          <div class="container_bottom" style="justify-content: right; ;">
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
+              <p>50.000</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
+              <p>0.0</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
+              <p>50.000</p>
+            </div>
+            <p style="text-align: center;">Hai mươi bốn ngìn đồng</p>
+            <p style="border-bottom: 1px dashed  black;"></p>
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
+              <p>TM</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
+              <p>50.000</p>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: right;">
+              <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại:</p>
+              <p></p>
+            </div>
+            <p style="border-bottom: 1px dashed  black;"></p>
+            <p style="text-align: center;">Design by....</p>
+          </div>
+        </div>
+      </body>
+    </html>
+    `;
     const handleAddProduct = () => {
         if (nameProduct && price && quantity) {
             setProducts([

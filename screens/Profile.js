@@ -8,14 +8,39 @@ import { fontSizeDefault } from '../constant/fontSize';
 import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
-import { getCompaniesById } from '../Service/api';
 
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
     const navigation = useNavigation();
     const { state } = useUserContext();
-    const [companyName, setCompanyName] = useState('');
+    const { user, company } = state;
+    const [contacts, setContacts] = useState([
+        {
+            id: 1,
+            name: 'Quan',
+            phone: '12345789',
+            email: 'qua1n@example.com',
+        },
+        {
+            id: 2,
+            name: 'Quan1',
+            phone: '12345789',
+            email: 'qua2n@example.com',
+        },
+        {
+            id: 3,
+            name: 'Quan2',
+            phone: '12345789',
+            email: 'qua4n@example.com',
+        },
+        {
+            id: 4,
+            name: 'Quan3',
+            phone: '12345789',
+            email: 'qua3n@example.com',
+        },
+    ]);
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -35,18 +60,6 @@ export default function Profile() {
         },
     ]);
 
-    useEffect(() => {
-        const getCompany = async () => {
-            try {
-                const response = await getCompaniesById(state.user.companyId);
-                setCompanyName(response.name);
-            } catch (error) {
-                console.error('Error while get company information:', error);
-            }
-        };
-        getCompany();
-    });
-
     const [selectedTab, setSelectedTab] = useState('history');
 
     const tabActive = (key) =>
@@ -61,7 +74,7 @@ export default function Profile() {
                         <Image
                             style={styles.img_default}
                             source={{
-                                uri: state.user.wallpaper,
+                                uri: user.wallpaper,
                             }}
                         />
                     </View>
@@ -70,10 +83,10 @@ export default function Profile() {
                             <Image
                                 style={styles.avatar}
                                 source={{
-                                    uri: state.user.image,
+                                    uri: user.image,
                                 }}
                             />
-                            <Text style={styles.name}>{state.user.name}</Text>
+                            <Text style={styles.name}>{user.name}</Text>
                         </View>
                         <Button
                             customStylesBtn={styles.edit_btn}
@@ -86,7 +99,7 @@ export default function Profile() {
                 </View>
                 <View style={styles.container_center}>
                     <View style={styles.company}>
-                        <Text style={styles.company_name}> Company: {companyName}</Text>
+                        <Text style={styles.company_name}> Company: {company.name}</Text>
                     </View>
                     <View style={styles.center_tab}>
                         <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
@@ -116,20 +129,22 @@ export default function Profile() {
                         )}
                         {selectedTab === 'contact' && (
                             <View style={styles.content}>
-                                <View style={styles.contact_content}>
-                                    <View style={styles.contact_row}>
-                                        <Text style={styles.text_default}>Name:</Text>
-                                        <Text style={styles.text_change}>Quan</Text>
+                                {contacts.map((item) => (
+                                    <View style={styles.contact_content} key={item.id}>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>Name:</Text>
+                                            <Text style={styles.text_change}>{item.name}</Text>
+                                        </View>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>Phone:</Text>
+                                            <Text style={styles.text_change}>{item.phone}</Text>
+                                        </View>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>Email:</Text>
+                                            <Text style={styles.text_change}>{item.email}</Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.contact_row}>
-                                        <Text style={styles.text_default}>Phone:</Text>
-                                        <Text style={styles.text_change}>0328216787</Text>
-                                    </View>
-                                    <View style={styles.contact_row}>
-                                        <Text style={styles.text_default}>Email:</Text>
-                                        <Text style={styles.text_change}>khaquan9a2.2016@gmail.com</Text>
-                                    </View>
-                                </View>
+                                ))}
                             </View>
                         )}
                         {selectedTab === 'like' && <InvoiceList data={invoices} isLike />}

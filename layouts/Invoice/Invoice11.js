@@ -1,6 +1,7 @@
 import { ScrollView, StatusBar, StyleSheet, Text, View, TextInput } from 'react-native';
 import React from 'react';
 import { dateNow, houseNow } from '../../utilies/date';
+import PrintBtn from './PrintBtn';
 
 export default function Invoice11() {
     const html = `<!DOCTYPE html>
@@ -13,6 +14,7 @@ export default function Invoice11() {
                 .container {
                     display: flex;
                     flex-direction: column;
+                    width: 400px;
                 }
                 p {
                     margin: 0;
@@ -95,7 +97,7 @@ export default function Invoice11() {
     </html>
     `;
     return (
-        <ScrollView style={styles.container}>
+        <PrintBtn>
             <View style={styles.top}>
                 <Text style={styles.title}>Invoice</Text>
                 <View style={styles.date}>
@@ -128,7 +130,7 @@ export default function Invoice11() {
                     <Text style={styles.text}>Total Amout Due:</Text>
                 </View>
             </View>
-        </ScrollView>
+        </PrintBtn>
     );
 }
 
