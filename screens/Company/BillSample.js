@@ -1,10 +1,8 @@
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import InvoiceList from '../../components/InvoiceList';
 import Header from '../../components/SettingItem/header';
-import { backgroundColor, white } from '../../constant/color';
 import Input from '../../components/Input';
-import Button from '../../components/Button';
 export default function BillSample({ navigation }) {
     const [invoices, setInvoices] = useState([
         {

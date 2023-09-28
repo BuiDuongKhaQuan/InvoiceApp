@@ -6,7 +6,7 @@ import { isValidateEmail, isValidatePass } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
-import { login } from '../Service/api';
+import { getCompaniesById, login } from '../Service/api';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 import Loading from '../components/Loading';
 
@@ -46,9 +46,11 @@ export default function Login({ navigation }) {
         setLoading(true);
         try {
             const userData = await login(email, pass);
+            const companyData = await getCompaniesById(userData.companyId);
+            console.log(companyData);
             dispatch({
                 type: 'SIGN_IN',
-                payload: userData,
+                payload: { user: userData, company: companyData },
             });
             navigation.navigate('TabNavigator');
         } catch (error) {
