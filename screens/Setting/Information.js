@@ -231,7 +231,7 @@ export default function Information() {
                                     setSelectedGender(selectedItem);
                                 }}
                                 buttonStyle={styles.dropdown_btn}
-                                defaultButtonText="Gender"
+                                defaultButtonText={state.user.gender}
                                 renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
                                 dropdownIconPosition="right"
                                 buttonTextAfterSelection={(selectedItem, index) => {
