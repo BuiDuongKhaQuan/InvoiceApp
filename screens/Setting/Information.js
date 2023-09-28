@@ -26,7 +26,7 @@ export default function Information() {
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [4, 4],
             quality: 1,
         });
 
@@ -73,7 +73,7 @@ export default function Information() {
     const uploadWallpaper = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [4, 2],
             quality: 1,
         });
 

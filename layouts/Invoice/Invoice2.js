@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
-import { white } from '../../constant/color';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 const html = `
 <!DOCTYPE html>
