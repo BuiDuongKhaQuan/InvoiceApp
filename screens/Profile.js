@@ -145,13 +145,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     container_top: {
-        flex: 1.2,
+        flex: 1.5,
         position: 'relative',
         flexDirection: 'column',
         alignItems: 'center',
     },
     image: {
-        flex: 2.3,
+        flex: 3,
         borderBottomWidth: 1,
         borderBottomColor: 'black',
     },
