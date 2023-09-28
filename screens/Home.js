@@ -7,6 +7,9 @@ import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đư
 import Input from '../components/Input';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { white } from '../constant/color';
+import QRCode from 'react-native-qrcode-svg';
+import axios from 'axios';
+import moment from 'moment';
 const { width } = Dimensions.get('screen');
 
 export default function Home({ navigation }) {
@@ -75,6 +78,61 @@ export default function Home({ navigation }) {
             image: require('../assets/images/Invoices/Bill_11.png'),
         },
     ]);
+    const [newIDBill, setNewIDBill] = useState(''); // Sử dụng useState để lưu mã hóa đơn mới
+
+    useEffect(() => {
+        const handerId = async () => {
+            try {
+                const response = await axios.get(
+                    `http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/invoices`,
+                );
+                const data = response.data;
+                const currentDate = moment().format('DDMMYYYY');
+                let newIDBill;
+
+                if (data.length > 0) {
+                    // Tìm mã hóa đơn lớn nhất trong danh sách
+                    const maxBill = data[data.length - 1];
+                    if (!isNaN(maxBill.maHoaDon)) {
+                        // Nếu là số hợp lệ, tạo mã hóa đơn mới bằng cách tăng nó lên 1
+                        newIDBill = (parseInt(maxBill.id) + 1).toString();
+                    }
+                    // Tạo mã hóa đơn mới bằng cách tăng mã hóa đơn lớn nhất thêm 1
+                    newIDBill = (parseInt(maxBill.id) + 1).toString();
+                }
+
+                setNewIDBill(`${currentDate}_${newIDBill}`);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách hóa đơn:', error);
+            }
+        };
+
+        // Gọi hàm để tính toán và lưu mã hóa đơn mới vào state
+        handerId();
+    }, []);
+
+    // function generateInvoiceID() {
+    //     // Lấy ngày hiện tại
+    //     const currentDate = new Date();
+
+    //     // Lấy thông tin ngày, tháng và năm
+    //     const day = currentDate.getDate();
+    //     const month = currentDate.getMonth() + 1; // Tháng bắt đầu từ 0
+    //     const year = currentDate.getFullYear();
+    //     const hour = currentDate.getHours();
+    //     const minute = currentDate.getMinutes();
+    //     // const second = currentDate.getSeconds();
+
+    //     // Tạo mã ngày có định dạng "DDMMYYYY"
+    //     const formattedDate = `${day.toString().padStart(2, '0')}${month.toString().padStart(2, '0')}${year}`;
+    //     const formatteHour = `${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}`;
+
+    //     // Kết hợp mã ngày và mã hóa đơn
+    //     const invoiceID = `HD${formattedDate}-${formatteHour}-${handleSearch.id + 1}`;
+
+    //     return invoiceID;
+    // }
+    // const invoiceID = generateInvoiceID();
 
     return (
         <>
@@ -96,6 +154,10 @@ export default function Home({ navigation }) {
                                 <Image style={styles.imageSlider} source={image} key={index} />
                             ))}
                         </Swiper>
+                    </View>
+                    <Text>{newIDBill}</Text>
+                    <View>
+                        <QRCode value={newIDBill} size={200} />
                     </View>
                     <View style={styles.list}>
                         <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} />

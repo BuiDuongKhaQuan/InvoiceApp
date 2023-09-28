@@ -149,37 +149,3 @@ export const products = async (name, status, price, listImageFile, companyName, 
         throw error;
     }
 };
-// update avatar
-export const updateAvatar = async (userId, image) => {
-    try {
-        const formData = new FormData();
-        formData.append('id', userId);
-        formData.append(
-            'avatar',
-            JSON.stringify({
-                uri: image,
-                type: mime.getType(image.uri),
-                name: image.split('/').pop(),
-            }),
-        );
-
-        const response = await axios.patch('v1/auth/users', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'cache-control': 'no-cache',
-            },
-            processData: false,
-            contentType: false,
-            mimeType: 'multipart/form-data',
-        });
-
-        if (response.status === 201) {
-            console.log('Cập nhật thành công');
-            return response.data; // Trả về dữ liệu sau khi cập nhật thành công (nếu có).
-        } else {
-            throw new Error('Cập nhật ảnh đại diện không thành công.');
-        }
-    } catch (error) {
-        throw error; // Xử lý lỗi nếu có.
-    }
-};
