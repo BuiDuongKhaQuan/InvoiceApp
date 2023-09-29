@@ -2,21 +2,15 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
-    Button,
     Platform,
     Text,
     TouchableOpacity,
     TextInput,
     Image,
-    ScrollView,
     KeyboardAvoidingView,
-    Alert,
 } from 'react-native';
-import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import moment from 'moment';
-import numberToWords from 'number-to-words';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Entypo } from '@expo/vector-icons';
 import { fontSizeDefault } from '../../constant/fontSize';
@@ -27,7 +21,6 @@ export default function Invoice2({ data }) {
     const currentHour = moment().format('HH:mm:ss');
     const [customer, setCustomer] = useState('');
     const [phone, setPhone] = useState('');
-    const [selectedPrinter, setSelectedPrinter] = useState();
     const [products, setProducts] = useState([]);
     const [nameProduct, setNameProduct] = useState('');
     const [price, setPrice] = useState();
@@ -35,7 +28,6 @@ export default function Invoice2({ data }) {
     const [ck, setCk] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalBillPrice, setTotalBillPrice] = useState(0);
-    const amountInWords = numberToWords.toWords(totalBillPrice);
     const [id, setId] = useState(1);
     const [productsApi, setProductsApi] = useState([
         {
@@ -265,7 +257,7 @@ flex-direction: column;
                 groupIndex++;
             }
         }
-return result.trim();
+        return result.trim();
     }
     const handleAddProduct = () => {
         if (nameProduct && price && quantity) {
@@ -321,40 +313,13 @@ return result.trim();
         setCk(newTotalCk.toString());
     }, [products]);
 
-    const print = async () => {
-        if (products.length !== 0) {
-            // On iOS/android prints the given html. On web prints the HTML from the current page.
-            await Print.printAsync({
-                html,
-                printerUrl: selectedPrinter?.url, // iOS only
-            });
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
-
-    const printToFile = async () => {
-        if (customer && nameProduct && price && quantity) {
-            const { uri } = await Print.printToFileAsync({ html });
-            console.log('File has been saved to:', uri);
-            await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
-
-    const selectPrinter = async () => {
-        const printer = await Print.selectPrinterAsync(); // iOS only
-        setSelectedPrinter(printer);
-    };
-
     return (
         <PrintBtn html={html}>
             <View style={styles.container_top}>
                 <View style={styles.container_top1}>
                     <Text style={{ fontSize: 16 }}>TMART KTX DHQG</Text>
                     <Text style={styles.address}>HCM</Text>
-<Text style={styles.phone}>0970238648</Text>
+                    <Text style={styles.phone}>0970238648</Text>
                     <Text style={styles.gmail}>hong@gmail.com</Text>
                     <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
                     <Image style={{ height: 30 }}></Image>
@@ -405,7 +370,7 @@ return result.trim();
                         </View>
                         <Text style={styles.text_bold}>
                             -------------------------------------------------------------------
-</Text>
+                        </Text>
 
                         {products.map((product, index) => (
                             <View style={styles.table_colum_1} key={index}>
@@ -447,7 +412,7 @@ return result.trim();
                                     defaultButtonText={'Selected product'}
                                     renderDropdownIcon={() => (
                                         <Entypo name="chevron-small-down" size={24} color="black" />
-)}
+                                    )}
                                     dropdownIconPosition="right"
                                     buttonTextAfterSelection={(selectedItem) => {
                                         return selectedItem.name;
@@ -501,7 +466,7 @@ return result.trim();
                                 <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
                                 <Text style={styles.text_bold}>{ck}</Text>
                             </View>
-<View style={styles.bottom_row}>
+                            <View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Tổng thanh toán:</Text>
                                 <Text style={styles.text_bold}>{totalBillPrice}</Text>
                             </View>
@@ -600,7 +565,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: 0,
         marginRight: 5,
-},
+    },
     colum_name: {
         flex: 5,
         fontWeight: 'bold',
