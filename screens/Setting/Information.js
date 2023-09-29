@@ -9,11 +9,11 @@ import { fontSizeDefault } from '../../constant/fontSize';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
 import SelectDropdown from 'react-native-select-dropdown';
-import { StatusBar } from 'expo-status-bar';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Information() {
     const { state } = useUserContext();
+    const { user, company } = state;
     const { dispatch } = useUserContext();
     const genders = ['Male', 'Female'];
     const [name, setName] = useState(state.user.name);
@@ -83,7 +83,6 @@ export default function Information() {
         let localUri = result.assets[0].uri;
         setPhotoShowWallpaper(localUri);
         let filename = localUri.split('/').pop();
-        console.log('dấddas', localUri);
         let match = /\.(\w+)$/.exec(filename);
         let type = match ? `image/${match[1]}` : `image`;
 
@@ -146,7 +145,7 @@ export default function Information() {
             );
             dispatch({
                 type: 'SIGN_IN',
-                payload: { user: response.data },
+                payload: { user: response.data, company: state.company },
             });
             console.log(response.data);
         } catch (error) {
@@ -165,9 +164,11 @@ export default function Information() {
                     <View style={styles.image}>
                         <Image
                             style={styles.avatar_img}
-                            source={{
-                                uri: state.user.image,
-                            }}
+                            source={
+                                user.image == null
+                                    ? require('../../assets/images/default-avatar.png')
+                                    : { uri: user.image }
+                            }
                         />
 
                         <Button
@@ -180,9 +181,11 @@ export default function Information() {
                     <View style={styles.image}>
                         <Image
                             style={styles.wallpaper_img}
-                            source={{
-                                uri: state.user.wallpaper,
-                            }}
+                            source={
+                                user.wallpaper == null
+                                    ? require('../../assets/images/default-wallpaper.png')
+                                    : { uri: user.wallpaper }
+                            }
                         />
                         <Button
                             text="Change wallpaper"

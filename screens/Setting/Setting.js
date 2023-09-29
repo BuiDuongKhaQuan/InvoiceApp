@@ -5,8 +5,12 @@ import SettingItem from '../../components/SettingItem';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { AntDesign, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { useUserContext } from '../UserContext';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Setting() {
+    const { dispatch } = useUserContext();
+    const navigation = useNavigation();
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
@@ -78,6 +82,12 @@ export default function Setting() {
                                     <Button
                                         iconLeft={<SimpleLineIcons name="logout" size={24} color="black" />}
                                         customStylesBtn={styles.logout_btn}
+                                        onPress={() => {
+                                            dispatch({
+                                                type: 'SIGN_OUT',
+                                            });
+                                            navigation.navigate('Login');
+                                        }}
                                         text="Logout"
                                     />
                                 </>

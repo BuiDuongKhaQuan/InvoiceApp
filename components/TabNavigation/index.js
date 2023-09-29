@@ -88,7 +88,7 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={user_role == 'ROLE_USER' ? 'Profile' : 'ProfileCompany'}
+                    name={user_role == 'ROLE_USER' ? 'Profile' : 'Company'}
                     component={user_role == 'ROLE_USER' ? Profile : ProfileCompany}
                     options={{
                         headerShown: false,

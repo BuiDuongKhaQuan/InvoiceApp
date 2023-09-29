@@ -47,7 +47,6 @@ export default function Login({ navigation }) {
         try {
             const userData = await login(email, pass);
             const companyData = await getCompaniesById(userData.companyId);
-            console.log(companyData);
             dispatch({
                 type: 'SIGN_IN',
                 payload: { user: userData, company: companyData },

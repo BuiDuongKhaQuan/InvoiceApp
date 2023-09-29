@@ -46,11 +46,25 @@ export default function ProfileCompany() {
             <BackgroundImage>
                 <View style={styles.container_top}>
                     <View style={styles.image}>
-                        <Image style={styles.img_default} source={{ uri: user.wallpaper }} />
+                        <Image
+                            style={styles.img_default}
+                            source={
+                                user.wallpaper == null
+                                    ? require('../../assets/images/default-wallpaper.png')
+                                    : { uri: user.wallpaper }
+                            }
+                        />
                     </View>
                     <View style={styles.top_avatar}>
                         <View style={styles.top_}>
-                            <Image style={styles.avatar} source={{ uri: company.logo }} />
+                            <Image
+                                style={styles.avatar}
+                                source={
+                                    user.image == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: user.image }
+                                }
+                            />
                             <Text style={styles.name}>{user.name}</Text>
                         </View>
                         <Button
@@ -141,6 +155,8 @@ const styles = StyleSheet.create({
     avatar: {
         width: 90,
         height: 90,
+        borderWidth: 1,
+        borderColor: 'gray',
         borderRadius: 50,
         resizeMode: 'stretch',
     },

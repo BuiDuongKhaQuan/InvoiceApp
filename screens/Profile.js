@@ -73,24 +73,29 @@ export default function Profile() {
                     <View style={styles.image}>
                         <Image
                             style={styles.img_default}
-                            source={{
-                                uri: user.wallpaper,
-                            }}
+                            source={
+                                user.wallpaper == null
+                                    ? require('../assets/images/default-wallpaper.png')
+                                    : { uri: user.wallpaper }
+                            }
                         />
                     </View>
                     <View style={styles.top_avatar}>
                         <View style={styles.top_}>
                             <Image
                                 style={styles.avatar}
-                                source={{
-                                    uri: user.image,
-                                }}
+                                source={
+                                    user.image == null
+                                        ? require('../assets/images/default-avatar.png')
+                                        : { uri: user.image }
+                                }
                             />
                             <Text style={styles.name}>{user.name}</Text>
                         </View>
                         <Button
                             customStylesBtn={styles.edit_btn}
                             customStylesText={styles.btn_text}
+                            z
                             onPress={() => navigation.navigate('Setting')}
                             iconLeft={<AntDesign name="setting" size={24} color="black" />}
                             text="Settings"
@@ -192,6 +197,8 @@ const styles = StyleSheet.create({
         width: 90,
         height: 90,
         borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'gray',
         resizeMode: 'stretch',
     },
     top_: {
