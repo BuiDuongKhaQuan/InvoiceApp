@@ -1,7 +1,7 @@
 // TabNavigator.js
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
+import { Feather, AntDesign, FontAwesome } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import Home from '../../screens/Home';
 import Search from '../../screens/Search';
@@ -10,12 +10,15 @@ import { buttonColor, white } from '../../constant/color';
 import Popup from '../Popup';
 import Button from '../Button';
 import Profile from '../../screens/Profile';
+import { useUserContext } from '../../screens/UserContext';
+import ProfileCompany from '../../screens/Company/ProfileCompany';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
-
+    const { state } = useUserContext();
+    const user_role = state.user.roles;
     const togglePopup = () => {
         setPopupVisible(!isPopupVisible);
     };
@@ -85,11 +88,16 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Profile"
-                    component={Profile}
+                    name={user_role == 'ROLE_USER' ? 'Profile' : 'ProfileCompany'}
+                    component={user_role == 'ROLE_USER' ? Profile : ProfileCompany}
                     options={{
                         headerShown: false,
-                        tabBarIcon: ({ color, size }) => <AntDesign name="user" size={size} color={color} />,
+                        tabBarIcon: ({ color, size }) =>
+                            user_role == 'ROLE_USER' ? (
+                                <AntDesign name="user" size={size} color={color} />
+                            ) : (
+                                <FontAwesome name="building-o" size={size} color={color} />
+                            ),
                     }}
                 />
             </Tab.Navigator>
