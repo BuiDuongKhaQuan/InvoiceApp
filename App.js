@@ -35,7 +35,6 @@ export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
     return (
-        // <CreateInvoice />
         <UserProvider>
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Welcom">
@@ -54,8 +53,8 @@ export default function App() {
                     <Stack.Screen name="Bills" component={Bills} />
                     <Stack.Screen name="BillSample" component={BillSample} />
                     <Stack.Screen name="EditBill" component={EditBill} />
-                    <Stack.Screen name="ProfileCompany" component={ProfileCompany} />
-                    <Stack.Screen name="Staff" component={Staff} />
+                    <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
+                    <Stack.Screen name="Staff" component={Staff} options={headerNone} />
                     <Stack.Screen name="Statistical" component={Statistical} />
                     <Stack.Screen name="WatchBill" component={WatchBill} />
                     <Stack.Screen name="Language" component={Language} options={headerNone} />

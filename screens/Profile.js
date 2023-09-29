@@ -258,9 +258,9 @@ const styles = StyleSheet.create({
         backgroundColor: white,
         flexDirection: 'column',
         marginVertical: 8,
-        shadowOffset: { width: 0, height: 2 }, // Điều chỉnh vị trí bóng (đối với iOS)
-        shadowOpacity: 0.5, // Điều chỉnh độ trong suốt của bóng (đối với iOS)
-        shadowRadius: 5, // Điều chỉnh bán kính của bóng (đối với iOS)
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
         elevation: 5,
     },
     contact_row: {

@@ -2,13 +2,13 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
 import Input from '../../components/Input';
 import Header from '../../components/SettingItem/header';
+import { Feather } from '@expo/vector-icons';
 
 export default function Staff() {
     return (
         <View style={styles.container}>
             <Header title="Nhân viên" />
-            <Input iconLeft={require('../../assets/icons/search.png')} customStylesContainer={styles.input} />
-            ./assets/icons/user-cicle.png
+            <Input iconLeft={<Feather name="search" size={24} color="black" />} customStylesContainer={styles.input} />
             <View style={styles.icontilte}>
                 <Image style={styles.icon} source={require('../../assets/icons/user-cicle.png')} />
                 <Text style={styles.text}>Tiêu đề</Text>

@@ -13,13 +13,13 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Information() {
-    const genders = ['Male', 'Female'];
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [selectedGender, setSelectedGender] = useState('');
     const { state } = useUserContext();
     const { dispatch } = useUserContext();
+    const genders = ['Male', 'Female'];
+    const [name, setName] = useState(state.user.name);
+    const [email, setEmail] = useState(state.user.email);
+    const [phone, setPhone] = useState(state.user.phone);
+    const [selectedGender, setSelectedGender] = useState('');
     const [photoShow, setPhotoShow] = useState(null);
     const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -61,9 +61,8 @@ export default function Information() {
             );
             dispatch({
                 type: 'SIGN_IN',
-                payload: response.data,
+                payload: { user: response.data, company: state.company },
             });
-            console.log('Cập nhật thành công:', response.data);
         } catch (error) {
             console.error('Lỗi:', error);
         } finally {
@@ -84,7 +83,7 @@ export default function Information() {
         let localUri = result.assets[0].uri;
         setPhotoShowWallpaper(localUri);
         let filename = localUri.split('/').pop();
-        console.log(localUri);
+        console.log('dấddas', localUri);
         let match = /\.(\w+)$/.exec(filename);
         let type = match ? `image/${match[1]}` : `image`;
 
@@ -108,9 +107,8 @@ export default function Information() {
             );
             dispatch({
                 type: 'SIGN_IN',
-                payload: response.data,
+                payload: { user: response.data, company: state.company },
             });
-            console.log('Cập nhật thành công:', response.data);
         } catch (error) {
             console.error('Lỗi:', error);
         } finally {
@@ -148,11 +146,11 @@ export default function Information() {
             );
             dispatch({
                 type: 'SIGN_IN',
-                payload: response.data,
+                payload: { user: response.data },
             });
             console.log(response.data);
         } catch (error) {
-            console.error(' error:', error);
+            console.error(' error:', error.response);
         } finally {
             setLoading(false);
         }
