@@ -1,10 +1,8 @@
 import { StyleSheet, Text, View, Image, Dimensions, StatusBar, FlatList } from 'react-native';
 import React, { useState } from 'react';
-import { AntDesign } from '@expo/vector-icons';
 import Button from '../../components/Button';
 import { backgroundColor, white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
-import SettingItem from '../../components/SettingItem';
 
 const { width } = Dimensions.get('screen');
 

@@ -1,24 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, ScrollView, Alert, Dimensions } from 'react-native';
-import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
-import { white } from '../../constant/color';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import Button from '../../components/Button';
+import SelectDropdown from 'react-native-select-dropdown';
+import { Entypo } from '@expo/vector-icons';
+import { fontSizeDefault } from '../../constant/fontSize';
+import { dateNow, houseNow } from '../../utilies/date';
+import PrintBtn from './PrintBtn';
 
 export default function Invoice({ data }) {
-    const currentDate = new Date();
-    const dateNow = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
-    const houseNow = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-    const [selectedPrinter, setSelectedPrinter] = useState();
-    // const [products, setProducts] = useState([]);
     const [products, setProducts] = useState([]);
     const [customer, setCustomer] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
+    const [productId, setProductId] = useState('');
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalBillPrice, setTotalBillPrice] = useState(0);
+    const [productName, setProductName] = useState('');
+    const [productsApi, setProductsApi] = useState([
+        {
+            id: 1,
+            name: 'Cam',
+            price: 10000,
+        },
+        {
+            id: 2,
+            name: 'Quýt',
+            price: 20000,
+        },
+        {
+            id: 3,
+            name: 'Bưởi',
+            price: 30000,
+        },
+        {
+            id: 4,
+            name: 'Dừa',
+            price: 40000,
+        },
+        {
+            id: 5,
+            name: 'Ổi',
+            price: 50000,
+        },
+    ]);
 
     const listProductHtml = () =>
         products
@@ -140,9 +164,12 @@ export default function Invoice({ data }) {
     </html>`;
 
     const handleAddProduct = () => {
-        if (nameProduct && price && quantity) {
-            setProducts([...products, { name: nameProduct, price: price, quantity: quantity, totalPrice: totalPrice }]);
-            setNameProduct('');
+        if (productId && price && quantity) {
+            setProducts([
+                ...products,
+                { productId: productId, name: productName, price: price, quantity: quantity, totalPrice: totalPrice },
+            ]);
+            setProductId();
             setPrice();
             setQuantity();
             setTotalPrice();
@@ -171,157 +198,126 @@ export default function Invoice({ data }) {
         setTotalBillPrice(newTotalBillPrice);
     }, [products]);
 
-    const print = async () => {
-        if (customer && nameProduct && price && quantity) {
-            await Print.printAsync({
-                html,
-                printerUrl: selectedPrinter?.url,
-            });
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
-
-    const printToFile = async () => {
-        if (customer && nameProduct && price && quantity) {
-            const { uri } = await Print.printToFileAsync({ html });
-            console.log('File has been saved to:', uri);
-            await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
-
-    const selectPrinter = async () => {
-        const printer = await Print.selectPrinterAsync();
-        setSelectedPrinter(printer);
-    };
-
     return (
-        <View style={styles.wrapper}>
-            <View style={styles.invoice}>
-                <ScrollView style={styles.container}>
-                    <View style={styles.container_top}>
-                        <Text style={styles.text_bold}>WOORI COFFEE</Text>
-                        <Text style={styles.text_bold}>ĐC: Ký túc xá khu B</Text>
-                        <Text style={styles.text_bold}>SĐT: 01232143</Text>
-                        <Text style={styles.line} />
-                        <Text style={styles.text_bold}>HÓA ĐƠN THANH TOÁN</Text>
-                        <Text style={styles.text_bold}>Số: 209130123910</Text>
-                        <Text style={styles.text_bold}>Ngày: {dateNow}</Text>
+        <PrintBtn html={html}>
+            <View style={styles.container_top}>
+                <Text style={styles.text_bold}>WOORI COFFEE</Text>
+                <Text style={styles.text_bold}>ĐC: Ký túc xá khu B</Text>
+                <Text style={styles.text_bold}>SĐT: 01232143</Text>
+                <Text style={styles.line} />
+                <Text style={styles.text_bold}>HÓA ĐƠN THANH TOÁN</Text>
+                <Text style={styles.text_bold}>Số: 209130123910</Text>
+                <Text style={styles.text_bold}>Ngày: {dateNow}</Text>
+            </View>
+            <View style={styles.container_center}>
+                <View style={styles.center_row}>
+                    <Text style={styles.text_bold}>Giờ vào:</Text>
+                    <Text style={styles.text_line}>
+                        {dateNow} {houseNow}
+                    </Text>
+                </View>
+                <View style={styles.center_row}>
+                    <Text style={styles.text_bold}>Khách hàng:</Text>
+                    <TextInput
+                        style={styles.text_line}
+                        onChangeText={(text) => setCustomer(text)}
+                        value={customer}
+                        placeholder="Nhập tên khách hàng"
+                    />
+                </View>
+                <View style={styles.center_row}>
+                    <Text style={styles.text_bold}>Thu ngân:</Text>
+                    <Text style={styles.text_line}>{data.name}</Text>
+                </View>
+                <View style={styles.table}>
+                    <View style={styles.table_colum}>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.giá</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
                     </View>
-                    <View style={styles.container_center}>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold}>Giờ vào:</Text>
-                            <Text style={styles.text_line}>
-                                {dateNow} {houseNow}
-                            </Text>
+
+                    {products.map((product, index) => (
+                        <View style={styles.table_colum} key={index}>
+                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{product.name}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.price}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.quantity}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.totalPrice}</Text>
+                            <View style={{ ...styles.action_btn, ...styles.colum_p }}>
+                                <TouchableOpacity onPress={() => removeProduct(index)}>
+                                    <AntDesign name="closesquare" size={24} color="black" />
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <MaterialIcons name="mode-edit" size={24} color="black" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold}>Khách hàng:</Text>
-                            <TextInput
-                                style={styles.text_line}
-                                onChangeText={(text) => setCustomer(text)}
-                                value={customer}
-                                placeholder="Nhập tên khách hàng"
+                    ))}
+                    <View style={styles.table_colum}>
+                        <View style={{ ...styles.text_line, ...styles.colum_name }}>
+                            <SelectDropdown
+                                data={productsApi}
+                                onSelect={(selectedItem) => {
+                                    setProductId(selectedItem.id);
+                                    setProductName(selectedItem.name);
+                                    setPrice(selectedItem.price.toString());
+                                }}
+                                buttonStyle={{ width: '100%', height: 35 }}
+                                rowTextStyle={{ fontSize: fontSizeDefault }}
+                                defaultButtonText={'Selected product'}
+                                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
+                                dropdownIconPosition="right"
+                                buttonTextAfterSelection={(selectedItem) => {
+                                    return selectedItem.name;
+                                }}
+                                rowTextForSelection={(item) => {
+                                    return item.name;
+                                }}
                             />
                         </View>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold}>Thu ngân:</Text>
-                            <Text style={styles.text_line}>{data.name}</Text>
-                        </View>
-                        <View style={styles.table}>
-                            <View style={styles.table_colum}>
-                                <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
-                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.giá</Text>
-                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
-                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
-                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
-                            </View>
-
-                            {products.map((product, index) => (
-                                <View style={styles.table_colum} key={index}>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_name }}>{product.name}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.price}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.quantity}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.totalPrice}</Text>
-                                    <View style={{ ...styles.action_btn, ...styles.colum_p }}>
-                                        <TouchableOpacity onPress={() => removeProduct(index)}>
-                                            <AntDesign name="closesquare" size={24} color="black" />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity>
-                                            <MaterialIcons name="mode-edit" size={24} color="black" />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            ))}
-                            <View style={styles.table_colum}>
-                                <TextInput
-                                    onChangeText={(text) => setNameProduct(text)}
-                                    value={nameProduct}
-                                    placeholder="Tên"
-                                    style={{ ...styles.text_line, ...styles.colum_name }}
-                                />
-                                <TextInput
-                                    onChangeText={handleChangePrice}
-                                    value={price}
-                                    placeholder="Giá"
-                                    keyboardType="numeric"
-                                    style={{ ...styles.text_line, ...styles.colum_p }}
-                                />
-                                <TextInput
-                                    onChangeText={handleChangeQuantity}
-                                    value={quantity}
-                                    placeholder="SL"
-                                    keyboardType="numeric"
-                                    style={{ ...styles.text_line, ...styles.colum_p }}
-                                />
-                                <Text style={{ ...styles.text_line, ...styles.colum_p }}>{totalPrice}</Text>
-                                <View style={{ ...styles.action_btn, ...styles.colum_p }}>
-                                    <TouchableOpacity onPress={handleAddProduct}>
-                                        <AntDesign name="plussquare" size={23} color="black" />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.bottom_content}>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng thành tiền</Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng hóa đơn</Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.bottom_end}>
-                            <Text style={styles.text_bold}>-------------------------------</Text>
-                            <Text style={styles.text_bold}>Xin cảm ơn hẹn gặp lại quý khách</Text>
+                        <TextInput
+                            onChangeText={handleChangePrice}
+                            value={price}
+                            placeholder="Giá"
+                            keyboardType="numeric"
+                            style={{ ...styles.text_line, ...styles.colum_p }}
+                        />
+                        <TextInput
+                            onChangeText={handleChangeQuantity}
+                            value={quantity}
+                            placeholder="SL"
+                            keyboardType="numeric"
+                            style={{ ...styles.text_line, ...styles.colum_p }}
+                        />
+                        <Text style={{ ...styles.text_line, ...styles.colum_p }}>{totalPrice}</Text>
+                        <View style={{ ...styles.action_btn, ...styles.colum_p }}>
+                            <TouchableOpacity onPress={handleAddProduct}>
+                                <AntDesign name="plussquare" size={23} color="black" />
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </ScrollView>
+                </View>
+                <View style={styles.bottom_content}>
+                    <View style={styles.bottom_row}>
+                        <Text style={styles.text_bold}>Tổng thành tiền</Text>
+                        <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                    </View>
+                    <View style={styles.bottom_row}>
+                        <Text style={styles.text_bold}>Tổng hóa đơn</Text>
+                        <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                    </View>
+                </View>
+                <View style={styles.bottom_end}>
+                    <Text style={styles.text_bold}>-------------------------------</Text>
+                    <Text style={styles.text_bold}>Xin cảm ơn hẹn gặp lại quý khách</Text>
+                </View>
             </View>
-            <View style={styles.container_bottom}>
-                <Button customStylesBtn={styles.btn} text="Print" onPress={print} />
-                <Button customStylesBtn={styles.btn} text="Save to PDF" onPress={printToFile} />
-            </View>
-        </View>
+        </PrintBtn>
     );
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        flexDirection: 'column',
-    },
-    invoice: {
-        flex: 10,
-    },
-    container: {
-        flex: 1,
-        backgroundColor: white,
-        paddingHorizontal: 10,
-    },
     container_top: {
         alignItems: 'center',
         flex: 2.3,
@@ -388,18 +384,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    container_bottom: {
-        flex: 1,
-        height: 50,
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    btn: {
-        marginHorizontal: 10,
-        height: '60%',
-        width: '40%',
+
+    dropdown: {},
+    dropdown_btn: {
         borderRadius: 5,
     },
 });

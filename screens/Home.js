@@ -6,7 +6,6 @@ import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 import Input from '../components/Input';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { white } from '../constant/color';
 import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import moment from 'moment';
@@ -111,29 +110,6 @@ export default function Home({ navigation }) {
         handerId();
     }, []);
 
-    // function generateInvoiceID() {
-    //     // Lấy ngày hiện tại
-    //     const currentDate = new Date();
-
-    //     // Lấy thông tin ngày, tháng và năm
-    //     const day = currentDate.getDate();
-    //     const month = currentDate.getMonth() + 1; // Tháng bắt đầu từ 0
-    //     const year = currentDate.getFullYear();
-    //     const hour = currentDate.getHours();
-    //     const minute = currentDate.getMinutes();
-    //     // const second = currentDate.getSeconds();
-
-    //     // Tạo mã ngày có định dạng "DDMMYYYY"
-    //     const formattedDate = `${day.toString().padStart(2, '0')}${month.toString().padStart(2, '0')}${year}`;
-    //     const formatteHour = `${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}`;
-
-    //     // Kết hợp mã ngày và mã hóa đơn
-    //     const invoiceID = `HD${formattedDate}-${formatteHour}-${handleSearch.id + 1}`;
-
-    //     return invoiceID;
-    // }
-    // const invoiceID = generateInvoiceID();
-
     return (
         <>
             <View style={{ ...styles.input, backgroundColor: inputColor }}>
@@ -156,9 +132,7 @@ export default function Home({ navigation }) {
                         </Swiper>
                     </View>
                     <Text>{newIDBill}</Text>
-                    <View>
-                        <QRCode value={newIDBill} size={200} />
-                    </View>
+                    <View>{newIDBill && <QRCode value={newIDBill} size={200} />}</View>
                     <View style={styles.list}>
                         <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} />
                     </View>

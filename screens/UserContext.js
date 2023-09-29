@@ -5,6 +5,7 @@ const UserContext = createContext();
 
 const initialState = {
     user: null,
+    company: null,
     isAuthenticated: false,
 };
 
@@ -13,13 +14,15 @@ const reducer = (state, action) => {
         case 'SIGN_IN':
             return {
                 ...state,
-                user: action.payload,
+                user: action.payload.user,
+                company: action.payload.company,
                 isAuthenticated: true,
             };
         case 'SIGN_OUT':
             return {
                 ...state,
                 user: null,
+                company: null,
                 isAuthenticated: false,
             };
         default:

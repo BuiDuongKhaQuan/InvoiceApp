@@ -93,7 +93,7 @@ export default function Invoice2({ data }) {
     <style>
       .container {
         display: flex;
-        flex-direction: column;
+flex-direction: column;
         background-color: white;
         margin-left: 10;
         margin-right: 10;
@@ -182,7 +182,7 @@ export default function Invoice2({ data }) {
           <p>${totalBillPrice}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
+<p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
           <p>${ck}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
@@ -265,8 +265,7 @@ export default function Invoice2({ data }) {
                 groupIndex++;
             }
         }
-
-        return result.trim();
+return result.trim();
     }
     const handleAddProduct = () => {
         if (nameProduct && price && quantity) {
@@ -355,7 +354,7 @@ export default function Invoice2({ data }) {
                 <View style={styles.container_top1}>
                     <Text style={{ fontSize: 16 }}>TMART KTX DHQG</Text>
                     <Text style={styles.address}>HCM</Text>
-                    <Text style={styles.phone}>0970238648</Text>
+<Text style={styles.phone}>0970238648</Text>
                     <Text style={styles.gmail}>hong@gmail.com</Text>
                     <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
                     <Image style={{ height: 30 }}></Image>
@@ -406,7 +405,7 @@ export default function Invoice2({ data }) {
                         </View>
                         <Text style={styles.text_bold}>
                             -------------------------------------------------------------------
-                        </Text>
+</Text>
 
                         {products.map((product, index) => (
                             <View style={styles.table_colum_1} key={index}>
@@ -448,7 +447,7 @@ export default function Invoice2({ data }) {
                                     defaultButtonText={'Selected product'}
                                     renderDropdownIcon={() => (
                                         <Entypo name="chevron-small-down" size={24} color="black" />
-                                    )}
+)}
                                     dropdownIconPosition="right"
                                     buttonTextAfterSelection={(selectedItem) => {
                                         return selectedItem.name;
@@ -502,7 +501,7 @@ export default function Invoice2({ data }) {
                                 <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
                                 <Text style={styles.text_bold}>{ck}</Text>
                             </View>
-                            <View style={styles.bottom_row}>
+<View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Tổng thanh toán:</Text>
                                 <Text style={styles.text_bold}>{totalBillPrice}</Text>
                             </View>
@@ -601,7 +600,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         marginLeft: 0,
         marginRight: 5,
-    },
+},
     colum_name: {
         flex: 5,
         fontWeight: 'bold',

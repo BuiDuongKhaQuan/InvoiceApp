@@ -6,8 +6,10 @@ import { AntDesign } from '@expo/vector-icons';
 import Invoice from '../layouts/Invoice/Invoice';
 import { useUserContext } from './UserContext';
 import { white } from '../constant/color';
+import Invoice2 from '../layouts/Invoice/Invoice2';
+import Invoice10 from '../layouts/Invoice/Invoice10';
 
-export default function CreateInvoice({ navigation }) {
+export default function CreateInvoice() {
     const [isPopupVisible, setPopupVisible] = useState(false);
     const { state } = useUserContext();
     const togglePopup = () => {
@@ -24,7 +26,7 @@ export default function CreateInvoice({ navigation }) {
                     iconRight={<AntDesign name="appstore-o" size={24} color="black" />}
                 />
                 <View style={styles.top}>
-                    <Invoice data={state.user} />
+                    <Invoice10 data={state.user} />
                 </View>
             </View>
         </>
