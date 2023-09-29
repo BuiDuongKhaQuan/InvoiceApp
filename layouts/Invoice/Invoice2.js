@@ -20,6 +20,8 @@ import numberToWords from 'number-to-words';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Entypo } from '@expo/vector-icons';
 import { fontSizeDefault } from '../../constant/fontSize';
+import PrintBtn from './PrintBtn';
+
 export default function Invoice2({ data }) {
     const currentDate = moment().format('DD/MM/YYYY');
     const currentHour = moment().format('HH:mm:ss');
@@ -35,7 +37,6 @@ export default function Invoice2({ data }) {
     const [totalBillPrice, setTotalBillPrice] = useState(0);
     const amountInWords = numberToWords.toWords(totalBillPrice);
     const [id, setId] = useState(1);
-    const [moneyInput, setMoneyInput] = useState(0);
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -69,13 +70,13 @@ export default function Invoice2({ data }) {
             .map(
                 (product) =>
                     ` <tr>
-                    <td style="font-weight: 700"> 1</td>
+                    <td style="font-weight: 700">${product.id}</td>
                     <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
                     <tr>
                         <td></td>
                         <td style="padding-left: 30px;">${product.quantity}</td>
                         <td>${product.price}</td>
-                        <td style="padding-left: 6px">${ck}</td>
+                        <td style="padding-left: 6px">${product.ck}</td>
                         <td></td>
                         <td>${product.totalPrice}</td>
                     </tr>
@@ -186,9 +187,9 @@ export default function Invoice2({ data }) {
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
-          <p>${amountInWords}</p>
+          <p>${totalBillPrice}</p>
         </div>
-        <p style="text-align: center;">ee</p>
+        <p style="text-align: center;">${numberToVietnameseWords(totalBillPrice)}</p>
         <p style="border-bottom: 1px dashed  black;"></p>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
@@ -196,11 +197,12 @@ export default function Invoice2({ data }) {
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
-          <p>50.000</p>
+          <p>${totalBillPrice}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại:</p>
-          <p></p>
+          <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại: </p>
+       
+          <p>0</p>
         </div>
         <p style="border-bottom: 1px dashed  black;"></p>
 <p style="text-align: center;">Design by....</p>
@@ -348,7 +350,7 @@ export default function Invoice2({ data }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <PrintBtn html={html}>
             <View style={styles.container_top}>
                 <View style={styles.container_top1}>
                     <Text style={{ fontSize: 16 }}>TMART KTX DHQG</Text>
@@ -512,52 +514,26 @@ export default function Invoice2({ data }) {
                                 <Text style={styles.text_bold}>Kiểu T Toán:</Text>
                                 <Text style={styles.text_bold}>TM</Text>
                             </View>
-                            <View style={styles.bottom_row_pay}>
+                            <View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Nhận tiền của khách: </Text>
-                                <TextInput
-                                    style={{ marginVertical: -10 }}
-                                    placeholder="Tiền nhận "
-                                    keyboardType="numeric"
-                                    onChangeText={(text) => setMoneyInput(text)}
-                                    value={moneyInput}
-                                />
+                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
                             </View>
                             <View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Trả lại:</Text>
-                                <Text style={styles.text_bold}>{moneyInput - totalBillPrice}</Text>
+                                <Text style={styles.text_bold}>0</Text>
                             </View>
                         </View>
                         <View style={styles.bottom_end}>
-                            <Text>Design bởi</Text>
+                            <Text>Design bởi....</Text>
                         </View>
-                    </View>
-                    <View style={{ marginTop: 160 }}>
-                        <Button title="Print" onPress={print} />
-                        <View style={styles.spacer} />
-                        <Button title="Print to PDF file" onPress={printToFile} />
-                        {Platform.OS === 'ios' && (
-                            <>
-                                <View style={styles.spacer} />
-                                <Button title="Select printer" onPress={selectPrinter} />
-                                <View style={styles.spacer} />
-                                {selectedPrinter ? (
-                                    <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
-                                ) : undefined}
-                            </>
-                        )}
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        </ScrollView>
+        </PrintBtn>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginHorizontal: 10,
-        marginTop: 30,
-    },
     container_top: {
         flex: 1,
         justifyContent: 'center',
