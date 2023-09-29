@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, Keyboard, ImageBackground } from 'react-
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { isValidateCode } from '../utilies/validate';
+import { isValidateOTP } from '../utilies/validate';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { validateRegister } from '../Service/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -51,7 +51,7 @@ export default function ForgotPassword() {
     };
 
     const handleChangeCode = (text) => {
-        setErrorCode(!isValidateCode(text));
+        setErrorCode(!isValidateOTP(text));
         setCode(text);
     };
     return (

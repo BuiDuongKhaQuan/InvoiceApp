@@ -14,9 +14,11 @@ import { MaterialCommunityIcons, SimpleLineIcons, Ionicons, Feather } from '@exp
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { register } from '../Service/api';
 import { useNavigation } from '@react-navigation/native';
+import Loading from '../components/Loading';
 
 export default function Register() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [repass, setRePass] = useState('');
@@ -95,9 +97,9 @@ export default function Register() {
     };
 
     const handleRegister = async () => {
+        setLoading(true);
         try {
             await register(
-                navigation,
                 name,
                 email,
                 pass,
@@ -114,11 +116,14 @@ export default function Register() {
             } else {
                 console.error('Login error:', error);
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
+            <Loading loading={loading} />
             <BackgroundImage>
                 <ScrollView>
                     <View style={styles.container_top}>
