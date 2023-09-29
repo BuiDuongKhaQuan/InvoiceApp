@@ -5,17 +5,84 @@ import {
     Button,
     Platform,
     Text,
-    StatusBar,
     TouchableOpacity,
     TextInput,
     Image,
     ScrollView,
     KeyboardAvoidingView,
+    Alert,
 } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-const html = `
+import moment from 'moment';
+import numberToWords from 'number-to-words';
+import SelectDropdown from 'react-native-select-dropdown';
+import { Entypo } from '@expo/vector-icons';
+import { fontSizeDefault } from '../../constant/fontSize';
+export default function Invoice2({ data }) {
+    const currentDate = moment().format('DD/MM/YYYY');
+    const currentHour = moment().format('HH:mm:ss');
+    const [customer, setCustomer] = useState('');
+    const [phone, setPhone] = useState('');
+    const [selectedPrinter, setSelectedPrinter] = useState();
+    const [products, setProducts] = useState([]);
+    const [nameProduct, setNameProduct] = useState('');
+    const [price, setPrice] = useState();
+    const [quantity, setQuantity] = useState();
+    const [ck, setCk] = useState();
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalBillPrice, setTotalBillPrice] = useState(0);
+    const amountInWords = numberToWords.toWords(totalBillPrice);
+    const [id, setId] = useState(1);
+    const [moneyInput, setMoneyInput] = useState(0);
+    const [productsApi, setProductsApi] = useState([
+        {
+            id: 1,
+            name: 'Cam',
+            price: 10000,
+        },
+        {
+            id: 2,
+            name: 'Quýt',
+            price: 20000,
+        },
+        {
+            id: 3,
+            name: 'Bưởi',
+            price: 30000,
+        },
+        {
+            id: 4,
+            name: 'Dừa',
+            price: 40000,
+        },
+        {
+            id: 5,
+            name: 'Ổi',
+            price: 50000,
+        },
+    ]);
+    const [productId, setProductId] = useState('');
+    const listProductHtml = () =>
+        products
+            .map(
+                (product) =>
+                    ` <tr>
+                    <td style="font-weight: 700"> 1</td>
+                    <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
+                    <tr>
+                        <td></td>
+                        <td style="padding-left: 30px;">${product.quantity}</td>
+                        <td>${product.price}</td>
+                        <td style="padding-left: 6px">${ck}</td>
+                        <td></td>
+                        <td>${product.totalPrice}</td>
+                    </tr>
+                </tr>`,
+            )
+            .join('');
+    const html = `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -72,21 +139,21 @@ const html = `
       </div>
       <div class="container_center">
         <div style="display: flex; flex-direction: row">
-          <p style="flex: 1">Ngày: 18/09/2023</p>
-          <p style="flex: 1">09:00</p>
+          <p style="flex: 1">Ngày: ${currentDate}</p>
+          <p style="flex: 1">${currentHour}</p>
         </div>
         <div class="cashier" style="display: flex; flex-direction: row">
           <p style="margin-right: 20">Thu ngân:</p>
-          <p>Nguyễn Thị Thanh Tâm</p>
+          <p>${data.name}</p>
         </div>
         <div class="customer" style="display: flex; flex-direction: row">
           <p style="margin-right: 20">Khách hàng:</p>
-          <p>Siêm</p>
+          <p>${customer}</p>
         </div>
         <div style="display: flex; flex-direction: row">
           <div style="display: flex; flex-direction: row; flex: 2">
             <p style="margin-right: 20">Điện thoại:</p>
-            <p>0983681</p>
+            <p>${phone}</p>
           </div>
           <div style="display: flex; flex-direction: row; flex: 1">
             <p style="margin-right: 20">Điểm:</p>
@@ -103,45 +170,25 @@ const html = `
             <th>T.Tiền</th>
           </tr>
         
-          <tr>
-            <td style="font-weight: 700" > 1</td>
-            <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
-            <tr >
-              <td></td>
-              <td style="padding-left: 30px;">2</td>
-              <td>50.000</td>
-              <td style="padding-left: 6px">0%</td><td></td>
-              <td>100.000</td>
-            </tr> 
-          </tr>
-          <tr>
-            <td style="font-weight: 700" > 2</td>
-            <td style="font-weight: 700; padding-left: 30px;"> COFFEE NHA LÀM</td>
-            <tr >
-              <td></td>
-              <td style="padding-left: 30px;">2</td>
-              <td>50.000</td>
-              <td style="padding-left: 6px">0%</td><td></td>
-              <td>100.000</td>
-            </tr> 
-          </tr>
+          ${listProductHtml()}
+          
         </table>
         <p style="border-bottom: 1px dashed  black;"></p>
       </div>
       <div class="container_bottom" style="justify-content: right; ;">
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
-          <p>50.000</p>
+          <p>${totalBillPrice}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
-          <p>0.0</p>
+          <p>${ck}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
-          <p>50.000</p>
+          <p>${amountInWords}</p>
         </div>
-        <p style="text-align: center;">Hai mươi bốn ngìn đồng</p>
+        <p style="text-align: center;">ee</p>
         <p style="border-bottom: 1px dashed  black;"></p>
         <div style="display: flex; flex-direction: row; justify-content: right;">
           <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
@@ -163,39 +210,97 @@ const html = `
 </html>
 
 `;
-export default function Invoice2() {
-    const [selectedPrinter, setSelectedPrinter] = useState();
-    const [products, setProducts] = useState([]);
-    const [idProduct, setIdProduct] = useState('');
-    const [nameProduct, setNameProduct] = useState('');
-    const [price, setPrice] = useState();
-    const [quantity, setQuantity] = useState();
-    const [ck, setCk] = useState('');
-    const [totalPrice, setTotalPrice] = useState(0);
-    const [totalBillPrice, setTotalBillPrice] = useState(0);
+    function numberToVietnameseWords(number) {
+        const units = ['', ' nghìn', 'triệu', 'tỷ', 'nghìn tỷ', 'triệu tỷ', 'tỷ tỷ'];
+        const digits = ['', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín'];
 
+        const groupToWords = (group) => {
+            const hundred = Math.floor(group / 100);
+            const ten = Math.floor((group % 100) / 10);
+            const one = group % 10;
+
+            let result = '';
+
+            if (hundred > 0) {
+                result += digits[hundred] + ' trăm ';
+            }
+
+            if (ten > 1) {
+                result += digits[ten] + ' mươi ';
+                if (one > 0) {
+                    result += digits[one];
+                }
+            } else if (ten === 1) {
+                result += 'mười ';
+                if (one > 0) {
+                    result += digits[one];
+                }
+            } else {
+                if (one > 0) {
+                    result += digits[one];
+                }
+            }
+
+            return result;
+        };
+
+        const numberString = String(number);
+
+        let result = '';
+        let groupIndex = 0;
+        let group = '';
+
+        for (let i = numberString.length - 1; i >= 0; i--) {
+            group = numberString[i] + group;
+
+            if (group.length === 3 || i === 0) {
+                const groupNumber = parseInt(group);
+                if (groupNumber > 0) {
+                    result = groupToWords(groupNumber) + units[groupIndex] + ' ' + result;
+                }
+
+                group = '';
+                groupIndex++;
+            }
+        }
+
+        return result.trim();
+    }
     const handleAddProduct = () => {
         if (nameProduct && price && quantity) {
             setProducts([
                 ...products,
-                { id: idProduct, name: nameProduct, price: price, quantity: quantity, ck: ck, totalPrice: totalPrice },
+                {
+                    id: id,
+                    productId: productId,
+                    name: nameProduct,
+                    price: price,
+                    quantity: quantity,
+                    ck: ck,
+                    totalPrice: totalPrice,
+                },
             ]);
-            setIdProduct();
+            setId(id + 1);
             setNameProduct('');
             setPrice();
             setCk();
             setQuantity();
             setTotalPrice();
+            setProductId();
         }
     };
 
     const handleChangePrice = (text) => {
-        setPrice(text);
-        setTotalPrice(quantity * text);
+        setPrice(text.toString());
+        setTotalPrice(quantity * text + quantity * text * (ck / 100));
     };
     const handleChangeQuantity = (text) => {
-        setQuantity(text);
-        setTotalPrice(price * text);
+        setQuantity(text.toString());
+        setTotalPrice(text * price + text * price * (ck / 100));
+    };
+    const handleChangeCk = (text) => {
+        setCk(text.toString());
+        setTotalPrice(quantity * price + quantity * price * (text / 100));
     };
     const removeProduct = (key) => {
         products.splice(key, 1);
@@ -208,20 +313,33 @@ export default function Invoice2() {
         }, 0);
         setTotalBillPrice(newTotalBillPrice);
     }, [products]);
+    useEffect(() => {
+        const newTotalCk = products.reduce((ck, product) => {
+            return parseInt(product.ck, 10) + parseInt(ck, 10);
+        }, 0);
+        setCk(newTotalCk.toString());
+    }, [products]);
 
     const print = async () => {
-        // On iOS/android prints the given html. On web prints the HTML from the current page.
-        await Print.printAsync({
-            html,
-            printerUrl: selectedPrinter?.url, // iOS only
-        });
+        if (products.length !== 0) {
+            // On iOS/android prints the given html. On web prints the HTML from the current page.
+            await Print.printAsync({
+                html,
+                printerUrl: selectedPrinter?.url, // iOS only
+            });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
     };
 
     const printToFile = async () => {
-        // On iOS/android prints the given html. On web prints the HTML from the current page.
-        const { uri } = await Print.printToFileAsync({ html });
-        console.log('File has been saved to:', uri);
-        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+        if (customer && nameProduct && price && quantity) {
+            const { uri } = await Print.printToFileAsync({ html });
+            console.log('File has been saved to:', uri);
+            await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
     };
 
     const selectPrinter = async () => {
@@ -243,20 +361,30 @@ export default function Invoice2() {
                 <View style={styles.container_top2}>
                     <View style={styles.date}>
                         <Text>Ngày:</Text>
-                        <Text style={{ marginHorizontal: 40 }}>18/09/2023</Text>
-                        <Text>09:00</Text>
+                        <Text style={{ marginHorizontal: 40 }}>{currentDate}</Text>
+                        <Text>{currentHour}</Text>
                     </View>
                     <View style={styles.casher}>
                         <Text>Thu ngân:</Text>
-                        <Text>Nguyễn Thị Thanh Tâm</Text>
+                        <Text>{data.name}</Text>
                     </View>
                     <View style={styles.customer}>
                         <Text style={styles.customer_title}>Khách hàng:</Text>
-                        <TextInput style={styles.input} placeholder=" Tên khách hàng"></TextInput>
+                        <TextInput
+                            style={styles.input}
+                            placeholder=" Tên khách hàng"
+                            onChangeText={(text) => setCustomer(text)}
+                            value={customer}
+                        />
                     </View>
                     <View style={styles.information}>
                         <Text style={{ marginTop: 10 }}>Điện thoại:</Text>
-                        <TextInput style={styles.input} placeholder=" Số điện thoại"></TextInput>
+                        <TextInput
+                            style={styles.input}
+                            placeholder=" Số điện thoại"
+                            onChangeText={(text) => setPhone(text)}
+                            value={phone}
+                        />
                         <Text style={{ marginTop: 10 }}>Điểm</Text>
                         <Text style={{ marginTop: 10, marginHorizontal: 10 }}>0.0</Text>
                     </View>
@@ -270,7 +398,7 @@ export default function Invoice2() {
                             <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
                             <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
                             <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.G</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>ĐK</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>CK</Text>
                             <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
                             <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
                         </View>
@@ -304,19 +432,30 @@ export default function Invoice2() {
                             </View>
                         ))}
                         <View style={styles.table_colum}>
-                            <TextInput
-                                onChangeText={(text) => setIdProduct(text)}
-                                value={idProduct}
-                                placeholder="STT"
-                                keyboardType="numeric"
-                                style={{ ...styles.text_line, ...styles.colum_id }}
-                            />
-                            <TextInput
-                                onChangeText={(text) => setNameProduct(text)}
-                                value={nameProduct}
-                                placeholder="Tên"
-                                style={{ ...styles.text_line, ...styles.colum_name }}
-                            />
+                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{id}</Text>
+                            <View style={{ ...styles.text_line, ...styles.colum_name }}>
+                                <SelectDropdown
+                                    data={productsApi}
+                                    onSelect={(selectedItem) => {
+                                        setProductId(selectedItem.id);
+                                        setNameProduct(selectedItem.name);
+                                        setPrice(selectedItem.price.toString());
+                                    }}
+                                    buttonStyle={{ width: '100%', height: 35 }}
+                                    rowTextStyle={{ fontSize: fontSizeDefault }}
+                                    defaultButtonText={'Selected product'}
+                                    renderDropdownIcon={() => (
+                                        <Entypo name="chevron-small-down" size={24} color="black" />
+                                    )}
+                                    dropdownIconPosition="right"
+                                    buttonTextAfterSelection={(selectedItem) => {
+                                        return selectedItem.name;
+                                    }}
+                                    rowTextForSelection={(item) => {
+                                        return item.name;
+                                    }}
+                                />
+                            </View>
                             <TextInput
                                 onChangeText={handleChangeQuantity}
                                 value={quantity}
@@ -332,7 +471,7 @@ export default function Invoice2() {
                                 style={{ ...styles.text_line, ...styles.colum_p }}
                             />
                             <TextInput
-                                onChangeText={(text) => setCk(text)}
+                                onChangeText={handleChangeCk}
                                 value={ck}
                                 placeholder="0%"
                                 keyboardType="numeric"
@@ -358,7 +497,7 @@ export default function Invoice2() {
                             </View>
 
                             <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng chiêc khấu:</Text>
+                                <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
                                 <Text style={styles.text_bold}>{ck}</Text>
                             </View>
                             <View style={styles.bottom_row}>
@@ -366,6 +505,9 @@ export default function Invoice2() {
                                 <Text style={styles.text_bold}>{totalBillPrice}</Text>
                             </View>
                             <Text style={styles.line}>-----------------------------------</Text>
+                            <View style={styles.bottom_end}>
+                                <Text>{numberToVietnameseWords(totalBillPrice)}</Text>
+                            </View>
                             <View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Kiểu T Toán:</Text>
                                 <Text style={styles.text_bold}>TM</Text>
@@ -376,11 +518,13 @@ export default function Invoice2() {
                                     style={{ marginVertical: -10 }}
                                     placeholder="Tiền nhận "
                                     keyboardType="numeric"
-                                ></TextInput>
+                                    onChangeText={(text) => setMoneyInput(text)}
+                                    value={moneyInput}
+                                />
                             </View>
                             <View style={styles.bottom_row}>
                                 <Text style={styles.text_bold}>Trả lại:</Text>
-                                <Text style={styles.text_bold}></Text>
+                                <Text style={styles.text_bold}>{moneyInput - totalBillPrice}</Text>
                             </View>
                         </View>
                         <View style={styles.bottom_end}>
