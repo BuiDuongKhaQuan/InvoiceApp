@@ -58,7 +58,7 @@ export default function Login({ navigation }) {
             } else if (error.response && error.response.status === 404) {
                 Alert.alert('Login error!', error.response.data.message);
             } else {
-                Alert.alert('Login error', 'Transmission error, please try again later!!');
+                console.log('Login error', error);
             }
         } finally {
             setLoading(false);

@@ -9,6 +9,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import moment from 'moment';
+import { getAllInvoice } from '../Service/api';
 const { width } = Dimensions.get('screen');
 
 export default function Home({ navigation }) {
@@ -82,16 +83,12 @@ export default function Home({ navigation }) {
     useEffect(() => {
         const handerId = async () => {
             try {
-                const response = await axios.get(
-                    `http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/invoices`,
-                );
-                const data = response.data;
+                const response = await getAllInvoice();
                 const currentDate = moment().format('DDMMYYYY');
                 let newIDBill;
-
-                if (data.length > 0) {
+                if (response.length > 0) {
                     // Tìm mã hóa đơn lớn nhất trong danh sách
-                    const maxBill = data[data.length - 1];
+                    const maxBill = response[response.length - 1];
                     if (!isNaN(maxBill.maHoaDon)) {
                         // Nếu là số hợp lệ, tạo mã hóa đơn mới bằng cách tăng nó lên 1
                         newIDBill = (parseInt(maxBill.id) + 1).toString();

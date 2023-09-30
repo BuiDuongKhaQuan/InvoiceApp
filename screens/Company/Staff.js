@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 
 import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import { getUserByCompanyName, getUserByName } from '../../Service/api';
 
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
@@ -19,13 +20,10 @@ export default function Staff({ navigation }) {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(
-                `http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users?name=${nameStaff}`,
-            );
-            setInfStaff(response.data);
-
-            const d = response.data;
-            console.log(response.data);
+            const response = await getUserByName(nameStaff);
+            setInfStaff(response);
+            const d = response;
+            console.log(response);
         } catch (error) {
             setError('Nhân viên không tồn tại');
             setInfStaff(null);
@@ -34,10 +32,8 @@ export default function Staff({ navigation }) {
     useEffect(() => {
         const getInformationStaff = async () => {
             try {
-                const response = await axios.get(
-                    `http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users?companyName=${state.company.name}`,
-                );
-                setStaffs(response.data);
+                const response = await getUserByCompanyName(state.user.companyName);
+                setStaffs(response);
             } catch (error) {
                 setError('Công ty này khồng có dữu liệu');
                 setStaffs(null);

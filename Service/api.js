@@ -2,7 +2,10 @@ import axios from 'axios';
 import mime from 'mime';
 
 const instance = axios.create({
-    baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
+    // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
+    baseURL: 'http://192.168.1.111:8080/api',
+    // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
+    // sau đó copy địa chỉ IPv4 address
 });
 
 // Auth
@@ -64,6 +67,23 @@ export const validateRegister = async (email, otp) => {
         throw error;
     }
 };
+//user
+export const getUserByName = async (name) => {
+    try {
+        const response = await instance.get(`/v1/auth/users?name=${name}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getUserByCompanyName = async (companyName) => {
+    try {
+        const response = await instance.get(`/v1/auth/users?companyName=${companyName}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 //reset password
 export const resetPassword = async (email, password, retypePassword) => {
@@ -114,9 +134,19 @@ export const getCompaniesById = async (id) => {
 };
 
 //invoice
-export const invoices = async (emailUser, emailGuest, note, isPaid, listOrders, method, companyName, key, qrImage) => {
+export const createInvoice = async (
+    emailUser,
+    emailGuest,
+    note,
+    isPaid,
+    listOrders,
+    method,
+    companyName,
+    key,
+    qrImage,
+) => {
     try {
-        const response = await instance.post('v1/invoices', {
+        const response = await instance.post('/v1/invoices', {
             emailUser,
             emailGuest,
             note,
@@ -132,10 +162,27 @@ export const invoices = async (emailUser, emailGuest, note, isPaid, listOrders, 
         throw error;
     }
 };
+export const getInvoiceById = async (id) => {
+    try {
+        const response = await instance.get(`/v1/invoices/id/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getAllInvoice = async () => {
+    try {
+        const response = await instance.get('/v1/invoices');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 //products
 export const products = async (name, status, price, listImageFile, companyName, description, type) => {
     try {
-        const response = await instance.post('v1/products', {
+        const response = await instance.post('/v1/products', {
             name,
             status,
             price,
