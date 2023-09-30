@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Header from '../../components/SettingItem/header';
-import { MaterialCommunityIcons, Feather, AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 export default function WatchBill() {
     return (
