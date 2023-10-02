@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { dateNow, houseNow } from '../../utilies/date';
 import PrintBtn from './PrintBtn';
@@ -6,8 +6,9 @@ import { AntDesign, MaterialIcons, Entypo } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { useUserContext } from '../../screens/UserContext';
+import { getProductById } from '../../Service/api';
 
-export default function Invoice10({ data }) {
+export default function Invoice10({ route, data }) {
     const { state } = useUserContext();
     const { user, company } = state;
     const [products, setProducts] = useState([]);
@@ -20,6 +21,11 @@ export default function Invoice10({ data }) {
     const [totalBillPrice, setTotalBillPrice] = useState(0);
     const [productName, setProductName] = useState('');
     const [tax, setTax] = useState(0.0);
+    const [data2, setData2] = useState(route ? route.params.invoice : null);
+
+    // console.log('sÁa', data2);
+
+    // const []
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -237,7 +243,101 @@ export default function Invoice10({ data }) {
         </body>
     </html>
     `;
-    return (
+    const [product, setProduct] = useState([]);
+    const getProductId = async (id) => {
+        try {
+            const response = await getProductById(id);
+            // console.log(response.name);
+            setProduct(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return route != null ? (
+        <View style={styles.wrapper}>
+            <View style={styles.invoice}>
+                <ScrollView style={styles.container1}>
+                    <View style={styles.top}>
+                        <View style={styles.title_date}>
+                            <Text style={styles.title}>Invoice</Text>
+                            <View style={styles.date}>
+                                <Text style={styles.text}>
+                                    Invoice Date: {dateNow}-{houseNow}
+                                </Text>
+                                <Text style={styles.text}>Invoice #{route ? data2.id : ''}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.from_to}>
+                            <View style={styles.from}>
+                                <Text style={styles.text}>From: </Text>
+                                <Text style={{ ...styles.text, fontWeight: '100' }}>{company.name}</Text>
+                            </View>
+                            <View style={styles.from}>
+                                <Text style={styles.text}>To: </Text>
+                                <Text style={{ ...styles.text, fontWeight: '100' }}>{data2.emailGuest}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.center}>
+                        <View style={styles.row_table}>
+                            <Text style={{ ...styles.row_item1, ...styles.border }}>Description</Text>
+                            <Text style={{ ...styles.row_item2, ...styles.border }}>Hours</Text>
+                            <Text style={{ ...styles.row_item2, ...styles.border }}>Rate/hour</Text>
+                            <Text style={{ ...styles.row_item4, ...styles.border, borderRightWidth: 1 }}>Total</Text>
+                        </View>
+                        {data2.orders.map((order1, i) => (
+                            <View style={styles.row_table} key={i}>
+                                <Text style={{ ...styles.row_item1, ...styles.border, borderBottomWidth: 1 }}>
+                                    {getProductId(order1.productId).name}
+                                    {product.name}
+                                </Text>
+                                <Text style={{ ...styles.row_item2, ...styles.border, borderBottomWidth: 1 }}>
+                                    {order1.quantity}
+                                </Text>
+                                <Text style={{ ...styles.row_item2, ...styles.border, borderBottomWidth: 1 }}>
+                                    {product.price}
+                                </Text>
+                                <Text
+                                    style={{
+                                        ...styles.action_btn,
+                                        ...styles.row_item4,
+                                        ...styles.border,
+                                        borderBottomWidth: 1,
+                                        borderRightWidth: 1,
+                                    }}
+                                >
+                                    {product.price * order1.quantity}
+                                </Text>
+                            </View>
+                        ))}
+                    </View>
+                    <View style={styles.bottom}>
+                        <View style={styles.payment}>
+                            <View style={styles.payment_left}></View>
+                            <View style={styles.payment_right}>
+                                <View style={styles.tax_rate_value}>
+                                    <Text style={{ ...styles.text, fontWeight: '300' }}>Subtotal:</Text>
+                                    <View style={styles.tax_rate}>
+                                        <Text style={{ ...styles.text, fontWeight: '300' }}>Tax:</Text>
+                                    </View>
+                                    <Text style={styles.text}>Total Amout Due:</Text>
+                                </View>
+                                <View style={styles.tax_rate_value1}>
+                                    <Text style={{ ...styles.text, fontWeight: '300' }}>{data2.totalPrice}</Text>
+                                    <Text style={{ ...styles.text, fontWeight: '300' }}>{data2.tax}</Text>
+
+                                    <Text style={{ ...styles.text, fontWeight: '700' }}>
+                                        {data2.totalPrice + (data2.totalPrice * data2.tax) / 100}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        </View>
+    ) : (
         <PrintBtn html={html}>
             <View style={styles.top}>
                 <View style={styles.title_date}>
@@ -246,7 +346,7 @@ export default function Invoice10({ data }) {
                         <Text style={styles.text}>
                             Invoice Date: {dateNow}-{houseNow}
                         </Text>
-                        <Text style={styles.text}>Invoice #:</Text>
+                        <Text style={styles.text}>Invoice #</Text>
                     </View>
                 </View>
                 <View style={styles.from_to}>
@@ -256,6 +356,7 @@ export default function Invoice10({ data }) {
                     </View>
                     <View style={styles.from}>
                         <Text style={styles.text}>To: </Text>
+
                         <TextInput
                             value={customer}
                             onChangeText={(text) => setCustomer(text)}
@@ -308,6 +409,7 @@ export default function Invoice10({ data }) {
                         </View>
                     </View>
                 ))}
+
                 <View style={styles.row_table}>
                     <View
                         style={{
@@ -381,6 +483,7 @@ export default function Invoice10({ data }) {
                     </View>
                 </View>
             </View>
+
             <View style={styles.bottom}>
                 <View style={styles.payment}>
                     <View style={styles.payment_left}></View>
@@ -410,6 +513,18 @@ export default function Invoice10({ data }) {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    invoice: {
+        flex: 10,
+    },
+    container1: {
+        flex: 1,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+    },
     container: {
         flex: 1,
         padding: 10,
