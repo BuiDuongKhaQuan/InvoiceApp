@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, Image, Modal } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Image, Modal, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Header from '../../components/SettingItem/header';
@@ -8,7 +8,6 @@ import { useUserContext } from '../UserContext';
 import { useEffect } from 'react';
 
 import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
-import axios from 'axios';
 import { getUserByCompanyName, getUserByName } from '../../Service/api';
 
 export default function Staff({ navigation }) {
@@ -22,8 +21,7 @@ export default function Staff({ navigation }) {
         try {
             const response = await getUserByName(nameStaff);
             setInfStaff(response);
-            const d = response;
-            console.log(response);
+            // console.log(infStaff);
         } catch (error) {
             setError('Nhân viên không tồn tại');
             setInfStaff(null);
@@ -32,8 +30,9 @@ export default function Staff({ navigation }) {
     useEffect(() => {
         const getInformationStaff = async () => {
             try {
-                const response = await getUserByCompanyName(state.user.companyName);
+                const response = await getUserByCompanyName(state.company.name);
                 setStaffs(response);
+                // console.log(staffs);
             } catch (error) {
                 setError('Công ty này khồng có dữu liệu');
                 setStaffs(null);
@@ -66,74 +65,76 @@ export default function Staff({ navigation }) {
                 onChangeText={(text) => setNameStaff(text)}
                 onSubmitEditing={handleSearch}
             />
-            <View style={styles.currentScreen}>
-                {nameStaff === ''
-                    ? staffs.map((staff1, index) => (
-                          <View style={styles.icontilte} key={index}>
-                              <Image
-                                  style={styles.icon}
-                                  source={{
-                                      uri: staff1.image,
-                                  }}
-                              />
-                              <Text style={styles.text}>{staff1.name}</Text>
-                              <SimpleLineIcons
-                                  name="options"
-                                  size={24}
-                                  color="black"
-                                  style={styles.iconOption}
-                                  onPress={showModal}
-                              />
-                          </View>
-                      ))
-                    : infStaff.map((staff1, index) => (
-                          <View style={styles.icontilte} key={index}>
-                              <Image
-                                  style={styles.icon}
-                                  source={{
-                                      uri: staff1.image,
-                                  }}
-                              />
-                              <Text style={styles.text}>{staff1.name}</Text>
-                              <SimpleLineIcons
-                                  name="options"
-                                  size={24}
-                                  color="black"
-                                  style={styles.iconOption}
-                                  onPress={showModal}
-                              />
-                          </View>
-                      ))}
-            </View>
-            <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={hideModal}>
-                <View style={styles.modalBackground}>
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContainer1}>
-                            <View style={styles.modalContent}>
-                                <View>
-                                    <Button
-                                        onPress={hideModal}
-                                        customStylesIcon={styles.icon_close}
-                                        iconLeft={<AntDesign name="close" size={20} color="black" />}
-                                    />
+            <ScrollView>
+                <View style={styles.currentScreen}>
+                    {nameStaff === ''
+                        ? staffs.map((staff1, index) => (
+                              <View style={styles.icontilte} key={index}>
+                                  <Image
+                                      style={styles.icon}
+                                      source={{
+                                          uri: staff1.image,
+                                      }}
+                                  />
+                                  <Text style={styles.text}>{staff1.name}</Text>
+                                  <SimpleLineIcons
+                                      name="options"
+                                      size={24}
+                                      color="black"
+                                      style={styles.iconOption}
+                                      onPress={showModal}
+                                  />
+                              </View>
+                          ))
+                        : infStaff.map((staff1, index) => (
+                              <View style={styles.icontilte} key={index}>
+                                  <Image
+                                      style={styles.icon}
+                                      source={{
+                                          uri: staff1.image,
+                                      }}
+                                  />
+                                  <Text style={styles.text}>{staff1.name}</Text>
+                                  <SimpleLineIcons
+                                      name="options"
+                                      size={24}
+                                      color="black"
+                                      style={styles.iconOption}
+                                      onPress={showModal}
+                                  />
+                              </View>
+                          ))}
+                </View>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={hideModal}>
+                    <View style={styles.modalBackground}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalContainer1}>
+                                <View style={styles.modalContent}>
+                                    <View>
+                                        <Button
+                                            onPress={hideModal}
+                                            customStylesIcon={styles.icon_close}
+                                            iconLeft={<AntDesign name="close" size={20} color="black" />}
+                                        />
+                                    </View>
+                                    <Text style={styles.title}>Tùy chọn</Text>
                                 </View>
-                                <Text style={styles.title}>Tùy chọn</Text>
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text="Thông tin"
+                                    onPress={inf}
+                                />
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text="Chat"
+                                />
                             </View>
-                            <Button
-                                customStylesBtn={styles.modalOption}
-                                customStylesText={styles.textBtn}
-                                text="Thông tin"
-                                onPress={inf}
-                            />
-                            <Button
-                                customStylesBtn={styles.modalOption}
-                                customStylesText={styles.textBtn}
-                                text="Chat"
-                            />
                         </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+            </ScrollView>
         </View>
     );
 }
