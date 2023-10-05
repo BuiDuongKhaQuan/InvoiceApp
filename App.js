@@ -30,6 +30,9 @@ import ResetPassword from './screens/ResetPassword';
 import Information from './screens/Setting/Information';
 import { UserProvider } from './screens/UserContext';
 import Invoice10 from './layouts/Invoice/Invoice10';
+import Invoice2 from './layouts/Invoice/Invoice2';
+import Invoice0123 from './layouts/Invoice/Invoice0123';
+import Invoice11 from './layouts/Invoice/Invoice11';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -50,7 +53,7 @@ export default function App() {
                     <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
                     <Stack.Screen name="Chat" component={Chat} />
                     <Stack.Screen name="Profile" component={Profile} />
-                    <Stack.Screen name="Bills" component={Bills} />
+                    <Stack.Screen name="Bills" component={Bills} options={headerNone} />
                     <Stack.Screen name="BillSample" component={BillSample} />
                     <Stack.Screen name="EditBill" component={EditBill} />
                     <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
@@ -65,6 +68,10 @@ export default function App() {
                     <Stack.Screen name="Header" component={Header} />
                     <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
                     <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                    <Stack.Screen name="Invoice10" component={Invoice10} />
+                    <Stack.Screen name="Invoice2" component={Invoice2} />
+                    <Stack.Screen name="Invoice0123" component={Invoice0123} />
+                    <Stack.Screen name="Invoice11" component={Invoice11} />
                 </Stack.Navigator>
             </NavigationContainer>
         </UserProvider>
