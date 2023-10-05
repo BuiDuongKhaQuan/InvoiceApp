@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Entypo } from '@expo/vector-icons';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { dateNow, houseNow } from '../../utilies/date';
 import PrintBtn from './PrintBtn';
+import { useUserContext } from '../../screens/UserContext';
+import { getAllInvoice, getProductById } from '../../Service/api';
+import moment from 'moment';
 
-export default function Invoice({ data }) {
+export default function Invoice0123({ route, data }) {
+    const { state } = useUserContext();
+    const { user, company } = state;
     const [products, setProducts] = useState([]);
     const [customer, setCustomer] = useState('');
     const [productId, setProductId] = useState('');
@@ -16,6 +21,41 @@ export default function Invoice({ data }) {
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalBillPrice, setTotalBillPrice] = useState(0);
     const [productName, setProductName] = useState('');
+    const [data2, setData2] = useState(route ? route.params.invoice : null);
+    const [newIDBill, setNewIDBill] = useState(''); // Sử dụng useState để lưu mã hóa đơn mới
+    const [product, setProduct] = useState([]);
+    const getProductId = async (id) => {
+        try {
+            const response = await getProductById(id);
+            // console.log(response.name);
+            setProduct(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        const handerId = async () => {
+            try {
+                const response = await getAllInvoice();
+                const currentDate = moment().format('DDMMYYYY');
+                let newIDBill;
+                if (response.length > 0) {
+                    const maxBill = response[response.length - 1];
+                    if (!isNaN(maxBill.maHoaDon)) {
+                        newIDBill = (parseInt(maxBill.id) + 1).toString();
+                    }
+                    newIDBill = (parseInt(maxBill.id) + 1).toString();
+                }
+
+                setNewIDBill(`${currentDate}_${newIDBill}`);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách hóa đơn:', error);
+            }
+        };
+
+        handerId();
+    }, []);
+
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -93,13 +133,13 @@ export default function Invoice({ data }) {
         <div class="container">
           <div class="container_top">
             <div style="text-align: center">
-              <Text >WOORI COFFEE</Text>
+              <Text >${company.name}</Text>
             </div>
             <div style="text-align: center">
-              <Text >ĐC: Ký túc xá khu B</Text>
+              <Text >ĐC: ${company.address}</Text>
             </div>
             <div style="text-align: center">
-              <Text >SĐT: 01232143</Text>
+              <Text >SĐT: ${company.phone}</Text>
             </div>
     
             <Text >-------------------------------</Text>
@@ -107,10 +147,11 @@ export default function Invoice({ data }) {
               <Text >HÓA ĐƠN THANH TOÁN</Text>
             </div>
             <div style="text-align: center">
-              <Text >Số: 209130123910</Text>
+            ${route != null ? <Text> Số: {data2.key}</Text> : <Text>{newIDBill}</Text>}
             </div>
             <div style="text-align: center">
-              <Text >Ngày: ${dateNow}</Text>
+            ${route != null ? <Text>Ngày: {data2.createdAt}</Text> : <Text>{dateNow}</Text>}
+             
             </div>
           </div>
     
@@ -125,7 +166,7 @@ export default function Invoice({ data }) {
             </div>
             <div class="center_row">
               <Text ><b>Thu ngân:</b></Text>
-              <Text >${data.name}</Text>
+             ${route != null ? <Text></Text> : <Text>${data.name}</Text>}
             </div>
             <table style="width: 100%;margin-top: 10px;">  
                 
@@ -198,15 +239,83 @@ export default function Invoice({ data }) {
         setTotalBillPrice(newTotalBillPrice);
     }, [products]);
 
-    return (
+    return route != null ? (
+        <View style={styles.wrapper}>
+            <View style={styles.invoice}>
+                <ScrollView style={styles.container1}>
+                    <View style={styles.container_top}>
+                        <Text style={styles.text_bold}>{company.name}</Text>
+                        <Text style={styles.text_bold}>ĐC: {company.address}</Text>
+                        <Text style={styles.text_bold}>SĐT: {company.phone}</Text>
+                        <Text style={styles.line} />
+                        <Text style={styles.text_bold}>HÓA ĐƠN THANH TOÁN</Text>
+                        <Text style={styles.text_bold}>Số: {data2.key}</Text>
+                        <Text style={styles.text_bold}>Ngày: {data2.createdAt}</Text>
+                    </View>
+                    <View style={styles.container_center}>
+                        <View style={styles.center_row}>
+                            <Text style={styles.text_bold}>Giờ vào:</Text>
+                            <Text style={styles.text_line}>
+                                {dateNow} {houseNow}
+                            </Text>
+                        </View>
+                        <View style={styles.center_row}>
+                            <Text style={styles.text_bold}>Khách hàng: </Text>
+                            <Text style={styles.text_line}>{data2.emailGuest}</Text>
+                        </View>
+                        <View style={styles.center_row}>
+                            <Text style={styles.text_bold}>Thu ngân:</Text>
+                            <Text style={styles.text_line}>{data2.emailUser}</Text>
+                        </View>
+                        <View style={styles.table}>
+                            <View style={styles.table_colum}>
+                                <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
+                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.giá</Text>
+                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
+                                <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
+                            </View>
+
+                            {data2.orders.map((order1, i) => (
+                                <View style={styles.table_colum} key={i}>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_name }}>
+                                        {getProductId(order1.productId).name}
+                                        {product.name}
+                                    </Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}> {product.price}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}> {order1.quantity}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>
+                                        {product.price * order1.quantity}
+                                    </Text>
+                                </View>
+                            ))}
+                        </View>
+                        <View style={styles.bottom_content}>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Tổng thành tiền</Text>
+                                <Text style={styles.text_bold}>{data2.totalPrice}</Text>
+                            </View>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Tổng hóa đơn</Text>
+                                <Text style={styles.text_bold}>{data2.totalPrice}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.bottom_end}>
+                            <Text style={styles.text_bold}>-------------------------------</Text>
+                            <Text style={styles.text_bold}>Xin cảm ơn hẹn gặp lại quý khách</Text>
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+        </View>
+    ) : (
         <PrintBtn html={html}>
             <View style={styles.container_top}>
-                <Text style={styles.text_bold}>WOORI COFFEE</Text>
-                <Text style={styles.text_bold}>ĐC: Ký túc xá khu B</Text>
-                <Text style={styles.text_bold}>SĐT: 01232143</Text>
+                <Text style={styles.text_bold}>{company.name}</Text>
+                <Text style={styles.text_bold}>ĐC: {company.address}</Text>
+                <Text style={styles.text_bold}>SĐT: {company.phone}</Text>
                 <Text style={styles.line} />
                 <Text style={styles.text_bold}>HÓA ĐƠN THANH TOÁN</Text>
-                <Text style={styles.text_bold}>Số: 209130123910</Text>
+                <Text style={styles.text_bold}>Số: {newIDBill}</Text>
                 <Text style={styles.text_bold}>Ngày: {dateNow}</Text>
             </View>
             <View style={styles.container_center}>
@@ -217,7 +326,7 @@ export default function Invoice({ data }) {
                     </Text>
                 </View>
                 <View style={styles.center_row}>
-                    <Text style={styles.text_bold}>Khách hàng:</Text>
+                    <Text style={styles.text_bold}>Khách hàng: </Text>
                     <TextInput
                         style={styles.text_line}
                         onChangeText={(text) => setCustomer(text)}
@@ -318,6 +427,18 @@ export default function Invoice({ data }) {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    invoice: {
+        flex: 10,
+    },
+    container1: {
+        flex: 1,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+    },
     container_top: {
         alignItems: 'center',
         flex: 2.3,

@@ -5,7 +5,7 @@ import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
 import { getInvoiceByCompany, getInvoiceByKey } from '../../Service/api';
 import { useUserContext } from '../UserContext';
-import Invoice from '../../layouts/Invoice/Invoice';
+import Invoice from '../../layouts/Invoice/Invoice0123';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import Invoice2 from '../../layouts/Invoice/Invoice2';
 import Invoice10 from '../../layouts/Invoice/Invoice10';
@@ -69,7 +69,6 @@ export default function Bills({ navigation }) {
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
                         </TouchableOpacity>
                     ))}
-                    {/* <Text>yy</Text> */}
                 </View>
             </View>
         </View>

@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import Header from '../components/SettingItem/header';
 import Popup from '../components/Popup';
 import { AntDesign } from '@expo/vector-icons';
-import Invoice from '../layouts/Invoice/Invoice';
 import { useUserContext } from './UserContext';
 import { white } from '../constant/color';
 import Invoice2 from '../layouts/Invoice/Invoice2';
 import Invoice10 from '../layouts/Invoice/Invoice10';
+import Invoice0123 from '../layouts/Invoice/Invoice0123';
+import Invoice11 from '../layouts/Invoice/Invoice11';
 
 export default function CreateInvoice() {
     const [isPopupVisible, setPopupVisible] = useState(false);

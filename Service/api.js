@@ -220,3 +220,18 @@ export const getProductById = async (id) => {
         throw error;
     }
 };
+export const updateStatus = async (id, status) => {
+    let formData = new FormData();
+    formData.append('id', id);
+    formData.append('status', status);
+    try {
+        const response = await instance.patch(`/v1/auth/users`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
