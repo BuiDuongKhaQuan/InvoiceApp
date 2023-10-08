@@ -15,13 +15,11 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { format } from 'date-fns';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
+import { dateNow } from '../../utilies/date';
 export default function Invoice() {
-    const currentDate = new Date();
-    const formattedDate = format(currentDate, 'dd/MM/yyyy');
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();
@@ -176,7 +174,7 @@ export default function Invoice() {
                     <div style="display: flex; justify-content: space-between">
                         <Text style="margin-top: 2px; margin-bottom: 2px">Street Address</Text>
                         <Text style="margin-top: 2px; margin-bottom: 2px"><b>DATE:</b></Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px">${formattedDate}</Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px">${dateNow}</Text>
                     </div>
                     <div style="display: flex; justify-content: space-between">
                         <Text style="margin-top: 2px; margin-bottom: 2px">City, ST ZIP Code ${contactPhone}</Text>
@@ -403,7 +401,7 @@ export default function Invoice() {
                     <View style={styles.center_row}>
                         <Text style={styles.text_bold3}>Street Address</Text>
 
-                        <Text style={styles.text_bold_left1}>DATE: {formattedDate}</Text>
+                        <Text style={styles.text_bold_left1}>DATE: {dateNow}</Text>
                     </View>
                     <View style={styles.center_row}>
                         <Text style={styles.text_bold3}>City, ST ZIP Code</Text>

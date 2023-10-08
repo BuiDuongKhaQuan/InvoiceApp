@@ -15,13 +15,11 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { format } from 'date-fns';
+import { dateNow, houseNow } from '../../utilies/date';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
 export default function Invoice() {
-    const currentDate = new Date();
-    const formattedDate = format(currentDate, 'dd/MM/yyyy');
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();
@@ -170,7 +168,7 @@ export default function Invoice() {
         <Text >GST No:</Text>
         <div class="container_top_left">
           <div style=" display: flex; justify-content: space-between; margin-right: 10px; ">
-          <Text >Date: ${formattedDate}</Text>
+          <Text >Date: ${dateNow}</Text>
         </div>
           </div>
       </div>
@@ -201,7 +199,7 @@ export default function Invoice() {
             <div class="center_row" style="display: flex; justify-content: space-between;margin-left: 10px">
               <Text  >Invoice No:</Text>
 
-                  <div style="margin-right: 50px;"><Text  >Date: ${formattedDate}</Text></div>
+                  <div style="margin-right: 50px;"><Text  >Date: ${dateNow}</Text></div>
             </div>
             <div class="center_row" style="display: flex; justify-content: space-between;margin-left: 10px">
                 <Text >Mobile: ${contactPhone}</Text>
@@ -310,7 +308,7 @@ export default function Invoice() {
             totalPrice.toString(),
             <View style={styles.action_btn}>
                 <TouchableOpacity onPress={handleAddProduct}>
-                    <AntDesign name="plussquare" size={23} color="blue" />
+                    <AntDesign name="plussquare" size={23} color="black" />
                 </TouchableOpacity>
             </View>,
         ],
@@ -393,7 +391,7 @@ export default function Invoice() {
             <ScrollView style={styles.container}>
                 <View style={styles.container_top_left}>
                     <Text style={styles.text_bold3}>GTS no:</Text>
-                    <Text style={styles.text_bold3}>Date: {formattedDate}</Text>
+                    <Text style={styles.text_bold3}>Date: {dateNow}</Text>
                 </View>
                 <View style={styles.container_top}>
                     <Text style={styles.text_bold}>Tax Invoice Bill</Text>
@@ -418,7 +416,7 @@ export default function Invoice() {
                         <View style={styles.center_row}>
                             <Text style={styles.text_bold3}>Invoice No:</Text>
                             <TextInput style={styles.text_line} value={customer} placeholder="hgvshgjdfashgfdhjas" />
-                            <Text style={styles.text_bold3}>Date: {formattedDate}</Text>
+                            <Text style={styles.text_bold3}>Date: {dateNow}</Text>
                         </View>
                         <View style={styles.center_row}>
                             <Text style={styles.text_bold3}>Mobile:</Text>

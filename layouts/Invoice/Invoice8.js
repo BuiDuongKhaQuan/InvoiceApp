@@ -16,14 +16,11 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { format } from 'date-fns';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
-
+import { dateNow } from '../../utilies/date';
 export default function Invoice() {
-    const currentDate = new Date();
-    const formattedDate = format(currentDate, 'dd/MM/yyyy');
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();

@@ -15,13 +15,11 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { format } from 'date-fns';
+import { dateNow } from '../../utilies/date';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
 export default function Invoice() {
-    const currentDate = new Date();
-    const formattedDate = format(currentDate, 'dd/MM/yyyy');
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();
@@ -145,7 +143,7 @@ export default function Invoice() {
                         <Text><b>CASH BILL</b></Text>
                     </div>
                     <div style="margin-right: 10px">
-                        <Text>Date: ${formattedDate} </Text>
+                        <Text>Date: ${dateNow} </Text>
                     </div>
                 </div>
                 <div style="color: rgb(0 0 215); margin-top: 10px; margin-left: 10px; margin-right: 10px">
@@ -362,7 +360,7 @@ export default function Invoice() {
                     <View style={styles.cashbill}>
                         <Text style={styles.text_bold3}>Sl.No.</Text>
                         <Text style={styles.text_bold}>CASH BILL</Text>
-                        <Text style={styles.text_bold3}>Date: {formattedDate}</Text>
+                        <Text style={styles.text_bold3}>Date: {dateNow}</Text>
                     </View>
                 </View>
                 <View style={styles.container_center}>
