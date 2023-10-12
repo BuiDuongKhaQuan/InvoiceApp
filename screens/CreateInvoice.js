@@ -1,123 +1,101 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import Header from '../components/SettingItem/header';
-import Popup from '../components/Popup';
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { useUserContext } from './UserContext';
-import { white } from '../constant/color';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
-import { fontSizeDefault } from '../constant/fontSize';
-import Input from '../components/Input';
-import SelectDropdown from 'react-native-select-dropdown';
-import { getProductsByCompany } from '../Service/api';
-
+import Header from '../components/SettingItem/header';
+import Button from '../components/Button';
 export default function CreateInvoice() {
-    const [isPopupVisible, setPopupVisible] = useState(false);
-    const { state } = useUserContext();
-    const { user, company } = state;
-    const [haveTax, setHaveTax] = useState(false);
-    const [haveNote, setHaveNote] = useState(false);
-    const route = useRoute();
-    const navigation = useNavigation();
-    const [productsByCompany, setProductsByCompany] = useState([]);
-    const togglePopup = () => {
-        setPopupVisible(!isPopupVisible);
-    };
-    const idLayoutInvoice = route.params?.data;
-    useEffect(() => {
-        // if (idLayoutInvoice == 1) setHaveTax(true);
-        // if (idLayoutInvoice == 2) setHaveTax(true);
-        // if (idLayoutInvoice == 3) setHaveTax(true);
-        // if (idLayoutInvoice == 4) setHaveTax(true);
-        // if (idLayoutInvoice == 5) setHaveTax(true);
-        // if (idLayoutInvoice == 6) setHaveTax(true);
-    }, [idLayoutInvoice]);
-    useEffect(() => {
-        const getProducts = async () => {
-            try {
-                const response = await getProductsByCompany(company.name);
-                console.log(response);
-                setProductsByCompany(response);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getProducts();
-    }, []);
-
     return (
-        <>
-            <Popup visible={isPopupVisible} onClose={togglePopup} bottom />
-            <View style={styles.container}>
-                <Header
-                    onPress={togglePopup}
-                    title="Tạo hóa đơn"
-                    iconRight={<AntDesign name="appstore-o" size={24} color="black" />}
-                />
-                <View style={styles.top}>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Name:</Text>
-                        <Input customStylesContainer={styles.container_input} />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Email:</Text>
-                        <Input customStylesContainer={styles.container_input} />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Phone:</Text>
-                        <Input customStylesContainer={styles.container_input} />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Gender:</Text>
-                        <View style={styles.dropdown}>
-                            <SelectDropdown
-                                data={productsByCompany}
-                                onSelect={(selectedItem, index) => {
-                                    console.log(selectedItem.name);
-                                }}
-                                buttonStyle={styles.dropdown_btn}
-                                defaultButtonText={'Selected Product'}
-                                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                                dropdownIconPosition="right"
-                                buttonTextAfterSelection={(selectedItem, index) => {
-                                    return selectedItem.name;
-                                }}
-                                rowTextForSelection={(item, index) => {
-                                    return item.name;
-                                }}
-                            />
-                        </View>
-                    </View>
+        <View style={styles.container}>
+            <Header title={'Hóa đơn'} />
+            <View>
+                <View style={styles.invoicedate}>
+                    <Text style={styles.code}>Mã hóa đơn</Text>
+                    <Text style={styles.code}>Date</Text>
                 </View>
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Tên"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm khách hàng/ nhà cung cấp"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Mặt hàng/Dịch vụ"
+                    iconRight={<AntDesign name="down" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm giảm giá"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm thuế"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm vận chuyển"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Chi tiết thanh toán/Ghi chú"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm các trường"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
             </View>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        backgroundColor: white,
+        backgroundColor: '#f4f4f4',
     },
-    top: {
-        flex: 1,
+    headerleft: {},
+
+    btn: {
+        paddingHorizontal: 10,
         width: '100%',
+        borderWidth: 0,
+        backgroundColor: 'white',
+        borderRadius: 0,
+        marginVertical: 1,
     },
-    bottom: {
-        flex: 1,
-        height: 50,
+    invoicedate: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        backgroundColor: '#32db64',
+        height: 50,
     },
-    btn: {
-        marginHorizontal: 10,
-        height: '60%',
-        width: '40%',
-        borderRadius: 5,
+    text: {
+        textAlign: 'left',
+        fontSize: 15,
+    },
+    code: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'white',
     },
     bottom_item: {
         flex: 1,
