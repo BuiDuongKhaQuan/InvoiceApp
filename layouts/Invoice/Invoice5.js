@@ -21,7 +21,7 @@ import { getCompaniesById, getProductById } from '../../Service/api';
 import { white } from '../../constant/color';
 import { Asset } from 'expo-asset';
 
-export default function Invoice7_test({ route, data }) {
+export default function Invoice5({ route, data }) {
     const { state } = useUserContext();
     const currentDate = moment().format('DD/MM/YYYY');
     const currentHour = moment().format('HH:mm');
@@ -133,17 +133,8 @@ export default function Invoice7_test({ route, data }) {
                             text-align: center;
                             justify-content: 'center';
                         }
-                        .header_table_1 {
-                            background-color: '##ffcc00';
-                        }
-                        .container_header_contents {
-                            background-color: rgb(251, 251, 251);
-                            width: 20%;
-                            margin-left: 60%;
-                            margin-right: 15%;
-                            font-size: 40px;
-                        }
-                        .container_ table,
+            
+                        table,
                         th,
                         td {
                             border-collapse: collapse;
@@ -151,142 +142,81 @@ export default function Invoice7_test({ route, data }) {
                         p {
                             margin: 3px;
                         }
-                        .container_contents {
-                            display: flex;
-                            justify-content: space-between;
-
-                        }
-                        .container_header {
-                            background-color: rgb(255, 191, 0);
-                            height: 100%;
-                        }
-                        .container_header_name {
-                            margin-left: 65%;
-                            margin-right: 15%;
-                            background-color: white;
-                            font-weight: bold;
-                            font-size: 25px;
-                        }
-                        
-                        .container_bottom_2 {
-                            background-color: rgb(255, 191, 0);
-                        }
-                        .container_bottom_name {
-                            margin-top:5%;
-                            margin-left: 65%;
-                            margin-right: 15%;
-                            background-color: white;
-                            color: white;
-                            height:2px;
-                        }
-                        .container_bottom_name_2 {
-                            margin-left: 66%;
-                            font-weight: bold;
-                        }
                     </style>
                 </head>
                 <body>
                     <div class="container">
                         <div class="container_top" style="margin-top: 40px">
-                            <div style="text-align: left">
-                                <p>${nameCompany.name}</p>
+                            <div style="text-align: right;">
+                                <p style="font-weight: 600;">${nameCompany.name}</p>
                             </div>
-                            
+                            <div style="text-align: right">
+                                <p>${nameCompany.address}</p>
                             </div>
-                            <div class="container_header">
-                                <div class="container_header_name">Invoice</div>
+                            <div style="text-align: right">
+                                <p>${nameCompany.phone}</p>
                             </div>
-                            
+                            <div style="text-align: right">
+                                <p>${nameCompany.email}</p>
+                            </div>
+                            <div style="text-align: left; font-weight: 600">
+                                <p>HÓA ĐƠN THANH TOÁN</p>
+                            </div>
                         </div>
-            
                         <div class="container_center">
                             <div style="display: flex; flex-direction: row">
-                                <div style="display: flex; flex-direction: column; flex: 2">
-                                    <p style="margin-right: 20; font-weight: bold">Invoice To:</p>
-                                    <p>${data.name}</p>
-
+                                <div style="display: flex; flex-direction: row; flex: 2">
+                                    <p style="margin-right: 20;font-weight: 600">Invoice No:</p>
+                                    <p>1412</p>
                                 </div>
-                                <div>
-                                    <div style="display: flex; flex-direction: row; flex: 1">
-                                        <p style="margin-right: 20; font-weight: bold">Invoice#:</p>
-                                        <p>12024</p>
-                                    </div>
-                                    <div style="display: flex; flex-direction: row; flex: 1">
-                                        <p style="margin-right: 20; font-weight: bold">Date:</p>
-                                        <p>${currentDate}</p>
-                                    </div>
+                                
+                                <div style="display: flex; flex-direction: row; flex: 1">
+                                    <p style="margin-right: 20;font-weight: 600">Date:</p>
+                                    <p>${currentDate}</p>
                                 </div>
                             </div>
                             <div class="cashier" style="display: flex; flex-direction: row">
-                                <p style="margin-right: 20; font-weight: bold">Address:</p>
-                                <p>${nameCompany.address}s</p>
+                                <p style="margin-right: 20;font-weight: 600">Bill to:</p>
+                                <div style="flexDirection: 'column'">
+                                <p>${data.name}</p>
+                                <p>${nameCompany.address}</p>
+                                </div>
                             </div>
-                            <table class="table" style="width: 100%">
-                                <tr style="background-color: #595959; color: aliceblue">
-                                    <div class="header_table">
-                                        <div class="header_table_1">
-                                            <th style="text-align: center">Item</th>
-                                            <th style="text-align: left">Description</th>
-                                        </div>
-                                        <th style="text-align: center">Price</th>
-                                        <th style="text-align: center">Sl</th>
-                                        <th style="text-align: center">total</th>
-                                    </div>
+                            
+                            <table style="width: 100%">
+                                <tr style="border-bottom: 1px dashed black">
+                                    <th style="text-align: center">Item</th>
+                                    <th style="text-align: left">Description</th>
+                                    <th style="text-align: center">Price</th>
+                                    <th style="text-align: center">total</th>
                                 </tr>
                                 <tr>
                                 ${listProductHtml()}
+
                                 </tr>
                             </table>
+                            <p style="border-bottom: 1px dashed black"></p>
                         </div>
-                        <div class="container_contents">
-                            <div class="container_bottom" style="justify-content: right">
-                                <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: right; font-weight: bold">Thank you</p>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: left; font-weight: bold">Terms and conditions</p>
-                                    <p>trandz</p>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: left; font-weight: bold; font-size: 18px">Payment Infor:</p>
-                                    <p>0826037777</p>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: right"></div>
+                        <div class="container_bottom" style="justify-content: right">
+                            <div style="display: flex; flex-direction: row; justify-content: right">
+                                <p style="justify-content: left; font-weight: bold">Total:</p>
+                                <p>${subTotal}</p>
                             </div>
-                            <div class="container_bottom" style="justify-content: right">
-                                <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: left; font-weight: bold">Sub total:</p>
-                                    <p>${subTotal}</p>
-                                </div>
-                                <div style="display: flex; 
-                                flex-direction: row;                                 justify-content: space-between; 
-                                justify-content: space-between; 
-                                ">
-                                    <p style="justify-content: left; font-weight: bold; font-size: 18px">Tax:</p>
-                                    <p>${tax}%</p>
-                                </div>
-                                <div style="display: flex; 
-                                flex-direction: row; 
-                                justify-content: space-between; 
-                                background-color: rgb(255, 191, 0);">
-                                  <p >Total:</p>
-                                    <p >${totalBillPrice}</p>
-                                </div>
-                                <div style="display: flex; flex-direction: row; justify-content: right"></div>
-                            </div>
-                            
+                            <div style="display: flex; flex-direction: row; justify-content: left">
+                            <p style="justify-content: left; font-weight: bold">Thank you</p>
                         </div>
-                        <div class="container_bottom_2" >
-                            <div class="container_bottom_name">
-                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: left">
+                                <p style="justify-content: left; font-weight: bold">Bank name:</p>
+                                <p>${customer}</p>
+                                </div>
+                            <div style="display: flex; flex-direction: row; justify-content: left">
+                                <p style="justify-content: left; font-weight: bold; font-size: 18px">Bank acount:</p>
+                                <p>${phone}</p>
+                                </div>
+                            <p style="border-bottom: 1px dashed black"></p>
+                            <div style="display: flex; flex-direction: row; justify-content: right"></div>
                         </div>
                     </div>
-                    <div class="container_bottom_name_2">
-                    Authorised Sign</div>
-                </div>
-                <div style = "font-weight: bold;">
-                ${nameCompany.phone}  |  ${nameCompany.address}  |  Website</div>
-            </div>
                 </body>
             </html>
             
@@ -358,29 +288,26 @@ export default function Invoice7_test({ route, data }) {
             <View style={styles.container_top}>
                 <View style={styles.container_top1}>
                     <Text style={styles.Header_II}>{nameCompany.name}</Text>
+                    <Text style={styles.address}>{nameCompany.address}</Text>
+                    <Text style={styles.address}>{nameCompany.phone}</Text>
+                    <Text style={styles.gmail}>{nameCompany.email}</Text>
                 </View>
-                <View style={styles.container_Header}>
-                    <Text style={styles.Header}>Invoice</Text>
-                    <Image style={{ height: 30 }}></Image>
+                <View>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
                 </View>
-                <View style={styles.casher}>
-                    <Text style={styles.text_bold}>InVoice To:</Text>
-                </View>
-
                 <View style={styles.container_top2}>
                     <View>
                         <View style={styles.casher}>
-                            <Text style={styles.text_bold}>{data.name}</Text>
+                            <Text style={styles.text_bold}>InVoice No:</Text>
+                            <Text style={{ fontSize: 12 }}>1412</Text>
                         </View>
-                        <View>
-                            <Text style={styles.address}>{nameCompany.address}</Text>
+                        <View style={styles.casher}>
+                            <Text style={styles.text_bold}>InVoice To:</Text>
+                            <Text style={{ fontSize: 12 }}>{data.name}</Text>
                         </View>
+                        <Text style={{ fontSize: 12 }}>{nameCompany.address}</Text>
                     </View>
                     <View>
-                        <View style={styles.casher}>
-                            <Text style={styles.text_bold}>Invoice#</Text>
-                            <Text>1412</Text>
-                        </View>
                         <View style={styles.date}>
                             <Text style={styles.text_bold}>Ngày:</Text>
                             <Text style={{ marginHorizontal: 10 }}>{currentDate}</Text>
@@ -390,6 +317,8 @@ export default function Invoice7_test({ route, data }) {
             </View>
             <KeyboardAvoidingView style={styles.container_center} behavior={Platform.OS === 'ios' ? 'padding' : null}>
                 <View style={styles.container_center}>
+                    <Text style={styles.Header_1}></Text>
+
                     <View style={styles.table}>
                         <View style={styles.table_colum}>
                             <Text style={{ ...styles.text_line_header, ...styles.colum_id }}>#</Text>
@@ -399,6 +328,8 @@ export default function Invoice7_test({ route, data }) {
                             <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>TT</Text>
                             <Text style={{ ...styles.text_line_header, ...styles.colum_b }}></Text>
                         </View>
+                        <Text style={styles.Header_1}></Text>
+
                         {products.map((product, index) => (
                             <View style={styles.table_colum_1} key={index}>
                                 <View style={styles.table_colum1}>
@@ -465,16 +396,22 @@ export default function Invoice7_test({ route, data }) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.bottom_content}>
+                        <Text style={styles.Header_1}></Text>
+
+                        <View style={styles.bottom_content}>
+                            <View style={styles.bottom_right}>
+                                <View style={styles.bottom_row}>
+                                    <Text style={styles.text_bold_end}>SUBTOTAL:</Text>
+                                    <Text style={styles.text_bold}>{subTotal}</Text>
+                                </View>
+                            </View>
+                        </View>
                         <View>
                             <View style={styles.bottom_row_1}>
-                                <Text style={styles.text_bold}>Thank you for your business</Text>
-
-                                <Text style={styles.text_bold}>Loren ipsum:</Text>
+                                <Text style={styles.text_bold}>Bank name:</Text>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Dieu khoan"
+                                    placeholder="Nguyen Van A"
                                     onChangeText={(text) => setCustomer(text)}
                                     value={customer}
                                 />
@@ -489,35 +426,9 @@ export default function Invoice7_test({ route, data }) {
                                 />
                             </View>
                         </View>
-                        <View style={styles.bottom_right}>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold_end}>SUBTOTAL:</Text>
-                                <Text style={styles.text_bold}>{subTotal}</Text>
-                            </View>
-
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold_end}>TAX(%):</Text>
-                                <TextInput
-                                    onChangeText={handleChangeTax}
-                                    value={tax}
-                                    placeholder="Tax?"
-                                    keyboardType="numeric"
-                                />
-                            </View>
-                            <View style={styles.bottom_row_pay_1}>
-                                <Text style={styles.text_bold_end}>GRANDTOTAL:</Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.bottom_end}>
-                        <View style={styles.container_Header_1}>
+                        <View>
                             <Text style={styles.Header_1}></Text>
                         </View>
-                        <Text style={styles.Header_2}> Authorised Sign</Text>
-                        <Text style={styles.text_bold}>
-                            {nameCompany.phone} | {nameCompany.address} | website
-                        </Text>
                     </View>
                 </View>
             </KeyboardAvoidingView>
@@ -543,6 +454,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // alignItems: 'center',
     },
+    address: {
+        fontSize: 10,
+    },
     container_center: {
         flex: 2,
     },
@@ -565,6 +479,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc',
         width: 150,
         height: 40,
+        marginTop: -12,
     },
     customer_title: {
         marginTop: 10,
@@ -574,14 +489,14 @@ const styles = StyleSheet.create({
         marginTop: -10,
     },
     container_top1: {
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
     },
     container_top2: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
     },
     text_bold: {
         fontWeight: 'bold',
+        fontSize: 14,
     },
     text_bold_end: {
         fontWeight: 'bold',
@@ -591,17 +506,15 @@ const styles = StyleSheet.create({
     },
     text_line_header: {
         marginLeft: 5,
-        color: white,
+        fontWeight: 'bold',
     },
     table: {
         flexDirection: 'column',
-        borderWidth: 1,
     },
     table_colum: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 5,
-        backgroundColor: '#595959',
     },
     table_colum_2: {
         flexDirection: 'row',
@@ -645,29 +558,23 @@ const styles = StyleSheet.create({
     bottom_content: {
         flex: 2,
         marginVertical: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        paddingBottom: 50,
+        alignItems: 'flex-end',
     },
     bottom_row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-
-        // backgroundColor: 'red',
-    },
-    bottom_row_pay_1: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: '#ffcc00',
-
+        margin: 1,
         // backgroundColor: 'red',
     },
     bottom_row_1: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        flexDirection: 'row',
         // backgroundColor: 'red',
     },
-
+    bottom_end: {
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
     table_colum1: {
         flex: 1,
         height: 40,
@@ -690,11 +597,8 @@ const styles = StyleSheet.create({
     bottom_row_pay: {
         flexDirection: 'row',
     },
-    Header_I: {
-        width: '100%',
-        resizeMode: 'contain',
-    },
     Header_II: {
+        color: 'black',
         fontSize: 20,
         fontWeight: 'bold',
     },
@@ -703,31 +607,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     Header_1: {
-        marginLeft: '60%',
-        marginRight: '15%',
-        backgroundColor: 'white',
-    },
-    Header_2: {
-        marginLeft: '60%',
-        marginVertical: 10,
-        fontSize: 12,
-    },
-    container_Header: {
-        height: 40,
-        backgroundColor: '#ffcc00',
-    },
-    Header: {
-        marginLeft: '60%',
-        marginRight: '15%',
-        fontSize: 20,
-        fontWeight: 'bold',
-        borderWidth: 1,
-        borderColor: 'white',
-        backgroundColor: 'white',
-        height: '100%',
-    },
-    container_Header_1: {
-        height: 2,
-        backgroundColor: '#ffcc00',
+        backgroundColor: 'black',
+        borderWidth: 1 / 6,
+        height: 1,
     },
 });

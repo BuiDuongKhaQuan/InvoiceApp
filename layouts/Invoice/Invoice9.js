@@ -10,20 +10,22 @@ import {
     TextInput,
     ScrollView,
     Alert,
+    Image,
 } from 'react-native';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { dateNow } from '../../utilies/date';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
-export default function Invoice() {
+import { dateNow } from '../../utilies/date';
+export default function Invoice9() {
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();
     const [contactName, setContactName] = useState();
+    const [contactAddress, setContactAddress] = useState();
     const [products, setProducts] = useState([]);
     const [customer, setCustomer] = useState('');
     const [productName, setProductName] = useState('');
@@ -68,11 +70,11 @@ export default function Invoice() {
             .map(
                 (product, index) =>
                     `<tr >
-                <td  style=" width: 10%; color: blue;  text-align: center; height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${index}</td>
-                <td  style="width: 30%; color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue; border-right: 2px solid blue; " >${product.name}</td>
-                <td  style="width: 10%; color: blue; text-align: center;border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; " >${product.quantity}</td>
-                <td  style=" width: 10%; color: blue; text-align: center;height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${product.price}</td>
-                <td style="color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue;    ">${product.totalPrice}</td>
+                <td  style=" width: 10%; height: 30px; text-align: center; ">${index}</td>
+                <td  style="width: 30%;  text-align: center; " >${product.name}</td>
+                <td  style="width: 10%;text-align: center;   " >${product.quantity}</td>
+                <td  style=" width: 10%; height: 30px; text-align: center;  ">${product.price}</td>
+                <td style=" text-align: center;  ">${product.totalPrice}</td>
             </tr>`,
             )
             .join('');
@@ -82,147 +84,88 @@ export default function Invoice() {
         <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+    
             <title>Document</title>
             <style>
                 .container {
                     display: flex;
                     flex-direction: column;
                     background-color: white;
-                    margin-left: 100px;
-                    width: 491px;
-                    height: 800px;
-                    font-family: Arial, Helvetica, sans-serif;
+                    margin-left: 10;
+                    margin-right: 10;
+                    height: 500px;
+                    width: 1000px;
                 }
                 .container_top {
                     align-items: 'center';
+                    flex: 1;
                     text-align: center;
                     justify-content: 'center';
                 }
+    
                 table,
                 th,
                 td {
                     padding: 0 !important;
-    
+                    border-top: 0px dashed;
+                    border-bottom: 0px dashed;
                     border-collapse: collapse;
+                    text-align: justify;
                 }
-    
                 th,
                 td {
                     padding: 10px;
+                }
+                hr {
+                    border-style: dashed;
+                    border-width: 0.5px;
                 }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="container_top">
-                    <div
-                        style="
-                            text-align: center;
-                            margin-top: 90px;
-                            font-weight: bold;
-                            font-size: 30px;
-                            color: blue;
-                        "
-                    >
-                        <Text>YOUR COMPANY NAME</Text>
+                    <hr />
+                    <div style="text-align: center">
+                        <Text><b>CỬA HÀNG LỘC PHÁT </b></Text>
                     </div>
-                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                        <Text>Address .....................................................</Text>
-                    </div>
-                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                        <Text>Ph :00000000000000</Text>
-                    </div>
-                    <hr size="2px" ; color="blue" />
+                    <hr />
                 </div>
-    
-                <div style="display: flex; justify-content: space-between; color: blue">
-                    <div style="margin-left: 10px">
-                        <Text>Sl.No.</Text>
+                <div style="margin-top: 50px; margin-left: 50px">
+                    <div class="center_row">
+                        <Text>${contactName}</Text>
                     </div>
+                    <div class="center_row">
+                        <Text>${contactAddress}</Text>
+                    </div>
+                    <hr />
+    
+                    <table style="width: 100%; margin-top: 10px">
+                        <tr>
+                            ${listProductHtml()}
+                        </tr>
+                    </table>
+                    <hr />
+    
                     <div>
-                        <Text><b>CASH BILL</b></Text>
+                        <div style="display: flex">
+                            <Text style="margin-left: 160px">TOTAL AMOUNT</Text>
+                            <Text style="margin-right: 160px; text-align: right; flex: 1">${subTotal}</Text>
+                        </div>
+                        <hr />
                     </div>
-                    <div style="margin-right: 10px">
-                        <Text>Date: ${dateNow} </Text>
+                    <div style="width: 100%; text-align: center">
+                        <img
+                            id="barcode"
+                            style="height: 50px"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAABkAQMAAABQPCXcAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAEJJREFUSIlj+FPA8KDA/vEHC/kP9vKN/5n7D/xvPM7Af5z5A/ufwh8Mo9Kj0qPSo9Kj0qPSo9Kj0qPSo9Kj0iNDGgD7rye/sbJ7jgAAAABJRU5ErkJggg=="
+                            alt="Mã vạch"
+                        />
                     </div>
-                </div>
-                <div style="color: rgb(0 0 215); margin-top: 10px; margin-left: 10px; margin-right: 10px">
-                    <Text>To.M/s ${contactName}</Text>
-                    <hr size="2px" ; color="blue" />
-                </div>
-                <div style="color: rgb(0 0 215); margin-top: 8px; margin-left: 14px; margin-right: 10px">
-                    <hr size="2px" ; color="blue" />
-                </div>
-                <table style="width: 100%; height: 300px">
-                    <tr>
-                        <td
-                            style="
-                                color: rgb(0 0 215);
-                                text-align: center;
-                                width: 3%;
-                                height: 5px;
-                                border-top: 2px solid rgb(0 0 215);
-                                border-right: 2px solid rgb(0 0 215);
-                            "
-                        >
-                            <b>S.No.</b>
-                        </td>
-                        <td
-                            style="
-                                color: rgb(0 0 215);
-                                text-align: center;
-                                width: 58%;
-                                height: 5px;
-    
-                                border-top: 2px solid rgb(0 0 215);
-                                border-right: 2px solid blue;
-                            "
-                        >
-                            <b>Particulars</b>
-                        </td>
-                        <td
-                            style="
-                                color: blue;
-                                text-align: center;
-                                width: 10%;
-                                height: 5px;
-    
-                                border-top: 2px solid blue;
-                                border-right: 2px solid blue;
-                            "
-                        >
-                            <b>Qty</b>
-                        </td>
-                        <td
-                            style="
-                                height: 5px;
-                                color: blue;
-                                text-align: center;
-                                width: 18%;
-                                border-top: 2px solid blue;
-                            "
-                        >
-                            <b>Amount </b>
-    
-                            <b>Rs. </b>
-                        </td>
-                        <td
-                            style="height: 5px; color: blue; text-align: center; border-top: 2px solid blue"
-                        >
-                            <b>Ps.</b>
-                        </td>
-                    </tr>
-                    ${listProductHtml()}
-
-                    
-                </table>
-                <div style="text-align: end; color: blue">
-                    <text><b>For You Company Name</b></text>
                 </div>
             </div>
         </body>
     </html>
-    
     `;
 
     const data = () =>
@@ -234,7 +177,7 @@ export default function Invoice() {
             product.totalPrice,
             '',
         ]);
-    const tableHead = ['S.No.', 'Particulars', 'Qty', , 'Amount', ''];
+    const tableHead = ['', '', '', , '', ''];
 
     const newData = () => [
         ...data(),
@@ -250,7 +193,7 @@ export default function Invoice() {
                 buttonStyle={{ width: '100%', height: 30, backgroundColor: 'transparent' }}
                 rowTextStyle={{ fontSize: fontSizeDefault }}
                 defaultButtonText={'Selected product'}
-                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="blue" />}
+                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
                 dropdownIconPosition="right"
                 buttonTextAfterSelection={(selectedItem) => {
                     return selectedItem.name;
@@ -276,10 +219,11 @@ export default function Invoice() {
             totalPrice.toString(),
             <View style={styles.action_btn}>
                 <TouchableOpacity onPress={handleAddProduct}>
-                    <AntDesign name="plussquare" size={23} color="blue" />
+                    <AntDesign name="plussquare" size={23} color="black" />
                 </TouchableOpacity>
             </View>,
         ],
+        ['', 'TOTAL AMOUNT', '', '', subTotal.toString(), ''],
     ];
 
     const handleChangePrice = (text) => {
@@ -343,29 +287,12 @@ export default function Invoice() {
             <Popup visible={isPopupVisible} onClose={togglePopup} />
             <ScrollView style={styles.container}>
                 <View style={styles.container_top}>
-                    <Text style={styles.text_bold1}>YOUR COMPANY NAME</Text>
-
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold_address}>Address</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setCustomer(text)}
-                            value={customer}
-                            placeholder="Nhập địa chỉ"
-                        />
-                    </View>
-
-                    <Text style={styles.text_bold_address}>Ph :00000000000000</Text>
                     <Text style={styles.line} />
-                    <View style={styles.cashbill}>
-                        <Text style={styles.text_bold3}>Sl.No.</Text>
-                        <Text style={styles.text_bold}>CASH BILL</Text>
-                        <Text style={styles.text_bold3}>Date: {dateNow}</Text>
-                    </View>
+                    <Text style={styles.text_bold1}>CỬA HÀNG LỘC PHÁT</Text>
+                    <Text style={styles.line} />
                 </View>
                 <View style={styles.container_center}>
                     <View style={styles.center_row1}>
-                        <Text style={styles.text_bold2}>To.M/s</Text>
                         <TextInput
                             style={styles.text_line}
                             onChangeText={(text) => setContactName(text)}
@@ -373,23 +300,23 @@ export default function Invoice() {
                             placeholder="Enter the customer's name"
                         />
                     </View>
-                    <Text style={styles.line} />
+                    <View style={styles.center_row1}>
+                        <TextInput
+                            style={styles.text_line}
+                            onChangeText={(text) => setContactAddress(text)}
+                            value={contactAddress}
+                            placeholder="Enter the address"
+                        />
+                    </View>
                     <View>
                         <Text style={styles.line1} />
                     </View>
                     <Table
                         borderStyle={{
-                            borderWidth: 2,
-                            borderColor: 'blue',
+                            borderWidth: 7,
+                            borderColor: 'white',
                         }}
                     >
-                        <Row
-                            heightArr={25}
-                            flexArr={[0.53, 1.5, 0.42, 0.4, 1.22, 0.25]}
-                            data={tableHead}
-                            style={styles.tableheader}
-                            textStyle={styles.text}
-                        />
                         <TableWrapper>
                             <Rows
                                 heightArr={25}
@@ -399,11 +326,15 @@ export default function Invoice() {
                             />
                         </TableWrapper>
                     </Table>
-                    <View style={styles.bottom_end}>
-                        <Text style={styles.text_bold_end}>For Your Company Name</Text>
-                    </View>
                 </View>
-
+                <View style={styles.Barcode}>
+                    <Image
+                        source={{
+                            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAABkAQMAAABQPCXcAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAEJJREFUSIlj+FPA8KDA/vEHC/kP9vKN/5n7D/xvPM7Af5z5A/ufwh8Mo9Kj0qPSo9Kj0qPSo9Kj0qPSo9Kj0iNDGgD7rye/sbJ7jgAAAABJRU5ErkJggg==',
+                        }}
+                        style={{ height: 50, width: 100 }}
+                    />
+                </View>
                 <View>
                     <Button title="Print" onPress={print} />
                     <View style={styles.spacer} />
@@ -440,64 +371,67 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'center',
     },
-    text: { margin: 8, color: 'blue', textAlign: 'center' },
+    text: { margin: 8, color: 'black', textAlign: 'center' },
     text_bold_address: {
         fontWeight: 'bold',
-        color: '#0000FF',
+        color: 'black',
     },
 
     text_bold: {
         fontWeight: 'bold',
-        color: '#0000FF',
+        color: 'black',
         flex: 1,
         width: 70,
     },
     text_bold3: {
-        color: '#0000FF',
+        color: 'black',
         flex: 1,
+    },
+    Barcode: {
+        width: '100%',
+        alignItems: 'center',
     },
     text_bold_end: {
         fontWeight: 'bold',
-        color: '#0000FF',
+        color: 'black',
     },
 
     text_bold1: {
         marginTop: 30,
         fontWeight: 'bold',
         fontSize: 25,
-        color: '#0000FF',
+        color: 'black',
     },
-    text_line1: { color: 'blue', textAlign: 'center' },
+    text_line1: { color: 'black', textAlign: 'center' },
     text_bold2: {
         alignItems: 'end',
-        color: '#0000FF',
+        color: 'black',
     },
     tableheader: {
         textAlign: 'center',
-        color: 'blue',
+        color: 'black',
     },
     text_line: {
-        marginLeft: 5,
-        color: 'blue',
+        marginLeft: 24,
+        color: 'black',
+        marginBottom: 5,
     },
     cashbill: { flexDirection: 'row', flex: 3 },
     line: {
         width: '100%',
         height: 1,
         borderWidth: 1,
-        borderColor: 'blue',
-        marginLeft: 5,
-        marginRight: 5,
+        borderColor: 'black',
+        borderStyle: 'dashed',
     },
     line1: {
         width: '100%',
         height: 1,
         borderWidth: 1,
-        borderColor: 'blue',
-        marginTop: 25,
-        marginLeft: 7,
-        marginRight: 7,
+        borderColor: 'black',
+
         marginBottom: 5,
+        borderStyle: 'dashed',
     },
     container_center: {
         flex: 13,

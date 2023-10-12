@@ -15,11 +15,17 @@ import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import Popup from '../../components/Popup';
-import { dateNow, houseNow } from '../../utilies/date';
+import { dateNow } from '../../utilies/date';
 import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
-export default function Invoice() {
+import { useRoute, useNavigation } from '@react-navigation/native';
+
+export default function Invoice1() {
+    const route = useRoute();
+    const navigation = useNavigation();
+    const invoice = route.params?.data;
+
     const [productId, setProductId] = useState('');
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [selectedPrinter, setSelectedPrinter] = useState();
@@ -63,6 +69,7 @@ export default function Invoice() {
             price: 50000,
         },
     ]);
+
     const togglePopup = () => {
         setPopupVisible(!isPopupVisible);
     };

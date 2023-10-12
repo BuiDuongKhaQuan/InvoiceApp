@@ -2,59 +2,37 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
+    Button,
     Platform,
     Text,
+    StatusBar,
     TouchableOpacity,
     TextInput,
-    Image,
-    KeyboardAvoidingView,
     ScrollView,
+    Alert,
 } from 'react-native';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import moment from 'moment';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import Popup from '../../components/Popup';
+import { dateNow } from '../../utilies/date';
+import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
-import { Entypo } from '@expo/vector-icons';
 import { fontSizeDefault } from '../../constant/fontSize';
-import PrintBtn from './PrintBtn';
-import { useUserContext } from '../../screens/UserContext';
-import { getCompaniesById, getProductById } from '../../Service/api';
-
-export default function Invoice2({ route, data }) {
-    const { state } = useUserContext();
-    const currentDate = moment().format('DD/MM/YYYY');
-    const currentHour = moment().format('HH:mm');
-    const [customer, setCustomer] = useState('');
-    const [phone, setPhone] = useState('');
+export default function Invoice2() {
+    const [productId, setProductId] = useState('');
+    const [isPopupVisible, setPopupVisible] = useState(false);
+    const [selectedPrinter, setSelectedPrinter] = useState();
+    const [contactName, setContactName] = useState();
     const [products, setProducts] = useState([]);
-    const [nameProduct, setNameProduct] = useState('');
+    const [customer, setCustomer] = useState('');
+    const [productName, setProductName] = useState('');
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
-    const [ck, setCk] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
+    const [tax, setTax] = useState();
     const [totalBillPrice, setTotalBillPrice] = useState(0);
-    const [id, setId] = useState(1);
-    const [data2, setData2] = useState(route ? route.params.invoice : null);
-    const [nameCompany, setNameCompany] = useState([]);
-    useEffect(() => {
-        const getNameCompaniesById = async () => {
-            try {
-                const response = await getCompaniesById(state.company.id);
-                setNameCompany(response);
-                // console.log(nameCompany.name);
-            } catch (error) {}
-        };
-        getNameCompaniesById();
-    });
-    const [productName, setProductName] = useState([]);
-    const getProductId = async (id) => {
-        try {
-            const response = await getProductById(id);
-            // console.log(response.name);
-            setProductName(response);
-        } catch (error) {
-            // console.log(error);
-        }
-    };
+    const [subTotal, setSubTotal] = useState(0);
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -82,663 +60,470 @@ export default function Invoice2({ route, data }) {
             price: 50000,
         },
     ]);
-    const [productId, setProductId] = useState('');
+    const togglePopup = () => {
+        setPopupVisible(!isPopupVisible);
+    };
     const listProductHtml = () =>
         products
             .map(
-                (product) =>
-                    ` <tr>
-                    <td style="font-weight: 700">${product.id}</td>
-                    <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
-                    <tr>
-                        <td></td>
-                        <td style="padding-left: 30px;">${product.quantity}</td>
-                        <td>${product.price}</td>
-                        <td style="padding-left: 6px">${product.ck}</td>
-                        <td></td>
-                        <td>${product.totalPrice}</td>
-                    </tr>
-                </tr>`,
+                (product, index) =>
+                    `<tr >
+                <td  style=" width: 10%; color: blue;  text-align: center; height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${index}</td>
+                <td  style="width: 30%; color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue; border-right: 2px solid blue; " >${product.name}</td>
+                <td  style="width: 10%; color: blue; text-align: center;border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; " >${product.quantity}</td>
+                <td  style=" width: 10%; color: blue; text-align: center;height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${product.price}</td>
+                <td style="color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue;    ">${product.totalPrice}</td>
+            </tr>`,
             )
             .join('');
-    const html = `
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .container {
-        display: flex;
-flex-direction: column;
-        background-color: white;
-        margin-left: 10;
-        margin-right: 10;
-      }
-      .container_top {
-        align-items: "center";
-        flex: 1;
-        text-align: center;
-        justify-content: "center";
-      }
-      
-      table, th, td {
-        
-  
-  border-collapse: collapse;
-}
-      p {
-        margin: 3px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="container_top" style="margin-top: 40px;">
-        <div style="text-align: center">
-          <p>${nameCompany.name}</p>
-        </div>
-        <div style="text-align: center">
-        <p>${nameCompany.address}</p>
-        </div>
-        <div style="text-align: center">
-        <p>${nameCompany.phone}</p>
-        </div>
-        <div style="text-align: center">
-          <p>hong@gmail.com</p>
-        </div>
-        <div style="text-align: center; font-weight: 600">
-        <p>${nameCompany.email}</p>
-        </div>
-        <div style="text-align: center; ">
-          <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
-        </div>
-        
-      </div>
-      <div class="container_center">
-        <div style="display: flex; flex-direction: row">
-          <p style="flex: 1">Ngày: ${currentDate}</p>
-          <p style="flex: 1">${currentHour}</p>
-        </div>
-        <div class="cashier" style="display: flex; flex-direction: row">
-          <p style="margin-right: 20">Thu ngân: </p>
-          ${route != null ? <p></p> : <p>${data.name}</p>}
-        </div>
-        <div class="customer" style="display: flex; flex-direction: row">
-          <p style="margin-right: 20">Khách hàng:</p>
-          <p>${customer}</p>
-        </div>
-        <div style="display: flex; flex-direction: row">
-          <div style="display: flex; flex-direction: row; flex: 2">
-            <p style="margin-right: 20">Điện thoại:</p>
-            <p>${phone}</p>
-          </div>
-          <div style="display: flex; flex-direction: row; flex: 1">
-            <p style="margin-right: 20">Điểm:</p>
-            <p>0.0</p>
-          </div>
-        </div>
-        <table style="width:100%">
-          <tr style="border-bottom: 1px dashed  black;">
-            <th>#</th>
-            <th>Tên hàng</th> 
-            <th>SL</th>
-            <th>D.G</th>
-            <th>CK</th>
-            <th>T.Tiền</th>
-          </tr>
-        
-          ${listProductHtml()}
-          
-        </table>
-        <p style="border-bottom: 1px dashed  black;"></p>
-      </div>
-      <div class="container_bottom" style="justify-content: right; ;">
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
-          <p>${totalBillPrice}</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-<p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
-          <p>${ck}</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
-          <p>${totalBillPrice}</p>
-        </div>
-        <p style="text-align: center;">${numberToVietnameseWords(totalBillPrice)}</p>
-        <p style="border-bottom: 1px dashed  black;"></p>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
-          <p>TM</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
-          <p>${totalBillPrice}</p>
-        </div>
-        <div style="display: flex; flex-direction: row; justify-content: right;">
-          <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại: </p>
-       
-          <p>0</p>
-        </div>
-        <p style="border-bottom: 1px dashed  black;"></p>
-<p style="text-align: center;">Design by....</p>
-      </div>
-    </div>
-  </body>
-</html>
-
-`;
-    function numberToVietnameseWords(number) {
-        const units = ['', ' nghìn', 'trăm', 'triệu', 'tỷ', 'nghìn tỷ', 'triệu tỷ', 'tỷ tỷ'];
-        const digits = ['', 'một ', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín'];
-
-        const groupToWords = (group) => {
-            const hundred = Math.floor(group / 100);
-            const ten = Math.floor((group % 100) / 10);
-            const one = group % 10;
-
-            let result = '';
-
-            if (hundred > 0) {
-                result += digits[hundred] + ' trăm ';
-            }
-
-            if (ten > 1) {
-                result += digits[ten] + ' mươi ';
-                if (one > 0) {
-                    result += digits[one];
+    console.log(products);
+    const html = `<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+            <title>Document</title>
+            <style>
+                .container {
+                    display: flex;
+                    flex-direction: column;
+                    background-color: white;
+                    margin-left: 100px;
+                    width: 491px;
+                    height: 800px;
+                    font-family: Arial, Helvetica, sans-serif;
                 }
-            } else if (ten === 1) {
-                result += ' mười ';
-                if (one > 0) {
-                    result += digits[one];
+                .container_top {
+                    align-items: 'center';
+                    text-align: center;
+                    justify-content: 'center';
                 }
-            } else {
-                if (one > 0) {
-                    result += digits[one];
+                table,
+                th,
+                td {
+                    padding: 0 !important;
+    
+                    border-collapse: collapse;
                 }
-            }
-
-            return result;
-        };
-
-        const numberString = String(number);
-
-        let result = '';
-        let groupIndex = 0;
-        let group = '';
-
-        for (let i = numberString.length - 1; i >= 0; i--) {
-            group = numberString[i] + group;
-
-            if (group.length === 3 || i === 0) {
-                const groupNumber = parseInt(group);
-                if (groupNumber > 0) {
-                    result = groupToWords(groupNumber) + units[groupIndex] + ' ' + result;
+    
+                th,
+                td {
+                    padding: 10px;
                 }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="container_top">
+                    <div
+                        style="
+                            text-align: center;
+                            margin-top: 90px;
+                            font-weight: bold;
+                            font-size: 30px;
+                            color: blue;
+                        "
+                    >
+                        <Text>YOUR COMPANY NAME</Text>
+                    </div>
+                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
+                        <Text>Address .....................................................</Text>
+                    </div>
+                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
+                        <Text>Ph :00000000000000</Text>
+                    </div>
+                    <hr size="2px" ; color="blue" />
+                </div>
+    
+                <div style="display: flex; justify-content: space-between; color: blue">
+                    <div style="margin-left: 10px">
+                        <Text>Sl.No.</Text>
+                    </div>
+                    <div>
+                        <Text><b>CASH BILL</b></Text>
+                    </div>
+                    <div style="margin-right: 10px">
+                        <Text>Date: ${dateNow} </Text>
+                    </div>
+                </div>
+                <div style="color: rgb(0 0 215); margin-top: 10px; margin-left: 10px; margin-right: 10px">
+                    <Text>To.M/s ${contactName}</Text>
+                    <hr size="2px" ; color="blue" />
+                </div>
+                <div style="color: rgb(0 0 215); margin-top: 8px; margin-left: 14px; margin-right: 10px">
+                    <hr size="2px" ; color="blue" />
+                </div>
+                <table style="width: 100%; height: 300px">
+                    <tr>
+                        <td
+                            style="
+                                color: rgb(0 0 215);
+                                text-align: center;
+                                width: 3%;
+                                height: 5px;
+                                border-top: 2px solid rgb(0 0 215);
+                                border-right: 2px solid rgb(0 0 215);
+                            "
+                        >
+                            <b>S.No.</b>
+                        </td>
+                        <td
+                            style="
+                                color: rgb(0 0 215);
+                                text-align: center;
+                                width: 58%;
+                                height: 5px;
+    
+                                border-top: 2px solid rgb(0 0 215);
+                                border-right: 2px solid blue;
+                            "
+                        >
+                            <b>Particulars</b>
+                        </td>
+                        <td
+                            style="
+                                color: blue;
+                                text-align: center;
+                                width: 10%;
+                                height: 5px;
+    
+                                border-top: 2px solid blue;
+                                border-right: 2px solid blue;
+                            "
+                        >
+                            <b>Qty</b>
+                        </td>
+                        <td
+                            style="
+                                height: 5px;
+                                color: blue;
+                                text-align: center;
+                                width: 18%;
+                                border-top: 2px solid blue;
+                            "
+                        >
+                            <b>Amount </b>
+    
+                            <b>Rs. </b>
+                        </td>
+                        <td
+                            style="height: 5px; color: blue; text-align: center; border-top: 2px solid blue"
+                        >
+                            <b>Ps.</b>
+                        </td>
+                    </tr>
+                    ${listProductHtml()}
 
-                group = '';
-                groupIndex++;
-            }
-        }
-        return result.trim();
-    }
-    const handleAddProduct = () => {
-        if (nameProduct && price && quantity) {
-            setProducts([
-                ...products,
-                {
-                    id: id,
-                    productId: productId,
-                    name: nameProduct,
-                    price: price,
-                    quantity: quantity,
-                    ck: ck,
-                    totalPrice: totalPrice,
-                },
-            ]);
-            setId(id + 1);
-            setNameProduct('');
-            setPrice();
-            setCk();
-            setQuantity();
-            setTotalPrice();
-            setProductId();
-        }
-    };
+                    
+                </table>
+                <div style="text-align: end; color: blue">
+                    <text><b>For You Company Name</b></text>
+                </div>
+            </div>
+        </body>
+    </html>
+    
+    `;
+
+    const data = () =>
+        products.map((product, index) => [
+            index,
+            product.name,
+            product.quantity,
+            product.price,
+            product.totalPrice,
+            '',
+        ]);
+    const tableHead = ['S.No.', 'Particulars', 'Qty', , 'Amount', ''];
+
+    const newData = () => [
+        ...data(),
+        [
+            data().length,
+            <SelectDropdown
+                data={productsApi}
+                onSelect={(selectedItem) => {
+                    setProductId(selectedItem.id);
+                    setProductName(selectedItem.name);
+                    setPrice(selectedItem.price.toString());
+                }}
+                buttonStyle={{ width: '100%', height: 30, backgroundColor: 'transparent' }}
+                rowTextStyle={{ fontSize: fontSizeDefault }}
+                defaultButtonText={'Selected product'}
+                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="blue" />}
+                dropdownIconPosition="right"
+                buttonTextAfterSelection={(selectedItem) => {
+                    return selectedItem.name;
+                }}
+                rowTextForSelection={(item) => {
+                    return item.name;
+                }}
+            />,
+            <TextInput
+                onChangeText={handleChangeQuantity}
+                value={quantity}
+                placeholder="Sl"
+                keyboardType="numeric"
+                style={styles.text_line1}
+            />,
+            <TextInput
+                onChangeText={handleChangePrice}
+                value={price}
+                placeholder="Price"
+                keyboardType="numeric"
+                style={styles.text_line1}
+            />,
+            totalPrice.toString(),
+            <View style={styles.action_btn}>
+                <TouchableOpacity onPress={handleAddProduct}>
+                    <AntDesign name="plussquare" size={23} color="blue" />
+                </TouchableOpacity>
+            </View>,
+        ],
+    ];
 
     const handleChangePrice = (text) => {
-        setPrice(text.toString());
-        setTotalPrice(quantity * text + quantity * text * (ck / 100));
+        setPrice(text);
+        setTotalPrice(quantity * text);
     };
     const handleChangeQuantity = (text) => {
-        setQuantity(text.toString());
-        setTotalPrice(text * price + text * price * (ck / 100));
+        setQuantity(text);
+        setTotalPrice(price * text);
     };
-    const handleChangeCk = (text) => {
-        setCk(text.toString());
-        setTotalPrice(quantity * price + quantity * price * (text / 100));
+    const handleChangeTax = (text) => {
+        setTax(text);
+        setTotalBillPrice(subTotal + (subTotal * text) / 100);
     };
     const removeProduct = (key) => {
         products.splice(key, 1);
         setProducts([...products]);
     };
+    const handleAddProduct = () => {
+        if (productId && price && quantity) {
+            setProducts([
+                ...products,
+                { productId: productId, name: productName, price: price, quantity: quantity, totalPrice: totalPrice },
+            ]);
+            setProductId();
+            setPrice();
+            setQuantity();
+            setProductName();
+            setTotalPrice(0);
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
+    };
 
     useEffect(() => {
-        const newTotalBillPrice = products.reduce((total, product) => {
+        const newSubTotal = products.reduce((total, product) => {
             return total + product.totalPrice;
         }, 0);
-        setTotalBillPrice(newTotalBillPrice);
+        setSubTotal(newSubTotal);
     }, [products]);
-    useEffect(() => {
-        const newTotalCk = products.reduce((ck, product) => {
-            return parseInt(product.ck, 10) + parseInt(ck, 10);
-        }, 0);
-        setCk(newTotalCk.toString());
-    }, [products]);
-    //get cong ty
 
-    return route != null ? (
-        <View style={styles.wrapper}>
-            <View style={styles.invoice}>
-                <ScrollView style={styles.container1}>
-                    <View style={styles.container_top}>
-                        <View style={styles.container_top1}>
-                            <Text style={{ fontSize: 16 }}>{nameCompany.name}</Text>
-                            <Text style={styles.address}>{nameCompany.address}</Text>
-                            <Text style={styles.phone}>{nameCompany.phone}</Text>
-                            <Text style={styles.gmail}>{nameCompany.email}</Text>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
-                            <Image style={{ height: 30 }}></Image>
-                        </View>
-                        <View style={styles.container_top2}>
-                            <View style={styles.date}>
-                                <Text>Ngày:</Text>
-                                <Text style={{ marginHorizontal: 40 }}>{currentDate}</Text>
-                                <Text>{currentHour}</Text>
-                            </View>
-                            <View style={styles.casher}>
-                                <Text>Thu ngân: </Text>
-                                <Text>{data2.emailUser}</Text>
-                            </View>
-                            <View style={styles.customer}>
-                                <Text style={styles.customer_title}>Khách hàng: </Text>
-                                <Text style={styles.customer_title}>{data2.emailGuest}</Text>
-                            </View>
-                            <View style={styles.information}>
-                                <Text style={{ marginTop: 10 }}>Điện thoại:</Text>
-                                <Text style={styles.input}>{data2.phone}</Text>
-                                <Text style={{ marginTop: 10 }}>Điểm</Text>
-                                <Text style={{ marginTop: 10, marginHorizontal: 10 }}>0.0</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <KeyboardAvoidingView
-                        style={styles.container_center}
-                        behavior={Platform.OS === 'ios' ? 'padding' : null}
-                    >
-                        <View style={styles.container_center}>
-                            <View style={styles.table}>
-                                <View style={styles.table_colum}>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_id }}>#</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.G</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>CK</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
-                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
-                                </View>
-                                <Text style={styles.text_bold}>
-                                    -------------------------------------------------------------------
-                                </Text>
-                                {data2.orders.map((order1, i) => (
-                                    <View style={styles.table_colum_1} key={i}>
-                                        <View style={styles.table_colum1}>
-                                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{i + 1}</Text>
+    const print = async () => {
+        await Print.printAsync({
+            html,
+            printerUrl: selectedPrinter?.url,
+        });
+    };
 
-                                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>
-                                                {getProductId(order1.productId).name}
-                                                {productName.name}
-                                            </Text>
-                                        </View>
+    const printToFile = async () => {
+        const { uri } = await Print.printToFileAsync({ html });
+        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+    };
 
-                                        <View style={styles.table_colum2}>
-                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
-                                                {order1.quantity}
-                                            </Text>
-                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
-                                                {productName.price}
-                                            </Text>
-                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{order1.tax}</Text>
-                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
-                                                {productName.price * order1.quantity}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                ))}
-                                <Text style={styles.text_bold}>
-                                    -------------------------------------------------------------------
-                                </Text>
-                                <View style={styles.bottom_content}>
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Tổng tiền theo giá:</Text>
-                                        <Text style={styles.text_bold}>{data2.totalPrice}</Text>
-                                    </View>
+    const selectPrinter = async () => {
+        const printer = await Print.selectPrinterAsync();
+        setSelectedPrinter(printer);
+    };
 
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
-                                        <Text style={styles.text_bold}>{data2.tax}</Text>
-                                    </View>
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Tổng thanh toán:</Text>
-                                        <Text style={styles.text_bold}>
-                                            {data2.totalPrice + (data2.totalPrice * data2.tax) / 100}
-                                        </Text>
-                                    </View>
-                                    <Text style={styles.line}>-----------------------------------</Text>
-                                    <View style={styles.bottom_end}>
-                                        <Text>
-                                            {numberToVietnameseWords(
-                                                data2.totalPrice + (data2.totalPrice * data2.tax) / 100,
-                                            )}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Kiểu T Toán:</Text>
-                                        <Text style={styles.text_bold}>TM</Text>
-                                    </View>
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Nhận tiền của khách: </Text>
-                                        <Text style={styles.text_bold}>
-                                            {data2.totalPrice + (data2.totalPrice * data2.tax) / 100}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.bottom_row}>
-                                        <Text style={styles.text_bold}>Trả lại:</Text>
-                                        <Text style={styles.text_bold}>0</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.bottom_end}>
-                                    <Text>Design bởi....</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </KeyboardAvoidingView>
-                </ScrollView>
-            </View>
-        </View>
-    ) : (
-        <PrintBtn html={html}>
-            <View style={styles.container_top}>
-                <View style={styles.container_top1}>
-                    <Text style={{ fontSize: 16 }}>{nameCompany.name}</Text>
-                    <Text style={styles.address}>{nameCompany.address}</Text>
-                    <Text style={styles.phone}>{nameCompany.phone}</Text>
-                    <Text style={styles.gmail}>{nameCompany.email}</Text>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
-                    <Image style={{ height: 30 }}></Image>
-                </View>
-                <View style={styles.container_top2}>
-                    <View style={styles.date}>
-                        <Text>Ngày:</Text>
-                        <Text style={{ marginHorizontal: 40 }}>{currentDate}</Text>
-                        <Text>{currentHour}</Text>
-                    </View>
-                    <View style={styles.casher}>
-                        <Text>Thu ngân:</Text>
-                        <Text>{data.name}</Text>
-                    </View>
-                    <View style={styles.customer}>
-                        <Text style={styles.customer_title}>Khách hàng:</Text>
+    return (
+        <>
+            <Popup visible={isPopupVisible} onClose={togglePopup} />
+            <ScrollView style={styles.container}>
+                <View style={styles.container_top}>
+                    <Text style={styles.text_bold1}>YOUR COMPANY NAME</Text>
+
+                    <View style={styles.center_row}>
+                        <Text style={styles.text_bold_address}>Address</Text>
                         <TextInput
-                            style={styles.input}
-                            placeholder=" Tên khách hàng"
+                            style={styles.text_line}
                             onChangeText={(text) => setCustomer(text)}
                             value={customer}
+                            placeholder="Nhập địa chỉ"
                         />
                     </View>
-                    <View style={styles.information}>
-                        <Text style={{ marginTop: 10 }}>Điện thoại:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder=" Số điện thoại"
-                            onChangeText={(text) => setPhone(text)}
-                            value={phone}
-                        />
-                        <Text style={{ marginTop: 10 }}>Điểm</Text>
-                        <Text style={{ marginTop: 10, marginHorizontal: 10 }}>0.0</Text>
+
+                    <Text style={styles.text_bold_address}>Ph :00000000000000</Text>
+                    <Text style={styles.line} />
+                    <View style={styles.cashbill}>
+                        <Text style={styles.text_bold3}>Sl.No.</Text>
+                        <Text style={styles.text_bold}>CASH BILL</Text>
+                        <Text style={styles.text_bold3}>Date: {dateNow}</Text>
                     </View>
                 </View>
-            </View>
-            <KeyboardAvoidingView style={styles.container_center} behavior={Platform.OS === 'ios' ? 'padding' : null}>
                 <View style={styles.container_center}>
-                    <View style={styles.table}>
-                        <View style={styles.table_colum}>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_id }}>#</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.G</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>CK</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
-                        </View>
-                        <Text style={styles.text_bold}>
-                            -------------------------------------------------------------------
-                        </Text>
-
-                        {products.map((product, index) => (
-                            <View style={styles.table_colum_1} key={index}>
-                                <View style={styles.table_colum1}>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_id }}>{product.id}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_name }}>{product.name}</Text>
-                                </View>
-                                <View style={styles.table_colum2}>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.quantity}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.price}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.ck}</Text>
-                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.totalPrice}</Text>
-                                    <View style={{ ...styles.action_btn, ...styles.colum_p }}>
-                                        <TouchableOpacity
-                                            style={{ marginTop: -120 }}
-                                            onPress={() => removeProduct(index)}
-                                        >
-                                            <AntDesign name="closesquare" size={24} color="black" />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity>
-                                            <MaterialIcons name="mode-edit" size={24} color="black" />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        ))}
-                        <View style={styles.table_colum}>
-                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{id}</Text>
-                            <View style={{ ...styles.text_line, ...styles.colum_name }}>
-                                <SelectDropdown
-                                    data={productsApi}
-                                    onSelect={(selectedItem) => {
-                                        setProductId(selectedItem.id);
-                                        setNameProduct(selectedItem.name);
-                                        setPrice(selectedItem.price.toString());
-                                    }}
-                                    buttonStyle={{ width: '100%', height: 35 }}
-                                    rowTextStyle={{ fontSize: fontSizeDefault }}
-                                    defaultButtonText={'Selected product'}
-                                    renderDropdownIcon={() => (
-                                        <Entypo name="chevron-small-down" size={24} color="black" />
-                                    )}
-                                    dropdownIconPosition="right"
-                                    buttonTextAfterSelection={(selectedItem) => {
-                                        return selectedItem.name;
-                                    }}
-                                    rowTextForSelection={(item) => {
-                                        return item.name;
-                                    }}
-                                />
-                            </View>
-                            <TextInput
-                                onChangeText={handleChangeQuantity}
-                                value={quantity}
-                                placeholder="SL"
-                                keyboardType="numeric"
-                                style={{ ...styles.text_line, ...styles.colum_p }}
+                    <View style={styles.center_row1}>
+                        <Text style={styles.text_bold2}>To.M/s</Text>
+                        <TextInput
+                            style={styles.text_line}
+                            onChangeText={(text) => setContactName(text)}
+                            value={contactName}
+                            placeholder="Enter the customer's name"
+                        />
+                    </View>
+                    <Text style={styles.line} />
+                    <View>
+                        <Text style={styles.line1} />
+                    </View>
+                    <Table
+                        borderStyle={{
+                            borderWidth: 2,
+                            borderColor: 'blue',
+                        }}
+                    >
+                        <Row
+                            heightArr={25}
+                            flexArr={[0.53, 1.5, 0.42, 0.4, 1.22, 0.25]}
+                            data={tableHead}
+                            style={styles.tableheader}
+                            textStyle={styles.text}
+                        />
+                        <TableWrapper>
+                            <Rows
+                                heightArr={25}
+                                data={newData()}
+                                flexArr={[0.64, 1.8, 0.5, 0.6, 0.85, 0.3]}
+                                textStyle={styles.tableheader}
                             />
-                            <TextInput
-                                onChangeText={handleChangePrice}
-                                value={price}
-                                placeholder="Đ.G"
-                                keyboardType="numeric"
-                                style={{ ...styles.text_line, ...styles.colum_p }}
-                            />
-                            <TextInput
-                                onChangeText={handleChangeCk}
-                                value={ck}
-                                placeholder="0%"
-                                keyboardType="numeric"
-                                style={{ ...styles.text_line, ...styles.colum_p }}
-                            />
-
-                            <Text style={{ ...styles.text_line, ...styles.colum_p, marginTop: 8, color: '#ccc' }}>
-                                {totalPrice}
-                            </Text>
-                            <View style={{ ...styles.action_btn, ...styles.colum_p }}>
-                                <TouchableOpacity onPress={handleAddProduct}>
-                                    <AntDesign name="plussquare" size={23} color="black" />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <Text style={styles.text_bold}>
-                            -------------------------------------------------------------------
-                        </Text>
-                        <View style={styles.bottom_content}>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng tiền theo giá:</Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
-                                <Text style={styles.text_bold}>{ck}</Text>
-                            </View>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Tổng thanh toán:</Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-                            <Text style={styles.line}>-----------------------------------</Text>
-                            <View style={styles.bottom_end}>
-                                <Text>{numberToVietnameseWords(totalBillPrice)}</Text>
-                            </View>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Kiểu T Toán:</Text>
-                                <Text style={styles.text_bold}>TM</Text>
-                            </View>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Nhận tiền của khách: </Text>
-                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                            </View>
-                            <View style={styles.bottom_row}>
-                                <Text style={styles.text_bold}>Trả lại:</Text>
-                                <Text style={styles.text_bold}>0</Text>
-                            </View>
-                        </View>
-                        <View style={styles.bottom_end}>
-                            <Text>Design bởi....</Text>
-                        </View>
+                        </TableWrapper>
+                    </Table>
+                    <View style={styles.bottom_end}>
+                        <Text style={styles.text_bold_end}>For Your Company Name</Text>
                     </View>
                 </View>
-            </KeyboardAvoidingView>
-        </PrintBtn>
+
+                <View>
+                    <Button title="Print" onPress={print} />
+                    <View style={styles.spacer} />
+                    <Button title="Print to PDF file" onPress={printToFile} />
+                    {Platform.OS === 'ios' && (
+                        <>
+                            <View style={styles.spacer} />
+                            <Button title="Select printer" onPress={selectPrinter} />
+                            <View style={styles.spacer} />
+                            {selectedPrinter ? (
+                                <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
+                            ) : undefined}
+                        </>
+                    )}
+                </View>
+            </ScrollView>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
+    container: {
         flex: 1,
-        flexDirection: 'column',
-    },
-    invoice: {
-        flex: 10,
-    },
-    container1: {
-        flex: 1,
-        paddingHorizontal: 10,
-        backgroundColor: 'white',
+        marginHorizontal: 10,
     },
     container_top: {
-        flex: 1,
-        justifyContent: 'center',
-        // alignItems: 'center',
-    },
-    container_center: {
-        flex: 2,
-    },
-    date: {
-        flexDirection: 'row',
-    },
-    casher: {
-        flexDirection: 'row',
-    },
-    customer: {
-        flexDirection: 'row',
-        textAlign: 'center',
-        marginTop: -10,
-    },
-    customer_name: {
-        width: 100,
-        height: 40,
-    },
-    input: {
-        borderBottomColor: '#ccc',
-        width: 150,
-        height: 40,
-    },
-    customer_title: {
-        marginTop: 10,
-    },
-    information: {
-        flexDirection: 'row',
-        marginTop: -10,
-    },
-    container_top1: {
+        marginTop: StatusBar.currentHeight + 5 || 20,
         alignItems: 'center',
+        flex: 2.3,
     },
-    container_top2: {
-        justifyContent: 'left',
-        alignItems: 'flex-start',
+    head: {
+        marginTop: 10,
+        height: 40,
+        width: '100%',
+        textAlign: 'center',
     },
+    text: { margin: 8, color: 'blue', textAlign: 'center' },
+    text_bold_address: {
+        fontWeight: 'bold',
+        color: '#0000FF',
+    },
+
     text_bold: {
         fontWeight: 'bold',
+        color: '#0000FF',
+        flex: 1,
+        width: 70,
+    },
+    text_bold3: {
+        color: '#0000FF',
+        flex: 1,
+    },
+    text_bold_end: {
+        fontWeight: 'bold',
+        color: '#0000FF',
+    },
+
+    text_bold1: {
+        marginTop: 30,
+        fontWeight: 'bold',
+        fontSize: 25,
+        color: '#0000FF',
+    },
+    text_line1: { color: 'blue', textAlign: 'center' },
+    text_bold2: {
+        alignItems: 'end',
+        color: '#0000FF',
+    },
+    tableheader: {
+        textAlign: 'center',
+        color: 'blue',
     },
     text_line: {
         marginLeft: 5,
+        color: 'blue',
     },
-    table: {
-        flexDirection: 'column',
-    },
-    table_colum: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 5,
-    },
-    table_colum_1: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        paddingVertical: 5,
-        height: '20%',
-    },
-    colum_id: {
-        flex: 1,
-        textAlign: 'left',
-        marginLeft: 0,
+    cashbill: { flexDirection: 'row', flex: 3 },
+    line: {
+        width: '100%',
+        height: 1,
+        borderWidth: 1,
+        borderColor: 'blue',
+        marginLeft: 5,
         marginRight: 5,
     },
+    line1: {
+        width: '100%',
+        height: 1,
+        borderWidth: 1,
+        borderColor: 'blue',
+        marginTop: 25,
+        marginLeft: 7,
+        marginRight: 7,
+        marginBottom: 5,
+    },
+    container_center: {
+        flex: 13,
+        width: '100%',
+        justifyContent: 'flex-start',
+    },
+    center_row: {
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    center_row1: {
+        marginTop: 10,
+        flexDirection: 'row',
+    },
+
+    table_colum: {
+        textAlign: 'center',
+    },
+    tableHead: {
+        textAlign: 'center',
+    },
     colum_name: {
-        flex: 5,
-        fontWeight: 'bold',
-        textAlign: 'left',
-        // marginLeft: -10,
+        flex: 2,
+        marginLeft: 0,
     },
     action_btn: {
         flex: 1,
@@ -746,45 +531,19 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     colum_p: {
-        flex: 1,
-        textAlign: 'left',
-        marginLeft: 0,
-        marginLeft: 5,
-        marginHorizontal: 10,
+        flex: 6,
+        textAlign: 'center',
     },
-
     bottom_content: {
         marginVertical: 10,
     },
     bottom_row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // backgroundColor: 'red',
     },
     bottom_end: {
-        flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-end',
     },
-    table_colum1: {
-        flex: 1,
-        height: 40,
-        flexDirection: 'row',
-        width: '100%',
-        // backgroundColor: 'red',
-    },
-    table_colum2: {
-        flex: 1,
-        height: 100,
-        marginLeft: 60,
-        flexDirection: 'row',
-
-        // backgroundColor: 'red',
-    },
-
-    line: {
-        textAlign: 'center',
-    },
-    bottom_row_pay: {
-        flexDirection: 'row',
-    },
+    spacer: {},
+    printer: {},
 });

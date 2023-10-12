@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native';
 import Welcome from './screens/Welcome';
 import Login from './screens/Login';
 import Register from './screens/Register';
@@ -29,11 +28,20 @@ import ValidateEmail from './screens/ValidateEmail';
 import ResetPassword from './screens/ResetPassword';
 import Information from './screens/Setting/Information';
 import { UserProvider } from './screens/UserContext';
-import Invoice10 from './layouts/Invoice/Invoice10';
-import Invoice2 from './layouts/Invoice/Invoice2';
-import Invoice0123 from './layouts/Invoice/Invoice0123';
-import Invoice11 from './layouts/Invoice/Invoice11';
-
+import {
+    Invoice1,
+    Invoice2,
+    Invoice3,
+    Invoice4,
+    Invoice5,
+    Invoice6,
+    Invoice7,
+    Invoice8,
+    Invoice9,
+    Invoice10,
+    Invoice11,
+    Invoice12,
+} from './layouts/Invoice';
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
@@ -68,14 +76,20 @@ export default function App() {
                     <Stack.Screen name="Header" component={Header} />
                     <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
                     <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                    <Stack.Screen name="Invoice10" component={Invoice10} />
+                    <Stack.Screen name="Invoice1" component={Invoice1} />
                     <Stack.Screen name="Invoice2" component={Invoice2} />
-                    <Stack.Screen name="Invoice0123" component={Invoice0123} />
+                    <Stack.Screen name="Invoice3" component={Invoice3} />
+                    <Stack.Screen name="Invoice4" component={Invoice4} />
+                    <Stack.Screen name="Invoice5" component={Invoice5} />
+                    <Stack.Screen name="Invoice6" component={Invoice6} />
+                    <Stack.Screen name="Invoice7" component={Invoice7} />
+                    <Stack.Screen name="Invoice8" component={Invoice8} />
+                    <Stack.Screen name="Invoice9" component={Invoice9} />
+                    <Stack.Screen name="Invoice10" component={Invoice10} />
                     <Stack.Screen name="Invoice11" component={Invoice11} />
+                    <Stack.Screen name="Invoice12" component={Invoice12} />
                 </Stack.Navigator>
             </NavigationContainer>
         </UserProvider>
     );
 }
-
-const styles = StyleSheet.create({});
