@@ -17,25 +17,25 @@ export default function ProfileCompany() {
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
-            title: 'Nhân viên',
+            title: 'Staff',
             icon: <Feather name="users" size={30} color="black" />,
             router: 'Staff',
         },
         {
             id: '2',
-            title: 'Hóa đơn',
+            title: 'Bills',
             icon: <FontAwesome5 name="file-invoice" size={30} color="black" />,
             router: 'Bills',
         },
         {
             id: '3',
-            title: 'Thống kê',
+            title: 'Statistical',
             icon: <FontAwesome name="bar-chart" size={30} color="black" />,
             router: 'Statistical',
         },
         {
             id: '4',
-            title: 'Mẫu hóa đơn',
+            title: 'BillSample',
             icon: <FontAwesome5 name="invision" size={30} color="black" />,
             router: 'BillSample',
         },
@@ -79,10 +79,10 @@ export default function ProfileCompany() {
                 <View style={styles.container_center}>
                     <View style={styles.btn}>
                         <View style={styles.text_centent}>
-                            <Text style={styles.text_bold}>Doanh nghiệp: {company.name}</Text>
-                            <Text style={styles.text_bold}>Địa chỉ: 1 thành viên</Text>
-                            <Text style={styles.text_bold}>SĐT: 1 thành viên</Text>
-                            <Text style={styles.text_bold}>Email: 1 thành viên</Text>
+                            <Text style={styles.text_bold}>Corporation: {company.name}</Text>
+                            <Text style={styles.text_bold}>Address: 1 member</Text>
+                            <Text style={styles.text_bold}>Phone: 1 member</Text>
+                            <Text style={styles.text_bold}>Email: 1 member</Text>
                         </View>
                     </View>
                 </View>
@@ -97,7 +97,7 @@ export default function ProfileCompany() {
                             fontWeight: 'bold',
                             fontSize: fontSizeDefault + 5,
                         }}
-                        text="Quản lý"
+                        text="Manage"
                     />
                     <FlatList
                         data={itemSetting}

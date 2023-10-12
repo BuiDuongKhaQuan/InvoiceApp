@@ -97,4 +97,44 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
     },
+    bottom_item: {
+        flex: 1,
+        width: '100%',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+    },
+    text: {
+        fontWeight: 'bold',
+        fontSize: fontSizeDefault,
+    },
+    name: {
+        height: 50,
+        width: '100%',
+        paddingHorizontal: 10,
+
+        lineHeight: 50,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'gray',
+        backgroundColor: 'white',
+    },
+    container_input: {
+        height: '50%',
+        paddingHorizontal: 10,
+        marginBottom: 0,
+        elevation: 0,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'gray',
+    },
+    dropdown: {
+        marginHorizontal: 10,
+    },
+    dropdown_btn: {
+        height: '70%',
+        marginTop: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 5,
+    },
 });

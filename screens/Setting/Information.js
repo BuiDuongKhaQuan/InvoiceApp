@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Alert } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { Entypo } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import Loading from '../../components/Loading';
 import SelectDropdown from 'react-native-select-dropdown';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
-export default function Information() {
+export default function Information({ route }) {
     const { state } = useUserContext();
     const { user, company } = state;
     const { dispatch } = useUserContext();
@@ -23,6 +23,9 @@ export default function Information() {
     const [photoShow, setPhotoShow] = useState(null);
     const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const [data, setData] = useState(route?.params?.dataModel !== undefined ? route.params.dataModel : null);
+
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -50,21 +53,17 @@ export default function Information() {
         });
         setLoading(true);
         try {
-            const response = await axios.patch(
-                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
+            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-            );
+            });
             dispatch({
                 type: 'SIGN_IN',
                 payload: { user: response.data, company: state.company },
             });
         } catch (error) {
-            console.error('Lỗi:', error);
+            console.error('Error:', error);
         } finally {
             setLoading(false);
         }
@@ -95,21 +94,17 @@ export default function Information() {
         });
         setLoading(true);
         try {
-            const response = await axios.patch(
-                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
+            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-            );
+            });
             dispatch({
                 type: 'SIGN_IN',
                 payload: { user: response.data, company: state.company },
             });
         } catch (error) {
-            console.error('Lỗi:', error);
+            console.error('Error:', error);
         } finally {
             setLoading(false);
         }
@@ -134,19 +129,16 @@ export default function Information() {
         }
         setLoading(true);
         try {
-            const response = await axios.patch(
-                'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api/v1/auth/users',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
+            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-            );
+            });
             dispatch({
                 type: 'SIGN_IN',
                 payload: { user: response.data, company: state.company },
             });
+            Alert.alert('Update successful');
             console.log(response.data);
         } catch (error) {
             console.error(' error:', error.response);
@@ -158,101 +150,154 @@ export default function Information() {
     return (
         <BackgroundImage>
             <Header title="Information" />
-            <ScrollView style={styles.container}>
-                <Loading loading={loading} />
-                <View style={styles.top}>
-                    <View style={styles.image}>
-                        <Image
-                            style={styles.avatar_img}
-                            source={
-                                user.image == null
-                                    ? require('../../assets/images/default-avatar.png')
-                                    : { uri: user.image }
-                            }
-                        />
+            {route?.params?.dataModel !== undefined ? (
+                <ScrollView style={styles.container}>
+                    <Loading loading={loading} />
+                    <View style={styles.top}>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.avatar_img}
+                                source={
+                                    data.image == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: data.image }
+                                }
+                            />
+                            <Text>avartar</Text>
+                        </View>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.wallpaper_img}
+                                source={
+                                    data.wallpaper == null
+                                        ? require('../../assets/images/default-wallpaper.png')
+                                        : { uri: data.wallpaper }
+                                }
+                            />
+                            <Text>Wallpaper</Text>
+                        </View>
+                    </View>
 
-                        <Button
-                            text="Change avatar"
-                            customStylesText={styles.text}
-                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                            onPress={takePhotoAndUpload}
-                        />
+                    <View>
+                        <View style={styles.bottom}>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Name:</Text>
+                                <Text style={styles.name}>{data.name}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Email:</Text>
+                                <Text style={styles.name}>{data.email}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Phone:</Text>
+                                <Text style={styles.name}>{data.phone}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Gender:</Text>
+                                <Text style={styles.name}>{data.gender}</Text>
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.image}>
-                        <Image
-                            style={styles.wallpaper_img}
-                            source={
-                                user.wallpaper == null
-                                    ? require('../../assets/images/default-wallpaper.png')
-                                    : { uri: user.wallpaper }
-                            }
-                        />
-                        <Button
-                            text="Change wallpaper"
-                            customStylesText={styles.text}
-                            customStylesBtn={styles.change_btn}
-                            onPress={uploadWallpaper}
-                        />
-                    </View>
-                </View>
-                <View style={styles.bottom}>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Name:</Text>
-                        <Input
-                            customStylesContainer={styles.container_input}
-                            holder={state.user.name}
-                            value={name}
-                            onChangeText={(text) => setName(text)}
-                        />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Email:</Text>
-                        <Input
-                            customStylesContainer={styles.container_input}
-                            holder={state.user.email}
-                            value={email}
-                            onChangeText={(text) => setEmail(text)}
-                        />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Phone:</Text>
-                        <Input
-                            customStylesContainer={styles.container_input}
-                            holder={state.user.phone}
-                            value={phone}
-                            onChangeText={(text) => setPhone(text)}
-                        />
-                    </View>
-                    <View style={styles.bottom_item}>
-                        <Text style={styles.text}>Gender:</Text>
-                        <View style={styles.dropdown}>
-                            <SelectDropdown
-                                data={genders}
-                                onSelect={(selectedItem, index) => {
-                                    setSelectedGender(selectedItem);
-                                }}
-                                buttonStyle={styles.dropdown_btn}
-                                defaultButtonText={state.user.gender}
-                                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                                dropdownIconPosition="right"
-                                buttonTextAfterSelection={(selectedItem, index) => {
-                                    // text represented after item is selected
-                                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                                    return selectedItem;
-                                }}
-                                rowTextForSelection={(item, index) => {
-                                    // text represented for each item in dropdown
-                                    // if data array is an array of objects then return item.property to represent item in dropdown
-                                    return item;
-                                }}
+                </ScrollView>
+            ) : (
+                <ScrollView style={styles.container}>
+                    <Loading loading={loading} />
+
+                    <View style={styles.top}>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.avatar_img}
+                                source={
+                                    user.image == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: user.image }
+                                }
+                            />
+
+                            <Button
+                                text="Change avatar"
+                                customStylesText={styles.text}
+                                customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                                onPress={takePhotoAndUpload}
+                            />
+                        </View>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.wallpaper_img}
+                                source={
+                                    user.wallpaper == null
+                                        ? require('../../assets/images/default-wallpaper.png')
+                                        : { uri: user.wallpaper }
+                                }
+                            />
+                            <Button
+                                text="Change wallpaper"
+                                customStylesText={styles.text}
+                                customStylesBtn={styles.change_btn}
+                                onPress={uploadWallpaper}
                             />
                         </View>
                     </View>
-                </View>
-                <View style={styles.btn}>
-                    <Button text="Save" onPress={handlerSend} />
-                </View>
-            </ScrollView>
+
+                    <View>
+                        <View style={styles.bottom}>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Name:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.name}
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Email:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.email}
+                                    value={email}
+                                    onChangeText={(text) => setEmail(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Phone:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.phone}
+                                    value={phone}
+                                    onChangeText={(text) => setPhone(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>Gender:</Text>
+                                <View style={styles.dropdown}>
+                                    <SelectDropdown
+                                        data={genders}
+                                        onSelect={(selectedItem, index) => {
+                                            setSelectedGender(selectedItem);
+                                        }}
+                                        buttonStyle={styles.dropdown_btn}
+                                        defaultButtonText={state.user.gender}
+                                        renderDropdownIcon={() => (
+                                            <Entypo name="chevron-small-down" size={24} color="black" />
+                                        )}
+                                        dropdownIconPosition="right"
+                                        buttonTextAfterSelection={(selectedItem, index) => {
+                                            return selectedItem;
+                                        }}
+                                        rowTextForSelection={(item, index) => {
+                                            return item;
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.btn}>
+                            <Button text="Save" onPress={handlerSend} />
+                        </View>
+                    </View>
+                </ScrollView>
+            )}
         </BackgroundImage>
     );
 }
@@ -314,6 +359,17 @@ const styles = StyleSheet.create({
     text: {
         fontWeight: 'bold',
         fontSize: fontSizeDefault,
+    },
+    name: {
+        height: 50,
+        width: '100%',
+        paddingHorizontal: 10,
+
+        lineHeight: 50,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'gray',
+        backgroundColor: 'white',
     },
     container_input: {
         height: '50%',

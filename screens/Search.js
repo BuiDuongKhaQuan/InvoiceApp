@@ -18,16 +18,16 @@ export default function Search({ navigation }) {
             if (data) {
                 setInvoice(data);
                 setError(null);
-                Alert.alert('Thông tin hóa đơn', `ID: ${data.id}\nStatus: ${data.status}`);
+                Alert.alert('Invoice information', `ID: ${data.id}\nStatus: ${data.status}`);
             } else {
-                Alert.alert('Lỗi', 'Không tìm thấy hóa đơn với ID này');
+                Alert.alert('Error', 'No invoices were found with this ID');
             }
         } catch (error) {
-            setError('Hóa đơn này không tồn tại');
+            setError('This invoice does not exist');
             setInvoice(null);
             if (error.response) {
             }
-            Alert.alert('Lỗi', 'Hóa đơn này không tồn tại');
+            Alert.alert('Error', 'This invoice does not exist');
         }
     };
     return (
@@ -36,7 +36,7 @@ export default function Search({ navigation }) {
                 <View style={{ flexDirection: 'row' }}>
                     <Input
                         customStylesContainer={styles.input}
-                        holder="Tìm theo mã hóa đơn, tên khách hàng"
+                        holder="Search by invoice code, customer name"
                         iconLeft={<Feather name="search" size={24} color="black" />}
                         iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                         onPressIconRight={() => navigation.navigate('Scanner')}
@@ -70,17 +70,17 @@ export default function Search({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.container_bottom}>
-                    <Text style={styles.title}>Có thể bạn quan tâm</Text>
+                    <Text style={styles.title}>Maybe you are interested</Text>
                     <View style={styles.care}>
                         <Button
                             customStylesText={styles.result_itemText}
                             customStylesBtn={styles.result_item}
-                            text="Mẫu mới sắp ra mắt"
+                            text="New model coming soon"
                         />
                         <Button
                             customStylesText={styles.result_itemText}
                             customStylesBtn={styles.result_item}
-                            text="Thương hiệu nổi tiếng"
+                            text="Famous brand"
                         />
                     </View>
                 </View>

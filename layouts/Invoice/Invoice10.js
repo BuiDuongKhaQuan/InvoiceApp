@@ -23,9 +23,6 @@ export default function Invoice10({ route, data }) {
     const [tax, setTax] = useState(0.0);
     const [data2, setData2] = useState(route ? route.params.invoice : null);
 
-    // console.log('sÁa', data2);
-
-    // const []
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -262,10 +259,8 @@ export default function Invoice10({ route, data }) {
                         <View style={styles.title_date}>
                             <Text style={styles.title}>Invoice</Text>
                             <View style={styles.date}>
-                                <Text style={styles.text}>
-                                    Invoice Date: {dateNow}-{houseNow}
-                                </Text>
-                                <Text style={styles.text}>Invoice #{route ? data2.id : ''}</Text>
+                                <Text style={styles.text}>Invoice Date: {data2.createdAt}</Text>
+                                <Text style={styles.text}>Invoice #{data2.id}</Text>
                             </View>
                         </View>
                         <View style={styles.from_to}>

@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, Image, Modal, ScrollView } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, Image, Modal, ScrollView, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Header from '../../components/SettingItem/header';
@@ -8,56 +8,107 @@ import { useUserContext } from '../UserContext';
 import { useEffect } from 'react';
 
 import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
-import { getUserByCompanyName, getUserByName } from '../../Service/api';
+import { getUserByCompanyName, getUserByName, updateStatus } from '../../Service/api';
+import Loading from '../../components/Loading';
 
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
+
     const [staffs, setStaffs] = useState([]);
     const [error, setError] = useState(null);
     const [nameStaff, setNameStaff] = useState('');
     const [infStaff, setInfStaff] = useState([]);
-
+    const [loading, setLoading] = useState(false);
+    const [dataModel, setDataModel] = useState();
+    const [user, setUser] = useState(dataModel);
+    const [buttonText, setButtonText] = useState('');
     const handleSearch = async () => {
         try {
             const response = await getUserByName(nameStaff);
             setInfStaff(response);
-            // console.log(infStaff);
         } catch (error) {
-            setError('Nhân viên không tồn tại');
+            setError('Staff does not exist');
             setInfStaff(null);
         }
     };
-    useEffect(() => {
-        const getInformationStaff = async () => {
-            try {
-                const response = await getUserByCompanyName(state.company.name);
-                setStaffs(response);
-                // console.log(staffs);
-            } catch (error) {
-                setError('Công ty này khồng có dữu liệu');
-                setStaffs(null);
-                if (error.response) {
-                }
+    const getInformationStaff = async () => {
+        try {
+            const response = await getUserByCompanyName(state.company.name);
+            setStaffs(response);
+        } catch (error) {
+            setError('This company has no data');
+            setStaffs(null);
+            if (error.response) {
             }
-        };
-        getInformationStaff();
-    });
+        }
+    };
+
     const [modalVisible, setModalVisible] = useState(false);
 
-    const showModal = () => {
+    const showModal = (data) => {
+        setDataModel(data);
         setModalVisible(true);
+        if (data.status === 1) {
+            setButtonText('Lock');
+        } else if (data.status === 2) {
+            setButtonText('Unlock');
+        }
     };
 
     const hideModal = () => {
         setModalVisible(false);
     };
-    const inf = () => {
-        navigation.navigate('Information');
-    };
 
+    useEffect(() => {
+        const focusListener = navigation.addListener('focus', () => {
+            setModalVisible(false);
+            getInformationStaff();
+        });
+
+        return () => {
+            focusListener();
+        };
+    }, [navigation]);
+    const [newStatus, setNewStatus] = useState();
+    const handleLockup = async () => {
+        setLoading(true);
+        try {
+            const s = dataModel.status;
+            let updatedStatus;
+
+            if (s === 1) {
+                const response = await updateStatus(dataModel.id, 2);
+                setUser(response);
+                updatedStatus = 2;
+                console.log(user);
+            } else if (s === 2) {
+                const response = await updateStatus(dataModel.id, 1);
+                setUser(response);
+                updatedStatus = 1;
+                console.log(user);
+            }
+
+            hideModal();
+            setNewStatus(updatedStatus);
+            console.log(user);
+            if (updatedStatus === 1) {
+                setButtonText('Lock');
+            } else if (updatedStatus === 2) {
+                setButtonText('Unlock');
+            }
+            hideModal();
+            getInformationStaff();
+        } catch (error) {
+            console.log(error.message);
+            Alert.alert('Error', 'Transmission error, please try again later!');
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <View style={styles.container}>
-            <Header title="Nhân viên" />
+            <Loading loading={loading} />
+            <Header title="Staff" />
             <Input
                 iconLeft={<Feather name="search" size={24} color="black" />}
                 customStylesContainer={styles.input}
@@ -82,7 +133,7 @@ export default function Staff({ navigation }) {
                                       size={24}
                                       color="black"
                                       style={styles.iconOption}
-                                      onPress={showModal}
+                                      onPress={() => showModal(staff1)}
                                   />
                               </View>
                           ))
@@ -100,12 +151,12 @@ export default function Staff({ navigation }) {
                                       size={24}
                                       color="black"
                                       style={styles.iconOption}
-                                      onPress={showModal}
+                                      onPress={() => showModal(staff1)}
                                   />
                               </View>
                           ))}
                 </View>
-                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={hideModal}>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
                     <View style={styles.modalBackground}>
                         <View style={styles.modalContainer}>
                             <View style={styles.modalContainer1}>
@@ -117,18 +168,26 @@ export default function Staff({ navigation }) {
                                             iconLeft={<AntDesign name="close" size={20} color="black" />}
                                         />
                                     </View>
-                                    <Text style={styles.title}>Tùy chọn</Text>
+                                    <Text style={styles.title}>Options</Text>
                                 </View>
                                 <Button
                                     customStylesBtn={styles.modalOption}
                                     customStylesText={styles.textBtn}
-                                    text="Thông tin"
-                                    onPress={inf}
+                                    text="Information"
+                                    onPress={() => {
+                                        navigation.navigate('Information', { dataModel: dataModel });
+                                    }}
                                 />
                                 <Button
                                     customStylesBtn={styles.modalOption}
                                     customStylesText={styles.textBtn}
                                     text="Chat"
+                                />
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text={buttonText}
+                                    onPress={handleLockup}
                                 />
                             </View>
                         </View>
