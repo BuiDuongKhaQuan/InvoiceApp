@@ -10,7 +10,7 @@ import { useUserContext } from '../../screens/UserContext';
 import { getAllInvoice, getProductById } from '../../Service/api';
 import moment from 'moment';
 
-export default function Invoice0123({ route, data }) {
+export default function Invoice12({ route, data }) {
     const { state } = useUserContext();
     const { user, company } = state;
     const [products, setProducts] = useState([]);

@@ -2,38 +2,59 @@ import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
-    Button,
     Platform,
     Text,
-    StatusBar,
     TouchableOpacity,
     TextInput,
+    Image,
+    KeyboardAvoidingView,
     ScrollView,
-    Alert,
 } from 'react-native';
-import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
-import { AntDesign, Entypo } from '@expo/vector-icons';
-import Popup from '../../components/Popup';
-import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown';
+import { Entypo } from '@expo/vector-icons';
 import { fontSizeDefault } from '../../constant/fontSize';
-import { dateNow } from '../../utilies/date';
-export default function Invoice() {
-    const [productId, setProductId] = useState('');
-    const [isPopupVisible, setPopupVisible] = useState(false);
-    const [selectedPrinter, setSelectedPrinter] = useState();
-    const [contactName, setContactName] = useState();
-    const [contactPhone, setContactPhone] = useState();
-    const [contactCityCode, setContactCityCode] = useState();
-    const [products, setProducts] = useState([]);
+import PrintBtn from './PrintBtn';
+import { useUserContext } from '../../screens/UserContext';
+import { getCompaniesById, getProductById } from '../../Service/api';
+
+export default function Invoice3({ route, data }) {
+    const { state } = useUserContext();
+    const currentDate = moment().format('DD/MM/YYYY');
+    const currentHour = moment().format('HH:mm');
     const [customer, setCustomer] = useState('');
-    const [productName, setProductName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [products, setProducts] = useState([]);
+    const [nameProduct, setNameProduct] = useState('');
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
+    const [ck, setCk] = useState();
     const [totalPrice, setTotalPrice] = useState(0);
     const [totalBillPrice, setTotalBillPrice] = useState(0);
-    const [subTotal, setSubTotal] = useState(0);
+    const [id, setId] = useState(1);
+    const [data2, setData2] = useState(route ? route.params.invoice : null);
+    const [nameCompany, setNameCompany] = useState([]);
+    useEffect(() => {
+        const getNameCompaniesById = async () => {
+            try {
+                const response = await getCompaniesById(state.company.id);
+                setNameCompany(response);
+                // console.log(nameCompany.name);
+            } catch (error) {}
+        };
+        getNameCompaniesById();
+    });
+    const [productName, setProductName] = useState([]);
+    const getProductId = async (id) => {
+        try {
+            const response = await getProductById(id);
+            // console.log(response.name);
+            setProductName(response);
+        } catch (error) {
+            // console.log(error);
+        }
+    };
     const [productsApi, setProductsApi] = useState([
         {
             id: 1,
@@ -61,571 +82,663 @@ export default function Invoice() {
             price: 50000,
         },
     ]);
-    const togglePopup = () => {
-        setPopupVisible(!isPopupVisible);
-    };
-
+    const [productId, setProductId] = useState('');
     const listProductHtml = () =>
         products
             .map(
-                (product, index) =>
+                (product) =>
                     ` <tr>
-                    <td
-                        style="
-                            width: 15%;
-                            border-top: 1px solid black;
-                            border-right: 1px solid black;
-                            text-align: center;
-                            border-left: 1px solid black;
-                        "
-                    >
-                    ${index}
-                    </td>
-                    <td
-                        style="
-                            width: 15%;
-                            border-bottom: 0px;
-                            border-top: 1px solid black;
-                            border-right: 1px solid black;
-                            text-align: center;
-                        "
-                    >
-                    ${product.name}
-                    </td>
-
-                    <td style="width: 10%; border: 1px solid black; text-align: center">${product.quantity}</td>
-                    <td
-                        style="
-                            width: 10%;
-                            height: 30px;
-                            border: 1px solid black;
-
-                            text-align: center;
-                        "
-                    >
-                    ${product.price}
-                    </td>
-                    <td
-                        style="
-                            border-bottom: 1px solid black;
-                            border-right: 1px solid black;
-                            border-top: 1px solid black;
-                            text-align: center;
-                        "
-                    >
-                    ${product.totalPrice}
-                    </td>
-                </tr>
-                    `,
+                    <td style="font-weight: 700">${product.id}</td>
+                    <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
+                    <tr>
+                        <td></td>
+                        <td style="padding-left: 30px;">${product.quantity}</td>
+                        <td>${product.price}</td>
+                        <td style="padding-left: 6px">${product.ck}</td>
+                        <td></td>
+                        <td>${product.totalPrice}</td>
+                    </tr>
+                </tr>`,
             )
             .join('');
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+flex-direction: column;
+        background-color: white;
+        margin-left: 10;
+        margin-right: 10;
+      }
+      .container_top {
+        align-items: "center";
+        flex: 1;
+        text-align: center;
+        justify-content: "center";
+      }
+      
+      table, th, td {
+        
+  
+  border-collapse: collapse;
+}
+      p {
+        margin: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container_top" style="margin-top: 40px;">
+        <div style="text-align: center">
+          <p>${nameCompany.name}</p>
+        </div>
+        <div style="text-align: center">
+        <p>${nameCompany.address}</p>
+        </div>
+        <div style="text-align: center">
+        <p>${nameCompany.phone}</p>
+        </div>
+        <div style="text-align: center">
+          <p>hong@gmail.com</p>
+        </div>
+        <div style="text-align: center; font-weight: 600">
+        <p>${nameCompany.email}</p>
+        </div>
+        <div style="text-align: center; ">
+          <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
+        </div>
+        
+      </div>
+      <div class="container_center">
+        <div style="display: flex; flex-direction: row">
+          <p style="flex: 1">Ngày: ${currentDate}</p>
+          <p style="flex: 1">${currentHour}</p>
+        </div>
+        <div class="cashier" style="display: flex; flex-direction: row">
+          <p style="margin-right: 20">Thu ngân: </p>
+          ${route != null ? <p></p> : <p>${data.name}</p>}
+        </div>
+        <div class="customer" style="display: flex; flex-direction: row">
+          <p style="margin-right: 20">Khách hàng:</p>
+          <p>${customer}</p>
+        </div>
+        <div style="display: flex; flex-direction: row">
+          <div style="display: flex; flex-direction: row; flex: 2">
+            <p style="margin-right: 20">Điện thoại:</p>
+            <p>${phone}</p>
+          </div>
+          <div style="display: flex; flex-direction: row; flex: 1">
+            <p style="margin-right: 20">Điểm:</p>
+            <p>0.0</p>
+          </div>
+        </div>
+        <table style="width:100%">
+          <tr style="border-bottom: 1px dashed  black;">
+            <th>#</th>
+            <th>Tên hàng</th> 
+            <th>SL</th>
+            <th>D.G</th>
+            <th>CK</th>
+            <th>T.Tiền</th>
+          </tr>
+        
+          ${listProductHtml()}
+          
+        </table>
+        <p style="border-bottom: 1px dashed  black;"></p>
+      </div>
+      <div class="container_bottom" style="justify-content: right; ;">
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+          <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
+          <p>${totalBillPrice}</p>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+<p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
+          <p>${ck}</p>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+          <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
+          <p>${totalBillPrice}</p>
+        </div>
+        <p style="text-align: center;">${numberToVietnameseWords(totalBillPrice)}</p>
+        <p style="border-bottom: 1px dashed  black;"></p>
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+          <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
+          <p>TM</p>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+          <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
+          <p>${totalBillPrice}</p>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+          <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại: </p>
+       
+          <p>0</p>
+        </div>
+        <p style="border-bottom: 1px dashed  black;"></p>
+<p style="text-align: center;">Design by....</p>
+      </div>
+    </div>
+  </body>
+</html>
 
-    const html = `<!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-            <title>Document</title>
-            <style>
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    background-color: white;
-                    margin-left: 100px;
-                    font-family: Arial, Helvetica, sans-serif;
-                    width: 580px;
-                    height: 754px;
-                }
-                .container_top {
-                    align-items: 'center';
-                    text-align: center;
-                    justify-content: 'center';
-                }
-    
-                table,
-                th,
-                td {
-                    border-top: 1px solid;
-                }
-                table {
-                    border-collapse: collapse;
-                }
-                table tr:nth-child(odd) {
-                }
-                table tr:nth-child(even) {
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="container_top">
-                    <div style="display: flex; justify-content: space-between">
-                        <div style="font-size: 20px">
-                            <Text><b>Your Company Name</b></Text>
-                        </div>
-                        <div style="color: hsl(0deg 0% 75.69%); font-size: 30px">
-                            <Text>INVOICE</Text>
-                        </div>
-                    </div>
-                    <div style="text-align: left; font-style: italic; margin-bottom: 30px">
-                        <Text>Your Company Slogan</Text>
-                    </div>
-    
-                    <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">Street Address</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>DATE:</b></Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px">${dateNow}</Text>
-                    </div>
-                    <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">City, ST ZIP Code ${contactPhone}</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>INVOICE#</b></Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px">100</Text>
-                    </div>
-                    <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">Phone [number] Fax [number] ${contactPhone}</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>FOR:</b></Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px; font-style: italic"> Project or service</Text>
-                    </div>
-                    <div style="display: flex; justify-content: end">
-                        <Text style="font-style: italic"> description </Text>
-                    </div>
-                </div>
-    
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text><b>Bill To:</b></Text>
-                </div>
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Name ${contactName}</Text>
-                </div>
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Company Name</Text>
-                </div>
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Street Address</Text>
-                </div>
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>City, ST ZIP Code ${contactCityCode}</Text>
-                </div>
-                <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Phone ${contactPhone}</Text>
-                </div>
-                <table>
-                    <tr>
-                        <td
-                            colspan="3"
-                            style="
-                                text-align: center;
-                                width: 50%;
-                                height: 30px;
-                                background-color: hsl(0deg 0% 94.9%);
-                                border-left: 1px solid;
-                                border-right: 1px solid;
-                            "
-                        >
-                            <b>DESCRIPTION</b>
-                        </td>
-                        <td
-                            colspan="2"
-                            style="
-                                border-right: 1px solid;
-                                text-align: center;
-                                width: 40%;
-                                height: 30px;
-                                background-color: hsl(0deg 0% 94.9%);
-                            "
-                        >
-                            <b>AMOUNT</b>
-                        </td>
-                    </tr>
-                    ${listProductHtml()}
-    
-                    <tr>
-                        <td colspan="4" style="width: 100px; height: 30px; text-align: center; border-right: 1px solid">
-                            <b> TOTAL</b>
-                        </td>
-                        <td
-                            style="
-                                width: 100px;
-                                height: 30px;
-                                background-color: hsl(0deg 0% 94.9%);
-                                border-right: 1px solid;
-                                border-bottom: 1px solid;
-                                text-align: center;
-                            "
-                        >
-                            ${subTotal}
-                        </td>
-                    </tr>
-                </table>
-                <div style="margin-top: 10px; font-size: 13px">
-                    <text>Make all checks payable to Your Company Name </text>
-                </div>
-                <div style="margin-top: 20px; font-size: 13px; margin-bottom: 20px">
-                    <text> If you have any questions concerning this invoice, Contact Name, Phone Numer, E-mail </text>
-                </div>
-                <div style="text-align: center; font-size: 13px">
-                    <text><b>THANK YOU FOR YOUR BUSINESS! </b></text>
-                </div>
-            </div>
-        </body>
-    </html>
-    `;
-    const data = () =>
-        products.map((product, index) => [
-            index,
-            product.name,
-            product.quantity,
-            product.price,
-            product.totalPrice,
-            '',
-        ]);
-    const tableHead = ['DESCRIPTION', 'AMOUNT', ''];
+`;
+    function numberToVietnameseWords(number) {
+        const units = ['', ' nghìn', 'trăm', 'triệu', 'tỷ', 'nghìn tỷ', 'triệu tỷ', 'tỷ tỷ'];
+        const digits = ['', 'một ', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín'];
 
-    const newData = () => [
-        ...data(),
-        [
-            data().length,
-            <SelectDropdown
-                data={productsApi}
-                onSelect={(selectedItem) => {
-                    setProductId(selectedItem.id);
-                    setProductName(selectedItem.name);
-                    setPrice(selectedItem.price.toString());
-                }}
-                buttonStyle={{ width: '100%', height: 30, backgroundColor: 'transparent' }}
-                rowTextStyle={{ fontSize: fontSizeDefault }}
-                defaultButtonText={'Selected product'}
-                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                dropdownIconPosition="right"
-                buttonTextAfterSelection={(selectedItem) => {
-                    return selectedItem.name;
-                }}
-                rowTextForSelection={(item) => {
-                    return item.name;
-                }}
-            />,
-            <TextInput
-                onChangeText={handleChangeQuantity}
-                value={quantity}
-                placeholder="Sl"
-                keyboardType="numeric"
-                style={styles.text_line1}
-            />,
-            <TextInput
-                onChangeText={handleChangePrice}
-                value={price}
-                placeholder="Price"
-                keyboardType="numeric"
-                style={styles.text_line1}
-            />,
-            totalPrice.toString(),
-            <View style={styles.action_btn}>
-                <TouchableOpacity onPress={handleAddProduct}>
-                    <AntDesign name="plussquare" size={23} color="blue" />
-                </TouchableOpacity>
-            </View>,
-        ],
+        const groupToWords = (group) => {
+            const hundred = Math.floor(group / 100);
+            const ten = Math.floor((group % 100) / 10);
+            const one = group % 10;
 
-        ['Total', totalPrice.toString()],
-    ];
+            let result = '';
+
+            if (hundred > 0) {
+                result += digits[hundred] + ' trăm ';
+            }
+
+            if (ten > 1) {
+                result += digits[ten] + ' mươi ';
+                if (one > 0) {
+                    result += digits[one];
+                }
+            } else if (ten === 1) {
+                result += ' mười ';
+                if (one > 0) {
+                    result += digits[one];
+                }
+            } else {
+                if (one > 0) {
+                    result += digits[one];
+                }
+            }
+
+            return result;
+        };
+
+        const numberString = String(number);
+
+        let result = '';
+        let groupIndex = 0;
+        let group = '';
+
+        for (let i = numberString.length - 1; i >= 0; i--) {
+            group = numberString[i] + group;
+
+            if (group.length === 3 || i === 0) {
+                const groupNumber = parseInt(group);
+                if (groupNumber > 0) {
+                    result = groupToWords(groupNumber) + units[groupIndex] + ' ' + result;
+                }
+
+                group = '';
+                groupIndex++;
+            }
+        }
+        return result.trim();
+    }
+    const handleAddProduct = () => {
+        if (nameProduct && price && quantity) {
+            setProducts([
+                ...products,
+                {
+                    id: id,
+                    productId: productId,
+                    name: nameProduct,
+                    price: price,
+                    quantity: quantity,
+                    ck: ck,
+                    totalPrice: totalPrice,
+                },
+            ]);
+            setId(id + 1);
+            setNameProduct('');
+            setPrice();
+            setCk();
+            setQuantity();
+            setTotalPrice();
+            setProductId();
+        }
+    };
 
     const handleChangePrice = (text) => {
-        setPrice(text);
-        setTotalPrice(quantity * text);
+        setPrice(text.toString());
+        setTotalPrice(quantity * text + quantity * text * (ck / 100));
     };
     const handleChangeQuantity = (text) => {
-        setQuantity(text);
-        setTotalPrice(price * text);
+        setQuantity(text.toString());
+        setTotalPrice(text * price + text * price * (ck / 100));
     };
-    const handleChangeTotal = (text) => {
-        setTotalPrice(text);
-        setTotal(price + text);
+    const handleChangeCk = (text) => {
+        setCk(text.toString());
+        setTotalPrice(quantity * price + quantity * price * (text / 100));
     };
     const removeProduct = (key) => {
         products.splice(key, 1);
         setProducts([...products]);
     };
-    const handleAddProduct = () => {
-        if (productId && price && quantity) {
-            setProducts([
-                ...products,
-                { productId: productId, name: productName, price: price, quantity: quantity, totalPrice: totalPrice },
-            ]);
-            setProductId();
-            setPrice();
-            setQuantity();
-            setProductName();
-            setTotalPrice(0);
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
 
     useEffect(() => {
-        const newSubTotal = products.reduce((total, product) => {
+        const newTotalBillPrice = products.reduce((total, product) => {
             return total + product.totalPrice;
         }, 0);
-        setSubTotal(newSubTotal);
+        setTotalBillPrice(newTotalBillPrice);
     }, [products]);
+    useEffect(() => {
+        const newTotalCk = products.reduce((ck, product) => {
+            return parseInt(product.ck, 10) + parseInt(ck, 10);
+        }, 0);
+        setCk(newTotalCk.toString());
+    }, [products]);
+    //get cong ty
 
-    const print = async () => {
-        await Print.printAsync({
-            html,
-            printerUrl: selectedPrinter?.url,
-        });
-    };
+    return route != null ? (
+        <View style={styles.wrapper}>
+            <View style={styles.invoice}>
+                <ScrollView style={styles.container1}>
+                    <View style={styles.container_top}>
+                        <View style={styles.container_top1}>
+                            <Text style={{ fontSize: 16 }}>{nameCompany.name}</Text>
+                            <Text style={styles.address}>{nameCompany.address}</Text>
+                            <Text style={styles.phone}>{nameCompany.phone}</Text>
+                            <Text style={styles.gmail}>{nameCompany.email}</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
+                            <Image style={{ height: 30 }}></Image>
+                        </View>
+                        <View style={styles.container_top2}>
+                            <View style={styles.date}>
+                                <Text>Ngày:</Text>
+                                <Text style={{ marginHorizontal: 40 }}>{currentDate}</Text>
+                                <Text>{currentHour}</Text>
+                            </View>
+                            <View style={styles.casher}>
+                                <Text>Thu ngân: </Text>
+                                <Text>{data2.emailUser}</Text>
+                            </View>
+                            <View style={styles.customer}>
+                                <Text style={styles.customer_title}>Khách hàng: </Text>
+                                <Text style={styles.customer_title}>{data2.emailGuest}</Text>
+                            </View>
+                            <View style={styles.information}>
+                                <Text style={{ marginTop: 10 }}>Điện thoại:</Text>
+                                <Text style={styles.input}>{data2.phone}</Text>
+                                <Text style={{ marginTop: 10 }}>Điểm</Text>
+                                <Text style={{ marginTop: 10, marginHorizontal: 10 }}>0.0</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <KeyboardAvoidingView
+                        style={styles.container_center}
+                        behavior={Platform.OS === 'ios' ? 'padding' : null}
+                    >
+                        <View style={styles.container_center}>
+                            <View style={styles.table}>
+                                <View style={styles.table_colum}>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_id }}>#</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.G</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>CK</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
+                                    <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
+                                </View>
+                                <Text style={styles.text_bold}>
+                                    -------------------------------------------------------------------
+                                </Text>
+                                {data2.orders.map((order1, i) => (
+                                    <View style={styles.table_colum_1} key={i}>
+                                        <View style={styles.table_colum1}>
+                                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{i + 1}</Text>
 
-    const printToFile = async () => {
-        const { uri } = await Print.printToFileAsync({ html });
-        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-    };
+                                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>
+                                                {getProductId(order1.productId).name}
+                                                {productName.name}
+                                            </Text>
+                                        </View>
 
-    const selectPrinter = async () => {
-        const printer = await Print.selectPrinterAsync();
-        setSelectedPrinter(printer);
-    };
+                                        <View style={styles.table_colum2}>
+                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
+                                                {order1.quantity}
+                                            </Text>
+                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
+                                                {productName.price}
+                                            </Text>
+                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{order1.tax}</Text>
+                                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>
+                                                {productName.price * order1.quantity}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                ))}
+                                <Text style={styles.text_bold}>
+                                    -------------------------------------------------------------------
+                                </Text>
+                                <View style={styles.bottom_content}>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Tổng tiền theo giá:</Text>
+                                        <Text style={styles.text_bold}>{data2.totalPrice}</Text>
+                                    </View>
 
-    return (
-        <>
-            <Popup visible={isPopupVisible} onClose={togglePopup} />
-            <ScrollView style={styles.container}>
-                <View style={styles.container_top_left}>
-                    <Text style={styles.text_bold2}>Your Company Name</Text>
-                    <Text style={styles.text_bold_Invoice}>INVOICE</Text>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
+                                        <Text style={styles.text_bold}>{data2.tax}</Text>
+                                    </View>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Tổng thanh toán:</Text>
+                                        <Text style={styles.text_bold}>
+                                            {data2.totalPrice + (data2.totalPrice * data2.tax) / 100}
+                                        </Text>
+                                    </View>
+                                    <Text style={styles.line}>-----------------------------------</Text>
+                                    <View style={styles.bottom_end}>
+                                        <Text>
+                                            {numberToVietnameseWords(
+                                                data2.totalPrice + (data2.totalPrice * data2.tax) / 100,
+                                            )}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Kiểu T Toán:</Text>
+                                        <Text style={styles.text_bold}>TM</Text>
+                                    </View>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Nhận tiền của khách: </Text>
+                                        <Text style={styles.text_bold}>
+                                            {data2.totalPrice + (data2.totalPrice * data2.tax) / 100}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.bottom_row}>
+                                        <Text style={styles.text_bold}>Trả lại:</Text>
+                                        <Text style={styles.text_bold}>0</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.bottom_end}>
+                                    <Text>Design bởi....</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </KeyboardAvoidingView>
+                </ScrollView>
+            </View>
+        </View>
+    ) : (
+        <PrintBtn html={html}>
+            <View style={styles.container_top}>
+                <View style={styles.container_top1}>
+                    <Text style={{ fontSize: 16 }}>{nameCompany.name}</Text>
+                    <Text style={styles.address}>{nameCompany.address}</Text>
+                    <Text style={styles.phone}>{nameCompany.phone}</Text>
+                    <Text style={styles.gmail}>{nameCompany.email}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</Text>
+                    <Image style={{ height: 30 }}></Image>
                 </View>
-                <View style={styles.container_top_right}>
-                    <Text style={styles.text_bold_slogan}>Your Company Slogan</Text>
+                <View style={styles.container_top2}>
+                    <View style={styles.date}>
+                        <Text>Ngày:</Text>
+                        <Text style={{ marginHorizontal: 40 }}>{currentDate}</Text>
+                        <Text>{currentHour}</Text>
+                    </View>
+                    <View style={styles.casher}>
+                        <Text>Thu ngân:</Text>
+                        <Text>{data.name}</Text>
+                    </View>
+                    <View style={styles.customer}>
+                        <Text style={styles.customer_title}>Khách hàng:</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder=" Tên khách hàng"
+                            onChangeText={(text) => setCustomer(text)}
+                            value={customer}
+                        />
+                    </View>
+                    <View style={styles.information}>
+                        <Text style={{ marginTop: 10 }}>Điện thoại:</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder=" Số điện thoại"
+                            onChangeText={(text) => setPhone(text)}
+                            value={phone}
+                        />
+                        <Text style={{ marginTop: 10 }}>Điểm</Text>
+                        <Text style={{ marginTop: 10, marginHorizontal: 10 }}>0.0</Text>
+                    </View>
                 </View>
-
+            </View>
+            <KeyboardAvoidingView style={styles.container_center} behavior={Platform.OS === 'ios' ? 'padding' : null}>
                 <View style={styles.container_center}>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Street Address</Text>
-
-                        <Text style={styles.text_bold_left1}>DATE: {dateNow}</Text>
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>City, ST ZIP Code</Text>
-                        <TextInput
-                            onChangeText={handleChangePrice}
-                            placeholder="Code "
-                            keyboardType="numeric"
-                            style={{ ...styles.text_line }}
-                        />
-                        <Text style={styles.text_bold_left2}>INVOICE#</Text>
-                        <Text style={styles.text_bold_left}>100</Text>
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Phone [number] Fax [number]</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setContactPhone(text)}
-                            value={contactPhone}
-                            placeholder="Enter your phone number "
-                        />
-                        <Text style={styles.text_bold2}>FOR:</Text>
-                        <Text style={styles.text_bold_italia}> Project or service</Text>
-                    </View>
-                    <View style={styles.descrip}>
-                        <Text style={styles.text_bold_italia}>description </Text>
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold2}>Bill To:</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setCustomer(text)}
-                            value={customer}
-                            placeholder="Enter  address"
-                        />
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Name</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setContactName(text)}
-                            value={contactName}
-                            placeholder="Enter  Name "
-                        />
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Company Name</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setCustomer(text)}
-                            value={customer}
-                            placeholder="Enter  Name "
-                        />
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Street Address</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setCustomer(text)}
-                            value={customer}
-                            placeholder="Enter Address "
-                        />
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>City, ST ZIP Code</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setContactCityCode(text)}
-                            value={contactCityCode}
-                            placeholder="Enter your code city and ZIP code"
-                        />
-                    </View>
-                    <View style={styles.center_row}>
-                        <Text style={styles.text_bold3}>Phone</Text>
-                        <TextInput
-                            style={styles.text_line}
-                            onChangeText={(text) => setContactPhone(text)}
-                            value={contactPhone}
-                            placeholder="Enter your phone number "
-                        />
-                    </View>
                     <View style={styles.table}>
-                        <Table
-                            borderStyle={{
-                                borderWidth: 1.5,
-                                borderColor: 'black',
-                            }}
-                        >
-                            <Row
-                                heightArr={25}
-                                flexArr={[2, 0.975, 0.178]}
-                                data={tableHead}
-                                style={styles.tableheader}
-                                textStyle={styles.text}
-                            />
-                            <TableWrapper>
-                                <Rows
-                                    heightArr={30}
-                                    data={newData()}
-                                    flexArr={[0.5, 3, 1, 1, 1.2, 0.4]}
-                                    textStyle={styles.tableheader}
+                        <View style={styles.table_colum}>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_id }}>#</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>Tên hàng</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>SL</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>Đ.G</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>CK</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>TT</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}></Text>
+                        </View>
+                        <Text style={styles.text_bold}>
+                            -------------------------------------------------------------------
+                        </Text>
+
+                        {products.map((product, index) => (
+                            <View style={styles.table_colum_1} key={index}>
+                                <View style={styles.table_colum1}>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_id }}>{product.id}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_name }}>{product.name}</Text>
+                                </View>
+                                <View style={styles.table_colum2}>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.quantity}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.price}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.ck}</Text>
+                                    <Text style={{ ...styles.text_line, ...styles.colum_p }}>{product.totalPrice}</Text>
+                                    <View style={{ ...styles.action_btn, ...styles.colum_p }}>
+                                        <TouchableOpacity
+                                            style={{ marginTop: -120 }}
+                                            onPress={() => removeProduct(index)}
+                                        >
+                                            <AntDesign name="closesquare" size={24} color="black" />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <MaterialIcons name="mode-edit" size={24} color="black" />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        ))}
+                        <View style={styles.table_colum}>
+                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{id}</Text>
+                            <View style={{ ...styles.text_line, ...styles.colum_name }}>
+                                <SelectDropdown
+                                    data={productsApi}
+                                    onSelect={(selectedItem) => {
+                                        setProductId(selectedItem.id);
+                                        setNameProduct(selectedItem.name);
+                                        setPrice(selectedItem.price.toString());
+                                    }}
+                                    buttonStyle={{ width: '100%', height: 35 }}
+                                    rowTextStyle={{ fontSize: fontSizeDefault }}
+                                    defaultButtonText={'Selected product'}
+                                    renderDropdownIcon={() => (
+                                        <Entypo name="chevron-small-down" size={24} color="black" />
+                                    )}
+                                    dropdownIconPosition="right"
+                                    buttonTextAfterSelection={(selectedItem) => {
+                                        return selectedItem.name;
+                                    }}
+                                    rowTextForSelection={(item) => {
+                                        return item.name;
+                                    }}
                                 />
-                            </TableWrapper>
-                        </Table>
-                    </View>
+                            </View>
+                            <TextInput
+                                onChangeText={handleChangeQuantity}
+                                value={quantity}
+                                placeholder="SL"
+                                keyboardType="numeric"
+                                style={{ ...styles.text_line, ...styles.colum_p }}
+                            />
+                            <TextInput
+                                onChangeText={handleChangePrice}
+                                value={price}
+                                placeholder="Đ.G"
+                                keyboardType="numeric"
+                                style={{ ...styles.text_line, ...styles.colum_p }}
+                            />
+                            <TextInput
+                                onChangeText={handleChangeCk}
+                                value={ck}
+                                placeholder="0%"
+                                keyboardType="numeric"
+                                style={{ ...styles.text_line, ...styles.colum_p }}
+                            />
 
-                    <Text style={styles.text_bold_end}>Make all checks payable to Your Company Name</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_p, marginTop: 8, color: '#ccc' }}>
+                                {totalPrice}
+                            </Text>
+                            <View style={{ ...styles.action_btn, ...styles.colum_p }}>
+                                <TouchableOpacity onPress={handleAddProduct}>
+                                    <AntDesign name="plussquare" size={23} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Text style={styles.text_bold}>
+                            -------------------------------------------------------------------
+                        </Text>
+                        <View style={styles.bottom_content}>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Tổng tiền theo giá:</Text>
+                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                            </View>
 
-                    <Text style={styles.text_bold_end}>
-                        If you have any questions concerning this invoice, Contact Name, Phone Numer, E-mail
-                    </Text>
-                    <View style={styles.bottom_content}>
-                        <View style={styles.bottom_row}>
-                            <Text style={styles.text_bold}>THANK YOU FOR YOUR BUSINESS! </Text>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Tổng chiêc khấu(%):</Text>
+                                <Text style={styles.text_bold}>{ck}</Text>
+                            </View>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Tổng thanh toán:</Text>
+                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                            </View>
+                            <Text style={styles.line}>-----------------------------------</Text>
+                            <View style={styles.bottom_end}>
+                                <Text>{numberToVietnameseWords(totalBillPrice)}</Text>
+                            </View>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Kiểu T Toán:</Text>
+                                <Text style={styles.text_bold}>TM</Text>
+                            </View>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Nhận tiền của khách: </Text>
+                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                            </View>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold}>Trả lại:</Text>
+                                <Text style={styles.text_bold}>0</Text>
+                            </View>
+                        </View>
+                        <View style={styles.bottom_end}>
+                            <Text>Design bởi....</Text>
                         </View>
                     </View>
                 </View>
-                <View>
-                    <Button title="Print" onPress={print} />
-                    <View style={styles.spacer} />
-                    <Button title="Print to PDF file" onPress={printToFile} />
-                    {Platform.OS === 'ios' && (
-                        <>
-                            <View style={styles.spacer} />
-                            <Button title="Select printer" onPress={selectPrinter} />
-                            <View style={styles.spacer} />
-                            {selectedPrinter ? (
-                                <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
-                            ) : undefined}
-                        </>
-                    )}
-                </View>
-            </ScrollView>
-        </>
+            </KeyboardAvoidingView>
+        </PrintBtn>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
-        backgroundColor: 'rgb(255 255 255)',
-        marginHorizontal: 10,
+        flexDirection: 'column',
+    },
+    invoice: {
+        flex: 10,
+    },
+    container1: {
+        flex: 1,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
     },
     container_top: {
-        marginTop: StatusBar.currentHeight + 5 || 20,
+        flex: 1,
+        justifyContent: 'center',
+        // alignItems: 'center',
+    },
+    container_center: {
+        flex: 2,
+    },
+    date: {
+        flexDirection: 'row',
+    },
+    casher: {
+        flexDirection: 'row',
+    },
+    customer: {
+        flexDirection: 'row',
+        textAlign: 'center',
+        marginTop: -10,
+    },
+    customer_name: {
+        width: 100,
+        height: 40,
+    },
+    input: {
+        borderBottomColor: '#ccc',
+        width: 150,
+        height: 40,
+    },
+    customer_title: {
+        marginTop: 10,
+    },
+    information: {
+        flexDirection: 'row',
+        marginTop: -10,
+    },
+    container_top1: {
         alignItems: 'center',
-        flex: 2.3,
     },
-    talbleedit: {
-        marginTop: 20,
+    container_top2: {
+        justifyContent: 'left',
+        alignItems: 'flex-start',
     },
-    descrip: { marginLeft: 317, marginBottom: 30 },
     text_bold: {
         fontWeight: 'bold',
-        fontSize: 13,
     },
-
-    colum_head1: { marginLeft: 70 },
-    text_bold2: {
-        fontWeight: 'bold',
-        fontSize: 14,
-    },
-    text_line1: {
-        textAlign: 'center',
-    },
-    text_bold3: {
-        fontSize: 14,
-        marginVertical: 2,
-    },
-    text_bold_end: { fontSize: 15, marginVertical: 10 },
-    text_bold4: { fontWeight: 'bold', fontSize: 15 },
-    text_bold_Invoice: {
-        fontSize: 30,
-        color: 'rgb(127 124 125)',
-    },
-    text_bold_slogan: {
-        fontSize: 15,
-        fontStyle: 'italic',
-        marginBottom: 30,
-    },
-    text_bold_italia: { fontSize: 15, fontStyle: 'italic' },
-    text_bold_left: {
-        fontSize: 14,
-        marginLeft: 30,
-    },
-    text_bold_left1: {
-        marginLeft: 150,
-        fontWeight: 'bold',
-        fontSize: 14,
-    },
-    text_bold_left2: {
-        marginLeft: 90,
-        fontWeight: 'bold',
-        fontSize: 14,
-    },
-
     text_line: {
         marginLeft: 5,
     },
-    line: {
-        width: '60%',
-        height: 1,
-        borderWidth: 0.5,
-        borderColor: 'black',
-        marginVertical: 8,
-    },
-    container_center: {
-        flex: 8,
-        width: '100%',
-        marginTop: 10,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-    },
-    center_row: {
-        flexDirection: 'row',
-        width: '100%',
-        alignItems: 'center',
-    },
-
     table: {
         flexDirection: 'column',
     },
-
+    table_colum: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+    },
+    table_colum_1: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        paddingVertical: 5,
+        height: '20%',
+    },
+    colum_id: {
+        flex: 1,
+        textAlign: 'left',
+        marginLeft: 0,
+        marginRight: 5,
+    },
     colum_name: {
-        flex: 2,
+        flex: 5,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        // marginLeft: -10,
     },
     action_btn: {
         flex: 1,
@@ -633,39 +746,45 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     colum_p: {
-        flex: 1.5,
-        textAlign: 'center',
+        flex: 1,
+        textAlign: 'left',
         marginLeft: 0,
-        marginRight: 5,
+        marginLeft: 5,
+        marginHorizontal: 10,
     },
-    colum_p1: {},
+
     bottom_content: {
         marginVertical: 10,
     },
     bottom_row: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        // backgroundColor: 'red',
     },
-    bottom_row_end: {
+    bottom_end: {
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    table_colum1: {
+        flex: 1,
+        height: 40,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        width: '100%',
+        // backgroundColor: 'red',
     },
-    tableheader: {
+    table_colum2: {
+        flex: 1,
+        height: 100,
+        marginLeft: 60,
+        flexDirection: 'row',
+
+        // backgroundColor: 'red',
+    },
+
+    line: {
         textAlign: 'center',
     },
-
-    spacer: {},
-    printer: {},
-    head: {
-        height: 30,
-        width: 80,
-        backgroundColor: 'rgb(242 242 242)',
-    },
-
-    text: { margin: 8, textAlign: 'center', fontWeight: 'bold' },
-    row: { backgroundColor: 'rgb(255 255 255)' },
-    container_top_left: {
-        justifyContent: 'space-between',
+    bottom_row_pay: {
         flexDirection: 'row',
     },
 });

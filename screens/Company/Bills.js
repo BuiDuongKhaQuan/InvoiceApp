@@ -1,38 +1,31 @@
-import { StatusBar, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import InvoiceList from '../../components/InvoiceList';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
 import { getInvoiceByCompany, getInvoiceByKey } from '../../Service/api';
 import { useUserContext } from '../UserContext';
-import Invoice from '../../layouts/Invoice/Invoice0123';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import Invoice2 from '../../layouts/Invoice/Invoice2';
-import Invoice10 from '../../layouts/Invoice/Invoice10';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Bills({ navigation }) {
+export default function Bills() {
     const { state } = useUserContext();
     const [invoices, setIncoices] = useState([]);
     const [invoiceKey, setInvoiceKey] = useState();
     const [error, setError] = useState(null);
-
+    const navigation = useNavigation();
+    const getLayout = (key) => key.match(/^(\d+)-/)[1];
     useEffect(() => {
-        const getInvoi = async () => {
+        const getInvoice = async () => {
             try {
                 const response = await getInvoiceByCompany(state.company.name);
-                // console.log(state.company.name);
                 setIncoices(response);
                 const response1 = await getInvoiceByKey(key);
                 setInvoiceKey(response1);
-
-                // console.log(response);
             } catch (error) {
                 setError(error);
             }
         };
-
-        getInvoi();
-        // getInvoiceByKey();
+        getInvoice();
     });
 
     return (
@@ -59,9 +52,7 @@ export default function Bills({ navigation }) {
                         <TouchableOpacity
                             style={styles.table_colum}
                             key={invoice.id}
-                            onPress={() =>
-                                navigation.navigate(`Invoice${invoice.key}`, { invoice: invoice }, { data: state.user })
-                            }
+                            onPress={() => navigation.navigate(`Invoice${getLayout(invoice.key)}`, { data: invoice })}
                         >
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.id}</Text>

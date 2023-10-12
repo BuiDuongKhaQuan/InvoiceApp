@@ -21,7 +21,7 @@ import { getCompaniesById, getProductById } from '../../Service/api';
 import { white } from '../../constant/color';
 import { Asset } from 'expo-asset';
 
-export default function Invoice7_test({ route, data }) {
+export default function Invoice6({ route, data }) {
     const { state } = useUserContext();
     const currentDate = moment().format('DD/MM/YYYY');
     const currentHour = moment().format('HH:mm');
@@ -40,8 +40,8 @@ export default function Invoice7_test({ route, data }) {
     const [data2, setData2] = useState(route ? route.params.invoice : null);
     const [nameCompany, setNameCompany] = useState([]);
 
-    const imageUri = require('../../assets/images/header.png');
-    const imageUri2 = require('../../assets/images/botter.png');
+    const imageUri = require('../../assets/images/header_seven.png');
+    const imageUri2 = require('../../assets/images/bottom.png');
 
     const imageAsset = Asset.fromModule(imageUri);
     const imageAsset2 = Asset.fromModule(imageUri2);
@@ -132,8 +132,6 @@ export default function Invoice7_test({ route, data }) {
                             flex: 1;
                             text-align: center;
                             justify-content: 'center';
-                            flex-direction: row;
-
                         }
                         .header_table_1 {
                             background-color: '##ffcc00';
@@ -156,6 +154,30 @@ export default function Invoice7_test({ route, data }) {
                         .container_contents {
                             display: flex;
                             justify-content: space-between;
+
+                        }
+                        .container_header {
+                            background-color: rgb(255, 191, 0);
+                            height: 100%;
+                        }
+                        .container_header_name {
+                            margin-left: 65%;
+                            margin-right: 15%;
+                            background-color: white;
+                            font-weight: bold;
+                            font-size: 25px;
+                        }
+                        
+                        .container_bottom_2 {
+                            background-color: rgb(255, 191, 0);
+                        }
+                        .container_bottom_name {
+                            margin-top:5%;
+                            margin-left: 65%;
+                            margin-right: 15%;
+                            background-color: white;
+                            color: white;
+                            height:2px;
                         }
                         .container_bottom_name_2 {
                             margin-left: 66%;
@@ -165,22 +187,22 @@ export default function Invoice7_test({ route, data }) {
                 </head>
                 <body>
                     <div class="container">
-                        <div class="container_top" >
+                        <div class="container_top" style="margin-top: 40px">
+                            <div style="text-align: left">
+                                <p>${nameCompany.name}</p>
+                            </div>
+                            
+                            </div>
                             <div class="container_header">
-                            <div style=" font-size:40px;font-width:bold; position: absolute;margin-top: 45px;">
-                            <p>${nameCompany.name}</p>
+                                <div class="container_header_name">Invoice</div>
                             </div>
-                                <div style="text-align: right">
-                                <img src="${uri}" width="70%" ; />
-            
-                                </div>
-                            </div>
+                            
                         </div>
             
                         <div class="container_center">
                             <div style="display: flex; flex-direction: row">
                                 <div style="display: flex; flex-direction: column; flex: 2">
-                                    <p style="margin-right: 20; font-weight: bold; font-size: 20px">Invoice To:</p>
+                                    <p style="margin-right: 20; font-weight: bold">Invoice To:</p>
                                     <p>${data.name}</p>
 
                                 </div>
@@ -196,15 +218,15 @@ export default function Invoice7_test({ route, data }) {
                                 </div>
                             </div>
                             <div class="cashier" style="display: flex; flex-direction: row">
-                                <p style="margin-right: 20; font-weight: bold">Trandz:</p>
-                                <p>${nameCompany.address}</p>
+                                <p style="margin-right: 20; font-weight: bold">Address:</p>
+                                <p>${nameCompany.address}s</p>
                             </div>
                             <table class="table" style="width: 100%">
                                 <tr style="background-color: #595959; color: aliceblue">
                                     <div class="header_table">
                                         <div class="header_table_1">
-                                            <th style="text-align: center; background-color: #ffcc00; color: #595959">Item</th>
-                                            <th style="text-align: left; background-color: #ffcc00; color: #595959">Description</th>
+                                            <th style="text-align: center">Item</th>
+                                            <th style="text-align: left">Description</th>
                                         </div>
                                         <th style="text-align: center">Price</th>
                                         <th style="text-align: center">Sl</th>
@@ -213,64 +235,62 @@ export default function Invoice7_test({ route, data }) {
                                 </tr>
                                 <tr>
                                 ${listProductHtml()}
-
                                 </tr>
                             </table>
                         </div>
                         <div class="container_contents">
                             <div class="container_bottom" style="justify-content: right">
                                 <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: right; font-weight: bold">Thank you for your business</p>
+                                    <p style="justify-content: right; font-weight: bold">Thank you</p>
                                 </div>
-                                <div style="display: flex; flex-direction: column; justify-content: left">
+                                <div style="display: flex; flex-direction: row; justify-content: left">
                                     <p style="justify-content: left; font-weight: bold">Terms and conditions</p>
-                                    <p>${customer}</p>
+                                    <p>trandz</p>
                                 </div>
-                                <div style="display: flex; flex-direction: column; justify-content: left">
+                                <div style="display: flex; flex-direction: row; justify-content: left">
                                     <p style="justify-content: left; font-weight: bold; font-size: 18px">Payment Infor:</p>
-                                    <p>${phone}</p>
+                                    <p>0826037777</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: right"></div>
                             </div>
                             <div class="container_bottom" style="justify-content: right">
-                            <div style="display: flex; flex-direction: row; justify-content: space-between  ">
-                                <p style="justify-content: left; font-weight: bold; ">Sub total:</p>
-                                <p>${subTotal}</p>
+                                <div style="display: flex; flex-direction: row; justify-content: left">
+                                    <p style="justify-content: left; font-weight: bold">Sub total:</p>
+                                    <p>${subTotal}</p>
+                                </div>
+                                <div style="display: flex; 
+                                flex-direction: row;                                 justify-content: space-between; 
+                                justify-content: space-between; 
+                                ">
+                                    <p style="justify-content: left; font-weight: bold; font-size: 18px">Tax:</p>
+                                    <p>${tax}%</p>
+                                </div>
+                                <div style="display: flex; 
+                                flex-direction: row; 
+                                justify-content: space-between; 
+                                background-color: rgb(255, 191, 0);">
+                                  <p >Total:</p>
+                                    <p >${totalBillPrice}</p>
+                                </div>
+                                <div style="display: flex; flex-direction: row; justify-content: right"></div>
                             </div>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                <p style="justify-content: left; font-weight: bold; ">Tax:</p>
-                                <p>${tax}%</p>
-                            </div>
-                            <div style="display: flex; flex-direction: row; justify-content: space-between;background-color: #b6b6b6;">
-                                <p
-                                    style="
-                                    
-                                        justify-content: right;
-                                        font-weight: bold;
-                                        
-                                    "
-                                >
-                                    Total:
-                                </p>
-                                <p>${totalBillPrice}</p>
-                            </div>
-        
-                            <div style="display: flex; flex-direction: row; justify-content: right"></div>
+                            
                         </div>
-                    </div>
                         <div class="container_bottom_2" >
-                        <div class="container_bottom_name">
+                            <div class="container_bottom_name">
+                            </div>
                         </div>
                     </div>
+                    <div class="container_bottom_name_2">
+                    Authorised Sign</div>
                 </div>
-                <div class="container_bottom_name_2">
-                Authorised Sign</div>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: right"></div>
-                    <img style="position: fixed; bottom: 0; width: 100%" src="${uri2}" />
-                    </div>
+                <div style = "font-weight: bold;">
+                ${nameCompany.phone}  |  ${nameCompany.address}  |  Website</div>
+            </div>
                 </body>
             </html>
+            
+            
             `;
 
     const handleAddProduct = () => {
@@ -338,10 +358,13 @@ export default function Invoice7_test({ route, data }) {
             <View style={styles.container_top}>
                 <View style={styles.container_top1}>
                     <Text style={styles.Header_II}>{nameCompany.name}</Text>
-                    <Image source={require('../../assets/images/header.png')} />
+                </View>
+                <View style={styles.container_Header}>
+                    <Text style={styles.Header}>Invoice</Text>
+                    <Image style={{ height: 30 }}></Image>
                 </View>
                 <View style={styles.casher}>
-                    <Text style={styles.text_bold_iv}>InVoice To:</Text>
+                    <Text style={styles.text_bold}>InVoice To:</Text>
                 </View>
 
                 <View style={styles.container_top2}>
@@ -369,11 +392,11 @@ export default function Invoice7_test({ route, data }) {
                 <View style={styles.container_center}>
                     <View style={styles.table}>
                         <View style={styles.table_colum}>
-                            <Text style={{ ...styles.text_line_header_1, ...styles.colum_id }}>SL.</Text>
-                            <Text style={{ ...styles.text_line_header_1, ...styles.colum_name }}>Item direction </Text>
+                            <Text style={{ ...styles.text_line_header, ...styles.colum_id }}>#</Text>
+                            <Text style={{ ...styles.text_line_header, ...styles.colum_name }}>Tên hàng</Text>
                             <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>Đ.G</Text>
-                            <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>Q.T</Text>
-                            <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>Total</Text>
+                            <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>SL</Text>
+                            <Text style={{ ...styles.text_line_header, ...styles.colum_p }}>TT</Text>
                             <Text style={{ ...styles.text_line_header, ...styles.colum_b }}></Text>
                         </View>
                         {products.map((product, index) => (
@@ -442,63 +465,62 @@ export default function Invoice7_test({ route, data }) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-
-                        <View style={styles.bottom_content}>
-                            <View>
-                                <View style={styles.bottom_row}>
-                                    <Text style={styles.text_bold}>Thank you for your business</Text>
-                                </View>
-                                <View style={styles.bottom_row_1}>
-                                    <Text style={styles.text_bold}>Loren ipsum:</Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Nguyen Van A"
-                                        onChangeText={(text) => setCustomer(text)}
-                                        value={customer}
-                                    />
-                                </View>
-                                <View style={styles.bottom_row_1}>
-                                    <Text style={styles.text_bold}>Payment Infor: </Text>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Bank account"
-                                        onChangeText={(text) => setPhone(text)}
-                                        value={phone}
-                                    />
-                                </View>
-                            </View>
-                            <View style={styles.bottom_right}>
-                                <View style={styles.bottom_row}>
-                                    <Text style={styles.text_bold_end}>SUBTOTAL:</Text>
-                                    <Text style={styles.text_bold}>{subTotal}</Text>
-                                </View>
-
-                                <View style={styles.bottom_row}>
-                                    <Text style={styles.text_bold_end}>TAX(%):</Text>
-                                    <TextInput
-                                        onChangeText={handleChangeTax}
-                                        value={tax}
-                                        placeholder="Tax?"
-                                        keyboardType="numeric"
-                                        style={{ ...styles.text_line, ...styles.colum_p }}
-                                    />
-                                </View>
-                                <View style={styles.bottom_row}>
-                                    <Text style={styles.text_bold_end}>GRANDTOTAL:</Text>
-                                    <Text style={styles.text_bold}>{totalBillPrice}</Text>
-                                </View>
-                            </View>
-                        </View>
+                    </View>
+                    <View style={styles.bottom_content}>
                         <View>
-                            <Text style={styles.Header_1}></Text>
-                            <Text style={styles.Header_2}> Authorised Sign</Text>
+                            <View style={styles.bottom_row_1}>
+                                <Text style={styles.text_bold}>Thank you for your business</Text>
+
+                                <Text style={styles.text_bold}>Loren ipsum:</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Dieu khoan"
+                                    onChangeText={(text) => setCustomer(text)}
+                                    value={customer}
+                                />
+                            </View>
+                            <View style={styles.bottom_row_1}>
+                                <Text style={styles.text_bold}>Payment Infor: </Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Bank account"
+                                    onChangeText={(text) => setPhone(text)}
+                                    value={phone}
+                                />
+                            </View>
                         </View>
+                        <View style={styles.bottom_right}>
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold_end}>SUBTOTAL:</Text>
+                                <Text style={styles.text_bold}>{subTotal}</Text>
+                            </View>
+
+                            <View style={styles.bottom_row}>
+                                <Text style={styles.text_bold_end}>TAX(%):</Text>
+                                <TextInput
+                                    onChangeText={handleChangeTax}
+                                    value={tax}
+                                    placeholder="Tax?"
+                                    keyboardType="numeric"
+                                />
+                            </View>
+                            <View style={styles.bottom_row_pay_1}>
+                                <Text style={styles.text_bold_end}>GRANDTOTAL:</Text>
+                                <Text style={styles.text_bold}>{totalBillPrice}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.bottom_end}>
+                        <View style={styles.container_Header_1}>
+                            <Text style={styles.Header_1}></Text>
+                        </View>
+                        <Text style={styles.Header_2}> Authorised Sign</Text>
+                        <Text style={styles.text_bold}>
+                            {nameCompany.phone} | {nameCompany.address} | website
+                        </Text>
                     </View>
                 </View>
             </KeyboardAvoidingView>
-            <View style={styles.container_Header}>
-                <Image source={require('../../assets/images/botter.png')} />
-            </View>
         </PrintBtn>
     );
 }
@@ -552,8 +574,7 @@ const styles = StyleSheet.create({
         marginTop: -10,
     },
     container_top1: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        alignItems: 'flex-start',
     },
     container_top2: {
         flexDirection: 'row',
@@ -562,35 +583,25 @@ const styles = StyleSheet.create({
     text_bold: {
         fontWeight: 'bold',
     },
-    text_bold_iv: {
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
     text_bold_end: {
         fontWeight: 'bold',
     },
-    text_line: {},
-    text_line_header: {
-        marginLeft: 2,
-        color: white,
+    text_line: {
+        marginLeft: 5,
     },
-    text_line_header_1: {
-        fontWeight: 'bold',
-        color: 'black',
-        // height: 25,
-        backgroundColor: '#ffcc00',
-        height: 25,
-        paddingVertical: 2,
+    text_line_header: {
+        marginLeft: 5,
+        color: white,
     },
     table: {
         flexDirection: 'column',
+        borderWidth: 1,
     },
     table_colum: {
         flexDirection: 'row',
-        height: 25,
         justifyContent: 'space-between',
+        paddingVertical: 5,
         backgroundColor: '#595959',
-        alignItems: 'center',
     },
     table_colum_2: {
         flexDirection: 'row',
@@ -606,9 +617,11 @@ const styles = StyleSheet.create({
     colum_id: {
         flex: 1,
         textAlign: 'left',
+        marginLeft: 0,
+        marginRight: 5,
     },
     colum_name: {
-        flex: 3.5,
+        flex: 4,
         fontWeight: 'bold',
         textAlign: 'left',
         // marginLeft: -10,
@@ -639,6 +652,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+
+        // backgroundColor: 'red',
+    },
+    bottom_row_pay_1: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#ffcc00',
+
         // backgroundColor: 'red',
     },
     bottom_row_1: {
@@ -646,10 +667,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         // backgroundColor: 'red',
     },
-    bottom_end: {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
+
     table_colum1: {
         flex: 1,
         height: 40,
@@ -662,6 +680,8 @@ const styles = StyleSheet.create({
         height: 15,
         marginLeft: 60,
         flexDirection: 'row',
+
+        // backgroundColor: 'red',
     },
 
     line: {
@@ -675,10 +695,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     Header_II: {
-        justifyContent: 'flex-start',
+        fontSize: 20,
         fontWeight: 'bold',
-        fontSize: 25,
-        marginVertical: '5%',
     },
     img_bottom: {
         width: '100%',
@@ -687,17 +705,29 @@ const styles = StyleSheet.create({
     Header_1: {
         marginLeft: '60%',
         marginRight: '15%',
-        backgroundColor: 'black',
-        borderWidth: 1,
-        height: 1,
-    },
-    container_Header: {
-        width: '100%',
-        resizeMode: 'contain',
+        backgroundColor: 'white',
     },
     Header_2: {
         marginLeft: '60%',
         marginVertical: 10,
         fontSize: 12,
+    },
+    container_Header: {
+        height: 40,
+        backgroundColor: '#ffcc00',
+    },
+    Header: {
+        marginLeft: '60%',
+        marginRight: '15%',
+        fontSize: 20,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderColor: 'white',
+        backgroundColor: 'white',
+        height: '100%',
+    },
+    container_Header_1: {
+        height: 2,
+        backgroundColor: '#ffcc00',
     },
 });

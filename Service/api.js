@@ -1,9 +1,8 @@
 import axios from 'axios';
-import mime from 'mime';
 
 const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.1.5:8080/api',
+    baseURL: 'http://192.168.8.36:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -215,6 +214,14 @@ export const products = async (name, status, price, listImageFile, companyName, 
 export const getProductById = async (id) => {
     try {
         const response = await instance.get(`/v1/products/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getProductsByCompany = async (companyName) => {
+    try {
+        const response = await instance.get('/v1/products', { params: { companyName } });
         return response.data;
     } catch (error) {
         throw error;

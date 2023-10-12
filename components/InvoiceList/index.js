@@ -18,7 +18,7 @@ export default function InvoiceList({ data, isLike, navigation, scrollEnabled })
                             data={item}
                             key={item.id}
                             navigation={navigation}
-                            onPress={() => navigation.navigate('CreateInvoice')}
+                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
                         />
                     ))}
                 </View>
@@ -29,7 +29,7 @@ export default function InvoiceList({ data, isLike, navigation, scrollEnabled })
                             isLike={isLike}
                             data={item}
                             key={item.id}
-                            onPress={() => navigation.navigate('CreateInvoice')}
+                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
                         />
                     ))}
                 </View>
