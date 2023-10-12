@@ -1,59 +1,100 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
-import Header from '../components/SettingItem/header';
-import Popup from '../components/Popup';
+import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import Invoice from '../layouts/Invoice/Invoice';
-import { useUserContext } from './UserContext';
-import { white } from '../constant/color';
-import Invoice2 from '../layouts/Invoice/Invoice2';
-import Invoice10 from '../layouts/Invoice/Invoice10';
-
+import Header from '../components/SettingItem/header';
+import Button from '../components/Button';
 export default function CreateInvoice() {
-    const [isPopupVisible, setPopupVisible] = useState(false);
-    const { state } = useUserContext();
-    const togglePopup = () => {
-        setPopupVisible(!isPopupVisible);
-    };
-
     return (
-        <>
-            <Popup visible={isPopupVisible} onClose={togglePopup} bottom />
-            <View style={styles.container}>
-                <Header
-                    onPress={togglePopup}
-                    title="Tạo hóa đơn"
-                    iconRight={<AntDesign name="appstore-o" size={24} color="black" />}
-                />
-                <View style={styles.top}>
-                    <Invoice10 data={state.user} />
+        <View style={styles.container}>
+            <Header title={'Hóa đơn'} />
+            <View>
+                <View style={styles.invoicedate}>
+                    <Text style={styles.code}>Mã hóa đơn</Text>
+                    <Text style={styles.code}>Date</Text>
                 </View>
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Tên"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm khách hàng/ nhà cung cấp"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Mặt hàng/Dịch vụ"
+                    iconRight={<AntDesign name="down" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm giảm giá"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm thuế"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm vận chuyển"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Chi tiết thanh toán/Ghi chú"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
+                <Button
+                    customStylesBtn={styles.btn}
+                    customStylesText={{ ...styles.text, color: 'black' }}
+                    text="Thêm các trường"
+                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                />
             </View>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        backgroundColor: white,
+        backgroundColor: '#f4f4f4',
     },
-    top: {
-        flex: 1,
+    headerleft: {},
+
+    btn: {
+        paddingHorizontal: 10,
         width: '100%',
+        borderWidth: 0,
+        backgroundColor: 'white',
+        borderRadius: 0,
+        marginVertical: 1,
     },
-    bottom: {
-        flex: 1,
-        height: 50,
+    invoicedate: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        backgroundColor: '#32db64',
+        height: 50,
     },
-    btn: {
-        marginHorizontal: 10,
-        height: '60%',
-        width: '40%',
-        borderRadius: 5,
+    text: {
+        textAlign: 'left',
+        fontSize: 15,
+    },
+    code: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'white',
     },
 });
