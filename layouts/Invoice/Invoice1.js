@@ -20,14 +20,15 @@ import { Row, Rows, Table, TableWrapper } from 'react-native-reanimated-table';
 import SelectDropdown from 'react-native-select-dropdown';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { getProductById, getUserByEmail } from '../../Service/api';
+import PrintBtn from './PrintBtn';
+import { useUserContext } from '../../screens/UserContext';
 
 export default function Invoice1() {
     const route = useRoute();
     const navigation = useNavigation();
     const invoice = route.params?.data;
-
-    const [productId, setProductId] = useState('');
-    const [isPopupVisible, setPopupVisible] = useState(false);
+    const { state } = useUserContext();
     const [selectedPrinter, setSelectedPrinter] = useState();
     const [contactName, setContactName] = useState();
     const [contactPhone, setContactPhone] = useState();
@@ -42,37 +43,63 @@ export default function Invoice1() {
     const [tax, setTax] = useState();
     const [totalBillPrice, setTotalBillPrice] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
-    const [productsApi, setProductsApi] = useState([
-        {
-            id: 1,
-            name: 'Cam',
-            price: 10000,
-        },
-        {
-            id: 2,
-            name: 'Quýt',
-            price: 20000,
-        },
-        {
-            id: 3,
-            name: 'Bưởi',
-            price: 30000,
-        },
-        {
-            id: 4,
-            name: 'Dừa',
-            price: 40000,
-        },
-        {
-            id: 5,
-            name: 'Ổi',
-            price: 50000,
-        },
-    ]);
 
-    const togglePopup = () => {
-        setPopupVisible(!isPopupVisible);
+    const [product, setProduct] = useState();
+    const [user, setUser] = useState();
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        const data = () =>
+            invoice.orders.map((order, index) => [
+                index,
+                !!product ? product.name : '',
+                order.quantity,
+                !!product ? product.price : '',
+                !!product ? (product.price * order.quantity).toString() : '0',
+            ]);
+
+        setData(data());
+    }, [products]);
+    // Khai báo một hàm async để lấy thông tin sản phẩm bằng productId
+    const getProductInfo = async (productId) => {
+        try {
+            const response = await getProductById(productId);
+            return response;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     };
+
+    // Sử dụng Promise.all để gọi tất cả cuộc gọi API và chờ chúng hoàn thành
+    const getProductInfoList = async (productList) => {
+        const productInfoPromises = productList.map((product) => getProductInfo(product.productId));
+        const productInfoList = await Promise.all(productInfoPromises);
+        return productInfoList;
+    };
+
+    useEffect(() => {
+        const getUserId = async () => {
+            try {
+                const response = await getUserByEmail(invoice.emailUser);
+                setUser(response);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const productList = invoice.orders;
+        getProductInfoList(productList)
+            .then((productInfoList) => {
+                setProducts(productInfoList);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        console.log(products);
+        getUserId();
+    }, []);
+
     const listProductHtml = () =>
         products
             .map(
@@ -133,7 +160,6 @@ export default function Invoice1() {
             </tr>`,
             )
             .join('');
-
     const html = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -264,242 +290,79 @@ export default function Invoice1() {
       </body>
     </html>`;
 
-    const data = () =>
-        products.map((product, index) => [
-            index,
-            product.name,
-            product.quantity,
-            product.price,
-            product.totalPrice,
-            '',
-        ]);
-    const tableHead = ['Sl.No.', 'Particulars', 'Qty', 'Rate', 'Amount', ''];
-
-    const newData = () => [
-        ...data(),
-        [
-            data().length,
-            <SelectDropdown
-                data={productsApi}
-                onSelect={(selectedItem) => {
-                    setProductId(selectedItem.id);
-                    setProductName(selectedItem.name);
-                    setPrice(selectedItem.price.toString());
-                }}
-                buttonStyle={{ width: '100%', height: 30, backgroundColor: 'transparent' }}
-                rowTextStyle={{ fontSize: fontSizeDefault }}
-                defaultButtonText={'Selected product'}
-                renderDropdownIcon={() => <Entypo name="chevron-small-down" size={24} color="black" />}
-                dropdownIconPosition="right"
-                buttonTextAfterSelection={(selectedItem) => {
-                    return selectedItem.name;
-                }}
-                rowTextForSelection={(item) => {
-                    return item.name;
-                }}
-            />,
-            <TextInput
-                onChangeText={handleChangeQuantity}
-                value={quantity}
-                placeholder="Sl"
-                keyboardType="numeric"
-                style={styles.text_line1}
-            />,
-            <TextInput
-                onChangeText={handleChangePrice}
-                value={price}
-                placeholder="Price"
-                keyboardType="numeric"
-                style={styles.text_line1}
-            />,
-            totalPrice.toString(),
-            <View style={styles.action_btn}>
-                <TouchableOpacity onPress={handleAddProduct}>
-                    <AntDesign name="plussquare" size={23} color="black" />
-                </TouchableOpacity>
-            </View>,
-        ],
-        ['', '', '', 'Sub Total', subTotal.toString(), ''],
-        [
-            '',
-            '',
-            '',
-            'Tax',
-            <TextInput
-                onChangeText={handleChangeTax}
-                value={tax}
-                placeholder="Tax?"
-                keyboardType="numeric"
-                style={{ ...styles.text_line1, ...styles.colum_p }}
-            />,
-            '',
-        ],
-        ['', '', '', 'Total', totalBillPrice.toString(), ''],
-    ];
-
-    const handleChangePrice = (text) => {
-        setPrice(text);
-        setTotalPrice(quantity * text);
-    };
-    const handleChangeQuantity = (text) => {
-        setQuantity(text);
-        setTotalPrice(price * text);
-    };
-    const handleChangeTax = (text) => {
-        setTax(text);
-        setTotalBillPrice(subTotal + (subTotal * text) / 100);
-    };
-    const removeProduct = (key) => {
-        products.splice(key, 1);
-        setProducts([...products]);
-    };
-    const handleAddProduct = () => {
-        if (productId && price && quantity) {
-            setProducts([
-                ...products,
-                { productId: productId, name: productName, price: price, quantity: quantity, totalPrice: totalPrice },
-            ]);
-            setProductId();
-            setPrice();
-            setQuantity();
-            setProductName();
-            setTotalPrice(0);
-        } else {
-            Alert.alert('Error!!', 'Please provide complete information');
-        }
-    };
-    useEffect(() => {
-        const newSubTotal = products.reduce((total, product) => {
-            return total + product.totalPrice;
-        }, 0);
-        setSubTotal(newSubTotal);
-    }, [products]);
-
-    const print = async () => {
-        await Print.printAsync({
-            html,
-            printerUrl: selectedPrinter?.url,
-        });
-    };
-
-    const printToFile = async () => {
-        const { uri } = await Print.printToFileAsync({ html });
-        await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-    };
-
-    const selectPrinter = async () => {
-        const printer = await Print.selectPrinterAsync();
-        setSelectedPrinter(printer);
-    };
-
+    const tableHead = ['Sl.No.', 'Particulars', 'Qty', 'Rate', 'Amount'];
     return (
-        <>
-            <Popup visible={isPopupVisible} onClose={togglePopup} />
-            <ScrollView style={styles.container}>
-                <View style={styles.container_top_left}>
-                    <Text style={styles.text_bold3}>GTS no:</Text>
-                    <Text style={styles.text_bold3}>Date: {dateNow}</Text>
-                </View>
-                <View style={styles.container_top}>
-                    <Text style={styles.text_bold}>Tax Invoice Bill</Text>
-                    <Text style={styles.text_bold2}>Company Name Pvt.Ltd</Text>
-                    <Text style={styles.text_bold3}>Address - Street Name, City Name</Text>
-                    <Text style={styles.text_bold3}>Ph No: 99999 99999</Text>
-                </View>
-                <View style={styles.container_center}>
-                    <View style={styles.textall}>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold3}>Name:</Text>
-                            <TextInput
-                                style={styles.text_line}
-                                onChangeText={(text) => setContactName(text)}
-                                value={contactName}
-                                placeholder="Enter the customer's name"
-                            />
-                        </View>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold3}></Text>
-                        </View>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold3}>Invoice No:</Text>
-                            <TextInput style={styles.text_line} value={customer} placeholder="hgvshgjdfashgfdhjas" />
-                            <Text style={styles.text_bold3}>Date: {dateNow}</Text>
-                        </View>
-                        <View style={styles.center_row}>
-                            <Text style={styles.text_bold3}>Mobile:</Text>
-                            <TextInput
-                                style={styles.text_line}
-                                onChangeText={(text) => setContactPhone(text)}
-                                value={contactPhone}
-                                placeholder="Enter your phone number "
-                            />
-                            <Text style={styles.text_bold_email}>Email:</Text>
-                            <TextInput
-                                style={styles.text_line}
-                                onChangeText={(text) => setContactEmail(text)}
-                                value={contactEmail}
-                                placeholder="Enter your email"
-                            />
-                        </View>
+        <PrintBtn>
+            <View style={styles.container_top_left}>
+                <Text style={styles.text_bold3}>GTS no: {invoice.key}</Text>
+                <Text style={styles.text_bold3}>Date: {invoice.createdAt}</Text>
+            </View>
+            <View style={styles.container_top}>
+                <Text style={styles.text_bold}>Tax Invoice Bill</Text>
+                <Text style={styles.text_bold2}>Company Name {invoice.companyName}</Text>
+                <Text style={styles.text_bold3}>Address - {state.company.address}</Text>
+                <Text style={styles.text_bold3}>Ph No: {state.company.phone}</Text>
+            </View>
+            <View style={styles.container_center}>
+                <View style={styles.textall}>
+                    <View style={styles.center_row}>
+                        <Text style={styles.text_bold3}>Name: </Text>
+                        {/* <Text style={styles.text_line}>{!!user ? user.name : ''}</Text> */}
                     </View>
-                    <Table
-                        borderStyle={{
-                            borderWidth: 2,
-                            borderColor: 'black',
-                        }}
-                    >
-                        <Row
+                    <View style={styles.center_row}>
+                        <Text style={styles.text_bold3}></Text>
+                    </View>
+                    <View style={styles.center_row}>
+                        <Text style={styles.text_bold3}>Invoice No: </Text>
+                        <Text style={styles.text_line}>{invoice.key}</Text>
+                        <Text style={styles.text_bold3}>Date: {invoice.createdAt}</Text>
+                    </View>
+                    <View style={styles.center_row}>
+                        <Text style={styles.text_bold3}>Mobile: </Text>
+                        <Text style={styles.text_line}>Mobile: </Text>
+
+                        <Text style={styles.text_bold_email}>Email:</Text>
+                        <Text style={styles.text_line}>Mobile: </Text>
+                    </View>
+                </View>
+                <Table
+                    borderStyle={{
+                        borderWidth: 2,
+                        borderColor: 'black',
+                    }}
+                >
+                    <Row
+                        heightArr={25}
+                        flexArr={[0.7, 1.5, 0.5, 0.6, 0.85]}
+                        data={tableHead}
+                        style={styles.tableheader}
+                        textStyle={styles.text}
+                    />
+                    <TableWrapper>
+                        <Rows
                             heightArr={25}
-                            flexArr={[0.7, 1.5, 0.5, 0.6, 0.85, 0.3]}
-                            data={tableHead}
-                            style={styles.tableheader}
-                            textStyle={styles.text}
+                            data={data}
+                            flexArr={[0.7, 1.5, 0.5, 0.6, 0.85]}
+                            textStyle={styles.tableheader}
                         />
-                        <TableWrapper>
-                            <Rows
-                                heightArr={25}
-                                data={newData()}
-                                flexArr={[0.7, 1.5, 0.5, 0.6, 0.85, 0.3]}
-                                textStyle={styles.tableheader}
-                            />
-                        </TableWrapper>
-                    </Table>
-                    <View style={styles.table}>
-                        <View style={styles.flex_row}>
-                            <Text style={{ ...styles.text_bold4, marginLeft: 10 }}>In Words: </Text>
-                            <TextInput
-                                onChangeText={(text) => setNote(text)}
-                                value={note}
-                                placeholder="Enter your note here..."
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.bottom_content}>
-                        <View style={styles.bottom_row}>
-                            <Text style={styles.text_bold}>Thank You and Visit Again.</Text>
-                        </View>
-                        <View style={styles.bottom_row_end}>
-                            <Text style={styles.text_bold}>Signature:_____________</Text>
-                        </View>
+                    </TableWrapper>
+                </Table>
+                <View style={styles.table}>
+                    <View style={styles.flex_row}>
+                        <Text style={{ ...styles.text_bold4, marginLeft: 10 }}>In Words: </Text>
+                        <Text>{invoice.note}</Text>
                     </View>
                 </View>
-                <View>
-                    <Button title="Print" onPress={print} />
-                    <View style={styles.spacer} />
-                    <Button title="Print to PDF file" onPress={printToFile} />
-                    {Platform.OS === 'ios' && (
-                        <>
-                            <View style={styles.spacer} />
-                            <Button title="Select printer" onPress={selectPrinter} />
-                            <View style={styles.spacer} />
-                            {selectedPrinter ? (
-                                <Text style={styles.printer}>{`Selected printer: ${selectedPrinter.name}`}</Text>
-                            ) : undefined}
-                        </>
-                    )}
+                <View style={styles.bottom_content}>
+                    <View style={styles.bottom_row}>
+                        <Text style={styles.text_bold}>Thank You and Visit Again.</Text>
+                    </View>
+                    <View style={styles.bottom_row_end}>
+                        <Text style={styles.text_bold}>Signature:_____________</Text>
+                    </View>
                 </View>
-            </ScrollView>
-        </>
+            </View>
+        </PrintBtn>
     );
 }
 

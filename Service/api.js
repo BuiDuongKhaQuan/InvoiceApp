@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.8.36:8080/api',
+    baseURL: 'http://192.168.1.111:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -83,7 +83,14 @@ export const getUserByCompanyName = async (companyName) => {
         throw error;
     }
 };
-
+export const getUserByEmail = async (email) => {
+    try {
+        const response = await instance.get(`/v1/auth/users/${email}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 //reset password
 export const resetPassword = async (email, password, retypePassword) => {
     try {
