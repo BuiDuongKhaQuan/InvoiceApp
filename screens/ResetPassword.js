@@ -41,13 +41,14 @@ export default function Login() {
     };
 
     const handleSubmit = async () => {
+        console.log(route.params?.data, pass, repass);
         try {
             await resetPassword(route.params?.data, pass, repass);
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 Alert.alert('Reset password error', error.response.data.message);
             } else {
-                console.error('Reset password error:', error);
+                console.error('Reset password error:', error.response);
             }
         }
     };
