@@ -3,6 +3,8 @@ import React from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
+import { dateNow } from '../utilies/date';
+import { fontSizeDefault } from '../constant/fontSize';
 export default function CreateInvoice() {
     return (
         <View style={styles.container}>
@@ -10,7 +12,7 @@ export default function CreateInvoice() {
             <View>
                 <View style={styles.invoicedate}>
                     <Text style={styles.code}>Mã hóa đơn</Text>
-                    <Text style={styles.code}>Date</Text>
+                    <Text style={styles.code}>Date: {dateNow}</Text>
                 </View>
                 <Button
                     customStylesBtn={styles.btn}

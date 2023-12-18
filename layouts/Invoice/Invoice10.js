@@ -244,7 +244,6 @@ export default function Invoice10({ route, data }) {
     const getProductId = async (id) => {
         try {
             const response = await getProductById(id);
-            // console.log(response.name);
             setProduct(response);
         } catch (error) {
             console.log(error);
