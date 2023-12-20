@@ -45,7 +45,7 @@ export const forgotPassword = async (email) => {
 };
 export const validateReset = async (email, otp) => {
     try {
-        const response = await instance.post('/v1/auth/validateRegister', {
+        const response = await instance.post('/v1/auth/validateReset', {
             email,
             otp,
         });
