@@ -1,8 +1,9 @@
 import { StyleSheet, View, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import Button from '../../components/Button';
-import { white } from '../../constant/color';
 import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
+import { white } from '../../../constant/color';
+import Button from '..';
 
 export default function PrintBtn({ children, html }) {
     const [selectedPrinter, setSelectedPrinter] = useState();
@@ -70,5 +71,6 @@ const styles = StyleSheet.create({
         height: '60%',
         width: '40%',
         borderRadius: 5,
+        backgroundColor: '#32db64',
     },
 });
