@@ -11,6 +11,7 @@ import Loading from '../../components/Loading';
 import SelectDropdown from 'react-native-select-dropdown';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { instance } from '../../Service/api';
 export default function Information({ route }) {
     const { state } = useUserContext();
     const { user, company } = state;
@@ -53,7 +54,7 @@ export default function Information({ route }) {
         });
         setLoading(true);
         try {
-            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+            const response = await instance.patch('/v1/auth/users', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -94,7 +95,7 @@ export default function Information({ route }) {
         });
         setLoading(true);
         try {
-            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+            const response = await instance.patch('/v1/auth/users', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -129,7 +130,7 @@ export default function Information({ route }) {
         }
         setLoading(true);
         try {
-            const response = await axios.patch('http://192.168.1.117:8080/api/v1/auth/users', formData, {
+            const response = await instance.patch('/v1/auth/users', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
