@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.1.105:8080/api',
+    baseURL: 'http://192.168.1.106:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -119,10 +119,11 @@ export const resetPassword = async (email, password, retypePassword) => {
     }
 };
 //change password
-export const changePassword = async (email, password, retypePassword) => {
+export const changePassword = async (email, oldPassword, password, retypePassword) => {
     try {
         const response = await instance.post('/v1/auth/changePassword', {
             email,
+            oldPassword,
             password,
             retypePassword,
         });

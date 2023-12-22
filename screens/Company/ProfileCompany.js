@@ -80,9 +80,9 @@ export default function ProfileCompany() {
                     <View style={styles.btn}>
                         <View style={styles.text_centent}>
                             <Text style={styles.text_bold}>Corporation: {company.name}</Text>
-                            <Text style={styles.text_bold}>Address: 1 member</Text>
-                            <Text style={styles.text_bold}>Phone: 1 member</Text>
-                            <Text style={styles.text_bold}>Email: 1 member</Text>
+                            <Text style={styles.text_bold}>Address: {company.address}</Text>
+                            <Text style={styles.text_bold}>Phone: {company.phone}</Text>
+                            <Text style={styles.text_bold}>Email: {company.email}</Text>
                         </View>
                     </View>
                 </View>
