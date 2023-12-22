@@ -3,37 +3,61 @@ import React, { useState } from 'react';
 import InvoiceList from '../../components/InvoiceList';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
+import { Ionicons, Feather } from '@expo/vector-icons';
 export default function BillSample({ navigation }) {
     const [invoices, setInvoices] = useState([
         {
             id: '1',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../../assets/images/Invoices/Bill_1.png'),
         },
         {
             id: '2',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../../assets/images/Invoices/Bill_2.png'),
         },
         {
             id: '3',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../../assets/images/Invoices/Bill_3.png'),
         },
         {
             id: '4',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../../assets/images/Invoices/Bill_4.png'),
         },
         {
             id: '5',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../../assets/images/Invoices/Bill_5.png'),
+        },
+        {
+            id: '6',
+            image: require('../../assets/images/Invoices/Bill_6.png'),
+        },
+        {
+            id: '7',
+            image: require('../../assets/images/Invoices/Bill_7.png'),
+        },
+        {
+            id: '8',
+            image: require('../../assets/images/Invoices/Bill_8.png'),
+        },
+        {
+            id: '9',
+            image: require('../../assets/images/Invoices/Bill_9.png'),
+        },
+        {
+            id: '10',
+            image: require('../../assets/images/Invoices/Bill_10.png'),
+        },
+        {
+            id: '11',
+            image: require('../../assets/images/Invoices/Bill_11.png'),
         },
     ]);
     return (
         <View style={styles.container}>
-            <Header title={'Mẫu hóa đơn'} />
             <View style={{ flexDirection: 'row' }}>
                 <Input
                     customStylesContainer={styles.input}
-                    iconLeft={require('../../assets/icons/search.png')}
-                    iconRight={require('../../assets/icons/qr-code.png')}
+                    iconLeft={<Feather name="search" size={24} color="black" />}
+                    iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     onPressIconRight={() => navigation.navigate('Scanner')}
                     customStylesIcon={styles.icon1}
                 />
