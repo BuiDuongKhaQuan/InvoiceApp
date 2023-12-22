@@ -6,6 +6,7 @@ import { fontSizeDefault } from '../../constant/fontSize';
 import Button from '../../components/Button';
 import { useUserContext } from '../UserContext';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { getUserByCompanyName, getUserByName, updateStatus } from '../../Service/api';
@@ -13,6 +14,7 @@ import Loading from '../../components/Loading';
 
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
+    const { t } = useTranslation();
 
     const [staffs, setStaffs] = useState([]);
     const [error, setError] = useState(null);
@@ -27,7 +29,7 @@ export default function Staff({ navigation }) {
             const response = await getUserByName(nameStaff);
             setInfStaff(response);
         } catch (error) {
-            setError('Staff does not exist');
+            setError(t('common:errorStaff'));
             setInfStaff(null);
         }
     };
@@ -36,7 +38,7 @@ export default function Staff({ navigation }) {
             const response = await getUserByCompanyName(state.company.name);
             setStaffs(response);
         } catch (error) {
-            setError('This company has no data');
+            setError(t('common:datanotCompany'));
             setStaffs(null);
             if (error.response) {
             }
@@ -49,9 +51,9 @@ export default function Staff({ navigation }) {
         setDataModel(data);
         setModalVisible(true);
         if (data.status === 1) {
-            setButtonText('Lock');
+            setButtonText(t('common:lock'));
         } else if (data.status === 2) {
-            setButtonText('Unlock');
+            setButtonText(t('common:unLock'));
         }
     };
 
@@ -92,15 +94,15 @@ export default function Staff({ navigation }) {
             setNewStatus(updatedStatus);
             console.log(user);
             if (updatedStatus === 1) {
-                setButtonText('Lock');
+                setButtonText(t('common:lock'));
             } else if (updatedStatus === 2) {
-                setButtonText('Unlock');
+                setButtonText(t('common:unLock'));
             }
             hideModal();
             getInformationStaff();
         } catch (error) {
             console.log(error.message);
-            Alert.alert('Error', 'Transmission error, please try again later!');
+            Alert.alert(t('common:error'), t('common:transmissionError'));
         } finally {
             setLoading(false);
         }
@@ -108,7 +110,7 @@ export default function Staff({ navigation }) {
     return (
         <View style={styles.container}>
             <Loading loading={loading} />
-            <Header title="Staff" />
+            <Header title={t('common:staff')} />
             <Input
                 iconLeft={<Feather name="search" size={24} color="black" />}
                 customStylesContainer={styles.input}
@@ -168,12 +170,12 @@ export default function Staff({ navigation }) {
                                             iconLeft={<AntDesign name="close" size={20} color="black" />}
                                         />
                                     </View>
-                                    <Text style={styles.title}>Options</Text>
+                                    <Text style={styles.title}>{t('common:option')}</Text>
                                 </View>
                                 <Button
                                     customStylesBtn={styles.modalOption}
                                     customStylesText={styles.textBtn}
-                                    text="Information"
+                                    text={t('common:information')}
                                     onPress={() => {
                                         navigation.navigate('Information', { dataModel: dataModel });
                                     }}
@@ -181,7 +183,7 @@ export default function Staff({ navigation }) {
                                 <Button
                                     customStylesBtn={styles.modalOption}
                                     customStylesText={styles.textBtn}
-                                    text="Chat"
+                                    text={t('common:chat')}
                                 />
                                 <Button
                                     customStylesBtn={styles.modalOption}

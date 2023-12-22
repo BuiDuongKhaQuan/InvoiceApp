@@ -11,6 +11,7 @@ import Product from '../components/Product';
 import { subTotal, totalBillPrice } from '../utilies/calculator';
 import { Asset } from 'expo-asset';
 import PrintBtn from '../components/Button/Print';
+import { useTranslation } from 'react-i18next';
 
 export default function CreateInvoice({ route }) {
     const { state } = useUserContext();
@@ -32,7 +33,7 @@ export default function CreateInvoice({ route }) {
     const [showListProductSelected, setShowListProductSelected] = useState(false);
     const [products, setProducts] = useState([]);
     const [isProductModalVisible, setProductModalVisible] = useState(false);
-
+    const { t } = useTranslation();
     useEffect(() => {
         let noBill = `${dateNow}${houseNow}-${idTemplate}`;
         setIDBill(noBill.replace(/[\/:]/g, ''));
@@ -150,10 +151,10 @@ export default function CreateInvoice({ route }) {
             <div class="container">
                 <div class="container_top_left">
                 <div style="display: flex; justify-content: space-between;margin-left: 10px ; margin-top: 10px; ">
-                <Text >GST No: ${IDBill}</Text>
+                <Text >${t('common:idInvoice')}: ${IDBill}</Text>
                 <div class="container_top_left">
                 <div style=" display: flex; justify-content: space-between; margin-right: 10px; ">
-                <Text >Date: ${dateNow}</Text>
+                <Text >${t('common:date')}: ${dateNow}</Text>
                 </div>
                 </div>
                 </div>
@@ -168,44 +169,56 @@ export default function CreateInvoice({ route }) {
                     <Text >${companyName}</Text>
                     </div>
                     <div style="text-align: center;font-size: 20px">
-                    <Text >Address - ${companyAddress}</Text>
+                    <Text >${t('common:addressInvoice')} - ${companyAddress}</Text>
                     </div>
                     <div style="text-align: center;font-size: 20px">
-                        <Text >Ph No: ${companyPhone}</Text>
+                        <Text >${t('common:phoneInvoice')}: ${companyPhone}</Text>
                     </div>
                 </div>
                 <div  style="margin-top: 50px;">
                     <div class="center_row" style="margin-left: 10px;">
-                    <Text >Name: ${contactName}</Text>
+                    <Text >${t('common:nameInvoice')}: ${contactName}</Text>
                     </div>
                     <div class="center_row" style="margin-left: 10px;">
                     <Text></Text>
                     </div>
                     <div class="center_row" style="display: flex; justify-content: space-between;margin-left: 10px">
-                    <Text  >Invoice No: ${IDBill}</Text>
+                    <Text  >${t('common:invoiceNo')}: ${IDBill}</Text>
 
-                        <div style="margin-right: 50px;"><Text  >Date: ${dateNow}</Text></div>
+                        <div style="margin-right: 50px;"><Text  >${t('common:date')}: ${dateNow}</Text></div>
                     </div>
                     <div class="center_row" style="display: flex; justify-content: space-between;margin-left: 10px">
-                        <Text >Mobile: ${contactPhone}</Text>
+                        <Text >${t('common:mobile')}: ${contactPhone}</Text>
 
                     <div style="margin-right: 60px;"> <Text  >Email: ${contactEmail}</Text></div>
 
                     </div>
                         <table style="width: 100%;margin-top: 10px;">
                         <tr>
-                            <td style="text-align: center; width: 13%; height: 40px; border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>Sl.No.</b></td>
-                            <td style="text-align: center; width: 30% ;border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>Particulars</b></td>
-                            <td style="text-align: center;width: 10%; border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>Qty</b></td>
-                            <td style="text-align: center;width: 12%; border-top: 2px solid black; border-right: 2px solid black; "><b>Rate</b></td>
-                            <td style="text-align: center;border-top: 2px solid black;   "><b>Amount</b></td>
+                            <td style="text-align: center; width: 13%; height: 40px; border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>${t(
+                                'common:slNo',
+                            )}</b></td>
+                            <td style="text-align: center; width: 30% ;border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>${t(
+                                'common:particular',
+                            )}</b></td>
+                            <td style="text-align: center;width: 10%; border-top: 2px solid black; border-right: 2px solid black;border-bottom: 2px solid black; "><b>${t(
+                                'common:qty',
+                            )}</b></td>
+                            <td style="text-align: center;width: 12%; border-top: 2px solid black; border-right: 2px solid black; "><b>${t(
+                                'common:rate',
+                            )}</b></td>
+                            <td style="text-align: center;border-top: 2px solid black;   "><b>${t(
+                                'common:amount',
+                            )}</b></td>
                         </tr>
                         ${listProductHtml1(listProductsSelect)}
                         <tr>
                             <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-right: 2px solid black; " rowspan="3"></td>
                             <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-right: 2px solid black; " rowspan="3"></td>
                             <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-right: 2px solid black;  " rowspan="3"></td>
-                            <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  border-right: 2px solid black;"><b>Sub Total</b></td>
+                            <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  border-right: 2px solid black;"><b>${t(
+                                'common:subTotal',
+                            )}</b></td>
                             <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  ">${total}</td>
 
                         </tr>
@@ -221,14 +234,14 @@ export default function CreateInvoice({ route }) {
                     </table>
                     <div >
                     <div  style="display: flex; margin-bottom: 20px; margin-left: 10px;">
-                        <br ><b>In Words:</b> ${note}</Text>
+                        <br ><b>${t('common:inWords')}:</b> ${note}</Text>
                         </div>
                         <hr color="black"  />
                     <div  style="display: flex; font-size: 20px; margin-left: 10px;">
-                        <br ><b>Thank You and Visit Again.</b></Text>
+                        <br ><b>${t('common:thankyou1')}</b></Text>
                     </div>
                     <div style="text-align: end; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
-                    <br ><b>Signature: _____________</b></Text>
+                    <br ><b>${t('common:signature')}: _____________</b></Text>
                     </div>
                     </div>
                 </div>
@@ -298,27 +311,27 @@ export default function CreateInvoice({ route }) {
                             <Text>${companyName}</Text>
                         </div>
                         <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                            <Text>Address ${companyAddress}</Text>
+                            <Text>${t('common:addressInvoice')} ${companyAddress}</Text>
                         </div>
                         <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                            <Text>Ph :${companyPhone}</Text>
+                            <Text>${t('common:phoneInvoice2')} :${companyPhone}</Text>
                         </div>
                         <hr size="2px" ; color="blue" />
                     </div>
 
                     <div style="display: flex; justify-content: space-between; color: blue">
                         <div style="margin-left: 10px">
-                            <Text>Sl.No: ${IDBill}</Text>
+                            <Text>${t('common:slNo2')}: ${IDBill}</Text>
                         </div>
                         <div>
-                            <Text><b>CASH BILL</b></Text>
+                            <Text><b>${t('common:nameInvoice')}</b></Text>
                         </div>
                         <div style="margin-right: 10px">
-                            <Text>Date: ${dateNow} </Text>
+                            <Text>${t('common:date')}: ${dateNow} </Text>
                         </div>
                     </div>
                     <div style="color: rgb(0 0 215); margin-top: 10px; margin-left: 10px; margin-right: 10px">
-                        <Text>To.M/s ${contactName}</Text>
+                        <Text>${t('common:receive')}: ${contactName}</Text>
                         <hr size="2px" ; color="blue" />
                     </div>
                     <div style="color: rgb(0 0 215); margin-top: 8px; margin-left: 14px; margin-right: 10px">
@@ -336,7 +349,7 @@ export default function CreateInvoice({ route }) {
                                     border-right: 2px solid rgb(0 0 215);
                                 "
                             >
-                                <b>S.No.</b>
+                                <b>${t('common:slN2')}</b>
                             </td>
                             <td
                                 style="
@@ -349,7 +362,7 @@ export default function CreateInvoice({ route }) {
                                     border-right: 2px solid blue;
                                 "
                             >
-                                <b>Particulars</b>
+                                <b>${t('common:particular')}</b>
                             </td>
                             <td
                                 style="
@@ -362,7 +375,7 @@ export default function CreateInvoice({ route }) {
                                     border-right: 2px solid blue;
                                 "
                             >
-                                <b>Qty</b>
+                                <b>${t('common:qty')}</b>
                             </td>
                             <td
                                 style="
@@ -373,7 +386,7 @@ export default function CreateInvoice({ route }) {
                                     border-top: 2px solid blue;
                                 "
                             >
-                                <b>Amount </b>
+                                <b>${t('common:amount')} </b>
 
                                 <b>Rs. </b>
                             </td>
@@ -386,7 +399,7 @@ export default function CreateInvoice({ route }) {
                         ${listProductHtml2(listProductsSelect)}
                     </table>
                     <div style="text-align: end; color: blue">
-                        <text><b>For ${companyName}</b></text>
+                        <text><b>${t('common:for')} ${companyName}</b></text>
                     </div>
                 </div>
             </body>
@@ -467,35 +480,35 @@ export default function CreateInvoice({ route }) {
             </div>
             <div class="container_center">
                 <div style="display: flex; flex-direction: row">
-                <p style="flex: 1">Ngày: ${dateNow}</p>
+                <p style="flex: 1">${t('common:date')}: ${dateNow}</p>
                 <p style="flex: 1">${houseNow}</p>
                 </div>
                 <div class="cashier" style="display: flex; flex-direction: row">
-                <p style="margin-right: 20">Thu ngân: </p>
+                <p style="margin-right: 20">${t('common:cashier')}: </p>
                 </p>${customer}<p>
                 </div>
                 <div class="customer" style="display: flex; flex-direction: row">
-                <p style="margin-right: 20">Khách hàng:</p>
+                <p style="margin-right: 20">${t('common:custommer')}:</p>
                 <p>${contactName}</p>
                 </div>
                 <div style="display: flex; flex-direction: row">
                 <div style="display: flex; flex-direction: row; flex: 2">
-                    <p style="margin-right: 20">Điện thoại:</p>
+                    <p style="margin-right: 20">${t('common:mobile')}:</p>
                     <p>${contactPhone}</p>
                 </div>
                 <div style="display: flex; flex-direction: row; flex: 1">
-                    <p style="margin-right: 20">Điểm:</p>
+                    <p style="margin-right: 20">${t('common:scores')}:</p>
                     <p>0.0</p>
                 </div>
                 </div>
                 <table style="width:100%">
                 <tr style="border-bottom: 1px dashed  black;">
                     <th>#</th>
-                    <th>Tên hàng</th> 
-                    <th>SL</th>
-                    <th>D.G</th>
-                    <th>CK</th>
-                    <th>T.Tiền</th>
+                    <th>${t('common:product')}</th> 
+                    <th>${t('common:qty3')}</th>
+                    <th>${t('common:price')}</th>
+                    <th>${t('common:discount')}</th>
+                    <th>${t('common:amount3')}</th>
                 </tr>
                 
                 ${listProductHtml3(listProductsSelect)}
@@ -505,33 +518,41 @@ export default function CreateInvoice({ route }) {
             </div>
             <div class="container_bottom" style="justify-content: right; ;">
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 35%; font-weight: bold;">Tổng tiền theo giá bán:</p>
+                <p style="justify-content: right; margin-right: 35%; font-weight: bold;">${t(
+                    'common:totalPriceSell',
+                )}:</p>
                 <p>${total}</p>
                 </div>
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 42%; font-weight: bold;">Tổng chiếc khấu:</p>
+                <p style="justify-content: right; margin-right: 42%; font-weight: bold;">${t(
+                    'common:totalDiscount',
+                )}:</p>
                 <p>${tax}</p>
                 </div>
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">Tổng thanh toán:</p>
+                <p style="justify-content: right; margin-right: 35%; font-weight: bold; font-size: 18px;">${t(
+                    'common:totalAmount3',
+                )}:</p>
                 <p>${totalBill}</p>
                 </div>
                 <p style="text-align: center;"></p>
                 <p style="border-bottom: 1px dashed  black;"></p>
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">Kiểu T.Toán:</p>
-                <p>Tiền mặt</p>
+                <p style="justify-content: right; margin-right: 40%; font-weight: bold; ">${t('common:typePay')}:</p>
+                <p>${t('common:cash')}</p>
                 </div>
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">Nhận tiền của khách:</p>
+                <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">${t(
+                    'common:receiveMoney',
+                )}:</p>
                 <p>${totalBill}</p>
                 </div>
                 <div style="display: flex; flex-direction: row; justify-content: right;">
-                <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">Trả lại: </p>
+                <p style="justify-content: right; margin-right: 47%; font-weight: bold; ">${t('common:giveBack')}: </p>
                 <p>0</p>
                 </div>
                 <p style="border-bottom: 1px dashed  black;"></p>
-                <p style="text-align: center;">Design by ${companyName}</p>
+                <p style="text-align: center;">${t('common:designed')} ${companyName}</p>
             </div>
             </div>
         </body>
@@ -643,37 +664,41 @@ export default function CreateInvoice({ route }) {
                     </div>
                 
                     <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">Street Address: ${companyAddress}</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>DATE:</b></Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px">${t(
+                            'common:streetAddress',
+                        )}: ${companyAddress}</Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px";text-transform: uppercase><b>${t(
+                            'common:date',
+                        )}:</b></Text>
                         <Text style="margin-top: 2px; margin-bottom: 2px">${dateNow}</Text>
                     </div>
                     <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">City, ST ZIP Code ${contactPhone}</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>INVOICE#</b></Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px">${t('common:cityzip')} ${contactPhone}</Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>${t('common:id4')}</b></Text>
                         <Text style="margin-top: 2px; margin-bottom: 2px">${IDBill}</Text>
                     </div>
                     <div style="display: flex; justify-content: space-between">
-                        <Text style="margin-top: 2px; margin-bottom: 2px">Phone [number] Fax [number] ${contactPhone}</Text>
-                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>FOR:</b></Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px">${t('common:phonefax')} ${contactPhone}</Text>
+                        <Text style="margin-top: 2px; margin-bottom: 2px"><b>${t('common:for')}:</b></Text>
                         <Text style="margin-top: 2px; margin-bottom: 2px; font-style: italic">${companyName}</Text>
                     </div>
                    
                 </div>
     
                 <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text><b>Bill To:</b></Text>
+                    <Text><b>${t('common:billTo')}:</b></Text>
                 </div>
                 <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Name: ${contactName}</Text>
+                    <Text>${t('common:name')}: ${contactName}</Text>
                 </div>
                 <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Company Name:</Text>
+                    <Text>${t('common:companyName')}:</Text>
                 </div>
                 <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>Street Address: ${contactAddress}</Text>
+                    <Text>${t('common:streetAddress')}: ${contactAddress}</Text>
                 </div>
                 <div style="margin-top: 5px; margin-bottom: 5px">
-                    <Text>City, ST ZIP Code: 1000</Text>
+                    <Text>${t('common:cityzip')}</Text>
                 </div>
                 <div style="margin-top: 5px; margin-bottom: 5px">
                     <Text>Phone: ${contactPhone}</Text>
@@ -691,7 +716,7 @@ export default function CreateInvoice({ route }) {
                                 border-right: 1px solid;
                             "
                         >
-                            <b>DESCRIPTION</b>
+                            <b style="text-transform: uppercase">${t('common:description')}</b>
                         </td>
                         <td
                             colspan="2"
@@ -703,14 +728,14 @@ export default function CreateInvoice({ route }) {
                                 background-color: hsl(0deg 0% 94.9%);
                             "
                         >
-                            <b>AMOUNT</b>
+                            <b style="text-transform: uppercase">${t('common:amount')}</b>
                         </td>
                     </tr>
                     ${listProductHtml4(listProductsSelect)}
     
                     <tr>
-                        <td colspan="4" style="width: 100px; height: 30px; text-align: center; border-right: 1px solid">
-                            <b> TOTAL</b>
+                        <td colspan="4" style="width: 100px; height: 30px; text-align: center; border-right: 1px solid";>
+                            <b style="text-transform: uppercase"> ${t('common:totalAmount3')}</b>
                         </td>
                         <td
                             style="
@@ -727,13 +752,13 @@ export default function CreateInvoice({ route }) {
                     </tr>
                 </table>
                 <div style="margin-top: 10px; font-size: 13px">
-                    <text>Make all checks payable to ${companyName} </text>
+                    <text>${t('common:makePayable')} ${companyName} </text>
                 </div>
                 <div style="margin-top: 20px; font-size: 13px; margin-bottom: 20px">
-                    <text> If you have any questions concerning this invoice, ${contactName}, ${contactPhone}, ${contactEmail} </text>
+                    <text> ${t('common:question')} ${contactName}, ${contactPhone}, ${contactEmail} </text>
                 </div>
                 <div style="text-align: center; font-size: 13px">
-                    <text><b>THANK YOU FOR YOUR BUSINESS! </b></text>
+                    <text><b>${t('common:thankyou4')} </b></text>
                 </div>
             </div>
         </body>
@@ -802,23 +827,23 @@ export default function CreateInvoice({ route }) {
                                 <p>${companyEmail}</p>
                             </div>
                             <div style="text-align: left; font-weight: 600">
-                                <p>HÓA ĐƠN THANH TOÁN</p>
+                                <p>${t('common:invoice')}</p>
                             </div>
                         </div>
                         <div class="container_center">
                             <div style="display: flex; flex-direction: row">
                                 <div style="display: flex; flex-direction: row; flex: 2">
-                                    <p style="margin-right: 20;font-weight: 600">Invoice No:</p>
+                                    <p style="margin-right: 20;font-weight: 600">${t('common:invoiceNo')}:</p>
                                     <p>${IDBill}</p>
                                 </div>
                                 
                                 <div style="display: flex; flex-direction: row; flex: 1">
-                                    <p style="margin-right: 20;font-weight: 600">Date:</p>
+                                    <p style="margin-right: 20;font-weight: 600">${t('common:date')}:</p>
                                     <p>${dateNow}</p>
                                 </div>
                             </div>
                             <div class="cashier" style="display: flex; flex-direction: row">
-                                <p style="margin-right: 20;font-weight: 600">Bill to:</p>
+                                <p style="margin-right: 20;font-weight: 600">${t('common:billTo')}:</p>
                                 <div style="flexDirection: 'column'">
                                 <p>${contactName}</p>
                                 <p>${contactAddress}</p>
@@ -827,11 +852,11 @@ export default function CreateInvoice({ route }) {
                             
                             <table style="width: 100%">
                                 <tr style="border-bottom: 1px dashed black">
-                                    <th style="text-align: center">Item</th>
-                                    <th style="text-align: left">Description</th>
-                                    <th style="text-align: center">Price</th>
-                                    <th style="text-align: center">Quantity</th>
-                                    <th style="text-align: center">Total</th>
+                                    <th style="text-align: center">${t('common:item')}</th>
+                                    <th style="text-align: left">${t('common:description')}</th>
+                                    <th style="text-align: center">${t('common:price5')}</th>
+                                    <th style="text-align: center">${t('common:qty5')}</th>
+                                    <th style="text-align: center">${t('common:amount3')}</th>
                                 </tr>
                                 <tr>
                                 ${listProductHtml5(listProductsSelect)}
@@ -842,18 +867,18 @@ export default function CreateInvoice({ route }) {
                         </div>
                         <div class="container_bottom" style="justify-content: right">
                             <div style="display: flex; flex-direction: row; justify-content: right">
-                                <p style="justify-content: left; font-weight: bold">Total:</p>
+                                <p style="justify-content: left; font-weight: bold">${t('common:totalAmount3')}:</p>
                                 <p>${total}</p>
                             </div>
                             <div style="display: flex; flex-direction: row; justify-content: left">
-                            <p style="justify-content: left; font-weight: bold">Thank you</p>
+                            <p style="justify-content: left; font-weight: bold">${t('common:thankyou5')}</p>
                         </div>
                             <div style="display: flex; flex-direction: row; justify-content: left">
-                                <p style="justify-content: left; font-weight: bold">Bank name:</p>
+                                <p style="justify-content: left; font-weight: bold">${t('common:bankName')}:</p>
                                 <p>${customer}</p>
                                 </div>
                             <div style="display: flex; flex-direction: row; justify-content: left">
-                                <p style="justify-content: left; font-weight: bold; font-size: 18px">Bank acount:</p>
+                                <p style="justify-content: left; font-weight: bold">${t('common:bankAccount')}:</p>
                                 <p>${contactPhone}</p>
                                 </div>
                             <p style="border-bottom: 1px dashed black"></p>
@@ -968,35 +993,39 @@ export default function CreateInvoice({ route }) {
                                 <div class="container_center">
                                     <div style="display: flex; flex-direction: row">
                                         <div style="display: flex; flex-direction: column; flex: 2">
-                                            <p style="margin-right: 20; font-weight: bold">Invoice To:</p>
+                                            <p style="margin-right: 20; font-weight: bold">${t('common:invoiceTo')}:</p>
                                             <p>${contactName}</p>
         
                                         </div>
                                         <div>
                                             <div style="display: flex; flex-direction: row; flex: 1">
-                                                <p style="margin-right: 20; font-weight: bold">Invoice#:</p>
+                                                <p style="margin-right: 20; font-weight: bold;text-transform:capitalize">${t(
+                                                    'common:id6',
+                                                )}#:</p>
                                                 <p>${IDBill}</p>
                                             </div>
                                             <div style="display: flex; flex-direction: row; flex: 1">
-                                                <p style="margin-right: 20; font-weight: bold">Date:</p>
+                                                <p style="margin-right: 20; font-weight: bold">${t('common:date')}:</p>
                                                 <p>${dateNow}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="cashier" style="display: flex; flex-direction: row">
-                                        <p style="margin-right: 20; font-weight: bold">Address:</p>
+                                        <p style="margin-right: 20; font-weight: bold">${t(
+                                            'common:addressInvoice',
+                                        )}:</p>
                                         <p>${companyAddress}s</p>
                                     </div>
                                     <table class="table" style="width: 100%">
                                         <tr style="background-color: #595959; color: aliceblue">
                                             <div class="header_table">
                                                 <div class="header_table_1">
-                                                    <th style="text-align: center">Item</th>
-                                                    <th style="text-align: left">Description</th>
+                                                    <th style="text-align: center">${t('common:item')}</th>
+                                                    <th style="text-align: left">${t('common:description')}</th>
                                                 </div>
-                                                <th style="text-align: center">Price</th>
-                                                <th style="text-align: center">Sl</th>
-                                                <th style="text-align: center">Total</th>
+                                                <th style="text-align: center">${t('common:price5')}</th>
+                                                <th style="text-align: center">${t('common:qty3')}</th>
+                                                <th style="text-align: center">${t('common:totalAmount3')}</th>
                                             </div>
                                         </tr>
                                         <tr>
@@ -1007,35 +1036,43 @@ export default function CreateInvoice({ route }) {
                                 <div class="container_contents">
                                     <div class="container_bottom" style="justify-content: right">
                                         <div style="display: flex; flex-direction: row; justify-content: left">
-                                            <p style="justify-content: right; font-weight: bold">Thank you</p>
+                                            <p style="justify-content: right; font-weight: bold">${t(
+                                                'common:thankyou5',
+                                            )}!</p>
                                         </div>
                                         <div style="display: flex; flex-direction: row; justify-content: left">
-                                            <p style="justify-content: left; font-weight: bold">Terms and conditions</p>
+                                            <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
                                             <p>trandz</p>
                                         </div>
                                         <div style="display: flex; flex-direction: row; justify-content: left">
-                                            <p style="justify-content: left; font-weight: bold; font-size: 18px">Payment Infor:</p>
+                                            <p style="justify-content: left; font-weight: bold; font-size:17>${t(
+                                                'common:pay6',
+                                            )}:</p>
                                             <p>${contactName}</p>
                                         </div>
                                         <div style="display: flex; flex-direction: row; justify-content: right"></div>
                                     </div>
                                     <div class="container_bottom" style="justify-content: right">
                                         <div style="display: flex; flex-direction: row; justify-content: left">
-                                            <p style="justify-content: left; font-weight: bold">Sub total:</p>
+                                            <p style="justify-content: left; font-weight: bold">${t(
+                                                'common:subTotal',
+                                            )}:</p>
                                             <p>${total}</p>
                                         </div>
                                         <div style="display: flex; 
                                         flex-direction: row;                                 justify-content: space-between; 
                                         justify-content: space-between; 
                                         ">
-                                            <p style="justify-content: left; font-weight: bold; font-size: 18px">Tax:</p>
+                                            <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
+                                                'common:tax',
+                                            )}:</p>
                                             <p>${tax}%</p>
                                         </div>
                                         <div style="display: flex; 
                                         flex-direction: row; 
                                         justify-content: space-between; 
                                         background-color: rgb(255, 191, 0);">
-                                          <p >Total:</p>
+                                          <p >${t('common:totalAmount3')}:</p>
                                             <p >${totalBill}</p>
                                         </div>
                                         <div style="display: flex; flex-direction: row; justify-content: right"></div>
@@ -1048,7 +1085,7 @@ export default function CreateInvoice({ route }) {
                                 </div>
                             </div>
                             <div class="container_bottom_name_2">
-                            Authorised Sign</div>
+                            ${t('common:authorised')}</div>
                         </div>
                         <div style = "font-weight: bold;">
                         ${companyPhone}  |  ${companyAddress}  |  Website</div>
@@ -1147,35 +1184,41 @@ export default function CreateInvoice({ route }) {
                             <div class="container_center">
                                 <div style="display: flex; flex-direction: row">
                                     <div style="display: flex; flex-direction: column; flex: 2">
-                                        <p style="margin-right: 20; font-weight: bold; font-size: 20px">Invoice To:</p>
+                                        <p style="margin-right: 20; font-weight: bold; font-size: 20px">${t(
+                                            'common:invoiceTo',
+                                        )}:</p>
                                         <p>${contactName}</p>
     
                                     </div>
                                     <div>
                                         <div style="display: flex; flex-direction: row; flex: 1">
-                                            <p style="margin-right: 20; font-weight: bold">Invoice#:</p>
+                                            <p style="margin-right: 20; font-weight: bold">${t('common:id6')}#:</p>
                                             <p>${IDBill}</p>
                                         </div>
                                         <div style="display: flex; flex-direction: row; flex: 1">
-                                            <p style="margin-right: 20; font-weight: bold">Date:</p>
+                                            <p style="margin-right: 20; font-weight: bold">${t('common:date')}:</p>
                                             <p>${dateNow}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="cashier" style="display: flex; flex-direction: row">
-                                    <p style="margin-right: 20; font-weight: bold">Address:</p>
+                                    <p style="margin-right: 20; font-weight: bold">${t('common:addressInvoice')}:</p>
                                     <p>${contactAddress}</p>
                                 </div>
                                 <table class="table" style="width: 100%">
                                     <tr style="background-color: #595959; color: aliceblue">
                                         <div class="header_table">
                                             <div class="header_table_1">
-                                                <th style="text-align: center; background-color: #ffcc00; color: #595959">Item</th>
-                                                <th style="text-align: left; background-color: #ffcc00; color: #595959">Description</th>
+                                                <th style="text-align: center; background-color: #ffcc00; color: #595959">${t(
+                                                    'common:item',
+                                                )}</th>
+                                                <th style="text-align: left; background-color: #ffcc00; color: #595959">${t(
+                                                    'common:description',
+                                                )}</th>
                                             </div>
-                                            <th style="text-align: center">Price</th>
-                                            <th style="text-align: center">Sl</th>
-                                            <th style="text-align: center">total</th>
+                                            <th style="text-align: center">${t('common:price')}</th>
+                                            <th style="text-align: center">${t('common:qty3')}</th>
+                                            <th style="text-align: center">${t('common:totalAmount3')}</th>
                                         </div>
                                     </tr>
                                     <tr>
@@ -1187,25 +1230,29 @@ export default function CreateInvoice({ route }) {
                             <div class="container_contents">
                                 <div class="container_bottom" style="justify-content: right">
                                     <div style="display: flex; flex-direction: row; justify-content: left">
-                                        <p style="justify-content: right; font-weight: bold">Thank you for your business</p>
+                                        <p style="justify-content: right; font-weight: bold">${t(
+                                            'common:thankyou4',
+                                        )}</p>
                                     </div>
                                     <div style="display: flex; flex-direction: column; justify-content: left">
-                                        <p style="justify-content: left; font-weight: bold">Terms and conditions</p>
+                                        <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
                                         <p>${customer}</p>
                                     </div>
                                     <div style="display: flex; flex-direction: column; justify-content: left">
-                                        <p style="justify-content: left; font-weight: bold; font-size: 18px">Payment Infor:</p>
+                                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
+                                            'common:pay6',
+                                        )}:</p>
                                         <p>${contactPhone}</p>
                                     </div>
                                     <div style="display: flex; flex-direction: row; justify-content: right"></div>
                                 </div>
                                 <div class="container_bottom" style="justify-content: right">
                                 <div style="display: flex; flex-direction: row; justify-content: space-between  ">
-                                    <p style="justify-content: left; font-weight: bold; ">Sub total:</p>
+                                    <p style="justify-content: left; font-weight: bold; ">${t('common:subTotal')}:</p>
                                     <p>${total}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                    <p style="justify-content: left; font-weight: bold; ">Tax:</p>
+                                    <p style="justify-content: left; font-weight: bold; ">${t('common:tax')}:</p>
                                     <p>${tax}%</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: space-between;background-color: #b6b6b6;">
@@ -1217,7 +1264,7 @@ export default function CreateInvoice({ route }) {
                                             
                                         "
                                     >
-                                        Total:
+                                    ${t('common:totalAmount3')}:
                                     </p>
                                     <p>${totalBill}</p>
                                 </div>
@@ -1231,7 +1278,7 @@ export default function CreateInvoice({ route }) {
                         </div>
                     </div>
                     <div class="container_bottom_name_2">
-                    Authorised Sign</div>
+                    ${t('common:authorised')}</div>
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: right"></div>
                         <img style="position: fixed; bottom: 0; width: 100%" src="${uri2}" />
@@ -1348,34 +1395,34 @@ export default function CreateInvoice({ route }) {
                         <div class="container_center">
                             <div style="display: flex; flex-direction: row">
                                 <div style="display: flex; flex-direction: row; flex: 2">
-                                    <p style="margin-right: 20; font-weight: bold">Invoice#: ${IDBill}</p>
+                                    <p style="margin-right: 20; font-weight: bold">${t('common:id6')}#: ${IDBill}</p>
                                 </div>
                                 <div>
                                     <div style="display: flex; flex-direction: row; flex: 1">
-                                        <p style="margin-right: 20; font-weight: bold">Invoice To:</p>
+                                        <p style="margin-right: 20; font-weight: bold">${t('common:invoiceTo')}:</p>
                                         <p>${contactName}</p>
                                     </div>
                                     <div class="cashier" style="display: flex; flex-direction: row">
-                                    <p style="margin-right: 20; font-weight: bold">Address:</p>
+                                    <p style="margin-right: 20; font-weight: bold">${t('common:addressInvoice')}:</p>
                                     <p>${contactAddress}</p>
                                 </div>
                                 </div>
                             </div>
                             
                             <div style="display: flex; flex-direction: row; flex: 1">
-                            <p style="margin-right: 20; font-weight: bold">Date:</p>
+                            <p style="margin-right: 20; font-weight: bold">${t('common:date')}:</p>
                             <p> ${dateNow}</p>
                         </div>
                             <table class="table" style="width: 100%">
                                 <tr style="background-color: rgb(255 87 87); color: aliceblue">
                                     <div class="header_table">
                                         <div class="header_table_1">
-                                            <th style="text-align: center">Item</th>
-                                            <th style="text-align: left">Description</th>
+                                            <th style="text-align: center">${t('common:item')}</th>
+                                            <th style="text-align: left">${t('common:description')}</th>
                                         </div>
-                                        <th style="text-align: center">Price</th>
-                                        <th style="text-align: center">Quantity</th>
-                                        <th style="text-align: center">total</th>
+                                        <th style="text-align: center">${t('common:price')}</th>
+                                        <th style="text-align: center">${t('common:qty5')}</th>
+                                        <th style="text-align: center">${t('common:totalAmount3')}</th>
                                     </div>
                                 </tr>
                                 <tr style="text-align: center">
@@ -1386,25 +1433,31 @@ export default function CreateInvoice({ route }) {
                         <div class="container_contents">
                             <div class="container_bottom" style="justify-content: right">
                                 <div style="display: flex; flex-direction: row; justify-content: left">
-                                    <p style="justify-content: right; font-weight: bold">Thank you for your business</p>
+                                    <p style="justify-content: right; font-weight: bold">${t('common:thankyou4')}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: left">
-                                    <p style="justify-content: left; font-weight: bold">Terms and conditions</p>
+                                    <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
                                     <p>${customer}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: left">
-                                    <p style="justify-content: left; font-weight: bold; font-size: 18px">Payment Infor:</p>
+                                    <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
+                                        'common:pay6',
+                                    )}:</p>
                                     <p>${contactPhone}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: right"></div>
                             </div>
                             <div class="container_bottom" style="justify-content: right">
                                 <div style="display: flex; flex-direction: row; justify-content: space-between  ">
-                                    <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">Sub total:</p>
+                                    <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">${t(
+                                        'common:subTotal',
+                                    )}:</p>
                                     <p>${total}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: space-between">
-                                    <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">Tax:</p>
+                                    <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">${t(
+                                        'common:tax',
+                                    )}:</p>
                                     <p>${tax}%</p>
                                 </div>
                                 <div style="display: flex; flex-direction: row; justify-content: space-between;background-color: #b6b6b6;">
@@ -1416,7 +1469,7 @@ export default function CreateInvoice({ route }) {
                                             
                                         "
                                     >
-                                        Total:
+                                    ${t('common:totalAmount3')}:
                                     </p>
                                     <p>${totalBill}</p>
                                 </div>
@@ -1523,7 +1576,7 @@ export default function CreateInvoice({ route }) {
     
                     <div>
                         <div style="display: flex">
-                            <Text style="margin-left: 160px">TOTAL AMOUNT</Text>
+                            <Text style="margin-left: 160px">${t('common:totalAmount9')}</Text>
                             <Text style="margin-right: 160px; text-align: right; flex: 1">${total}</Text>
                         </div>
                         <hr />
@@ -1638,17 +1691,17 @@ export default function CreateInvoice({ route }) {
                     <div class="title_date">
                         <h1 class="title">Invoice</h1>
                         <div class="date">
-                            <p class="text">Date: ${dateNow}-${houseNow}</p>
-                            <p class="text">Invoice #: ${IDBill}</p>
+                            <p class="text">${t('common:date')}: ${dateNow}-${houseNow}</p>
+                            <p class="text">${t('common:id6')} #: ${IDBill}</p>
                         </div>
                     </div>
                     <div class="from_to">
                         <div class="from">
-                            <b>From: </b>
+                            <b>${t('common:from')}: </b>
                             <p class="text">${companyName}</p>
                         </div>
                         <div class="from">
-                            <b>To: </b>
+                            <b>${t('common:to')}: </b>
                             <p class="text">${contactName}</p>
                         </div>
                     </div>
@@ -1656,10 +1709,10 @@ export default function CreateInvoice({ route }) {
                 <div class="center">
                     <table class="table">
                         <tr>
-                            <th class="row1">Description</th>
-                            <th class="row2">Hours</th>
-                            <th class="row2">Rate/hours</th>
-                            <th class="row3">Total</th>
+                            <th class="row1">${t('common:description')}</th>
+                            <th class="row2">${t('common:hours')}</th>
+                            <th class="row2">${t('common:rateHouse')}</th>
+                            <th class="row3">${t('common:totalAmount3')}</th>
                         </tr>
                        ${listProductHtml10(listProductsSelect)}
                     </table>
@@ -1668,9 +1721,9 @@ export default function CreateInvoice({ route }) {
                     <div class="payment">
                         <div class="payment_left"></div>
                         <div class="payment_right">
-                            <p>Subtotal: ${total}</p>
-                            <p>Tax: ${tax}</p>
-                            <b>Total Amount Due: ${totalBill}</b>
+                            <p>${t('common:subTotal')}: ${total}</p>
+                            <p>${t('common:tax')}: ${tax}</p>
+                            <b>${t('common:due')}: ${totalBill}</b>
                         </div>
                     </div>
                 </div>
@@ -1751,30 +1804,30 @@ export default function CreateInvoice({ route }) {
                 <body >
                     <div class="container">
                         <div class="top">
-                            <h1 class="title">Invoice</h1>
+                            <h1 class="title">${t('common:invoice')}</h1>
                             <div class="date">
-                                <p class="text">Date: ${dateNow}</p>
-                                <p class="text">Invoice #: ${IDBill}</p>
+                                <p class="text">${t('common:date')}: ${dateNow}</p>
+                                <p class="text">${t('common:id6')} #: ${IDBill}</p>
                             </div>
                         </div>
                         <div class="center">
                             <table class="table">
                                 <tr>
-                                    <th class="row1">Description</th>
-                                    <th class="row2">Quantity</th>
-                                    <th class="row2">Unit Price</th>
-                                    <th class="row3">Total</th>
+                                    <th class="row1">${t('common:description')}</th>
+                                    <th class="row2">${t('common:qty5')}</th>
+                                    <th class="row2">${t('common:unitPrice')}</th>
+                                    <th class="row3">${t('common:totalAmount3')}</th>
                                 </tr>
                                 ${listProductHtml11(listProductsSelect)}
                             </table>
                         </div>
                         <div class="bottom">
                             <div class="flex_row">
-                                <p class="text">Payment Terms:</p>
+                                <p class="text">${t('common:payTerm')}: </p>
                                 <p class="text">Pay</p>
                             </div>
                             <div class="flex_row">
-                                <p class="text">Total Amout Due:  ${total}</p>
+                                <p class="text">${t('common:due')}:  ${total}</p>
                             </div>
                         </div>
                     </div>
@@ -1785,11 +1838,15 @@ export default function CreateInvoice({ route }) {
     return (
         <PrintBtn html={htmlTemplates[idTemplate]}>
             <View style={styles.container}>
-                <Header title={'Hóa đơn'} />
+                <Header title={t('common:bill')} />
                 <View>
                     <View style={styles.invoicedate}>
-                        <Text style={styles.code}>NO: {IDBill}</Text>
-                        <Text style={styles.code}>Date: {dateNow}</Text>
+                        <Text style={styles.code}>
+                            {t('common:no')}: {IDBill}
+                        </Text>
+                        <Text style={styles.code}>
+                            {t('common:date')}: {dateNow}
+                        </Text>
                     </View>
                     {idTemplate != 11 && (
                         <>
@@ -1798,7 +1855,7 @@ export default function CreateInvoice({ route }) {
                                     style={styles.text_line}
                                     onChangeText={(text) => setContactName(text)}
                                     value={contactName}
-                                    placeholder="Name"
+                                    placeholder={t('common:name')}
                                 />
                             </View>
                             {idTemplate != 2 && idTemplate != 10 && (
@@ -1809,7 +1866,7 @@ export default function CreateInvoice({ route }) {
                                                 style={styles.text_line}
                                                 onChangeText={(text) => setContactPhone(text)}
                                                 value={contactPhone}
-                                                placeholder="Phone"
+                                                placeholder={t('common:phone')}
                                             />
                                         </View>
                                     )}
@@ -1820,7 +1877,7 @@ export default function CreateInvoice({ route }) {
                                                     style={styles.text_line}
                                                     onChangeText={(text) => setContactAddress(text)}
                                                     value={contactAddress}
-                                                    placeholder="Address"
+                                                    placeholder={t('common:addressInvoice')}
                                                 />
                                             </View>
                                             {idTemplate != 5 &&
@@ -1846,7 +1903,7 @@ export default function CreateInvoice({ route }) {
                     <Button
                         customStylesBtn={styles.btn}
                         customStylesText={{ ...styles.text, color: 'black' }}
-                        text="Mặt hàng/Dịch vụ"
+                        text={t('common:productServie')}
                         iconRight={<AntDesign name={showProductList ? 'up' : 'down'} size={24} color="#32db64" />}
                         onPress={toggleProductList}
                     />
@@ -1866,7 +1923,7 @@ export default function CreateInvoice({ route }) {
                             <Button
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
-                                text="Thêm sản phẩm"
+                                text={t('common:addProduct')}
                                 iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
                                 onPress={() => {
                                     setProductModalVisible(true);
@@ -1881,7 +1938,7 @@ export default function CreateInvoice({ route }) {
                                     style={styles.text_line}
                                     onChangeText={(text) => setTax(text)}
                                     value={tax}
-                                    placeholder="Tax"
+                                    text={t('common:tax')}
                                 />
                             </View>
                             {idTemplate != 3 && idTemplate != 7 && idTemplate != 8 && idTemplate != 10 && (
@@ -1890,7 +1947,7 @@ export default function CreateInvoice({ route }) {
                                         style={styles.text_line}
                                         onChangeText={(text) => setNote(text)}
                                         value={note}
-                                        placeholder="In Word"
+                                        text={t('common:inWords')}
                                     />
                                 </View>
                             )}
@@ -1906,12 +1963,12 @@ export default function CreateInvoice({ route }) {
 
                 <Modal animationType="slide" transparent={false} visible={isProductModalVisible}>
                     <View style={styles.container}>
-                        <Text style={styles.titleTable}>Danh sách sản phẩm</Text>
+                        <Text style={styles.titleTable}>{t('common:listProduct')}</Text>
                         <Product data={products} isList onAdd={(item) => handleAddProduct(item)} />
                         <Button
                             customStylesBtn={styles.btn}
                             customStylesText={{ ...styles.text, ...styles.textBtnClose }}
-                            text="Đóng"
+                            text={t('common:close')}
                             onPress={closeProductModal}
                         />
                     </View>

@@ -5,8 +5,10 @@ import { backgroundColor, white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import InvoiceList from '../InvoiceList';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function Popup({ visible, onClose, bottom }) {
+    const { t } = useTranslation();
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -41,7 +43,7 @@ export default function Popup({ visible, onClose, bottom }) {
                             iconLeft={<AntDesign name="close" size={20} color="black" />}
                         />
                     </View>
-                    {bottom && <Text style={styles.title}>Tạo hóa đơn ngay</Text>}
+                    {bottom && <Text style={styles.title}>{t('common:createInvoices')} </Text>}
                     <View style={styles.top_between}>
                         <Button
                             customStylesIcon={{ ...styles.icon_close, width: 25, height: 25 }}

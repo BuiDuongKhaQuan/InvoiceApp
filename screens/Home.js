@@ -11,8 +11,9 @@ import axios from 'axios';
 import moment from 'moment';
 import { getAllInvoice } from '../Service/api';
 const { width } = Dimensions.get('screen');
-
+import { useTranslation } from 'react-i18next';
 export default function Home({ navigation }) {
+    const { t } = useTranslation();
     const [imageSliders, setImageSliders] = useState([
         require('../assets/images/Slider/1.jpg'),
         require('../assets/images/Slider/2.jpg'),
@@ -113,7 +114,7 @@ export default function Home({ navigation }) {
                 <Input
                     customStylesContainer={styles.input_item}
                     customStylesInput={styles.input_text}
-                    holder="Search for invoice templates"
+                    holder={t('common:searchForInvoice')}
                     iconLeft={<Feather name="search" size={24} color="black" />}
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     onPressIconRight={() => navigation.navigate('Scanner')}

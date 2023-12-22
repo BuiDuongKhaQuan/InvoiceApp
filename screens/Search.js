@@ -7,7 +7,9 @@ import { fontSizeDefault } from '../constant/fontSize';
 import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { getInvoiceById } from '../Service/api';
+import { useTranslation } from 'react-i18next';
 export default function Search({ navigation }) {
+    const { t } = useTranslation();
     const [id, setId] = useState('');
     const [invoice, setInvoice] = useState(null);
     const [error, setError] = useState(null);
@@ -18,16 +20,19 @@ export default function Search({ navigation }) {
             if (data) {
                 setInvoice(data);
                 setError(null);
-                Alert.alert('Invoice information', `ID: ${data.id}\nStatus: ${data.status}`);
+                Alert.alert(
+                    t('common:invoiceInfo'),
+                    `${t('common:no')}: ${data.id}\n${t('common:status')}: ${data.status}`,
+                );
             } else {
-                Alert.alert('Error', 'No invoices were found with this ID');
+                Alert.alert(t('common:error'), t('common:errSearch'));
             }
         } catch (error) {
-            setError('This invoice does not exist');
+            setError(t('common:notExists'));
             setInvoice(null);
             if (error.response) {
             }
-            Alert.alert('Error', 'This invoice does not exist');
+            Alert.alert(t('common:error'), t('common:notExists'));
         }
     };
     return (
@@ -36,7 +41,7 @@ export default function Search({ navigation }) {
                 <View style={{ flexDirection: 'row' }}>
                     <Input
                         customStylesContainer={styles.input}
-                        holder="Search by invoice code, customer name"
+                        holder={t('common:titileSearch')}
                         iconLeft={<Feather name="search" size={24} color="black" />}
                         iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                         onPressIconRight={() => navigation.navigate('Scanner')}
@@ -50,37 +55,37 @@ export default function Search({ navigation }) {
                         <Button
                             customStylesBtn={styles.result_item}
                             customStylesText={styles.result_itemText}
-                            text="Hóa đơn bán hàng"
+                            text={t('common:billSell')}
                             iconRight={<AntDesign name="close" size={20} color="black" />}
                         />
                         <Button
                             customStylesBtn={styles.result_item}
                             customStylesText={styles.result_itemText}
                             customStylesIcon={styles.result_itemIcon}
-                            text="Hóa đơn bán hàng"
+                            text={t('common:billSell')}
                             iconRight={<AntDesign name="close" size={20} color="black" />}
                         />
                         <Button
                             customStylesBtn={styles.result_item}
                             customStylesText={styles.result_itemText}
                             customStylesIcon={styles.result_itemIcon}
-                            text="Hóa đơn bán hàng"
+                            text={t('common:billSell')}
                             iconRight={<AntDesign name="close" size={20} color="black" />}
                         />
                     </View>
                 </View>
                 <View style={styles.container_bottom}>
-                    <Text style={styles.title}>Maybe you are interested</Text>
+                    <Text style={styles.title}>{t('common:concern')}</Text>
                     <View style={styles.care}>
                         <Button
                             customStylesText={styles.result_itemText}
                             customStylesBtn={styles.result_item}
-                            text="New model coming soon"
+                            text={t('common:comingSoon')}
                         />
                         <Button
                             customStylesText={styles.result_itemText}
                             customStylesBtn={styles.result_item}
-                            text="Famous brand"
+                            text={t('common:brand')}
                         />
                     </View>
                 </View>

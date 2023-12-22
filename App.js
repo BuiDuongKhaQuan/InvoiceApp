@@ -28,7 +28,7 @@ import ValidateEmail from './screens/ValidateEmail';
 import ResetPassword from './screens/ResetPassword';
 import Information from './screens/Setting/Information';
 import { UserProvider } from './screens/UserContext';
-
+import './constant/translations/DCSLocalize';
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
@@ -53,7 +53,7 @@ export default function App() {
                     <Stack.Screen name="EditBill" component={EditBill} />
                     <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
                     <Stack.Screen name="Staff" component={Staff} options={headerNone} />
-                    <Stack.Screen name="Statistical" component={Statistical} />
+                    <Stack.Screen name="Statistical" component={Statistical} options={headerNone} />
                     <Stack.Screen name="WatchBill" component={WatchBill} />
                     <Stack.Screen name="Language" component={Language} options={headerNone} />
                     <Stack.Screen name="Notification" component={Notification} options={headerNone} />

@@ -15,7 +15,7 @@ import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { register } from '../Service/api';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
-
+import { useTranslation } from 'react-i18next';
 export default function Register() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ export default function Register() {
     const [showRePass, setShowRePass] = useState('eye-off');
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false);
-
+    const { t } = useTranslation();
     const navigation = useNavigation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -103,7 +103,7 @@ export default function Register() {
                 name,
                 email,
                 pass,
-                (gender = 'Nam'),
+                (gender = t('common:male')),
                 phone,
                 (address = 'DC'),
                 (role = 'ROLE_USER'),
@@ -112,9 +112,9 @@ export default function Register() {
             navigation.navigate('ValidateEmail', { data: email });
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Login error', error.response.data.message);
+                Alert.alert(t('common:loginerror'), error.response.data.message);
             } else {
-                console.error('Login error:', error);
+                console.error(t('common:loginerror'), error);
             }
         } finally {
             setLoading(false);
@@ -135,7 +135,7 @@ export default function Register() {
                             onChangeText={handleChangeEmail}
                             value={email}
                             validate={errorEmail}
-                            validateText="Please enter the correct email format"
+                            validateText={t('common:formatEmail')}
                             holder="example@example.com"
                             iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                         />
@@ -143,24 +143,24 @@ export default function Register() {
                             onChangeText={handleChangeName}
                             value={name}
                             validate={errorName}
-                            validateText="Name cannot be blank"
-                            holder="Full Name"
+                            validateText={t('common:nobankName')}
+                            holder={t('common:fullName')}
                             iconLeft={<SimpleLineIcons name="user" size={24} color="black" />}
                         />
                         <Input
                             onChangeText={handleChangePhone}
                             value={phone}
                             validate={errorPhone}
-                            validateText="Phone number must have 10 digits"
-                            holder="Phone Number"
+                            validateText={t('common:formatPhone')}
+                            holder={t('common:phoneNumber')}
                             iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
                         />
                         <Input
                             onChangeText={handleChangeCompanyKey}
                             value={companyKey}
                             validate={errorCompanyKey}
-                            validateText="Business code cannot be left blank"
-                            holder="Company Key"
+                            validateText={t('common:nobankCompany')}
+                            holder={t('common:companyKey')}
                             iconLeft={
                                 <MaterialCommunityIcons name="office-building-marker-outline" size={24} color="black" />
                             }
@@ -169,9 +169,9 @@ export default function Register() {
                             onChangeText={handleChangePass}
                             value={pass}
                             validate={errorPass}
-                            validateText="Password must be 6 to 8 characters"
+                            validateText={t('common:format')}
                             pass={!showPassword}
-                            holder="Password"
+                            holder={t('common:password')}
                             onPressIconRight={togglePasswordShow}
                             iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                             iconRight={<Feather name={showPass} size={24} color="black" />}
@@ -180,9 +180,9 @@ export default function Register() {
                             onChangeText={handleChangeRePass}
                             value={repass}
                             validate={errorRePass}
-                            validateText="Password incorrect"
+                            validateText={t('common:passwordIncorrect')}
                             pass={!showRePassword}
-                            holder="Re Password"
+                            holder={t('common:rePassword')}
                             onPressIconRight={toggleRePasswordShow}
                             iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                             iconRight={<Feather name={showRePass} size={24} color="black" />}
@@ -190,11 +190,11 @@ export default function Register() {
 
                         {keyboardIsShow || (
                             <>
-                                <Button onPress={handlePress} text="Signup" />
+                                <Button onPress={handlePress} text={t('common:signup')} />
                                 <View style={styles.register}>
-                                    <Text style={styles.register_text}>Do you have an account? </Text>
+                                    <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
                                     <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                        Login
+                                        {t('common:login')}
                                     </Text>
                                 </View>
                             </>
@@ -203,7 +203,7 @@ export default function Register() {
                     {keyboardIsShow || (
                         <View style={styles.container_botom}>
                             <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                                Forgot Password?
+                                {t('common:forgotPass')}?
                             </Text>
                         </View>
                     )}

@@ -8,8 +8,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { forgotPassword, validateReset } from '../Service/api';
 import Loading from '../components/Loading';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword({ navigation }) {
+    const { t } = useTranslation();
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
@@ -60,9 +62,9 @@ export default function ForgotPassword({ navigation }) {
             await forgotPassword(email);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                Alert.alert('Error', error.response.data.message);
+                Alert.alert(t('common:error'), error.response.data.message);
             } else {
-                Alert.alert('Error', 'Transmission error, please try again later');
+                Alert.alert(t('common:error'), t('common:transmissionError'));
             }
         } finally {
             setLoading(false);
@@ -76,9 +78,9 @@ export default function ForgotPassword({ navigation }) {
             navigation.navigate('ResetPassword', { data: email });
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                Alert.alert('Error', error.response.data.message);
+                Alert.alert(t('common:error'), error.response.data.message);
             } else {
-                Alert.alert('Error', 'Transmission error, please try again later');
+                Alert.alert(t('common:error'), t('common:transmissionError'));
             }
         } finally {
             setLoading(false);
@@ -100,7 +102,7 @@ export default function ForgotPassword({ navigation }) {
                         value={email}
                         onPressSend={handleSend}
                         validate={errorEmail}
-                        validateText="Please enter the correct email format"
+                        validateText={t('common:formatEmail')}
                         holder="example@example.com"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                         btnSend
@@ -109,18 +111,18 @@ export default function ForgotPassword({ navigation }) {
                         onChangeText={handleChangeCode}
                         value={code}
                         validate={errorCode}
-                        validateText="Verification code must be 6 characters long!"
+                        validateText={t('common:verifyCode')}
                         customStylesInput={{ marginLeft: 50 }}
-                        holder="Enter OTP code"
+                        holder={t('common:otpCode')}
                     />
 
                     {keyboardIsShow || (
                         <>
-                            <Button onPress={handlePress} text="Confirm" />
+                            <Button onPress={handlePress} text={t('common:confirm')} />
                             <View style={styles.register}>
-                                <Text style={styles.register_text}>Do you have an account? </Text>
+                                <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
                                 <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                    Login
+                                    {t('common:login')}
                                 </Text>
                             </View>
                         </>

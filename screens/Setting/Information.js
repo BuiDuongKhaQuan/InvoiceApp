@@ -12,6 +12,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { instance } from '../../Service/api';
+import { useTranslation } from 'react-i18next';
 export default function Information({ route }) {
     const { state } = useUserContext();
     const { user, company } = state;
@@ -26,7 +27,7 @@ export default function Information({ route }) {
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState(route?.params?.dataModel !== undefined ? route.params.dataModel : null);
-
+    const { t } = useTranslation();
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -150,7 +151,7 @@ export default function Information({ route }) {
 
     return (
         <BackgroundImage>
-            <Header title="Information" />
+            <Header title={t('common:information')} />
             {route?.params?.dataModel !== undefined ? (
                 <ScrollView style={styles.container}>
                     <Loading loading={loading} />
@@ -164,7 +165,7 @@ export default function Information({ route }) {
                                         : { uri: data.image }
                                 }
                             />
-                            <Text>avartar</Text>
+                            <Text>{t('common:changeAvt')}</Text>
                         </View>
                         <View style={styles.image}>
                             <Image
@@ -175,26 +176,26 @@ export default function Information({ route }) {
                                         : { uri: data.wallpaper }
                                 }
                             />
-                            <Text>Wallpaper</Text>
+                            <Text>{t('common:changeWallet')}</Text>
                         </View>
                     </View>
 
                     <View>
                         <View style={styles.bottom}>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Name:</Text>
+                                <Text style={styles.text}>{t('common:name')}:</Text>
                                 <Text style={styles.name}>{data.name}</Text>
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Email:</Text>
+                                <Text style={styles.text}>{t('common:email')}:</Text>
                                 <Text style={styles.name}>{data.email}</Text>
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Phone:</Text>
+                                <Text style={styles.text}>{t('common:phone')}:</Text>
                                 <Text style={styles.name}>{data.phone}</Text>
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Gender:</Text>
+                                <Text style={styles.text}>{t('common:gender')}:</Text>
                                 <Text style={styles.name}>{data.gender}</Text>
                             </View>
                         </View>
@@ -216,7 +217,7 @@ export default function Information({ route }) {
                             />
 
                             <Button
-                                text="Change avatar"
+                                text={t('common:changeAvt')}
                                 customStylesText={styles.text}
                                 customStylesBtn={{ ...styles.change_btn, height: '37%' }}
                                 onPress={takePhotoAndUpload}
@@ -232,7 +233,7 @@ export default function Information({ route }) {
                                 }
                             />
                             <Button
-                                text="Change wallpaper"
+                                text={t('common:changeWallet')}
                                 customStylesText={styles.text}
                                 customStylesBtn={styles.change_btn}
                                 onPress={uploadWallpaper}
@@ -243,7 +244,7 @@ export default function Information({ route }) {
                     <View>
                         <View style={styles.bottom}>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Name:</Text>
+                                <Text style={styles.text}>{t('common:name')}:</Text>
                                 <Input
                                     customStylesContainer={styles.container_input}
                                     holder={state.user.name}
@@ -252,7 +253,7 @@ export default function Information({ route }) {
                                 />
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Email:</Text>
+                                <Text style={styles.text}>{t('common:email')}:</Text>
                                 <Input
                                     customStylesContainer={styles.container_input}
                                     holder={state.user.email}
@@ -261,7 +262,7 @@ export default function Information({ route }) {
                                 />
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Phone:</Text>
+                                <Text style={styles.text}>{t('common:phone')}:</Text>
                                 <Input
                                     customStylesContainer={styles.container_input}
                                     holder={state.user.phone}
@@ -270,7 +271,7 @@ export default function Information({ route }) {
                                 />
                             </View>
                             <View style={styles.bottom_item}>
-                                <Text style={styles.text}>Gender:</Text>
+                                <Text style={styles.text}>{t('common:gender')}:</Text>
                                 <View style={styles.dropdown}>
                                     <SelectDropdown
                                         data={genders}
@@ -294,7 +295,7 @@ export default function Information({ route }) {
                             </View>
                         </View>
                         <View style={styles.btn}>
-                            <Button text="Save" onPress={handlerSend} />
+                            <Button text={t('common:save')} onPress={handlerSend} />
                         </View>
                     </View>
                 </ScrollView>
