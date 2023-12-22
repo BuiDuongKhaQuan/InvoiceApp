@@ -7,55 +7,57 @@ import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { AntDesign, Ionicons, MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useUserContext } from '../UserContext';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function Setting() {
+    const { t } = useTranslation();
     const { dispatch } = useUserContext();
     const navigation = useNavigation();
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
-            title: 'Account',
+            title: t('common:account'),
             data: [
                 {
                     id: '1',
                     icon: <AntDesign name="user" size={24} color="black" />,
-                    title: 'Information and contact',
+                    title: t('common:informationandcontact'),
                     router: 'Information',
                 },
                 {
                     id: '2',
                     icon: <Ionicons name="key-outline" size={24} color="black" />,
-                    title: 'Password',
+                    title: t('common:password'),
                     router: 'ChangePassword',
                 },
             ],
         },
         {
             id: '2',
-            title: 'Application',
+            title: t('common:application'),
             data: [
                 {
                     id: '1',
                     icon: <MaterialIcons name="language" size={24} color="black" />,
-                    title: 'Language',
+                    title: t('common:language'),
                     router: 'Language',
                 },
                 {
                     id: '2',
                     icon: <Ionicons name="notifications-outline" size={24} color="black" />,
-                    title: 'Notification',
+                    title: t('common:notification'),
                     router: 'Notification',
                 },
             ],
         },
         {
             id: '3',
-            title: 'Support',
+            title: t('common:support'),
             data: [
                 {
                     id: '1',
                     icon: <AntDesign name="questioncircleo" size={24} color="black" />,
-                    title: 'Support',
+                    title: t('common:support'),
                     router: 'Support',
                 },
             ],
@@ -65,7 +67,7 @@ export default function Setting() {
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Header title="Settings" />
+                <Header title={t('common:setting')} />
                 <View style={styles.container_center}>
                     <FlatList
                         data={itemSetting}
@@ -88,7 +90,7 @@ export default function Setting() {
                                             });
                                             navigation.navigate('Login');
                                         }}
-                                        text="Logout"
+                                        text={t('common:logout')}
                                     />
                                 </>
                             );

@@ -1,9 +1,9 @@
 import axios from 'axios';
-import mime from 'mime';
 
-const instance = axios.create({
+export const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.1.5:8080/api',
+    // baseURL: 'http://192.168.1.105:8080/api',
+    baseURL: 'http://192.168.1.4:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -46,7 +46,7 @@ export const forgotPassword = async (email) => {
 };
 export const validateReset = async (email, otp) => {
     try {
-        const response = await instance.post('/v1/auth/validateRegister', {
+        const response = await instance.post('/v1/auth/validateReset', {
             email,
             otp,
         });
@@ -81,6 +81,27 @@ export const getUserByCompanyName = async (companyName) => {
         const response = await instance.get(`/v1/auth/users?companyName=${companyName}`);
         return response.data;
     } catch (error) {
+        throw error;
+    }
+};
+export const getUserByEmail = async (email) => {
+    try {
+        const response = await instance.get(`/v1/auth/users/${email}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const updateUser = async (formData) => {
+    try {
+        const response = await axios.patch(`/v1/auth/users`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user:', error);
         throw error;
     }
 };
@@ -215,6 +236,14 @@ export const products = async (name, status, price, listImageFile, companyName, 
 export const getProductById = async (id) => {
     try {
         const response = await instance.get(`/v1/products/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getProductsByCompany = async (companyName) => {
+    try {
+        const response = await instance.get('/v1/products', { params: { companyName } });
         return response.data;
     } catch (error) {
         throw error;

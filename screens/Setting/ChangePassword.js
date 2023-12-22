@@ -7,8 +7,10 @@ import Header from '../../components/SettingItem/header';
 import { fontSizeDefault, fontSizeMenuTitle } from '../../constant/fontSize';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function ChangePassword() {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const [passOld, setPassOld] = useState('');
     const [passNew, setPassNew] = useState('');
@@ -46,19 +48,19 @@ export default function ChangePassword() {
     };
     return (
         <BackgroundImage>
-            <Header title="Password" />
+            <Header title={t('common:password')} />
             <ScrollView style={styles.container}>
                 <View style={styles.content_center}>
-                    <Text style={styles.content_title}>Change password</Text>
+                    <Text style={styles.content_title}>{t('common:changePassword')}</Text>
                     <Input
                         text
                         customStylesInput={styles.input}
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorPassOld}
-                        validateText="Incorrect password"
+                        validateText={t('common:passwordIncorrect')}
                         onChangeText={handleChangePassOld}
-                        holder="Old password"
+                        holder={t('common:oldPass')}
                         value={passOld}
                     />
                     <Input
@@ -67,9 +69,9 @@ export default function ChangePassword() {
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorPassNew}
-                        validateText="Password must be 6 to 8 characters"
+                        validateText={t('common:format')}
                         onChangeText={handleChangePassNew}
-                        holder="New password"
+                        holder={t('common:newPass')}
                         value={passNew}
                     />
 
@@ -79,20 +81,20 @@ export default function ChangePassword() {
                         customStylesContainer={styles.inputContainer}
                         customStylesTextValidate={styles.textValidate}
                         validate={errorConfirmPass}
-                        validateText="Password incorrect"
+                        validateText={t('common:passwordIncorrect')}
                         onChangeText={handleChangeConfirm}
-                        holder="Re new password"
+                        holder={t('common:renewPass')}
                         value={confirmPass}
                     />
 
                     <Button
                         onPress={handlePress}
                         customStylesBtn={{ width: 340, height: 50, marginLeft: 24 }}
-                        text="Confirm"
+                        text={t('common:confirm')}
                     />
 
                     <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                        Forgot password?
+                        {t('common:forgotPass')}
                     </Text>
                 </View>
             </ScrollView>

@@ -2,11 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Header from '../../components/SettingItem/header';
 import { MaterialCommunityIcons, Feather, AntDesign, MaterialIcons, Entypo } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function EditBill() {
+    const { t } = useTranslation();
+
     return (
         <View style={styles.container}>
-            <Header title={'Chỉnh sửa'} />
+            <Header title={t('common:edit')} />
             <View style={styles.container_1}>
                 <Entypo name="check" size={26} color="black" />
             </View>

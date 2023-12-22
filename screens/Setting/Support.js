@@ -5,6 +5,7 @@ import Header from '../../components/SettingItem/header';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import Input from '../../components/Input';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { useTranslation } from 'react-i18next';
 
 export default function Support() {
     const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ export default function Support() {
     const [errorTitle, setErrorTitle] = useState(false);
     const [errorName, setErrorName] = useState(false);
     const [errorContent, setErrorContent] = useState(false);
+    const { t } = useTranslation();
 
     const checkError = () =>
         title.length > 0 &&
@@ -44,17 +46,17 @@ export default function Support() {
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Header title="Support" />
+                <Header title={t('common:support')} />
                 <View style={styles.content_center}>
-                    <Text style={styles.content_title}>Support center</Text>
+                    <Text style={styles.content_title}>{t('common:supportCenter')} </Text>
                     <Input
                         customStylesInput={styles.input}
                         customStylesContainer={styles.input_container}
                         customStylesTextValidate={styles.validate}
                         onChangeText={handleChangeTitle}
-                        validateText="Please do not leave it blank"
+                        validateText={t('common:errSup')}
                         validate={errorTitle}
-                        holder="Topic"
+                        holder={t('common:topic')}
                         value={title}
                         text
                     />
@@ -63,9 +65,9 @@ export default function Support() {
                         customStylesContainer={styles.input_container}
                         customStylesTextValidate={styles.validate}
                         onChangeText={handleChangeName}
-                        validateText="Please do not leave it blank"
+                        validateText={t('common:errSup')}
                         validate={errorName}
-                        holder="Sender's name"
+                        holder={t('common:userSend')}
                         value={name}
                         text
                     />
@@ -74,19 +76,19 @@ export default function Support() {
                         customStylesTextValidate={styles.validate}
                         customStylesContainer={styles.input_container}
                         underlineColorAndroid="transparent"
-                        validateText="Please do not leave it blank"
+                        validateText={t('common:errSup')}
                         onChangeText={handleChangeContent}
                         validate={errorContent}
                         numberOfLines={15}
                         multiline={true}
-                        holder="Content"
+                        holder={t('common:content')}
                         value={content}
                         text
                     />
                     {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
                 </View>
                 <View style={styles.content_botom}>
-                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text="Send" />
+                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text={t('common:send')} />
                 </View>
             </BackgroundImage>
         </View>

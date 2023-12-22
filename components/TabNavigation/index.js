@@ -12,6 +12,7 @@ import Button from '../Button';
 import Profile from '../../screens/Profile';
 import { useUserContext } from '../../screens/UserContext';
 import ProfileCompany from '../../screens/Company/ProfileCompany';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,7 @@ const TabNavigator = () => {
         setPopupVisible(!isPopupVisible);
     };
     const Plus = () => <View></View>;
+    const { t } = useTranslation();
 
     return (
         <>
@@ -41,7 +43,7 @@ const TabNavigator = () => {
                 }}
             >
                 <Tab.Screen
-                    name="Home"
+                    name={t('common:home')}
                     component={Home}
                     options={{
                         headerShown: false,
@@ -49,7 +51,7 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Search"
+                    name={t('common:search')}
                     component={Search}
                     options={{
                         headerShown: false,
@@ -59,7 +61,7 @@ const TabNavigator = () => {
                 />
 
                 <Tab.Screen
-                    name="Plus"
+                    name={t('common:plus')}
                     component={Plus}
                     options={{
                         headerShown: false,
@@ -79,7 +81,7 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Chat"
+                    name={t('common:chat')}
                     component={Chat}
                     options={{
                         headerShown: false,
@@ -88,7 +90,7 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={user_role == 'ROLE_USER' ? 'Profile' : 'Company'}
+                    name={user_role == 'ROLE_USER' ? t('common:profile') : t('common:company')}
                     component={user_role == 'ROLE_USER' ? Profile : ProfileCompany}
                     options={{
                         headerShown: false,

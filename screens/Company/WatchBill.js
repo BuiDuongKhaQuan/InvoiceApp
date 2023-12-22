@@ -2,11 +2,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Header from '../../components/SettingItem/header';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function WatchBill() {
+    const { t } = useTranslation();
     return (
         <View style={styles.container}>
-            <Header title={'Hóa đơn'} />
+            <Header title={t('common:bill')} />
             <View style={styles.container_1}>
                 <AntDesign name="delete" size={26} color="black" style={{ marginHorizontal: 10 }} />
                 <MaterialIcons name="edit" size={26} color="black" />

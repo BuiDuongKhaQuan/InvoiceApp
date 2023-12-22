@@ -2,8 +2,10 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Button from '../components/Button';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
+import { useTranslation } from 'react-i18next';
 
 export default function Welcome({ navigation }) {
+    const { t } = useTranslation();
     return (
         <View style={styles.container}>
             <BackgroundImage>
@@ -11,7 +13,7 @@ export default function Welcome({ navigation }) {
                     <Image style={styles.welcome} source={require('../assets/images/welcome.png')} />
                     <Text style={styles.title}>Invoice C</Text>
                     <Button
-                        text="Login"
+                        text={t('common:login')}
                         customStylesBtn={{ width: 200 }}
                         onPress={() => navigation.navigate('Login')}
                     />

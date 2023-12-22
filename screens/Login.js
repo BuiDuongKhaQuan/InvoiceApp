@@ -9,8 +9,9 @@ import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { getCompaniesById, login } from '../Service/api';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 import Loading from '../components/Loading';
-
+import { useTranslation } from 'react-i18next';
 export default function Login({ navigation }) {
+    const { t } = useTranslation();
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -54,11 +55,11 @@ export default function Login({ navigation }) {
             navigation.navigate('TabNavigator');
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Login error!', error.response.data.message);
+                Alert.alert(t('common:error'), error.response.data.message);
             } else if (error.response && error.response.status === 404) {
-                Alert.alert('Login error!', error.response.data.message);
+                Alert.alert(t('common:error'), error.response.data.message);
             } else {
-                console.log('Login error', error);
+                console.log(t('common:error'), error);
             }
         } finally {
             setLoading(false);
@@ -88,7 +89,7 @@ export default function Login({ navigation }) {
                         onChangeText={handleChangeEmail}
                         value={email}
                         validate={errorEmail}
-                        validateText="Vui lòng nhập đúng định dạng email"
+                        validateText={t('common:formatEmail')}
                         holder="example@example.com"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                     />
@@ -96,19 +97,19 @@ export default function Login({ navigation }) {
                         onChangeText={handleChangePass}
                         value={pass}
                         validate={errorPass}
-                        validateText="Mật khẩu phải đủ 6 đến 8 ký tự"
+                        validateText={t('common:format')}
                         pass
-                        holder="Password"
+                        holder={t('common:password')}
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                     />
 
                     {keyboardIsShow || (
                         <>
-                            <Button onPress={handlePress} text="Login" />
+                            <Button onPress={handlePress} text={t('common:login')} />
                             <View style={styles.register}>
-                                <Text style={styles.register_text}>Do not have an account? </Text>
+                                <Text style={styles.register_text}>{t('common:noAccount')} </Text>
                                 <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
-                                    Signup
+                                    {t('common:signup')}
                                 </Text>
                             </View>
                         </>
@@ -117,7 +118,7 @@ export default function Login({ navigation }) {
                 {keyboardIsShow || (
                     <View style={styles.container_botom}>
                         <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                            Forgot Password?
+                            {t('common:forgotPass')}?
                         </Text>
                     </View>
                 )}

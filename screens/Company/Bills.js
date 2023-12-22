@@ -1,43 +1,38 @@
-import { StatusBar, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import InvoiceList from '../../components/InvoiceList';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
 import { getInvoiceByCompany, getInvoiceByKey } from '../../Service/api';
 import { useUserContext } from '../UserContext';
-import Invoice from '../../layouts/Invoice/Invoice0123';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import Invoice2 from '../../layouts/Invoice/Invoice2';
-import Invoice10 from '../../layouts/Invoice/Invoice10';
+import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
-export default function Bills({ navigation }) {
+export default function Bills() {
+    const { t } = useTranslation();
     const { state } = useUserContext();
     const [invoices, setIncoices] = useState([]);
     const [invoiceKey, setInvoiceKey] = useState();
     const [error, setError] = useState(null);
-
+    const navigation = useNavigation();
+    const getLayout = (key) => key.match(/^(\d+)-/)[1];
     useEffect(() => {
-        const getInvoi = async () => {
+        const getInvoice = async () => {
             try {
                 const response = await getInvoiceByCompany(state.company.name);
-                // console.log(state.company.name);
                 setIncoices(response);
                 const response1 = await getInvoiceByKey(key);
                 setInvoiceKey(response1);
-
-                // console.log(response);
             } catch (error) {
                 setError(error);
             }
         };
-
-        getInvoi();
-        // getInvoiceByKey();
+        getInvoice();
     });
 
     return (
         <View style={styles.container}>
-            <Header title={'Hóa đơn'} />
+            <Header title={t('common:bill')} />
             <View style={{ flexDirection: 'row' }}>
                 <Input
                     customStylesContainer={styles.input}
@@ -50,18 +45,16 @@ export default function Bills({ navigation }) {
             <View style={styles.list}>
                 <View style={styles.table}>
                     <View style={styles.table_colum}>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>STT</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>ID</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>KH</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>T.T</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
                     </View>
                     {invoices.map((invoice, index) => (
                         <TouchableOpacity
                             style={styles.table_colum}
                             key={invoice.id}
-                            onPress={() =>
-                                navigation.navigate(`Invoice${invoice.key}`, { invoice: invoice }, { data: state.user })
-                            }
+                            onPress={() => navigation.navigate(`Invoice${getLayout(invoice.key)}`, { data: invoice })}
                         >
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.id}</Text>

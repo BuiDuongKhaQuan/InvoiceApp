@@ -2,7 +2,7 @@ import { TextInput, View, StyleSheet, Image, Text, TouchableOpacity } from 'reac
 import React from 'react';
 import { styles } from './styles';
 import Button from '../Button';
-
+import { useTranslation } from 'react-i18next';
 export default function Input({
     iconLeft,
     iconRight,
@@ -29,7 +29,7 @@ export default function Input({
     const combinedSltyesInput = StyleSheet.flatten([styles.input_text, customStylesInput]);
 
     const combinedSltyesTextValidate = StyleSheet.flatten([styles.text_validate, customStylesTextValidate]);
-
+    const { t } = useTranslation();
     return (
         <View style={combinedSltyesContainer}>
             <View style={btnSend ? { ...styles.container } : { ...styles.container, justifyContent: 'center' }}>
@@ -43,7 +43,7 @@ export default function Input({
                 />
                 {btnSend && (
                     <Button
-                        text="Gửi"
+                        text={t('common:send')}
                         onPress={onPressSend}
                         customStylesText={{ fontSize: 20 }}
                         customStylesBtn={{
