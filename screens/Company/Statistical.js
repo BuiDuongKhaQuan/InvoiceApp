@@ -2,30 +2,32 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import Header from '../../components/SettingItem/header';
 import { MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function Statistical() {
+    const { t } = useTranslation();
     const [item, setItem] = useState([
         {
             id: 1,
-            title: 'Nhân viên',
+            title: t('common:employee'),
             numberStatistic: 50,
             icon: <MaterialCommunityIcons name="account-group" size={24} color="black" />,
         },
         {
             id: 2,
-            title: 'Hóa đơn',
+            title: t('common:bill'),
             numberStatistic: 50,
             icon: <FontAwesome5 name="file-invoice" size={24} color="black" />,
         },
         {
             id: 3,
-            title: 'Hóa đơn tuần',
+            title: t('common:billWeek'),
             numberStatistic: 50,
             icon: <MaterialCommunityIcons name="calendar-month" size={24} color="black" />,
         },
         {
             id: 4,
-            title: 'Hóa đơn tháng',
+            title: t('common:billMonth'),
             numberStatistic: 50,
             icon: <MaterialCommunityIcons name="calendar-month" size={24} color="black" />,
         },

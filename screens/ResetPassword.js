@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { resetPassword } from '../Service/api';
 import { useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -16,7 +17,7 @@ export default function Login() {
     const [errorRepass, setErrorRepass] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const route = useRoute();
-
+    const { t } = useTranslation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardIsShow(true);
@@ -46,9 +47,9 @@ export default function Login() {
             await resetPassword(route.params?.data, pass, repass);
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Reset password error', error.response.data.message);
+                Alert.alert(t('common:errResetPassword'), error.response.data.message);
             } else {
-                console.error('Reset password error:', error.response);
+                console.error(t('common:errResetPassword'), error.response);
             }
         }
     };
@@ -75,21 +76,21 @@ export default function Login() {
                         onChangeText={handleChangePass}
                         value={pass}
                         validate={errorPass}
-                        validateText="Mật khẩu phải đủ 6 đến 8 ký tự"
+                        validateText={t('common:format')}
                         pass
-                        holder="New password"
+                        holder={t('common:newPass')}
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                     />
                     <Input
                         onChangeText={handleChangeRepass}
                         value={repass}
                         validate={errorRepass}
-                        validateText="Mật khẩu mới không khớp"
-                        holder="Re password"
+                        validateText={t('common:errRenewPass')}
+                        holder={t('common:newPass')}
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                     />
 
-                    {keyboardIsShow || <Button onPress={handlePress} text="Confirm" />}
+                    {keyboardIsShow || <Button onPress={handlePress} text={t('common:confirm')} />}
                 </View>
             </BackgroundImage>
         </View>

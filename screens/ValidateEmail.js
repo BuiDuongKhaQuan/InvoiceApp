@@ -43,9 +43,9 @@ export default function ForgotPassword() {
             navigation.navigate('Login');
         } catch (error) {
             if (error.response && error.response.status === 400) {
-                Alert.alert('Login error', error.response.data.message);
+                Alert.alert(t('common:loginerror'), error.response.data.message);
             } else {
-                console.error('Login error:', error);
+                console.error(t('common:loginerror'), error);
             }
         }
     };
@@ -67,11 +67,11 @@ export default function ForgotPassword() {
                         onChangeText={handleChangeCode}
                         value={code}
                         validate={errorCode}
-                        validateText="Verification code must be 4 characters long!"
+                        validateText={t('common:charactorOTP')}
                         customStylesInput={{ marginLeft: 10 }}
-                        holder="Enter OTP code"
+                        holder={t('common:otpCode')}
                     />
-                    {keyboardIsShow || <Button onPress={handlePress} text="Confirm" />}
+                    {keyboardIsShow || <Button onPress={handlePress} text={t('common:confirm')} />}
                 </View>
             </BackgroundImage>
         </View>

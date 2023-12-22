@@ -6,8 +6,10 @@ import { getInvoiceByCompany, getInvoiceByKey } from '../../Service/api';
 import { useUserContext } from '../UserContext';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function Bills() {
+    const { t } = useTranslation();
     const { state } = useUserContext();
     const [invoices, setIncoices] = useState([]);
     const [invoiceKey, setInvoiceKey] = useState();
@@ -30,7 +32,7 @@ export default function Bills() {
 
     return (
         <View style={styles.container}>
-            <Header title={'Hóa đơn'} />
+            <Header title={t('common:bill')} />
             <View style={{ flexDirection: 'row' }}>
                 <Input
                     customStylesContainer={styles.input}
@@ -43,10 +45,10 @@ export default function Bills() {
             <View style={styles.list}>
                 <View style={styles.table}>
                     <View style={styles.table_colum}>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>STT</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>ID</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>KH</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>T.T</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
                     </View>
                     {invoices.map((invoice, index) => (
                         <TouchableOpacity

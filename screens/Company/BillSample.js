@@ -79,11 +79,9 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 6,
-        // width: '100%',
         height: 50,
         marginTop: StatusBar.currentHeight || 20,
         borderRadius: 0,
-        // marginHorizontal: 30,\
         marginVertical: 30,
         borderRadius: 50,
         elevation: 0,
@@ -94,6 +92,5 @@ const styles = StyleSheet.create({
     },
     icon1: {
         marginHorizontal: 0,
-        // backgroundColor
     },
 });

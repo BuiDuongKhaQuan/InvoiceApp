@@ -7,35 +7,37 @@ import { AntDesign, MaterialCommunityIcons, Feather, FontAwesome5, FontAwesome }
 import { useNavigation } from '@react-navigation/native';
 import { useUserContext } from '../UserContext';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { useTranslation } from 'react-i18next';
 
 const { width } = Dimensions.get('screen');
 
 export default function ProfileCompany() {
+    const { t } = useTranslation();
     const { state } = useUserContext();
     const { user, company } = state;
     const navigation = useNavigation();
     const [itemSetting, setItemSetting] = useState([
         {
             id: '1',
-            title: 'Staff',
+            title: t('common:staff'),
             icon: <Feather name="users" size={30} color="black" />,
             router: 'Staff',
         },
         {
             id: '2',
-            title: 'Bills',
+            title: t('common:bills'),
             icon: <FontAwesome5 name="file-invoice" size={30} color="black" />,
             router: 'Bills',
         },
         {
             id: '3',
-            title: 'Statistical',
+            title: t('common:statisticals'),
             icon: <FontAwesome name="bar-chart" size={30} color="black" />,
             router: 'Statistical',
         },
         {
             id: '4',
-            title: 'BillSample',
+            title: t('common:billSample'),
             icon: <FontAwesome5 name="invision" size={30} color="black" />,
             router: 'BillSample',
         },
@@ -72,16 +74,22 @@ export default function ProfileCompany() {
                             customStylesText={styles.btn_text}
                             onPress={() => navigation.navigate('Setting')}
                             iconLeft={<AntDesign name="setting" size={24} color="black" />}
-                            text="Settings"
+                            text={t('common:setting')}
                         />
                     </View>
                 </View>
                 <View style={styles.container_center}>
                     <View style={styles.btn}>
                         <View style={styles.text_centent}>
-                            <Text style={styles.text_bold}>Corporation: {company.name}</Text>
-                            <Text style={styles.text_bold}>Address: {company.address}</Text>
-                            <Text style={styles.text_bold}>Phone: {company.phone}</Text>
+                            <Text style={styles.text_bold}>
+                                {t('common:corporation')}: {company.name}
+                            </Text>
+                            <Text style={styles.text_bold}>
+                                {t('common:addressInvoice')}: {company.address}
+                            </Text>
+                            <Text style={styles.text_bold}>
+                                {t('common:phone')}: {company.phone}
+                            </Text>
                             <Text style={styles.text_bold}>Email: {company.email}</Text>
                         </View>
                     </View>
@@ -97,7 +105,7 @@ export default function ProfileCompany() {
                             fontWeight: 'bold',
                             fontSize: fontSizeDefault + 5,
                         }}
-                        text="Manage"
+                        text={t('common:manager')}
                     />
                     <FlatList
                         data={itemSetting}

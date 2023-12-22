@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useTranslation } from 'react-i18next';
 
 export default function Scanner() {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const getBarCodeScannerPermissions = async () => {
@@ -17,15 +19,15 @@ export default function Scanner() {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Mã vạch ${type} và dữ liệu ${data} đã được quét?`);
+        alert(`${t('common:idcode')} ${type} ${t('common:andData')} ${data} ${t('common:beenScanned')}?`);
         console.log(data);
     };
 
     if (hasPermission === null) {
-        return <Text>Yêu cầu truy cập máy ảnh</Text>;
+        return <Text>{t('common:requestCamara')}</Text>;
     }
     if (hasPermission === false) {
-        return <Text>Không cho phép</Text>;
+        return <Text>{t('common:noAccess')}</Text>;
     }
 
     return (
@@ -35,7 +37,7 @@ export default function Scanner() {
                 // style={StyleSheet.absoluteFillObject}
                 style={styles.camera}
             />
-            {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+            {scanned && <Button title={t('common:againScan')} onPress={() => setScanned(false)} />}
         </View>
     );
 }

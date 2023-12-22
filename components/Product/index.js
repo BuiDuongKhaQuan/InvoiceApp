@@ -1,23 +1,25 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 export default function Product({ data, isList, onRemove, onAdd }) {
+    const { t } = useTranslation();
     return (
         <>
             {isList && (
                 <View style={{ ...styles.container, borderBottomWidth: 1 }}>
                     <View style={styles.id}>
-                        <Text>ID</Text>
+                        <Text>{t('common:no')}</Text>
                     </View>
                     <View style={styles.name}>
-                        <Text>Name</Text>
+                        <Text>{t('common:name')}</Text>
                     </View>
                     <View style={styles.quantity}>
-                        <Text>Remaining</Text>
+                        <Text>{t('common:remaining')}</Text>
                     </View>
                     <View style={styles.price}>
-                        <Text>Price</Text>
+                        <Text>{t('common:price')}</Text>
                     </View>
                     <View style={styles.delete}></View>
                 </View>

@@ -8,10 +8,11 @@ import { fontSizeDefault } from '../constant/fontSize';
 import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
-
+import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const { state } = useUserContext();
     const { user, company } = state;
@@ -98,23 +99,25 @@ export default function Profile() {
                             z
                             onPress={() => navigation.navigate('Setting')}
                             iconLeft={<AntDesign name="setting" size={24} color="black" />}
-                            text="Settings"
+                            text={t('common:setting')}
                         />
                     </View>
                 </View>
                 <View style={styles.container_center}>
                     <View style={styles.company}>
-                        <Text style={styles.company_name}> Company: {company.name}</Text>
+                        <Text style={styles.company_name}>
+                            {t('common:company')}: {company.name}
+                        </Text>
                     </View>
                     <View style={styles.center_tab}>
                         <Text onPress={() => setSelectedTab('history')} style={tabActive('history')}>
-                            History
+                            {t('common:history')}
                         </Text>
                         <Text onPress={() => setSelectedTab('contact')} style={tabActive('contact')}>
-                            Contact
+                            {t('common:contact')}
                         </Text>
                         <Text onPress={() => setSelectedTab('like')} style={tabActive('like')}>
-                            Like
+                            {t('common:like')}
                         </Text>
                     </View>
                 </View>
@@ -122,8 +125,8 @@ export default function Profile() {
                     <ScrollView sr style={styles.bottom_content}>
                         {selectedTab === 'history' && (
                             <View style={styles.content}>
-                                <Text style={styles.bottom_text}>23 dec</Text>
-                                <Text style={styles.bottom_text}>Hoàn thành hóa đơn</Text>
+                                <Text style={styles.bottom_text}>11/12/2023</Text>
+                                <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
                                 <Image
                                     style={styles.bottom_image}
                                     source={{
@@ -137,15 +140,15 @@ export default function Profile() {
                                 {contacts.map((item) => (
                                     <View style={styles.contact_content} key={item.id}>
                                         <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>Name:</Text>
+                                            <Text style={styles.text_default}>{t('common:name')}:</Text>
                                             <Text style={styles.text_change}>{item.name}</Text>
                                         </View>
                                         <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>Phone:</Text>
+                                            <Text style={styles.text_default}>{t('common:phone')}:</Text>
                                             <Text style={styles.text_change}>{item.phone}</Text>
                                         </View>
                                         <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>Email:</Text>
+                                            <Text style={styles.text_default}>{t('common:email')}:</Text>
                                             <Text style={styles.text_change}>{item.email}</Text>
                                         </View>
                                     </View>

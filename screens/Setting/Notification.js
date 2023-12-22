@@ -5,15 +5,18 @@ import Header from '../../components/SettingItem/header';
 import { white } from '../../constant/color';
 import { fontSizeMenuTitle } from '../../constant/fontSize';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { useTranslation } from 'react-i18next';
 
 export default function Notification() {
+    const { t } = useTranslation();
+
     return (
         <BackgroundImage>
-            <Header title="Notification" />
+            <Header title={t('common:notification')} />
             <ScrollView style={styles.container}>
                 <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
                     <Text style={{ paddingVertical: 15, paddingLeft: 10, fontSize: fontSizeMenuTitle }}>
-                        Notifications on and off
+                        {t('common:notify')}
                     </Text>
                     <View style={{ paddingVertical: 10, backgroundColor: white, flexDirection: 'column' }}>
                         <View
@@ -23,12 +26,10 @@ export default function Notification() {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Text style={{ fontSize: 20 }}>Notifications</Text>
+                            <Text style={{ fontSize: 20 }}>{t('common:notification')}</Text>
                             <SwitchCustom />
                         </View>
-                        <Text style={{ color: 'gray', paddingHorizontal: 10 }}>
-                            Turn on to get the earliest information!
-                        </Text>
+                        <Text style={{ color: 'gray', paddingHorizontal: 10 }}>{t('common:note')}</Text>
                     </View>
                 </View>
             </ScrollView>
