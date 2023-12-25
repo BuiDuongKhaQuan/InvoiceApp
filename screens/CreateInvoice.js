@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TextInput, Modal } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, Modal, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
@@ -12,6 +12,11 @@ import { subTotal, totalBillPrice } from '../utilies/calculator';
 import { Asset } from 'expo-asset';
 import PrintBtn from '../components/Button/Print';
 import { useTranslation } from 'react-i18next';
+import QRCode from 'react-native-qrcode-svg';
+import ViewShot from 'react-native-view-shot';
+import { white } from '../constant/color';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 export default function CreateInvoice({ route }) {
     const { state } = useUserContext();
@@ -34,6 +39,47 @@ export default function CreateInvoice({ route }) {
     const [products, setProducts] = useState([]);
     const [isProductModalVisible, setProductModalVisible] = useState(false);
     const { t } = useTranslation();
+    const viewShotRef = useRef(null);
+    const [qrImagePath, setQrImagePath] = useState(null);
+
+    const captureAndSaveImage = async () => {
+        try {
+            const uri = await viewShotRef.current.capture();
+            setQrImagePath(uri);
+            console.log(qrImagePath);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const [selectedPrinter, setSelectedPrinter] = useState();
+    const print = async () => {
+        if (html !== null) {
+            captureAndSaveImage();
+            await Print.printAsync({
+                html,
+                printerUrl: selectedPrinter?.url,
+            });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
+    };
+    const printToFile = async () => {
+        if (html !== null) {
+            captureAndSaveImage();
+            const { uri } = await Print.printToFileAsync({ html });
+            console.log('File has been saved to:', uri);
+            await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
+    };
+
+    const selectPrinter = async () => {
+        const printer = await Print.selectPrinterAsync();
+        setSelectedPrinter(printer);
+    };
+
     useEffect(() => {
         let noBill = `${dateNow}${houseNow}-${idTemplate}`;
         setIDBill(noBill.replace(/[\/:]/g, ''));
@@ -1836,7 +1882,8 @@ export default function CreateInvoice({ route }) {
             `;
 
     return (
-        <PrintBtn html={htmlTemplates[idTemplate]}>
+        // <PrintBtn html={htmlTemplates[idTemplate]} onShot={captureAndSaveImage}>
+        <View style={styles.wrapper}>
             <View style={styles.container}>
                 <Header title={t('common:bill')} />
                 <View>
@@ -1953,12 +2000,21 @@ export default function CreateInvoice({ route }) {
                             )}
                         </>
                     )}
+                    <View style={styles.qrcode}>
+                        <ViewShot
+                            style={{ width: 80, height: 80 }}
+                            ref={viewShotRef}
+                            options={{ format: 'jpg', quality: 1 }}
+                        >
+                            {IDBill && <QRCode value={IDBill} size={80} />}
+                        </ViewShot>
+                    </View>
                     {/* <Button
-                    customStylesBtn={styles.btn}
-                    customStylesText={{ ...styles.text, color: 'black' }}
-                    text="Thêm các trường"
-                    iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
-                /> */}
+                        customStylesBtn={styles.btn}
+                        customStylesText={{ ...styles.text, color: 'black' }}
+                        text="Thêm các trường"
+                        iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                    /> */}
                 </View>
 
                 <Modal animationType="slide" transparent={false} visible={isProductModalVisible}>
@@ -1974,13 +2030,21 @@ export default function CreateInvoice({ route }) {
                     </View>
                 </Modal>
             </View>
-        </PrintBtn>
+            <View style={styles.container_bottom}>
+                <Button customStylesBtn={styles.btn1} text={t('common:print')} onPress={print} />
+                <Button customStylesBtn={styles.btn1} text={t('common:pdf')} onPress={printToFile} />
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
+        flexDirection: 'column',
+    },
+    container: {
+        flex: 10,
         backgroundColor: '#f4f4f4',
     },
     headerleft: {},
@@ -2084,5 +2148,26 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: fontSizeDefault,
         marginHorizontal: 10,
+    },
+    qrcode: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 10,
+        backgroundColor: white,
+    },
+    container_bottom: {
+        flex: 1,
+        height: 50,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    btn1: {
+        marginHorizontal: 10,
+        height: '60%',
+        width: '40%',
+        borderRadius: 5,
+        backgroundColor: '#32db64',
     },
 });

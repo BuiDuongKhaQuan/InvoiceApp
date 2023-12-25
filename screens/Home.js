@@ -1,17 +1,14 @@
-import { StyleSheet, View, Dimensions, Image, Text, ScrollView, StatusBar } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Dimensions, Image, ScrollView, StatusBar } from 'react-native';
+import React, { useState } from 'react';
 import InvoiceList from '../components/InvoiceList';
 import Swiper from 'react-native-swiper';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
-import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 import Input from '../components/Input';
 import { Feather, Ionicons } from '@expo/vector-icons';
-import QRCode from 'react-native-qrcode-svg';
-import axios from 'axios';
-import moment from 'moment';
-import { getAllInvoice } from '../Service/api';
-const { width } = Dimensions.get('screen');
 import { useTranslation } from 'react-i18next';
+import { listInvoices } from '../constant/listInvoice';
+
+const { width } = Dimensions.get('screen');
 export default function Home({ navigation }) {
     const { t } = useTranslation();
     const [imageSliders, setImageSliders] = useState([
@@ -23,7 +20,6 @@ export default function Home({ navigation }) {
         require('../assets/images/Slider/6.jpg'),
         require('../assets/images/Slider/7.jpg'),
     ]);
-    const { state, dispatch } = useUserContext();
     const [inputColor, setInputColor] = useState('transparent');
     const handleScroll = (event) => {
         if (event.nativeEvent.contentOffset.y > 0) {
@@ -32,81 +28,35 @@ export default function Home({ navigation }) {
             setInputColor('transparent');
         }
     };
+    const [invoices, setInvoices] = useState(listInvoices);
 
-    const [invoices, setInvoices] = useState([
-        {
-            id: '1',
-            image: require('../assets/images/Invoices/Bill_1.png'),
-        },
-        {
-            id: '2',
-            image: require('../assets/images/Invoices/Bill_2.png'),
-        },
-        {
-            id: '3',
-            image: require('../assets/images/Invoices/Bill_3.png'),
-        },
-        {
-            id: '4',
-            image: require('../assets/images/Invoices/Bill_4.png'),
-        },
-        {
-            id: '5',
-            image: require('../assets/images/Invoices/Bill_5.png'),
-        },
-        {
-            id: '6',
-            image: require('../assets/images/Invoices/Bill_6.png'),
-        },
-        {
-            id: '7',
-            image: require('../assets/images/Invoices/Bill_7.png'),
-        },
-        {
-            id: '8',
-            image: require('../assets/images/Invoices/Bill_8.png'),
-        },
-        {
-            id: '9',
-            image: require('../assets/images/Invoices/Bill_9.png'),
-        },
-        {
-            id: '10',
-            image: require('../assets/images/Invoices/Bill_10.png'),
-        },
-        {
-            id: '11',
-            image: require('../assets/images/Invoices/Bill_11.png'),
-        },
-    ]);
-    const [newIDBill, setNewIDBill] = useState(''); // Sử dụng useState để lưu mã hóa đơn mới
+    // const [newIDBill, setNewIDBill] = useState(''); // Sử dụng useState để lưu mã hóa đơn mới
+    // useEffect(() => {
+    //     const handerId = async () => {
+    //         try {
+    //             const response = await getAllInvoice();
+    //             const currentDate = moment().format('DDMMYYYY');
+    //             let newIDBill;
+    //             if (response.length > 0) {
+    //                 // Tìm mã hóa đơn lớn nhất trong danh sách
+    //                 const maxBill = response[response.length - 1];
+    //                 if (!isNaN(maxBill.maHoaDon)) {
+    //                     // Nếu là số hợp lệ, tạo mã hóa đơn mới bằng cách tăng nó lên 1
+    //                     newIDBill = (parseInt(maxBill.id) + 1).toString();
+    //                 }
+    //                 // Tạo mã hóa đơn mới bằng cách tăng mã hóa đơn lớn nhất thêm 1
+    //                 newIDBill = (parseInt(maxBill.id) + 1).toString();
+    //             }
 
-    useEffect(() => {
-        const handerId = async () => {
-            try {
-                const response = await getAllInvoice();
-                const currentDate = moment().format('DDMMYYYY');
-                let newIDBill;
-                if (response.length > 0) {
-                    // Tìm mã hóa đơn lớn nhất trong danh sách
-                    const maxBill = response[response.length - 1];
-                    if (!isNaN(maxBill.maHoaDon)) {
-                        // Nếu là số hợp lệ, tạo mã hóa đơn mới bằng cách tăng nó lên 1
-                        newIDBill = (parseInt(maxBill.id) + 1).toString();
-                    }
-                    // Tạo mã hóa đơn mới bằng cách tăng mã hóa đơn lớn nhất thêm 1
-                    newIDBill = (parseInt(maxBill.id) + 1).toString();
-                }
+    //             setNewIDBill(`${currentDate}_${newIDBill}`);
+    //         } catch (error) {
+    //             console.error('Lỗi khi lấy danh sách hóa đơn:', error);
+    //         }
+    //     };
 
-                setNewIDBill(`${currentDate}_${newIDBill}`);
-            } catch (error) {
-                console.error('Lỗi khi lấy danh sách hóa đơn:', error);
-            }
-        };
-
-        // Gọi hàm để tính toán và lưu mã hóa đơn mới vào state
-        handerId();
-    }, []);
+    //     // Gọi hàm để tính toán và lưu mã hóa đơn mới vào state
+    //     handerId();
+    // }, []);
 
     return (
         <>
@@ -129,10 +79,10 @@ export default function Home({ navigation }) {
                             ))}
                         </Swiper>
                     </View>
-                    <Text>{newIDBill}</Text>
-                    <View>{newIDBill && <QRCode value={newIDBill} size={200} />}</View>
+                    {/* <Text>{newIDBill}</Text>
+                    <View>{newIDBill && <QRCode value={newIDBill} size={200} />}</View> */}
                     <View style={styles.list}>
-                        <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} />
+                        <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} isOnPress />
                     </View>
                 </BackgroundImage>
             </ScrollView>

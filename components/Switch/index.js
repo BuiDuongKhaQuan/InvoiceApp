@@ -2,12 +2,8 @@ import { StyleSheet, Text, Switch, View } from 'react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function SwitchCustom({ status }) {
-    const [isEnabled, setIsEnabled] = useState(false);
+export default function SwitchCustom({ status, isEnabled, toggleSwitch }) {
     const { t } = useTranslation();
-    const toggleSwitch = () => {
-        setIsEnabled((previousState) => !previousState);
-    };
 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
