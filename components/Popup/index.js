@@ -6,31 +6,13 @@ import { fontSizeMenuTitle } from '../../constant/fontSize';
 import InvoiceList from '../InvoiceList';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import { listInvoices } from '../../constant/listInvoice';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Popup({ visible, onClose, bottom }) {
     const { t } = useTranslation();
-    const [invoices, setInvoices] = useState([
-        {
-            id: '1',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-        },
-        {
-            id: '2',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-        },
-        {
-            id: '3',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-        },
-        {
-            id: '4',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-        },
-        {
-            id: '5',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-        },
-    ]);
+    const [invoices, setInvoices] = useState(listInvoices);
+    const navigation = useNavigation();
 
     return (
         <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
@@ -53,7 +35,7 @@ export default function Popup({ visible, onClose, bottom }) {
                 </View>
                 {bottom && (
                     <View style={styles.bottom}>
-                        <InvoiceList data={invoices} />
+                        <InvoiceList navigation={navigation} data={invoices} isOnPress />
                     </View>
                 )}
             </View>

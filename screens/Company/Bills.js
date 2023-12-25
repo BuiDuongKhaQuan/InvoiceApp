@@ -7,6 +7,7 @@ import { useUserContext } from '../UserContext';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Loading from '../../components/Loading';
 
 export default function Bills() {
     const { t } = useTranslation();
@@ -15,24 +16,29 @@ export default function Bills() {
     const [invoiceKey, setInvoiceKey] = useState();
     const [error, setError] = useState(null);
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
     const getLayout = (key) => key.match(/^(\d+)-/)[1];
     useEffect(() => {
         const getInvoice = async () => {
             try {
+                setLoading(true);
                 const response = await getInvoiceByCompany(state.company.name);
                 setIncoices(response);
                 const response1 = await getInvoiceByKey(key);
                 setInvoiceKey(response1);
             } catch (error) {
                 setError(error);
+            } finally {
+                setLoading(false);
             }
         };
         getInvoice();
-    });
+    }, []);
 
     return (
         <View style={styles.container}>
             <Header title={t('common:bill')} />
+            <Loading loading={loading} />
             <View style={{ flexDirection: 'row' }}>
                 <Input
                     customStylesContainer={styles.input}
