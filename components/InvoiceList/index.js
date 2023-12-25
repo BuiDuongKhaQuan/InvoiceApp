@@ -1,37 +1,40 @@
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, FlatList, View, ScrollView } from 'react-native';
 import InvoiceItem from './InvoiceItem';
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function InvoiceList({ data, isLike, navigation, scrollEnabled, isOnPress }) {
+import { backgroundColor } from '../../constant/color';
+import { useLike } from './LikeContext';
+
+export default function InvoiceList({ data, isLike, navigation, scrollEnabled }) {
     const leftData = data.filter((item) => item.id % 2 !== 0);
     const rightData = data.filter((item) => item.id % 2 === 0);
-
+    const { likeStates, handleLikeToggle } = useLike();
     return (
         <ScrollView scrollEnabled={scrollEnabled} style={styles.container}>
             <View style={styles.list}>
                 <View>
                     {leftData.map((item) => (
                         <InvoiceItem
-                            isLike={isLike}
-                            data={item}
                             key={item.id}
+                            data={item}
+                            isLike={isLike}
                             navigation={navigation}
-                            onPress={() =>
-                                isOnPress ? navigation.navigate('CreateInvoice', { data: item.id }) : () => {}
-                            }
+                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
+                            showLike={likeStates[item.id]}
+                            setShowLike={() => handleLikeToggle(item.id)}
                         />
                     ))}
                 </View>
                 <View>
                     {rightData.map((item) => (
                         <InvoiceItem
-                            navigation={navigation}
-                            isLike={isLike}
-                            data={item}
                             key={item.id}
-                            onPress={() =>
-                                isOnPress ? navigation.navigate('CreateInvoice', { data: item.id }) : () => {}
-                            }
+                            data={item}
+                            isLike={isLike}
+                            navigation={navigation}
+                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
+                            showLike={likeStates[item.id]}
+                            setShowLike={() => handleLikeToggle(item.id)}
                         />
                     ))}
                 </View>

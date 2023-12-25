@@ -16,6 +16,7 @@ export default function Profile() {
     const navigation = useNavigation();
     const { state } = useUserContext();
     const { user, company } = state;
+    const [contact, setContact] = useState();
     const [contacts, setContacts] = useState([
         {
             id: 1,
@@ -45,19 +46,47 @@ export default function Profile() {
     const [invoices, setInvoices] = useState([
         {
             id: '1',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../assets/images/Invoices/Bill_1.png'),
         },
         {
             id: '2',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../assets/images/Invoices/Bill_2.png'),
         },
         {
             id: '3',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../assets/images/Invoices/Bill_3.png'),
         },
         {
             id: '4',
-            image: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
+            image: require('../assets/images/Invoices/Bill_4.png'),
+        },
+        {
+            id: '5',
+            image: require('../assets/images/Invoices/Bill_5.png'),
+        },
+        {
+            id: '6',
+            image: require('../assets/images/Invoices/Bill_6.png'),
+        },
+        {
+            id: '7',
+            image: require('../assets/images/Invoices/Bill_7.png'),
+        },
+        {
+            id: '8',
+            image: require('../assets/images/Invoices/Bill_8.png'),
+        },
+        {
+            id: '9',
+            image: require('../assets/images/Invoices/Bill_9.png'),
+        },
+        {
+            id: '10',
+            image: require('../assets/images/Invoices/Bill_10.png'),
+        },
+        {
+            id: '11',
+            image: require('../assets/images/Invoices/Bill_11.png'),
         },
     ]);
 
@@ -155,7 +184,9 @@ export default function Profile() {
                                 ))}
                             </View>
                         )}
-                        {selectedTab === 'like' && <InvoiceList data={invoices} isLike />}
+                        {selectedTab === 'like' && (
+                            <InvoiceList data={invoices} isLike={true} navigation={navigation} scrollEnabled />
+                        )}
                     </ScrollView>
                 </View>
             </BackgroundImage>
