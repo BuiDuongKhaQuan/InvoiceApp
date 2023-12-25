@@ -5,10 +5,12 @@ import { shareAsync } from 'expo-sharing';
 import { white } from '../../../constant/color';
 import Button from '..';
 import { useTranslation } from 'react-i18next';
-export default function PrintBtn({ children, html }) {
+export default function PrintBtn({ children, html, onShot }) {
     const [selectedPrinter, setSelectedPrinter] = useState();
+    const { t } = useTranslation();
     const print = async () => {
         if (html !== null) {
+            onShot;
             await Print.printAsync({
                 html,
                 printerUrl: selectedPrinter?.url,
@@ -17,7 +19,6 @@ export default function PrintBtn({ children, html }) {
             Alert.alert('Error!!', 'Please provide complete information');
         }
     };
-    const { t } = useTranslation();
     const printToFile = async () => {
         if (html !== null) {
             const { uri } = await Print.printToFileAsync({ html });

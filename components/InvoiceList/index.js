@@ -1,10 +1,8 @@
-import { StyleSheet, FlatList, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import InvoiceItem from './InvoiceItem';
 import React from 'react';
 
-import { backgroundColor } from '../../constant/color';
-
-export default function InvoiceList({ data, isLike, navigation, scrollEnabled }) {
+export default function InvoiceList({ data, isLike, navigation, scrollEnabled, isOnPress }) {
     const leftData = data.filter((item) => item.id % 2 !== 0);
     const rightData = data.filter((item) => item.id % 2 === 0);
 
@@ -18,7 +16,9 @@ export default function InvoiceList({ data, isLike, navigation, scrollEnabled })
                             data={item}
                             key={item.id}
                             navigation={navigation}
-                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
+                            onPress={() =>
+                                isOnPress ? navigation.navigate('CreateInvoice', { data: item.id }) : () => {}
+                            }
                         />
                     ))}
                 </View>
@@ -29,7 +29,9 @@ export default function InvoiceList({ data, isLike, navigation, scrollEnabled })
                             isLike={isLike}
                             data={item}
                             key={item.id}
-                            onPress={() => navigation.navigate('CreateInvoice', { data: item.id })}
+                            onPress={() =>
+                                isOnPress ? navigation.navigate('CreateInvoice', { data: item.id }) : () => {}
+                            }
                         />
                     ))}
                 </View>

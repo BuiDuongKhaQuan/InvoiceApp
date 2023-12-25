@@ -7,7 +7,6 @@ import Button from '../../components/Button';
 import { useUserContext } from '../UserContext';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { getUserByCompanyName, getUserByName, updateStatus } from '../../Service/api';
 import Loading from '../../components/Loading';
@@ -26,15 +25,19 @@ export default function Staff({ navigation }) {
     const [buttonText, setButtonText] = useState('');
     const handleSearch = async () => {
         try {
+            setLoading(true);
             const response = await getUserByName(nameStaff);
             setInfStaff(response);
         } catch (error) {
             setError(t('common:errorStaff'));
             setInfStaff(null);
+        } finally {
+            setLoading(false);
         }
     };
     const getInformationStaff = async () => {
         try {
+            setLoading(true);
             const response = await getUserByCompanyName(state.company.name);
             setStaffs(response);
         } catch (error) {
@@ -42,19 +45,22 @@ export default function Staff({ navigation }) {
             setStaffs(null);
             if (error.response) {
             }
+        } finally {
+            setLoading(false);
         }
     };
 
     const [modalVisible, setModalVisible] = useState(false);
 
     const showModal = (data) => {
-        setDataModel(data);
-        setModalVisible(true);
         if (data.status === 1) {
             setButtonText(t('common:lock'));
-        } else if (data.status === 2) {
+        }
+        if (data.status === 2) {
             setButtonText(t('common:unLock'));
         }
+        setDataModel(data);
+        setModalVisible(true);
     };
 
     const hideModal = () => {
@@ -76,27 +82,18 @@ export default function Staff({ navigation }) {
         setLoading(true);
         try {
             const s = dataModel.status;
-            let updatedStatus;
 
             if (s === 1) {
+                setButtonText(t('common:unLock'));
+                console.log(buttonText);
                 const response = await updateStatus(dataModel.id, 2);
                 setUser(response);
-                updatedStatus = 2;
-                console.log(user);
-            } else if (s === 2) {
+            }
+            if (s === 2) {
+                setButtonText(t('common:lock'));
+                console.log(buttonText);
                 const response = await updateStatus(dataModel.id, 1);
                 setUser(response);
-                updatedStatus = 1;
-                console.log(user);
-            }
-
-            hideModal();
-            setNewStatus(updatedStatus);
-            console.log(user);
-            if (updatedStatus === 1) {
-                setButtonText(t('common:lock'));
-            } else if (updatedStatus === 2) {
-                setButtonText(t('common:unLock'));
             }
             hideModal();
             getInformationStaff();
@@ -125,9 +122,11 @@ export default function Staff({ navigation }) {
                               <View style={styles.icontilte} key={index}>
                                   <Image
                                       style={styles.icon}
-                                      source={{
-                                          uri: staff1.image,
-                                      }}
+                                      source={
+                                          staff1.image == null
+                                              ? require('../../assets/images/default-avatar.png')
+                                              : { uri: staff1.image }
+                                      }
                                   />
                                   <Text style={styles.text}>{staff1.name}</Text>
                                   <SimpleLineIcons
@@ -143,9 +142,11 @@ export default function Staff({ navigation }) {
                               <View style={styles.icontilte} key={index}>
                                   <Image
                                       style={styles.icon}
-                                      source={{
-                                          uri: staff1.image,
-                                      }}
+                                      source={
+                                          staff1.image == null
+                                              ? require('../../assets/images/default-avatar.png')
+                                              : { uri: staff1.image }
+                                      }
                                   />
                                   <Text style={styles.text}>{staff1.name}</Text>
                                   <SimpleLineIcons

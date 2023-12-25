@@ -35,6 +35,7 @@ export default function Statistical() {
 
     return (
         <View style={styles.container}>
+            <Header title={t('common:statisticals')} />
             <View style={styles.container_center}>
                 <FlatList
                     data={item}

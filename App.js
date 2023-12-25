@@ -29,9 +29,22 @@ import ResetPassword from './screens/ResetPassword';
 import Information from './screens/Setting/Information';
 import { UserProvider } from './screens/UserContext';
 import './constant/translations/DCSLocalize';
+import * as Notifications from 'expo-notifications';
+import { useEffect } from 'react';
+import { handleNotification } from './utilies/sendNotification';
+
 export default function App() {
     const Stack = createNativeStackNavigator();
     const headerNone = { headerShown: false };
+    useEffect(() => {
+        // Đăng ký sự kiện để xử lý khi người dùng nhận được thông báo
+        const subscription = Notifications.addNotificationReceivedListener(handleNotification);
+        // Hủy đăng ký sự kiện khi component bị hủy
+        return () => {
+            Notifications.removeNotificationSubscription(subscription);
+        };
+    }, []);
+
     return (
         <UserProvider>
             <NavigationContainer>
@@ -49,7 +62,7 @@ export default function App() {
                     <Stack.Screen name="Chat" component={Chat} />
                     <Stack.Screen name="Profile" component={Profile} />
                     <Stack.Screen name="Bills" component={Bills} options={headerNone} />
-                    <Stack.Screen name="BillSample" component={BillSample} />
+                    <Stack.Screen name="BillSample" component={BillSample} options={headerNone} />
                     <Stack.Screen name="EditBill" component={EditBill} />
                     <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
                     <Stack.Screen name="Staff" component={Staff} options={headerNone} />
