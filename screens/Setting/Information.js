@@ -53,6 +53,11 @@ export default function Information({ route }) {
             name: filename,
             type,
         });
+        console.log({
+            uri: localUri,
+            name: filename,
+            type,
+        });
         setLoading(true);
         try {
             const response = await instance.patch('/v1/auth/users', formData, {

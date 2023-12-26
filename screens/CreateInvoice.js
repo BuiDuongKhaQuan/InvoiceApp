@@ -1,30 +1,36 @@
-import { StyleSheet, Text, View, TextInput, Modal, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, Image, Alert, ScrollView } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
 import { fontSizeDefault } from '../constant/fontSize';
-import { dateNow, houseNow } from '../utilies/date';
 import { useUserContext } from './UserContext';
-import { getProductsByCompany } from '../Service/api';
+import { createInvoice, getCustomerByCompany, getProductsByCompany, instance } from '../Service/api';
 import Product from '../components/Product';
 import { subTotal, totalBillPrice } from '../utilies/calculator';
 import { Asset } from 'expo-asset';
-import PrintBtn from '../components/Button/Print';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-native-qrcode-svg';
-import ViewShot from 'react-native-view-shot';
+import ViewShot, { captureRef } from 'react-native-view-shot';
 import { white } from '../constant/color';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
+import { getDateNow, getHouseNow } from '../utilies/date';
+import * as FileSystem from 'expo-file-system';
+import Customer from '../components/Customer';
+import Loading from '../components/Loading';
 
 export default function CreateInvoice({ route }) {
+    const currentDate = new Date();
+    const dateNow = getDateNow(currentDate);
+    const houseNow = getHouseNow(currentDate);
     const { state } = useUserContext();
     const companyName = state.company.name;
     const companyPhone = state.company.phone;
     const companyAddress = state.company.address;
     const companyEmail = state.company.email;
-    const customer = state.user.name;
+    const staffName = state.user.name;
+    const staffEmail = state.user.email;
     const [contactName, setContactName] = useState('');
     const [contactPhone, setContactPhone] = useState('');
     const [contactEmail, setContactEmail] = useState('');
@@ -32,30 +38,109 @@ export default function CreateInvoice({ route }) {
     const [note, setNote] = useState('');
     const [tax, setTax] = useState('');
     const idTemplate = route.params?.data;
+    const [loading, setLoading] = useState(false);
     const [listProductsSelect, setListProductsSelect] = useState([]);
     const [IDBill, setIDBill] = useState('');
     const [showProductList, setShowProductList] = useState(false);
+    const [showCustomer, setShowCustomer] = useState(false);
     const [showListProductSelected, setShowListProductSelected] = useState(false);
     const [products, setProducts] = useState([]);
+    const [customers, setCustomers] = useState([]);
     const [isProductModalVisible, setProductModalVisible] = useState(false);
+    const [isCustomersModalVisible, setCustomersModalVisible] = useState(false);
     const { t } = useTranslation();
     const viewShotRef = useRef(null);
-    const [qrImagePath, setQrImagePath] = useState(null);
+    const total = subTotal(listProductsSelect);
+    const totalBill = totalBillPrice(tax, total);
+    const qrImageUri = useRef(null);
+    const customer = useRef(null);
 
+    const handleDataChanged = (newData) => {
+        customer.current = newData;
+        setCustomersModalVisible(false);
+    };
     const captureAndSaveImage = async () => {
         try {
-            const uri = await viewShotRef.current.capture();
-            setQrImagePath(uri);
-            console.log(qrImagePath);
+            const uri = await captureRef(viewShotRef, { format: 'jpg', quality: 0.8 });
+
+            // Lưu ảnh vào đường dẫn tạm thời
+            const temporaryFilePath = `${FileSystem.cacheDirectory}temp_qr_image.jpg`;
+            await FileSystem.moveAsync({
+                from: uri,
+                to: temporaryFilePath,
+            });
+            qrImageUri.current = temporaryFilePath;
+            console.log(qrImageUri.current);
         } catch (error) {
             console.error(error);
         }
     };
 
+    useEffect(() => {
+        const getFileQR = async () => {
+            try {
+                await captureAndSaveImage();
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        getFileQR();
+    }, [IDBill]);
+
+    const formattedProducts = listProductsSelect.map((product) => ({
+        productId: product.id,
+        quantity: product.quantity,
+    }));
+
+    const addInvoices = async () => {
+        try {
+            setLoading(true);
+            const response = await createInvoice(
+                staffEmail,
+                customer.current.phone,
+                note,
+                'true',
+                JSON.stringify(formattedProducts),
+                'cash',
+                companyName,
+                IDBill,
+                String(totalBill),
+                tax,
+                contactAddress,
+            );
+            console.log(response.data);
+            return response;
+        } catch (error) {
+            console.log(error.response.data);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const handleSubmit = () => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            'Bạn có chắc chắn muốn tạo hóa đơn?',
+            '',
+            [
+                {
+                    text: 'Không',
+                    cancelable: true,
+                    style: 'cancel',
+                },
+                {
+                    text: 'Đồng ý',
+                    onPress: async () => {
+                        await addInvoices();
+                    },
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
     const [selectedPrinter, setSelectedPrinter] = useState();
-    const print = async () => {
+    const print = async (html) => {
         if (html !== null) {
-            captureAndSaveImage();
             await Print.printAsync({
                 html,
                 printerUrl: selectedPrinter?.url,
@@ -64,7 +149,7 @@ export default function CreateInvoice({ route }) {
             Alert.alert('Error!!', 'Please provide complete information');
         }
     };
-    const printToFile = async () => {
+    const printToFile = async (html) => {
         if (html !== null) {
             captureAndSaveImage();
             const { uri } = await Print.printToFileAsync({ html });
@@ -81,14 +166,8 @@ export default function CreateInvoice({ route }) {
     };
 
     useEffect(() => {
-        let noBill = `${dateNow}${houseNow}-${idTemplate}`;
-        setIDBill(noBill.replace(/[\/:]/g, ''));
-        getProductByCompany();
+        setIDBill(`${dateNow}${houseNow}-${idTemplate}`.replace(/[\/:]/g, ''));
     }, []);
-
-    useEffect(() => {
-        getProductByCompany();
-    }, [IDBill]);
 
     const handleAddProduct = (product) => {
         const existingProductIndex = listProductsSelect.findIndex((item) => item.id === product.id);
@@ -121,28 +200,31 @@ export default function CreateInvoice({ route }) {
         setShowProductList(!showProductList);
         setShowListProductSelected(listProductsSelect.length > 0);
     };
-
-    const getProductByCompany = async () => {
-        try {
-            const response = await getProductsByCompany(companyName);
-            setProducts(response);
-        } catch (error) {
-            console.log(error);
-        }
+    const toggleCustomerList = () => {
+        setShowCustomer(!showCustomer);
     };
+
+    useEffect(() => {
+        const getProductAndCustomerByCompany = async () => {
+            try {
+                const products = await getProductsByCompany(companyName);
+                const customers = await getCustomerByCompany(companyName);
+                setProducts(products);
+                setCustomers(customers);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getProductAndCustomerByCompany();
+    }, [isProductModalVisible, isCustomersModalVisible, IDBill]);
+
     const removeProduct = (key) => {
         listProductsSelect.splice(key, 1);
         setListProductsSelect([...listProductsSelect]);
     };
 
-    const closeProductModal = () => {
-        setProductModalVisible(false);
-    };
-
     // Template invoice format html
     // Using print
-    const total = subTotal(listProductsSelect);
-    const totalBill = totalBillPrice(tax, total);
     const htmlTemplates = {};
     const listProductHtml1 = (data) =>
         data
@@ -447,6 +529,9 @@ export default function CreateInvoice({ route }) {
                     <div style="text-align: end; color: blue">
                         <text><b>${t('common:for')} ${companyName}</b></text>
                     </div>
+                    <div style="text-align: end; color: blue">
+                    <img src="${qrImageUri.current}" width="70%" ; />
+                    </div>
                 </div>
             </body>
         </html>
@@ -531,7 +616,7 @@ export default function CreateInvoice({ route }) {
                 </div>
                 <div class="cashier" style="display: flex; flex-direction: row">
                 <p style="margin-right: 20">${t('common:cashier')}: </p>
-                </p>${customer}<p>
+                </p>${staffName}<p>
                 </div>
                 <div class="customer" style="display: flex; flex-direction: row">
                 <p style="margin-right: 20">${t('common:custommer')}:</p>
@@ -921,7 +1006,7 @@ export default function CreateInvoice({ route }) {
                         </div>
                             <div style="display: flex; flex-direction: row; justify-content: left">
                                 <p style="justify-content: left; font-weight: bold">${t('common:bankName')}:</p>
-                                <p>${customer}</p>
+                                <p>${staffName}</p>
                                 </div>
                             <div style="display: flex; flex-direction: row; justify-content: left">
                                 <p style="justify-content: left; font-weight: bold">${t('common:bankAccount')}:</p>
@@ -1148,6 +1233,7 @@ export default function CreateInvoice({ route }) {
     // Chuyển đổi tài nguyên hình ảnh thành URI
     const uri1 = imageAsset1.localUri || imageAsset1.uri;
     const uri2 = imageAsset2.localUri || imageAsset2.uri;
+
     const listProductHtml7 = (data) =>
         data
             .map(
@@ -1282,7 +1368,7 @@ export default function CreateInvoice({ route }) {
                                     </div>
                                     <div style="display: flex; flex-direction: column; justify-content: left">
                                         <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
-                                        <p>${customer}</p>
+                                        <p>${staffName}</p>
                                     </div>
                                     <div style="display: flex; flex-direction: column; justify-content: left">
                                         <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
@@ -1483,7 +1569,7 @@ export default function CreateInvoice({ route }) {
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: left">
                                     <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
-                                    <p>${customer}</p>
+                                    <p>${staffName}</p>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: left">
                                     <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
@@ -1884,9 +1970,10 @@ export default function CreateInvoice({ route }) {
     return (
         // <PrintBtn html={htmlTemplates[idTemplate]} onShot={captureAndSaveImage}>
         <View style={styles.wrapper}>
+            <Loading loading={loading} />
             <View style={styles.container}>
                 <Header title={t('common:bill')} />
-                <View>
+                <ScrollView>
                     <View style={styles.invoicedate}>
                         <Text style={styles.code}>
                             {t('common:no')}: {IDBill}
@@ -1978,6 +2065,43 @@ export default function CreateInvoice({ route }) {
                             />
                         </>
                     )}
+                    <Button
+                        customStylesBtn={styles.btn}
+                        customStylesText={{ ...styles.text, color: 'black' }}
+                        text={'Khách hàng'}
+                        iconRight={<AntDesign name={showCustomer ? 'up' : 'down'} size={24} color="#32db64" />}
+                        onPress={toggleCustomerList}
+                    />
+                    {showCustomer && (
+                        <>
+                            {customer.current && (
+                                <View style={styles.contact_content}>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                        <Text style={styles.text_change}>{customer.current.name}</Text>
+                                    </View>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                        <Text style={styles.text_change}>{customer.current.email}</Text>
+                                    </View>
+                                    <View style={styles.contact_row}>
+                                        <Text style={styles.text_default}>{t('common:phone')}:</Text>
+                                        <Text style={styles.text_change}>{customer.current.phone}</Text>
+                                    </View>
+                                </View>
+                            )}
+
+                            <Button
+                                customStylesBtn={styles.btn}
+                                customStylesText={{ ...styles.text, color: 'gray' }}
+                                text={customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}
+                                iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                                onPress={() => {
+                                    setCustomersModalVisible(true);
+                                }}
+                            />
+                        </>
+                    )}
                     {idTemplate != 2 && idTemplate != 4 && idTemplate != 5 && idTemplate != 9 && idTemplate != 11 && (
                         <>
                             <View style={styles.center_row1}>
@@ -1985,7 +2109,7 @@ export default function CreateInvoice({ route }) {
                                     style={styles.text_line}
                                     onChangeText={(text) => setTax(text)}
                                     value={tax}
-                                    text={t('common:tax')}
+                                    placeholder={t('common:tax')}
                                 />
                             </View>
                             {idTemplate != 3 && idTemplate != 7 && idTemplate != 8 && idTemplate != 10 && (
@@ -1994,7 +2118,7 @@ export default function CreateInvoice({ route }) {
                                         style={styles.text_line}
                                         onChangeText={(text) => setNote(text)}
                                         value={note}
-                                        text={t('common:inWords')}
+                                        placeholder={t('common:inWords')}
                                     />
                                 </View>
                             )}
@@ -2009,13 +2133,7 @@ export default function CreateInvoice({ route }) {
                             {IDBill && <QRCode value={IDBill} size={80} />}
                         </ViewShot>
                     </View>
-                    {/* <Button
-                        customStylesBtn={styles.btn}
-                        customStylesText={{ ...styles.text, color: 'black' }}
-                        text="Thêm các trường"
-                        iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
-                    /> */}
-                </View>
+                </ScrollView>
 
                 <Modal animationType="slide" transparent={false} visible={isProductModalVisible}>
                     <View style={styles.container}>
@@ -2025,14 +2143,35 @@ export default function CreateInvoice({ route }) {
                             customStylesBtn={styles.btn}
                             customStylesText={{ ...styles.text, ...styles.textBtnClose }}
                             text={t('common:close')}
-                            onPress={closeProductModal}
+                            onPress={() => setProductModalVisible(false)}
+                        />
+                    </View>
+                </Modal>
+                <Modal animationType="slide" transparent={false} visible={isCustomersModalVisible}>
+                    <View style={styles.container}>
+                        <Text style={styles.titleTable}>{customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}</Text>
+                        <Customer dataList={customers} onDataChanged={handleDataChanged} />
+                        <Button
+                            customStylesBtn={styles.btn}
+                            customStylesText={{ ...styles.text, ...styles.textBtnClose }}
+                            text={t('common:close')}
+                            onPress={() => setCustomersModalVisible(false)}
                         />
                     </View>
                 </Modal>
             </View>
             <View style={styles.container_bottom}>
-                <Button customStylesBtn={styles.btn1} text={t('common:print')} onPress={print} />
-                <Button customStylesBtn={styles.btn1} text={t('common:pdf')} onPress={printToFile} />
+                <Button
+                    customStylesBtn={styles.btn1}
+                    text={t('common:print')}
+                    onPress={() => print(htmlTemplates[idTemplate])}
+                />
+                <Button
+                    customStylesBtn={styles.btn1}
+                    text={t('common:pdf')}
+                    onPress={() => printToFile(htmlTemplates[idTemplate])}
+                />
+                <Button customStylesBtn={styles.btn1} text={'Test'} onPress={() => handleSubmit()} />
             </View>
         </View>
     );
@@ -2137,10 +2276,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     titleTable: {
-        fontSize: 28,
-        alignItems: 'center',
+        fontSize: fontSizeDefault + 10,
         textAlign: 'center',
         padding: 10,
+        backgroundColor: white,
     },
     textBtnClose: {
         color: 'gray',
@@ -2169,5 +2308,33 @@ const styles = StyleSheet.create({
         width: '40%',
         borderRadius: 5,
         backgroundColor: '#32db64',
+    },
+    contact_content: {
+        flex: 1,
+        width: '100%',
+        padding: 5,
+        borderRadius: 10,
+        backgroundColor: '#f4f4f4',
+        flexDirection: 'column',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+    },
+    contact_row: {
+        flex: 1,
+        padding: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    text_default: {
+        fontSize: fontSizeDefault - 3,
+        fontWeight: '700',
+        marginRight: 10,
+    },
+    text_change: {
+        flex: 10,
+        fontSize: fontSizeDefault - 3,
+        marginHorizontal: 10,
     },
 });

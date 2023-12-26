@@ -6,8 +6,8 @@ import { white } from '../../../constant/color';
 import Button from '..';
 import { useTranslation } from 'react-i18next';
 export default function PrintBtn({ children, html, onShot }) {
-    const [selectedPrinter, setSelectedPrinter] = useState();
     const { t } = useTranslation();
+    const [selectedPrinter, setSelectedPrinter] = useState();
     const print = async () => {
         if (html !== null) {
             onShot;
@@ -33,6 +33,7 @@ export default function PrintBtn({ children, html, onShot }) {
         const printer = await Print.selectPrinterAsync();
         setSelectedPrinter(printer);
     };
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.invoice}>
