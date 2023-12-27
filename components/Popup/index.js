@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableWithoutFeedback, PanResponder, Animated } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../Button';
 import { backgroundColor, white } from '../../constant/color';
@@ -13,10 +13,38 @@ export default function Popup({ visible, onClose, bottom }) {
     const { t } = useTranslation();
     const [invoices, setInvoices] = useState(listInvoices);
     const navigation = useNavigation();
+    const pan = new Animated.ValueXY();
+
+    const panResponder = PanResponder.create({
+        onMoveShouldSetPanResponder: (evt, gestureState) => {
+            const sensitivityThreshold = 0; // Điều chỉnh ngưỡng nhạy cảm tại đây
+            return Math.abs(gestureState.dy) > sensitivityThreshold;
+        },
+        onPanResponderMove: Animated.event([null, { dy: pan.y }], { useNativeDriver: false }),
+        onPanResponderRelease: (evt, gestureState) => {
+            if (gestureState.dy > 50) {
+                // Close the popup if the user swipes down by more than 50 pixels
+                onClose();
+            } else {
+                // Animate the popup back to its original position
+                Animated.spring(pan, { toValue: { x: 0, y: 0 }, useNativeDriver: false }).start();
+            }
+        },
+    });
+
+    const animatedStyle = {
+        transform: [{ translateY: pan.y }],
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
-            <View style={bottom ? styles.container : styles.center}>
+            <Animated.View
+                {...(bottom ? panResponder.panHandlers : {})}
+                style={[bottom ? styles.container : styles.center, animatedStyle]}
+            >
+                <TouchableWithoutFeedback onPress={onClose}>
+                    <View style={styles.overlay} />
+                </TouchableWithoutFeedback>
                 <View style={styles.top}>
                     <View style={styles.top_between}>
                         <Button
@@ -38,7 +66,7 @@ export default function Popup({ visible, onClose, bottom }) {
                         <InvoiceList navigation={navigation} data={invoices} isOnPress />
                     </View>
                 )}
-            </View>
+            </Animated.View>
         </Modal>
     );
 }

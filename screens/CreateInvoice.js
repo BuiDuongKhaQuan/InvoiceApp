@@ -57,6 +57,10 @@ export default function CreateInvoice({ route }) {
 
     const handleDataChanged = (newData) => {
         customer.current = newData;
+        setContactName(customer.current.name);
+        setContactPhone(customer.current.phone);
+        setContactEmail(customer.current.email);
+        setContactAddress(customer.current.address);
         setCustomersModalVisible(false);
     };
     const captureAndSaveImage = async () => {
@@ -108,8 +112,11 @@ export default function CreateInvoice({ route }) {
                 tax,
                 contactAddress,
             );
-            console.log(response.data);
-            return response;
+            customer.current = null;
+            setListProductsSelect([]);
+            setTax('');
+            setNote('');
+            Alert.alert('Success!', 'Đã lưu vào dữ liệu của công ty!');
         } catch (error) {
             console.log(error.response.data);
         } finally {
@@ -119,8 +126,8 @@ export default function CreateInvoice({ route }) {
     const handleSubmit = () => {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn tạo hóa đơn?',
-            '',
+            'Bạn có chắc chắn muốn in hóa đơn?',
+            'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
             [
                 {
                     text: 'Không',
@@ -131,6 +138,30 @@ export default function CreateInvoice({ route }) {
                     text: 'Đồng ý',
                     onPress: async () => {
                         await addInvoices();
+                        await print(htmlTemplates[idTemplate]);
+                    },
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+    const handleSubmitFile = () => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            'Bạn có chắc chắn muốn suất flie PDF?',
+            'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
+            [
+                {
+                    text: 'Không',
+                    cancelable: true,
+                    style: 'cancel',
+                },
+                {
+                    text: 'Đồng ý',
+                    onPress: async () => {
+                        await addInvoices();
+                        await printToFile(htmlTemplates[idTemplate]);
                     },
                     cancelable: true,
                 },
@@ -151,7 +182,6 @@ export default function CreateInvoice({ route }) {
     };
     const printToFile = async (html) => {
         if (html !== null) {
-            captureAndSaveImage();
             const { uri } = await Print.printToFileAsync({ html });
             console.log('File has been saved to:', uri);
             await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
@@ -1968,7 +1998,6 @@ export default function CreateInvoice({ route }) {
             `;
 
     return (
-        // <PrintBtn html={htmlTemplates[idTemplate]} onShot={captureAndSaveImage}>
         <View style={styles.wrapper}>
             <Loading loading={loading} />
             <View style={styles.container}>
@@ -1982,89 +2011,6 @@ export default function CreateInvoice({ route }) {
                             {t('common:date')}: {dateNow}
                         </Text>
                     </View>
-                    {idTemplate != 11 && (
-                        <>
-                            <View style={styles.center_row1}>
-                                <TextInput
-                                    style={styles.text_line}
-                                    onChangeText={(text) => setContactName(text)}
-                                    value={contactName}
-                                    placeholder={t('common:name')}
-                                />
-                            </View>
-                            {idTemplate != 2 && idTemplate != 10 && (
-                                <>
-                                    {idTemplate != 9 && (
-                                        <View style={styles.center_row1}>
-                                            <TextInput
-                                                style={styles.text_line}
-                                                onChangeText={(text) => setContactPhone(text)}
-                                                value={contactPhone}
-                                                placeholder={t('common:phone')}
-                                            />
-                                        </View>
-                                    )}
-                                    {idTemplate != 3 && (
-                                        <>
-                                            <View style={styles.center_row1}>
-                                                <TextInput
-                                                    style={styles.text_line}
-                                                    onChangeText={(text) => setContactAddress(text)}
-                                                    value={contactAddress}
-                                                    placeholder={t('common:addressInvoice')}
-                                                />
-                                            </View>
-                                            {idTemplate != 5 &&
-                                                idTemplate != 7 &&
-                                                idTemplate != 8 &&
-                                                idTemplate != 9 && (
-                                                    <View style={styles.center_row1}>
-                                                        <TextInput
-                                                            style={styles.text_line}
-                                                            onChangeText={(text) => setContactEmail(text)}
-                                                            value={contactEmail}
-                                                            placeholder="Email"
-                                                        />
-                                                    </View>
-                                                )}
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </>
-                    )}
-
-                    <Button
-                        customStylesBtn={styles.btn}
-                        customStylesText={{ ...styles.text, color: 'black' }}
-                        text={t('common:productServie')}
-                        iconRight={<AntDesign name={showProductList ? 'up' : 'down'} size={24} color="#32db64" />}
-                        onPress={toggleProductList}
-                    />
-                    {showProductList && (
-                        <>
-                            {showListProductSelected && (
-                                <>
-                                    {listProductsSelect.map((product, index) => (
-                                        <Product
-                                            data={product}
-                                            key={product.stt}
-                                            onRemove={() => removeProduct(index)}
-                                        />
-                                    ))}
-                                </>
-                            )}
-                            <Button
-                                customStylesBtn={styles.btn}
-                                customStylesText={{ ...styles.text, color: 'gray' }}
-                                text={t('common:addProduct')}
-                                iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
-                                onPress={() => {
-                                    setProductModalVisible(true);
-                                }}
-                            />
-                        </>
-                    )}
                     <Button
                         customStylesBtn={styles.btn}
                         customStylesText={{ ...styles.text, color: 'black' }}
@@ -2102,6 +2048,38 @@ export default function CreateInvoice({ route }) {
                             />
                         </>
                     )}
+                    <Button
+                        customStylesBtn={styles.btn}
+                        customStylesText={{ ...styles.text, color: 'black' }}
+                        text={t('common:productServie')}
+                        iconRight={<AntDesign name={showProductList ? 'up' : 'down'} size={24} color="#32db64" />}
+                        onPress={toggleProductList}
+                    />
+                    {showProductList && (
+                        <>
+                            {showListProductSelected && (
+                                <>
+                                    {listProductsSelect.map((product, index) => (
+                                        <Product
+                                            data={product}
+                                            key={product.stt}
+                                            onRemove={() => removeProduct(index)}
+                                        />
+                                    ))}
+                                </>
+                            )}
+                            <Button
+                                customStylesBtn={styles.btn}
+                                customStylesText={{ ...styles.text, color: 'gray' }}
+                                text={t('common:addProduct')}
+                                iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                                onPress={() => {
+                                    setProductModalVisible(true);
+                                }}
+                            />
+                        </>
+                    )}
+
                     {idTemplate != 2 && idTemplate != 4 && idTemplate != 5 && idTemplate != 9 && idTemplate != 11 && (
                         <>
                             <View style={styles.center_row1}>
@@ -2161,17 +2139,8 @@ export default function CreateInvoice({ route }) {
                 </Modal>
             </View>
             <View style={styles.container_bottom}>
-                <Button
-                    customStylesBtn={styles.btn1}
-                    text={t('common:print')}
-                    onPress={() => print(htmlTemplates[idTemplate])}
-                />
-                <Button
-                    customStylesBtn={styles.btn1}
-                    text={t('common:pdf')}
-                    onPress={() => printToFile(htmlTemplates[idTemplate])}
-                />
-                <Button customStylesBtn={styles.btn1} text={'Test'} onPress={() => handleSubmit()} />
+                <Button customStylesBtn={styles.btn1} text={t('common:print')} onPress={() => handleSubmit()} />
+                <Button customStylesBtn={styles.btn1} text={t('common:pdf')} onPress={() => handleSubmitFile()} />
             </View>
         </View>
     );

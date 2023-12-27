@@ -1,10 +1,10 @@
 // TabNavigator.js
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather, AntDesign, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import Home from '../../screens/Home';
-import Search from '../../screens/Search';
+import Blog from '../../screens/Blog';
 import Chat from '../../screens/Chat';
 import { buttonColor, white } from '../../constant/color';
 import Popup from '../Popup';
@@ -51,12 +51,12 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={t('common:search')}
-                    component={Search}
+                    name={t('common:Blog')}
+                    component={Blog}
                     options={{
                         headerShown: false,
                         tabBarHideOnKeyboard: true,
-                        tabBarIcon: ({ color, size }) => <Feather name="search" color={color} size={size} />,
+                        tabBarIcon: ({ color, size }) => <FontAwesome name="newspaper-o" size={24} color={color} />,
                     }}
                 />
 
