@@ -1,5 +1,5 @@
 export const isValidateEmail = (email) => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+\s*$/.test(email) && email.lastIndexOf('.') !== email.length - 1;
 };
 export const isValidatePass = (pass) => pass.length >= 6 && pass.length <= 8;
 export const isValidateRePass = (pass, repass) => pass === repass;

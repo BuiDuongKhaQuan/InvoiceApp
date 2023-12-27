@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import React from 'react';
 import Button from '../Button';
-import { white } from '../../constant/color';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -28,12 +27,12 @@ export default function Header({
 const styles = StyleSheet.create({
     container: {
         marginTop: StatusBar.currentHeight || 0,
-        height: 55,
-        width: '100%',
-        backgroundColor: white,
-        justifyContent: 'space-between',
-        alignItems: 'center',
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        backgroundColor: 'white',
+        elevation: 5,
     },
     title: {
         flex: 5,
