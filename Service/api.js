@@ -303,3 +303,11 @@ export const createCustomerByCompany = async (name, email, phone, companyName, s
         throw error;
     }
 };
+export const getNameCustomerByEmail = async (email) => {
+    try {
+        const response = await instance.get('/v1/customers', { params: { email } });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

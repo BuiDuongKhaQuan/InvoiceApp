@@ -22,7 +22,7 @@ export default function Popup({ visible, onClose, bottom }) {
         },
         onPanResponderMove: Animated.event([null, { dy: pan.y }], { useNativeDriver: false }),
         onPanResponderRelease: (evt, gestureState) => {
-            if (gestureState.dy > 50) {
+            if (gestureState.dy > 0) {
                 // Close the popup if the user swipes down by more than 50 pixels
                 onClose();
             } else {
@@ -38,13 +38,13 @@ export default function Popup({ visible, onClose, bottom }) {
 
     return (
         <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
+            <TouchableWithoutFeedback onPress={onClose}>
+                <View style={styles.overlay} />
+            </TouchableWithoutFeedback>
             <Animated.View
                 {...(bottom ? panResponder.panHandlers : {})}
                 style={[bottom ? styles.container : styles.center, animatedStyle]}
             >
-                <TouchableWithoutFeedback onPress={onClose}>
-                    <View style={styles.overlay} />
-                </TouchableWithoutFeedback>
                 <View style={styles.top}>
                     <View style={styles.top_between}>
                         <Button
