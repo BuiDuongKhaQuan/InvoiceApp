@@ -1,21 +1,12 @@
-import { Image, StatusBar, StyleSheet, Text, View, ScrollView, Alert } from 'react-native';
+import { Image, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { white } from '../constant/color';
 import React, { useState } from 'react';
 import Header from '../components/Header';
-import { fontSizeDefault } from '../constant/fontSize';
 import { useTranslation } from 'react-i18next';
 
-export default function Search({ navigation }) {
+export default function Blog({ navigation }) {
     const { t } = useTranslation();
-    const [id] = useState('');
-    const [inputColor, setInputColor] = useState('transparent');
-    const handleScroll = (event) => {
-        if (event.nativeEvent.contentOffset.y > 0) {
-            setInputColor('white');
-        } else {
-            setInputColor('transparent');
-        }
-    };
+
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -37,17 +28,12 @@ export default function Search({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ ...styles.input, backgroundColor: inputColor }}></View>
             <Header navigation={navigation} />
             <View style={styles.container_center}>
-                <ScrollView
-                    contentContainerStyle={styles.scrollViewContent}
-                    style={styles.bottom_content}
-                    onScroll={handleScroll}
-                >
+                <ScrollView>
                     <View style={styles.contents}>
                         {invoices.map((item) => (
-                            <View style={styles.content}>
+                            <View style={styles.content} key={item.id}>
                                 <Text style={[styles.bottom_text, styles.boldText]}>11/12/2023</Text>
                                 <Image
                                     style={styles.bottom_image}
@@ -72,26 +58,17 @@ export default function Search({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: white,
         flexDirection: 'column',
     },
     container_center: {
-        flex: 2,
-        backgroundColor: white,
-        // flexDirection: 'column',
-    },
-    bottom_content: {
-        paddingTop: 100,
-        flex: 1,
-    },
-    scrollViewContent: {
-        flexGrow: 1,
+        marginTop: 100,
     },
     contents: {
         marginHorizontal: 20,
     },
     content: {
         marginVertical: 20,
+        backgroundColor: white,
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 10,

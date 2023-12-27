@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Profile from './screens/Profile';
 import Bills from './screens/Company/Bills';
-import Search from './screens/Search';
+import Blog from './screens/Blog';
 import Scanner from './screens/Scanner';
 import WatchBill from './screens/Company/WatchBill';
 import BillSample from './screens/Company/BillSample';
@@ -58,7 +58,7 @@ export default function App() {
                         <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
                         <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
                         <Stack.Screen name="Scanner" component={Scanner} />
-                        <Stack.Screen name="Search" component={Search} />
+                        <Stack.Screen name="Blog" component={Blog} />
                         <Stack.Screen name="Home" component={Home} options={headerNone} />
                         <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
                         <Stack.Screen name="Chat" component={Chat} />
