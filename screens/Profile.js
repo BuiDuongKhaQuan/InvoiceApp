@@ -9,6 +9,7 @@ import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
 import { useTranslation } from 'react-i18next';
+import { getCustomerByCompany, getInvoiceByCompany, getNameCustomerByEmail } from '../Service/api';
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
@@ -16,33 +17,8 @@ export default function Profile() {
     const navigation = useNavigation();
     const { state } = useUserContext();
     const { user, company } = state;
-    const [contact, setContact] = useState();
-    const [contacts, setContacts] = useState([
-        {
-            id: 1,
-            name: 'Quan',
-            phone: '12345789',
-            email: 'qua1n@example.com',
-        },
-        {
-            id: 2,
-            name: 'Quan1',
-            phone: '12345789',
-            email: 'qua2n@example.com',
-        },
-        {
-            id: 3,
-            name: 'Quan2',
-            phone: '12345789',
-            email: 'qua4n@example.com',
-        },
-        {
-            id: 4,
-            name: 'Quan3',
-            phone: '12345789',
-            email: 'qua3n@example.com',
-        },
-    ]);
+    const companyName = company.name;
+
     const [invoices, setInvoices] = useState([
         {
             id: '1',
@@ -89,13 +65,42 @@ export default function Profile() {
             image: require('../assets/images/Invoices/Bill_11.png'),
         },
     ]);
+    const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
+    const getInvoiceByCompanys = async () => {
+        try {
+            const response = await getInvoiceByCompany(companyName);
+            setInvoiceByCompany(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const [name, setName] = useState([]);
 
+    const [customers, setCustomers] = useState([]);
+    const getCustomerCompany = async () => {
+        try {
+            const response = await getCustomerByCompany(companyName);
+            setCustomers(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const findCustomerNameByEmail = (email, customers) => {
+        const customer = customers.find((customer) => customer.email === email);
+        return customer ? customer.name : 'Không tìm thấy';
+    };
+    useEffect(() => {
+        getCustomerCompany();
+        getInvoiceByCompanys();
+        // setCustomerNamesForInvoices();
+    }, []);
     const [selectedTab, setSelectedTab] = useState('history');
 
     const tabActive = (key) =>
         selectedTab === key
             ? { ...styles.tab_text, borderBottomColor: 'black', borderBottomWidth: 1 }
             : styles.tab_text;
+
     return (
         <View style={styles.container}>
             <BackgroundImage>
@@ -154,19 +159,35 @@ export default function Profile() {
                     <ScrollView sr style={styles.bottom_content}>
                         {selectedTab === 'history' && (
                             <View style={styles.content}>
-                                <Text style={styles.bottom_text}>11/12/2023</Text>
                                 <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
-                                <Image
-                                    style={styles.bottom_image}
-                                    source={{
-                                        uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-                                    }}
-                                />
+
+                                {invoiceCByCompany.map((item) => (
+                                    <View style={styles.contact_content} key={item.id}>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>{t('common:invoiceNo')}:</Text>
+                                            <Text style={styles.text_change}>{item.key}</Text>
+                                        </View>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                            <Text style={styles.text_change}>
+                                                {findCustomerNameByEmail(item.emailGuest, customers)}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                            <Text style={styles.text_change}>{item.emailGuest}</Text>
+                                        </View>
+                                        <View style={styles.contact_row}>
+                                            <Text style={styles.text_default}>{t('common:total')}:</Text>
+                                            <Text style={styles.text_change}>{item.totalPrice}</Text>
+                                        </View>
+                                    </View>
+                                ))}
                             </View>
                         )}
                         {selectedTab === 'contact' && (
                             <View style={styles.content}>
-                                {contacts.map((item) => (
+                                {customers.map((item) => (
                                     <View style={styles.contact_content} key={item.id}>
                                         <View style={styles.contact_row}>
                                             <Text style={styles.text_default}>{t('common:name')}:</Text>
