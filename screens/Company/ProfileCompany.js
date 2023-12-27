@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { backgroundColor, white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
-import { AntDesign, MaterialCommunityIcons, Feather, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useUserContext } from '../UserContext';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
@@ -20,25 +20,25 @@ export default function ProfileCompany() {
         {
             id: '1',
             title: t('common:staff'),
-            icon: <Feather name="users" size={30} color="black" />,
+            icon: <AntDesign name="team" size={30} color="black" />,
             router: 'Staff',
         },
         {
             id: '2',
             title: t('common:bills'),
-            icon: <FontAwesome5 name="file-invoice" size={30} color="black" />,
+            icon: <AntDesign name="filetext1" size={30} color="black" />,
             router: 'Bills',
         },
         {
             id: '3',
             title: t('common:statisticals'),
-            icon: <FontAwesome name="bar-chart" size={30} color="black" />,
+            icon: <Ionicons name="bar-chart-outline" size={30} color="black" />,
             router: 'Statistical',
         },
         {
             id: '4',
             title: t('common:billSample'),
-            icon: <FontAwesome5 name="invision" size={30} color="black" />,
+            icon: <Ionicons name="newspaper-outline" size={30} color="black" />,
             router: 'BillSample',
         },
     ]);
@@ -111,7 +111,7 @@ export default function ProfileCompany() {
                         data={itemSetting}
                         renderItem={({ item }) => (
                             <Button
-                                customStylesBtn={styles.btn_manage}
+                                customStylesBtn={{ ...styles.btn_manage, paddingHorizontal: 10 }}
                                 customStylesIcon={styles.icon_btn}
                                 customStylesText={{ ...styles.btn_text_line, width: '100%' }}
                                 onPress={() => navigation.navigate(item.router)}
@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
     },
     btn_text: {
         fontSize: fontSizeDefault,
-        fontWeight: '700',
+        fontWeight: 'bold',
         color: 'black',
-        marginRight: 10,
+        textAlign: 'left',
     },
     container_center: {
         flex: 0.8,
@@ -228,7 +228,6 @@ const styles = StyleSheet.create({
     btn_manage: {
         marginVertical: 1,
         backgroundColor: white,
-        width: '100%',
         justifyContent: 'space-between',
         borderRadius: 0,
         borderWidth: 0,

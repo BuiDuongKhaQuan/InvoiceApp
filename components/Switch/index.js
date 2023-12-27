@@ -1,6 +1,7 @@
 import { StyleSheet, Text, Switch, View } from 'react-native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { defaultColor, lightColorDefault } from '../../constant/color';
 
 export default function SwitchCustom({ status, isEnabled, toggleSwitch }) {
     const { t } = useTranslation();
@@ -8,8 +9,8 @@ export default function SwitchCustom({ status, isEnabled, toggleSwitch }) {
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Switch
-                trackColor={{ false: '#767577', true: '#7fff00' }}
-                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                trackColor={{ false: '#767577', true: lightColorDefault }}
+                thumbColor={isEnabled ? defaultColor : '#f4f3f4'}
                 onValueChange={toggleSwitch}
                 value={isEnabled}
             />

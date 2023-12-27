@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import Button from '../components/Button';
 import { white } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
@@ -9,7 +9,7 @@ import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
 import { useTranslation } from 'react-i18next';
-import { getCustomerByCompany, getInvoiceByCompany, getNameCustomerByEmail } from '../Service/api';
+import { getCustomerByCompany, getInvoiceByCompany } from '../Service/api';
 import { listInvoices } from '../constant/listInvoice';
 import Loading from '../components/Loading';
 const { width } = Dimensions.get('screen');
@@ -21,6 +21,7 @@ export default function Profile() {
     const { user, company } = state;
     const companyName = company.name;
     const [loadingHistory, setLoadingHistory] = useState(false);
+    const [loadingContacts, setLoadingContacts] = useState(false);
     const [invoices, setInvoices] = useState(listInvoices);
     const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
     const getInvoiceByCompanys = async () => {
@@ -38,10 +39,13 @@ export default function Profile() {
     const [customers, setCustomers] = useState([]);
     const getCustomerCompany = async () => {
         try {
+            setLoadingContacts(true);
             const response = await getCustomerByCompany(companyName);
             setCustomers(response);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingContacts(false);
         }
     };
     const findCustomerNameByEmail = (email, customers) => {
@@ -51,7 +55,6 @@ export default function Profile() {
     useEffect(() => {
         getCustomerCompany();
         getInvoiceByCompanys();
-        // setCustomerNamesForInvoices();
     }, []);
     const [selectedTab, setSelectedTab] = useState('history');
 
@@ -89,7 +92,6 @@ export default function Profile() {
                         <Button
                             customStylesBtn={styles.edit_btn}
                             customStylesText={styles.btn_text}
-                            z
                             onPress={() => navigation.navigate('Setting')}
                             iconLeft={<AntDesign name="setting" size={24} color="black" />}
                             text={t('common:setting')}
@@ -117,52 +119,55 @@ export default function Profile() {
                 <View style={styles.container_bottom}>
                     <ScrollView sr style={styles.bottom_content}>
                         {selectedTab === 'history' && (
-                            <View style={styles.content}>
-                                <Loading loading={loadingHistory} />
-                                <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
-                                {invoiceCByCompany.map((item) => (
-                                    <View style={styles.contact_content} key={item.id}>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:invoiceNo')}:</Text>
-                                            <Text style={styles.text_change}>{item.key}</Text>
+                            <Loading loading={loadingHistory}>
+                                <View style={styles.content}>
+                                    <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
+                                    {invoiceCByCompany.map((item) => (
+                                        <View style={styles.contact_content} key={item.id}>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:invoiceNo')}:</Text>
+                                                <Text style={styles.text_change}>{item.key}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                                <Text style={styles.text_change}>
+                                                    {findCustomerNameByEmail(item.emailGuest, customers)}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                                <Text style={styles.text_change}>{item.emailGuest}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:total')}:</Text>
+                                                <Text style={styles.text_change}>{item.totalPrice}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:name')}:</Text>
-                                            <Text style={styles.text_change}>
-                                                {findCustomerNameByEmail(item.emailGuest, customers)}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:email')}:</Text>
-                                            <Text style={styles.text_change}>{item.emailGuest}</Text>
-                                        </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:total')}:</Text>
-                                            <Text style={styles.text_change}>{item.totalPrice}</Text>
-                                        </View>
-                                    </View>
-                                ))}
-                            </View>
+                                    ))}
+                                </View>
+                            </Loading>
                         )}
                         {selectedTab === 'contact' && (
-                            <View style={styles.content}>
-                                {customers.map((item) => (
-                                    <View style={styles.contact_content} key={item.id}>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:name')}:</Text>
-                                            <Text style={styles.text_change}>{item.name}</Text>
+                            <Loading loading={loadingContacts}>
+                                <View style={styles.content}>
+                                    {customers.map((item) => (
+                                        <View style={styles.contact_content} key={item.id}>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                                <Text style={styles.text_change}>{item.name}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:phone')}:</Text>
+                                                <Text style={styles.text_change}>{item.phone}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                                <Text style={styles.text_change}>{item.email}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:phone')}:</Text>
-                                            <Text style={styles.text_change}>{item.phone}</Text>
-                                        </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:email')}:</Text>
-                                            <Text style={styles.text_change}>{item.email}</Text>
-                                        </View>
-                                    </View>
-                                ))}
-                            </View>
+                                    ))}
+                                </View>
+                            </Loading>
                         )}
                         {selectedTab === 'like' && (
                             <InvoiceList data={invoices} isLike={true} navigation={navigation} scrollEnabled />
@@ -231,9 +236,9 @@ const styles = StyleSheet.create({
     },
     btn_text: {
         fontSize: fontSizeDefault,
-        fontWeight: '700',
+        fontWeight: 'bold',
         color: 'black',
-        marginRight: 10,
+        textAlign: 'left',
     },
     container_center: {
         flex: 0.6,
@@ -308,7 +313,6 @@ const styles = StyleSheet.create({
     bottom_content: {
         width: '100%',
         marginTop: 10,
-        flex: 1,
     },
     bottom_text: {
         fontSize: fontSizeDefault,

@@ -4,7 +4,7 @@ import { fontSizeDefault } from '../../constant/fontSize';
 
 export const styles = StyleSheet.create({
     input: {
-        width: '90%',
+        width: '100%',
         alignContent: 'center',
         backgroundColor: white,
         justifyContent: 'center',

@@ -12,7 +12,6 @@ import Blog from './screens/Blog';
 import Scanner from './screens/Scanner';
 import WatchBill from './screens/Company/WatchBill';
 import BillSample from './screens/Company/BillSample';
-import EditBill from './screens/Company/EditBill';
 import Staff from './screens/Company/Staff';
 import Statistical from './screens/Company/Statistical';
 import Language from './screens/Setting/Language';
@@ -65,7 +64,6 @@ export default function App() {
                         <Stack.Screen name="Profile" component={Profile} />
                         <Stack.Screen name="Bills" component={Bills} options={headerNone} />
                         <Stack.Screen name="BillSample" component={BillSample} options={headerNone} />
-                        <Stack.Screen name="EditBill" component={EditBill} />
                         <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
                         <Stack.Screen name="Staff" component={Staff} options={headerNone} />
                         <Stack.Screen name="Statistical" component={Statistical} options={headerNone} />
