@@ -5,13 +5,19 @@ import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { textColor, white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Language() {
     const { t, i18n } = useTranslation();
     const selectLanguageCode = i18n.language;
+    const navigation = useNavigation();
     const LANGUAGES = [
+        { code: 'chi', label: 'China' },
         { code: 'en', label: 'English' },
-        { code: 'vi', label: 'Vietnamese' },
+        { code: 'fr', label: 'France' },
+        { code: 'jp', label: 'Japan' },
+        { code: 'ru', label: 'Russia' },
+        { code: 'vi', label: 'VietNamese' },
     ];
     const setLanguage = (code) => {
         return i18n.changeLanguage(code);
@@ -29,7 +35,10 @@ export default function Language() {
                 },
                 {
                     text: 'Đồng ý',
-                    onPress: () => setLanguage(code),
+                    onPress: () => {
+                        setLanguage(code);
+                        navigation.navigate('TabNavigator');
+                    },
                     cancelable: true,
                 },
             ],
@@ -44,6 +53,7 @@ export default function Language() {
                     const selectLanguage = language.code === selectLanguageCode;
                     return (
                         <Pressable
+                            key={language.code}
                             style={styles.btn}
                             disabled={selectLanguage}
                             onPress={() => handleSubmit(language.code)}
