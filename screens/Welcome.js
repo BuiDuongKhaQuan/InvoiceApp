@@ -11,9 +11,9 @@ export default function Welcome({ navigation }) {
             <BackgroundImage>
                 <View style={styles.container_top}>
                     <Image style={styles.welcome} source={require('../assets/images/welcome.png')} />
-                    <Text style={styles.title}>Invoice C</Text>
+                    <Text style={styles.title}></Text>
                     <Button
-                        text={t('common:login')}
+                        text={t('common:start')}
                         customStylesBtn={{ width: 200 }}
                         onPress={() => navigation.navigate('Login')}
                     />

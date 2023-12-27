@@ -22,8 +22,13 @@ export const styles = StyleSheet.create({
         marginStart: 2,
     },
     logo: {
-        width: 80,
-        height: 80,
+        width: 60,
+        height: 50,
+        marginHorizontal: 10,
+        resizeMode: 'stretch',
+    },
+    logo_text: {
+        height: 25,
         resizeMode: 'stretch',
     },
     title: {

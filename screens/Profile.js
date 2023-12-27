@@ -10,6 +10,8 @@ import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
 import { useTranslation } from 'react-i18next';
 import { getCustomerByCompany, getInvoiceByCompany, getNameCustomerByEmail } from '../Service/api';
+import { listInvoices } from '../constant/listInvoice';
+import Loading from '../components/Loading';
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
@@ -18,63 +20,20 @@ export default function Profile() {
     const { state } = useUserContext();
     const { user, company } = state;
     const companyName = company.name;
-
-    const [invoices, setInvoices] = useState([
-        {
-            id: '1',
-            image: require('../assets/images/Invoices/Bill_1.png'),
-        },
-        {
-            id: '2',
-            image: require('../assets/images/Invoices/Bill_2.png'),
-        },
-        {
-            id: '3',
-            image: require('../assets/images/Invoices/Bill_3.png'),
-        },
-        {
-            id: '4',
-            image: require('../assets/images/Invoices/Bill_4.png'),
-        },
-        {
-            id: '5',
-            image: require('../assets/images/Invoices/Bill_5.png'),
-        },
-        {
-            id: '6',
-            image: require('../assets/images/Invoices/Bill_6.png'),
-        },
-        {
-            id: '7',
-            image: require('../assets/images/Invoices/Bill_7.png'),
-        },
-        {
-            id: '8',
-            image: require('../assets/images/Invoices/Bill_8.png'),
-        },
-        {
-            id: '9',
-            image: require('../assets/images/Invoices/Bill_9.png'),
-        },
-        {
-            id: '10',
-            image: require('../assets/images/Invoices/Bill_10.png'),
-        },
-        {
-            id: '11',
-            image: require('../assets/images/Invoices/Bill_11.png'),
-        },
-    ]);
+    const [loadingHistory, setLoadingHistory] = useState(false);
+    const [invoices, setInvoices] = useState(listInvoices);
     const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
     const getInvoiceByCompanys = async () => {
         try {
+            setLoadingHistory(true);
             const response = await getInvoiceByCompany(companyName);
             setInvoiceByCompany(response);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingHistory(false);
         }
     };
-    const [name, setName] = useState([]);
 
     const [customers, setCustomers] = useState([]);
     const getCustomerCompany = async () => {
@@ -159,8 +118,8 @@ export default function Profile() {
                     <ScrollView sr style={styles.bottom_content}>
                         {selectedTab === 'history' && (
                             <View style={styles.content}>
+                                <Loading loading={loadingHistory} />
                                 <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
-
                                 {invoiceCByCompany.map((item) => (
                                     <View style={styles.contact_content} key={item.id}>
                                         <View style={styles.contact_row}>

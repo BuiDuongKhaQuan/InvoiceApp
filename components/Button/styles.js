@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { white } from '../../constant/color';
+import { buttonColor, white } from '../../constant/color';
 
 export const styles = StyleSheet.create({
     btn: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         height: 50,
         borderRadius: 15,
         borderWidth: 1,
-        backgroundColor: '#2c8b3a',
+        backgroundColor: buttonColor,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',

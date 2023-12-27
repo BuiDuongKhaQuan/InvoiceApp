@@ -11,8 +11,9 @@ export default function Header({ showButton, backgroundHide, navigation }) {
     return (
         <View style={newStyle}>
             <TouchableOpacity style={styles.header_left} onPress={() => navigation.navigate('Home')}>
-                <Image style={styles.logo} source={require('../../assets/images/logo.png')} />
-                <Text style={styles.title}>Invoice</Text>
+                <Image style={styles.logo} source={require('../../assets/images/logo_no_text.png')} />
+                <Image style={styles.logo_text} source={require('../../assets/images/logo_text.png')} />
+                {/* <Text style={styles.title}>Invoice</Text> */}
             </TouchableOpacity>
             {showButton && (
                 <Button
