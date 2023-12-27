@@ -8,6 +8,8 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import Loading from '../../components/Loading';
+import { white } from '../../constant/color';
+import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function Bills() {
     const { t } = useTranslation();
@@ -36,10 +38,9 @@ export default function Bills() {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.container}>
             <Header title={t('common:bill')} />
-            <Loading loading={loading} />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.container_input}>
                 <Input
                     customStylesContainer={styles.input}
                     holder="Tìm theo mã hóa đơn, tên khách hàng"
@@ -48,72 +49,58 @@ export default function Bills() {
                     onPressIconRight={() => navigation.navigate('Scanner')}
                 />
             </View>
-            <View style={styles.list}>
-                <View style={styles.table}>
-                    <View style={styles.table_colum}>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
+            <Loading loading={loading}>
+                <View style={styles.list}>
+                    <View style={styles.table}>
+                        <View style={styles.table_colum}>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
+                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
+                        </View>
+                        {invoices.map((invoice, index) => (
+                            <TouchableOpacity
+                                style={styles.table_colum}
+                                key={invoice.id}
+                                onPress={() =>
+                                    navigation.navigate(`Invoice${getLayout(invoice.key)}`, { data: invoice })
+                                }
+                            >
+                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
+                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.key}</Text>
+                                <Text style={{ ...styles.text_line, ...styles.colum_p }}>{invoice.emailGuest}</Text>
+                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
+                            </TouchableOpacity>
+                        ))}
                     </View>
-                    {invoices.map((invoice, index) => (
-                        <TouchableOpacity
-                            style={styles.table_colum}
-                            key={invoice.id}
-                            onPress={() => navigation.navigate(`Invoice${getLayout(invoice.key)}`, { data: invoice })}
-                        >
-                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
-                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.id}</Text>
-                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{invoice.emailGuest}</Text>
-                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
-                        </TouchableOpacity>
-                    ))}
                 </View>
-            </View>
-        </View>
+            </Loading>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
     list: {
         flex: 1,
+        marginHorizontal: 15,
+    },
+    container_input: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 15,
     },
     input: {
-        flex: 6,
-        width: '100%',
-        marginTop: StatusBar.currentHeight || 20,
-        borderRadius: 0,
-        marginHorizontal: 0,
-        marginVertical: 0,
-        borderRadius: 50,
-        elevation: 0,
-        borderColor: 'gray',
-        borderWidth: 1,
+        height: 50,
+        borderWidth: 2,
+        borderColor: white,
+        backgroundColor: '#C9C9C9',
     },
     icon1: {
         flex: 1,
         justifyContent: 'center',
         alignContent: 'center',
     },
-    input: {
-        flex: 6,
-        // width: '100%',
-        height: 50,
-        marginTop: StatusBar.currentHeight || 20,
-        borderRadius: 0,
-        // marginHorizontal: 30,\
-        marginVertical: 30,
-        borderRadius: 50,
-        elevation: 0,
-        borderColor: 'gray',
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
     icon1: {
         marginHorizontal: 0,
         // backgroundColor

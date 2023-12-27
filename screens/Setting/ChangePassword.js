@@ -11,7 +11,7 @@ import { changePassword } from '../../Service/api';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
 import { useTranslation } from 'react-i18next';
-
+import { textColor } from '../../constant/color';
 
 export default function ChangePassword() {
     const { t } = useTranslation();
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: fontSizeDefault,
         fontWeight: 'bold',
-        color: '#26B819',
+        color: textColor,
         alignItems: 'center',
         textAlign: 'center',
     },

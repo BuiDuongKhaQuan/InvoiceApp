@@ -6,50 +6,47 @@ import Input from '../../components/Input';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { listInvoices } from '../../constant/listInvoice';
+import { white } from '../../constant/color';
+import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function BillSample({ navigation }) {
     const { t } = useTranslation();
-
     const [invoices, setInvoices] = useState(listInvoices);
+
     return (
-        <View style={styles.container}>
+        <ImageBackground>
             <Header title={t('common:billSample')} />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.container_input}>
                 <Input
-                    customStylesContainer={styles.input}
                     iconLeft={<Feather name="search" size={24} color="black" />}
-                    iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
+                    customStylesContainer={styles.input}
+                    holder={'Tìm kím mẫu hóa đơn'}
                     onPressIconRight={() => navigation.navigate('Scanner')}
+                    iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     customStylesIcon={styles.icon1}
                 />
             </View>
             <View style={styles.list}>
                 <InvoiceList data={invoices} />
             </View>
-        </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
     list: {
         flex: 1,
     },
-    input: {
-        flex: 6,
-        height: 50,
-        marginTop: StatusBar.currentHeight || 20,
-        borderRadius: 0,
-        marginVertical: 30,
-        borderRadius: 50,
-        elevation: 0,
-        borderColor: 'gray',
-        borderWidth: 1,
+    container_input: {
         alignItems: 'center',
         justifyContent: 'center',
+        marginHorizontal: 15,
+    },
+    input: {
+        height: 50,
+        borderWidth: 2,
+        borderColor: white,
+        backgroundColor: '#C9C9C9',
     },
     icon1: {
         marginHorizontal: 0,

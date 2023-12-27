@@ -1,18 +1,18 @@
-import { StyleSheet, Text, View, TextInput, Modal, Image, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, Alert, ScrollView } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
 import { fontSizeDefault } from '../constant/fontSize';
 import { useUserContext } from './UserContext';
-import { createInvoice, getCustomerByCompany, getProductsByCompany, instance } from '../Service/api';
+import { createInvoice, getCustomerByCompany, getProductsByCompany } from '../Service/api';
 import Product from '../components/Product';
 import { subTotal, totalBillPrice } from '../utilies/calculator';
 import { Asset } from 'expo-asset';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-native-qrcode-svg';
 import ViewShot, { captureRef } from 'react-native-view-shot';
-import { white } from '../constant/color';
+import { buttonColor, defaultColor, white } from '../constant/color';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { getDateNow, getHouseNow } from '../utilies/date';
@@ -20,7 +20,7 @@ import * as FileSystem from 'expo-file-system';
 import Customer from '../components/Customer';
 import Loading from '../components/Loading';
 
-export default function CreateInvoice({ route }) {
+export default function CreateInvoice({ route, isWatching }) {
     const currentDate = new Date();
     const dateNow = getDateNow(currentDate);
     const houseNow = getHouseNow(currentDate);
@@ -2015,7 +2015,7 @@ export default function CreateInvoice({ route }) {
                         customStylesBtn={styles.btn}
                         customStylesText={{ ...styles.text, color: 'black' }}
                         text={'Khách hàng'}
-                        iconRight={<AntDesign name={showCustomer ? 'up' : 'down'} size={24} color="#32db64" />}
+                        iconRight={<AntDesign name={showCustomer ? 'up' : 'down'} size={24} color={buttonColor} />}
                         onPress={toggleCustomerList}
                     />
                     {showCustomer && (
@@ -2041,7 +2041,7 @@ export default function CreateInvoice({ route }) {
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
                                 text={customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}
-                                iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                                iconRight={<AntDesign name="pluscircleo" size={24} color={buttonColor} />}
                                 onPress={() => {
                                     setCustomersModalVisible(true);
                                 }}
@@ -2052,7 +2052,7 @@ export default function CreateInvoice({ route }) {
                         customStylesBtn={styles.btn}
                         customStylesText={{ ...styles.text, color: 'black' }}
                         text={t('common:productServie')}
-                        iconRight={<AntDesign name={showProductList ? 'up' : 'down'} size={24} color="#32db64" />}
+                        iconRight={<AntDesign name={showProductList ? 'up' : 'down'} size={24} color={buttonColor} />}
                         onPress={toggleProductList}
                     />
                     {showProductList && (
@@ -2072,7 +2072,7 @@ export default function CreateInvoice({ route }) {
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
                                 text={t('common:addProduct')}
-                                iconRight={<AntDesign name="pluscircleo" size={24} color="#32db64" />}
+                                iconRight={<AntDesign name="pluscircleo" size={24} color={buttonColor} />}
                                 onPress={() => {
                                     setProductModalVisible(true);
                                 }}
@@ -2181,7 +2181,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 10,
-        backgroundColor: '#32db64',
+        backgroundColor: defaultColor,
         height: 50,
     },
     text: {
@@ -2276,7 +2276,7 @@ const styles = StyleSheet.create({
         height: '60%',
         width: '40%',
         borderRadius: 5,
-        backgroundColor: '#32db64',
+        backgroundColor: buttonColor,
     },
     contact_content: {
         flex: 1,

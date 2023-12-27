@@ -3,7 +3,7 @@ import { buttonColor, white } from '../../constant/color';
 
 export const styles = StyleSheet.create({
     btn: {
-        width: '90%',
+        width: '100%',
         height: 50,
         borderRadius: 15,
         borderWidth: 1,

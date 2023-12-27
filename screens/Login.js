@@ -46,7 +46,7 @@ export default function Login({ navigation }) {
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const userData = await login(email, pass);
+            const userData = await login(email.trim(), pass);
             const companyData = await getCompaniesById(userData.companyId);
             dispatch({
                 type: 'SIGN_IN',
@@ -78,7 +78,7 @@ export default function Login({ navigation }) {
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Loading loading={loading} />
+                <Loading loading={loading} isFullScreen />
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
                     {/* <Text style={styles.title}>Invoice C</Text> */}
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     container_center: {
         flex: 4,
         alignItems: 'center',
+        marginHorizontal: 20,
     },
     register: {
         flexDirection: 'row',
