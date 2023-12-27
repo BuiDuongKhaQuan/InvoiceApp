@@ -4,11 +4,19 @@ import { initReactI18next } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';
 
+import chi from '../translations/chi';
 import en from '../translations/en';
+import fr from '../translations/fr';
+import jp from '../translations/jp';
+import ru from '../translations/ru';
 import vi from '../translations/vi';
 
 const LANGUAGE = {
+    chi,
     en,
+    fr,
+    jp,
+    ru,
     vi,
 };
 const LANG_CODES = Object.keys(LANGUAGE);
