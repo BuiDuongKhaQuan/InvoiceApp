@@ -99,6 +99,7 @@ export default function CreateInvoice({ route, isWatching }) {
     const addInvoices = async () => {
         try {
             setLoading(true);
+
             const response = await createInvoice(
                 staffEmail,
                 customer.current.phone,
@@ -111,6 +112,11 @@ export default function CreateInvoice({ route, isWatching }) {
                 String(totalBill),
                 tax,
                 contactAddress,
+                {
+                    uri: qrImageUri.current,
+                    name: 'qr_image.jpg',
+                    type: 'image/jpg',
+                },
             );
             customer.current = null;
             setListProductsSelect([]);
@@ -1999,7 +2005,7 @@ export default function CreateInvoice({ route, isWatching }) {
 
     return (
         <View style={styles.wrapper}>
-            <Loading loading={loading} />
+            <Loading loading={loading} isFullScreen />
             <View style={styles.container}>
                 <Header title={t('common:bill')} />
                 <ScrollView>
@@ -2104,7 +2110,13 @@ export default function CreateInvoice({ route, isWatching }) {
                     )}
                     <View style={styles.qrcode}>
                         <ViewShot
-                            style={{ width: 80, height: 80 }}
+                            style={{
+                                width: 90,
+                                height: 90,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: white,
+                            }}
                             ref={viewShotRef}
                             options={{ format: 'jpg', quality: 1 }}
                         >

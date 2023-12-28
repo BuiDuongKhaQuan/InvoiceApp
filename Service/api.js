@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.8.109:8080/api',
+    baseURL: 'http://192.168.1.106:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -167,6 +167,7 @@ export const createInvoice = async (
     totalPrice,
     tax,
     address,
+    image,
 ) => {
     let formData = new FormData();
     if (phoneGuest == '') phoneGuest = '0000000000';
@@ -187,6 +188,7 @@ export const createInvoice = async (
     formData.append('totalPrice', totalPrice);
     formData.append('tax', tax);
     formData.append('address', address);
+    formData.append('image', image);
     console.log(formData);
     try {
         const response = await instance.post('/v1/invoices', formData, {
