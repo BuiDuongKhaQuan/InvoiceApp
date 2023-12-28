@@ -54,6 +54,7 @@ export default function CreateInvoice({ route, isWatching }) {
     const totalBill = totalBillPrice(tax, total);
     const qrImageUri = useRef(null);
     const customer = useRef(null);
+    const qr = useRef(null);
 
     const handleDataChanged = (newData) => {
         customer.current = newData;
@@ -118,6 +119,8 @@ export default function CreateInvoice({ route, isWatching }) {
                     type: 'image/jpg',
                 },
             );
+            qr.current = response.data.image;
+            console.log(qr.current);
             customer.current = null;
             setListProductsSelect([]);
             setTax('');
@@ -563,10 +566,10 @@ export default function CreateInvoice({ route, isWatching }) {
                         ${listProductHtml2(listProductsSelect)}
                     </table>
                     <div style="text-align: end; color: blue">
-                        <text><b>${t('common:for')} ${companyName}</b></text>
+                    <text><b>${t('common:for')} ${companyName}</b></text>
                     </div>
-                    <div style="text-align: end; color: blue">
-                    <img src="${qrImageUri.current}" width="70%" ; />
+                    <div style="text-align: center; color: blue">
+                    <img src="${qr.current}" style="width: 90px ; height: 90px" />
                     </div>
                 </div>
             </body>

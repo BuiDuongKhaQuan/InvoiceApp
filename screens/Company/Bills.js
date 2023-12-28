@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
@@ -50,7 +50,7 @@ export default function Bills() {
                 />
             </View>
             <Loading loading={loading}>
-                <View style={styles.list}>
+                <ScrollView style={styles.list}>
                     <View style={styles.table}>
                         <View style={styles.table_colum}>
                             <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
@@ -73,7 +73,7 @@ export default function Bills() {
                             </TouchableOpacity>
                         ))}
                     </View>
-                </View>
+                </ScrollView>
             </Loading>
         </ImageBackground>
     );
@@ -81,7 +81,6 @@ export default function Bills() {
 
 const styles = StyleSheet.create({
     list: {
-        flex: 1,
         marginHorizontal: 15,
     },
     container_input: {
