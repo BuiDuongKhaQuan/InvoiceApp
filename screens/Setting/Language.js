@@ -18,6 +18,8 @@ export default function Language() {
         { code: 'jp', label: 'Japan' },
         { code: 'ru', label: 'Russia' },
         { code: 'vi', label: 'VietNamese' },
+        { code: 'india', label: 'India' },
+        { code: 'land', label: 'ThaiLand' },
     ];
     const setLanguage = (code) => {
         return i18n.changeLanguage(code);
