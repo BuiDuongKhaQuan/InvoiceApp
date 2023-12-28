@@ -1,3 +1,4 @@
+//english
 export default {
     language: 'Language',
     account: 'Account',
@@ -7,6 +8,24 @@ export default {
     notification: 'Notification',
     support: 'Support',
     logout: 'Logout',
+    //new
+    setting: 'Setting',
+    Blog: 'Blog',
+    start: 'Start',
+    alert_hd: 'Are you sure you want to print the invoice?',
+    alert_hd_2: 'Once you select "Agree," the invoice will be saved in the company is data!',
+    alert_no: 'No',
+    alert_yes: 'Agree',
+    alert_pdf: 'Are you sure you want to generate a PDF file?',
+    alert_pdf_2: 'After selecting "Agree," the invoice will be saved in the company is data!',
+    alert_pdf_no: 'No',
+    alert_pdf_yes: 'Agree',
+    alert_success: 'Success!',
+    alert_success_2: "Saved to the company's data!",
+    customer: 'custommer',
+    alert_lan: 'Are you sure you want to change the language?',
+    change_customer: 'Change customer',
+    more_customer: 'Add customer',
 
     information: 'Information',
     changeAvt: 'Change Avatar',

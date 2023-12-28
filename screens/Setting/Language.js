@@ -1,21 +1,51 @@
-import { StyleSheet, Text, View, StatusBar, FlatList, Pressable } from 'react-native';
-import React, { useState } from 'react';
-import Header from '../../components/SettingItem/header';
-import { AntDesign } from '@expo/vector-icons';
-import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { StyleSheet, Text, View, Pressable, Alert } from 'react-native';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { backgroundColor } from '../../constant/color';
+import Header from '../../components/SettingItem/header';
+import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
+import { textColor, white } from '../../constant/color';
+import { fontSizeDefault } from '../../constant/fontSize';
+import { useNavigation } from '@react-navigation/native';
+
 export default function Language() {
     const { t, i18n } = useTranslation();
     const selectLanguageCode = i18n.language;
+    const navigation = useNavigation();
     const LANGUAGES = [
+        { code: 'chi', label: 'China' },
         { code: 'en', label: 'English' },
-        { code: 'vi', label: 'Vietnamese' },
+        { code: 'fr', label: 'France' },
+        { code: 'jp', label: 'Japan' },
+        { code: 'ru', label: 'Russia' },
+        { code: 'vi', label: 'VietNamese' },
     ];
     const setLanguage = (code) => {
         return i18n.changeLanguage(code);
     };
+    const handleSubmit = (code) => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            t('common:alert_lan'),
 
+            '',
+            [
+                {
+                    text: t('common:alert_no'),
+                    cancelable: true,
+                    style: 'cancel',
+                },
+                {
+                    text: t('common:alert_yes'),
+                    onPress: () => {
+                        setLanguage(code);
+                        navigation.navigate('TabNavigator');
+                    },
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
     return (
         <BackgroundImage>
             <Header title={t('common:language')} />
@@ -24,11 +54,12 @@ export default function Language() {
                     const selectLanguage = language.code === selectLanguageCode;
                     return (
                         <Pressable
-                            style={{ marginTop: 10, backgroundColor: '#ccc' }}
+                            key={language.code}
+                            style={styles.btn}
                             disabled={selectLanguage}
-                            onPress={() => setLanguage(language.code)}
+                            onPress={() => handleSubmit(language.code)}
                         >
-                            <Text style={[selectLanguage ? styles.SelectedText : styles.text]}>{language.label}</Text>
+                            <Text style={[selectLanguage ? styles.selectedText : styles.text]}>{language.label}</Text>
                         </Pressable>
                     );
                 })}
@@ -41,26 +72,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    logout_btn: {
-        marginHorizontal: 10,
-        width: '95%',
-        borderRadius: 50,
-        borderWidth: 0,
-        backgroundColor: '#B7B7B7',
-        elevation: 0,
+    btn: {
+        backgroundColor: white,
+        marginVertical: 1,
+        padding: 5,
     },
-    SelectedText: {
+    selectedText: {
         padding: 10,
-        fontSize: 18,
+        color: textColor,
         fontWeight: '500',
-        color: 'green',
+        fontWeight: 'bold',
         paddingVertical: 5,
+        fontSize: fontSizeDefault + 2,
     },
     text: {
         padding: 10,
-        fontSize: 18,
-        fontWeight: '500',
         color: 'black',
         paddingVertical: 5,
+        fontSize: fontSizeDefault + 2,
     },
 });

@@ -1,3 +1,4 @@
+//france
 export default {
     language: 'Langue',
     account: 'Compte',
@@ -5,8 +6,28 @@ export default {
     password: 'Mot de passe',
     application: 'Application',
     notification: 'Notification',
-    support: 'Support',
+    support: 'soutien',
     logout: 'Déconnexion',
+    //new
+    setting: 'paramètre',
+    Blog: 'Blog',
+    start: 'commencer',
+    alert_hd: 'Êtes-vous sûr de vouloir imprimer la facture ?',
+    alert_hd_2:
+        'Une fois que vous sélectionnez "D accord", la facture sera enregistrée dans les données de l entreprise !',
+    alert_no: 'Non',
+    alert_yes: 'D accord',
+    alert_pdf: 'Êtes-vous sûr de vouloir générer un fichier PDF ?',
+    alert_pdf_2:
+        'Une fois que vous sélectionnez "D accord", la facture sera enregistrée dans les données de l entreprise !',
+    alert_pdf_no: 'Non',
+    alert_pdf_yes: 'D accord',
+    alert_success: 'Succès !',
+    alert_success_2: 'Enregistré dans les données de l entreprise !',
+    customer: 'client',
+    alert_lan: 'Êtes-vous sûr de vouloir changer de langue ?',
+    change_customer: 'Changer de client',
+    more_customer: 'Ajouter un client',
 
     information: 'Information',
     changeAvt: "Changer l'avatar",

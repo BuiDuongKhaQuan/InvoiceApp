@@ -1,3 +1,4 @@
+//vietnamses
 export default {
     language: 'Ngôn ngữ',
     setting: 'Cài đặt',
@@ -8,6 +9,23 @@ export default {
     notification: 'Thông báo',
     support: 'Hỗ trợ',
     logout: 'Đăng xuất',
+    //new
+    Blog: 'Blog',
+    start: 'bắt đầu',
+    alert_hd: 'Bạn có chắc chắn muốn in hóa đơn?',
+    alert_hd_2: 'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
+    alert_no: 'Không',
+    alert_yes: 'Đồng ý',
+    alert_pdf: 'Bạn có chắc chắn muốn suất flie PDF?',
+    alert_pdf_2: 'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
+    alert_pdf_no: 'Không',
+    alert_pdf_yes: 'Đồng ý',
+    alert_success: 'Thành công!',
+    alert_success_2: 'Đã lưu vào dữ liệu của công ty!',
+    customer: 'Khách hàng',
+    alert_lan: 'Bạn có chắc chắn muốn đổi ngon ngữ?',
+    change_custommer: 'Đổi khách hàng',
+    more_custommer: 'Thêm khách hàng',
 
     information: 'Thông tin cá nhân',
     changeAvt: 'Thay đổi ảnh đại diện',
