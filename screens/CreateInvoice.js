@@ -99,7 +99,6 @@ export default function CreateInvoice({ route, isWatching }) {
     const addInvoices = async () => {
         try {
             setLoading(true);
-
             const response = await createInvoice(
                 staffEmail,
                 customer.current.phone,
@@ -122,7 +121,7 @@ export default function CreateInvoice({ route, isWatching }) {
             setListProductsSelect([]);
             setTax('');
             setNote('');
-            Alert.alert('Success!', 'Đã lưu vào dữ liệu của công ty!');
+            Alert.alert(t('common:alert_success'), t('common:alert_success_2'));
         } catch (error) {
             console.log(error.response.data);
         } finally {
@@ -132,16 +131,16 @@ export default function CreateInvoice({ route, isWatching }) {
     const handleSubmit = () => {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn in hóa đơn?',
-            'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
+            t('common:alert_hd'),
+            t('common:alert_hd_2'),
             [
                 {
-                    text: 'Không',
+                    text: t('common:alert_no'),
                     cancelable: true,
                     style: 'cancel',
                 },
                 {
-                    text: 'Đồng ý',
+                    text: t('common:alert_yes'),
                     onPress: async () => {
                         await addInvoices();
                         await print(htmlTemplates[idTemplate]);
@@ -155,16 +154,17 @@ export default function CreateInvoice({ route, isWatching }) {
     const handleSubmitFile = () => {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn suất flie PDF?',
-            'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
+            t('common:alert_pdf'),
+            t('common:alert_pdf_2'),
+
             [
                 {
-                    text: 'Không',
+                    text: t('common:alert_pdf_no'),
                     cancelable: true,
                     style: 'cancel',
                 },
                 {
-                    text: 'Đồng ý',
+                    text: t('common:alert_pdf_yes'),
                     onPress: async () => {
                         await addInvoices();
                         await printToFile(htmlTemplates[idTemplate]);
@@ -2020,7 +2020,7 @@ export default function CreateInvoice({ route, isWatching }) {
                     <Button
                         customStylesBtn={styles.btn}
                         customStylesText={{ ...styles.text, color: 'black' }}
-                        text={'Khách hàng'}
+                        text={t('common:customer')}
                         iconRight={<AntDesign name={showCustomer ? 'up' : 'down'} size={24} color={buttonColor} />}
                         onPress={toggleCustomerList}
                     />
@@ -2046,7 +2046,7 @@ export default function CreateInvoice({ route, isWatching }) {
                             <Button
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
-                                text={customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}
+                                text={customer.current ? t('common:change_custommer') : t('common:more_custommer')}
                                 iconRight={<AntDesign name="pluscircleo" size={24} color={buttonColor} />}
                                 onPress={() => {
                                     setCustomersModalVisible(true);

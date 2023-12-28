@@ -1,3 +1,4 @@
+//rusia
 export default {
     language: 'Язык',
     account: 'Аккаунт',
@@ -7,6 +8,24 @@ export default {
     notification: 'Уведомление',
     support: 'Поддержка',
     logout: 'Выйти',
+    //new
+    setting: 'параметр',
+    Blog: 'Блог',
+    start: 'начинать',
+    alert_hd: 'Вы уверены, что хотите распечатать счет?',
+    alert_hd_2: 'После выбора "Согласен" счет будет сохранен в данных компании!',
+    alert_no: 'Нет',
+    alert_yes: 'Согласен',
+    alert_pdf: 'Вы уверены, что хотите создать файл PDF?',
+    alert_pdf_2: 'После выбора "Согласен" счет будет сохранен в данных компании!',
+    alert_pdf_no: 'Нет',
+    alert_pdf_yes: 'Согласен',
+    alert_success: 'Успех!',
+    alert_success_2: 'Сохранено в данных компании!',
+    customer: 'клиент',
+    alert_lan: 'Вы уверены, что хотите изменить язык?',
+    change_customer: 'Изменить клиента',
+    more_customer: 'Добавить клиента',
 
     information: 'Информация',
     changeAvt: 'Изменить аватар',

@@ -25,16 +25,17 @@ export default function Language() {
     const handleSubmit = (code) => {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn đổi ngon ngữ?',
+            t('common:alert_lan'),
+
             '',
             [
                 {
-                    text: 'Không',
+                    text: t('common:alert_no'),
                     cancelable: true,
                     style: 'cancel',
                 },
                 {
-                    text: 'Đồng ý',
+                    text: t('common:alert_yes'),
                     onPress: () => {
                         setLanguage(code);
                         navigation.navigate('TabNavigator');

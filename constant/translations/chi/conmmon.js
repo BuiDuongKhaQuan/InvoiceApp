@@ -1,3 +1,4 @@
+//china
 export default {
     language: '语言',
     account: '帐户',
@@ -7,6 +8,24 @@ export default {
     notification: '通知',
     support: '支持',
     logout: '登出',
+    //new
+    setting: '环境',
+    Blog: '博客',
+    start: '开始',
+    alert_hd: '您确定要打印发票吗？',
+    alert_hd_2: '选择“同意”后，发票将保存到公司的数据中！',
+    alert_no: '不同意',
+    alert_yes: '同意',
+    alert_pdf: '您确定要生成PDF文件吗？',
+    alert_pdf_2: '选择“同意”后，发票将保存到公司的数据中！',
+    alert_pdf_no: '不同意',
+    alert_pdf_yes: '同意',
+    alert_success: '成功！',
+    alert_success_2: '已保存到公司的数据！',
+    customer: '客户',
+    alert_lan: '您确定要更改语言吗？',
+    change_customer: '更改客户',
+    more_customer: '添加客户',
 
     information: '信息',
     changeAvt: '改变头像',
