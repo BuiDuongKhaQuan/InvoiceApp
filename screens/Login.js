@@ -10,13 +10,13 @@ import { getCompaniesById, login } from '../Service/api';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
 import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
+import { textColor } from '../constant/color';
 export default function Login({ navigation }) {
     const { t } = useTranslation();
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
-    const [errorPass, setErrorPass] = useState(false);
     const { dispatch } = useUserContext();
     const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
         ? { ...styles.container_center, flex: 2, justifyContent: 'center' }
         : { ...styles.container_center };
 
-    const isValidateLogin = () => email.length > 0 && pass.length > 0 && errorEmail == false && errorPass == false;
+    const isValidateLogin = () => email.length > 0 && pass.length > 0 && errorEmail == false;
 
     const handlePress = () => {
         if (!isValidateLogin()) {
@@ -46,7 +46,7 @@ export default function Login({ navigation }) {
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const userData = await login(email, pass);
+            const userData = await login(email.trim(), pass);
             const companyData = await getCompaniesById(userData.companyId);
             dispatch({
                 type: 'SIGN_IN',
@@ -72,17 +72,16 @@ export default function Login({ navigation }) {
     };
 
     const handleChangePass = (pass) => {
-        setErrorPass(!isValidatePass(pass));
         setPass(pass);
     };
 
     return (
         <View style={styles.container}>
             <BackgroundImage>
-                <Loading loading={loading} />
+                <Loading loading={loading} isFullScreen />
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                    <Text style={styles.title}>Invoice C</Text>
+                    {/* <Text style={styles.title}>Invoice C</Text> */}
                 </View>
                 <View style={centerStyle}>
                     <Input
@@ -96,8 +95,6 @@ export default function Login({ navigation }) {
                     <Input
                         onChangeText={handleChangePass}
                         value={pass}
-                        validate={errorPass}
-                        validateText={t('common:format')}
                         pass
                         holder={t('common:password')}
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
@@ -140,19 +137,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 200,
-        height: 200,
+        marginTop: 100,
+        width: 400,
+        height: 400,
     },
-    title: {
-        fontSize: 70,
-        color: '#B3B70A',
-        textShadowColor: '#2AA50B',
-        textShadowRadius: 5,
-        textShadowOffset: { width: 2, height: 2 },
-    },
+    // title: {
+    //     fontSize: 70,
+    //     color: '#B3B70A',
+    //     textShadowColor: '#2AA50B',
+    //     textShadowRadius: 5,
+    //     textShadowOffset: { width: 2, height: 2 },
+    // },
     container_center: {
         flex: 4,
         alignItems: 'center',
+        marginHorizontal: 20,
     },
     register: {
         flexDirection: 'row',
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
     register_btn: {
         fontSize: fontSizeDefault,
         fontWeight: '700',
-        color: '#26B819',
+        color: textColor,
     },
     container_botom: {
         flex: 1,
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     forgot: {
         marginBottom: 20,
         fontSize: fontSizeDefault,
-        color: '#26B819',
+        color: textColor,
         fontWeight: 'bold',
     },
 });

@@ -7,9 +7,11 @@ import Button from '../../components/Button';
 import { useUserContext } from '../UserContext';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AntDesign, Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { AntDesign, Feather, SimpleLineIcons, Ionicons } from '@expo/vector-icons';
 import { getUserByCompanyName, getUserByName, updateStatus } from '../../Service/api';
 import Loading from '../../components/Loading';
+import { white } from '../../constant/color';
+import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
@@ -105,115 +107,118 @@ export default function Staff({ navigation }) {
         }
     };
     return (
-        <View style={styles.container}>
-            <Loading loading={loading} />
+        <ImageBackground>
             <Header title={t('common:staff')} />
-            <Input
-                iconLeft={<Feather name="search" size={24} color="black" />}
-                customStylesContainer={styles.input}
-                value={nameStaff}
-                onChangeText={(text) => setNameStaff(text)}
-                onSubmitEditing={handleSearch}
-            />
-            <ScrollView>
-                <View style={styles.currentScreen}>
-                    {nameStaff === ''
-                        ? staffs.map((staff1, index) => (
-                              <View style={styles.icontilte} key={index}>
-                                  <Image
-                                      style={styles.icon}
-                                      source={
-                                          staff1.image == null
-                                              ? require('../../assets/images/default-avatar.png')
-                                              : { uri: staff1.image }
-                                      }
-                                  />
-                                  <Text style={styles.text}>{staff1.name}</Text>
-                                  <SimpleLineIcons
-                                      name="options"
-                                      size={24}
-                                      color="black"
-                                      style={styles.iconOption}
-                                      onPress={() => showModal(staff1)}
-                                  />
-                              </View>
-                          ))
-                        : infStaff.map((staff1, index) => (
-                              <View style={styles.icontilte} key={index}>
-                                  <Image
-                                      style={styles.icon}
-                                      source={
-                                          staff1.image == null
-                                              ? require('../../assets/images/default-avatar.png')
-                                              : { uri: staff1.image }
-                                      }
-                                  />
-                                  <Text style={styles.text}>{staff1.name}</Text>
-                                  <SimpleLineIcons
-                                      name="options"
-                                      size={24}
-                                      color="black"
-                                      style={styles.iconOption}
-                                      onPress={() => showModal(staff1)}
-                                  />
-                              </View>
-                          ))}
-                </View>
-                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
-                    <View style={styles.modalBackground}>
-                        <View style={styles.modalContainer}>
-                            <View style={styles.modalContainer1}>
-                                <View style={styles.modalContent}>
-                                    <View>
-                                        <Button
-                                            onPress={hideModal}
-                                            customStylesIcon={styles.icon_close}
-                                            iconLeft={<AntDesign name="close" size={20} color="black" />}
-                                        />
+            <View style={styles.container_input}>
+                <Input
+                    iconLeft={<Feather name="search" size={24} color="black" />}
+                    customStylesContainer={styles.input}
+                    holder={'Tìm kím theo tên, email, phone'}
+                    value={nameStaff}
+                    onChangeText={(text) => setNameStaff(text)}
+                    onSubmitEditing={handleSearch}
+                    iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
+                />
+            </View>
+            <Loading loading={loading}>
+                <ScrollView>
+                    <View style={styles.currentScreen}>
+                        {nameStaff === ''
+                            ? staffs.map((staff1, index) => (
+                                  <View style={styles.icontilte} key={index}>
+                                      <Image
+                                          style={styles.icon}
+                                          source={
+                                              staff1.image == null
+                                                  ? require('../../assets/images/default-avatar.png')
+                                                  : { uri: staff1.image }
+                                          }
+                                      />
+                                      <Text style={styles.text}>{staff1.name}</Text>
+                                      <SimpleLineIcons
+                                          name="options"
+                                          size={24}
+                                          color="black"
+                                          style={styles.iconOption}
+                                          onPress={() => showModal(staff1)}
+                                      />
+                                  </View>
+                              ))
+                            : infStaff.map((staff1, index) => (
+                                  <View style={styles.icontilte} key={index}>
+                                      <Image
+                                          style={styles.icon}
+                                          source={
+                                              staff1.image == null
+                                                  ? require('../../assets/images/default-avatar.png')
+                                                  : { uri: staff1.image }
+                                          }
+                                      />
+                                      <Text style={styles.text}>{staff1.name}</Text>
+                                      <SimpleLineIcons
+                                          name="options"
+                                          size={24}
+                                          color="black"
+                                          style={styles.iconOption}
+                                          onPress={() => showModal(staff1)}
+                                      />
+                                  </View>
+                              ))}
+                    </View>
+                    <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
+                        <View style={styles.modalBackground}>
+                            <View style={styles.modalContainer}>
+                                <View style={styles.modalContainer1}>
+                                    <View style={styles.modalContent}>
+                                        <View>
+                                            <Button
+                                                onPress={hideModal}
+                                                customStylesIcon={styles.icon_close}
+                                                iconLeft={<AntDesign name="close" size={20} color="black" />}
+                                            />
+                                        </View>
+                                        <Text style={styles.title}>{t('common:option')}</Text>
                                     </View>
-                                    <Text style={styles.title}>{t('common:option')}</Text>
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={t('common:information')}
+                                        onPress={() => {
+                                            navigation.navigate('Information', { dataModel: dataModel });
+                                        }}
+                                    />
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={t('common:chat')}
+                                    />
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={buttonText}
+                                        onPress={handleLockup}
+                                    />
                                 </View>
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={t('common:information')}
-                                    onPress={() => {
-                                        navigation.navigate('Information', { dataModel: dataModel });
-                                    }}
-                                />
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={t('common:chat')}
-                                />
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={buttonText}
-                                    onPress={handleLockup}
-                                />
                             </View>
                         </View>
-                    </View>
-                </Modal>
-            </ScrollView>
-        </View>
+                    </Modal>
+                </ScrollView>
+            </Loading>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
+    container_input: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 15,
     },
     input: {
-        width: '90%',
         height: 50,
-        borderColor: 'white',
-        backgroundColor: '#C9C9C9',
         borderWidth: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderColor: white,
+        backgroundColor: '#C9C9C9',
     },
     icon: {
         flex: 1,
@@ -234,8 +239,9 @@ const styles = StyleSheet.create({
     },
     currentScreen: {
         flex: 1,
-        backgroundColor: 'white',
         padding: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
         flex: 4,

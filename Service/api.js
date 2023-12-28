@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const instance = axios.create({
     // baseURL: 'http://bill-rest.ap-southeast-2.elasticbeanstalk.com/api',
-    baseURL: 'http://192.168.60.163:8080/api',
+    baseURL: 'http://192.168.1.106:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
     // sau đó copy địa chỉ IPv4 address
 });
@@ -157,28 +157,46 @@ export const getCompaniesById = async (id) => {
 //invoice
 export const createInvoice = async (
     emailUser,
-    emailGuest,
+    phoneGuest,
     note,
     isPaid,
     listOrders,
     method,
     companyName,
     key,
-    qrImage,
+    totalPrice,
+    tax,
+    address,
+    image,
 ) => {
+    let formData = new FormData();
+    if (phoneGuest == '') phoneGuest = '0000000000';
+    if (note == '') note = 'No note';
+    if (method == '') method = 'cash';
+    if (tax == '') tax = '0.0';
+    if (totalPrice == '') totalPrice = '0';
+    if (address == '') address = 'No address';
+
+    formData.append('emailUser', emailUser);
+    formData.append('phoneGuest', phoneGuest);
+    formData.append('note', note);
+    formData.append('isPaid', isPaid);
+    formData.append('method', method);
+    formData.append('companyName', companyName);
+    formData.append('listOrders', listOrders);
+    formData.append('key', key);
+    formData.append('totalPrice', totalPrice);
+    formData.append('tax', tax);
+    formData.append('address', address);
+    formData.append('image', image);
+    console.log(formData);
     try {
-        const response = await instance.post('/v1/invoices', {
-            emailUser,
-            emailGuest,
-            note,
-            isPaid,
-            listOrders,
-            method,
-            companyName,
-            key,
-            qrImage,
+        const response = await instance.post('/v1/invoices', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         });
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }
@@ -259,6 +277,37 @@ export const updateStatus = async (id, status) => {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+// customer
+export const getCustomerByCompany = async (companyName) => {
+    try {
+        const response = await instance.get('/v1/customers', { params: { companyName } });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const createCustomerByCompany = async (name, email, phone, companyName, status) => {
+    try {
+        const response = await instance.post('/v1/customers', {
+            name,
+            email,
+            phone,
+            companyName,
+            status,
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getNameCustomerByEmail = async (email) => {
+    try {
+        const response = await instance.get('/v1/customers', { params: { email } });
         return response.data;
     } catch (error) {
         throw error;

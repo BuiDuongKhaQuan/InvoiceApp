@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import Button from '../components/Button';
 import { white } from '../constant/color';
 import { fontSizeDefault } from '../constant/fontSize';
@@ -9,6 +9,9 @@ import InvoiceList from '../components/InvoiceList';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { useUserContext } from './UserContext';
 import { useTranslation } from 'react-i18next';
+import { getCustomerByCompany, getInvoiceByCompany } from '../Service/api';
+import { listInvoices } from '../constant/listInvoice';
+import Loading from '../components/Loading';
 const { width } = Dimensions.get('screen');
 
 export default function Profile() {
@@ -16,86 +19,50 @@ export default function Profile() {
     const navigation = useNavigation();
     const { state } = useUserContext();
     const { user, company } = state;
-    const [contact, setContact] = useState();
-    const [contacts, setContacts] = useState([
-        {
-            id: 1,
-            name: 'Quan',
-            phone: '12345789',
-            email: 'qua1n@example.com',
-        },
-        {
-            id: 2,
-            name: 'Quan1',
-            phone: '12345789',
-            email: 'qua2n@example.com',
-        },
-        {
-            id: 3,
-            name: 'Quan2',
-            phone: '12345789',
-            email: 'qua4n@example.com',
-        },
-        {
-            id: 4,
-            name: 'Quan3',
-            phone: '12345789',
-            email: 'qua3n@example.com',
-        },
-    ]);
-    const [invoices, setInvoices] = useState([
-        {
-            id: '1',
-            image: require('../assets/images/Invoices/Bill_1.png'),
-        },
-        {
-            id: '2',
-            image: require('../assets/images/Invoices/Bill_2.png'),
-        },
-        {
-            id: '3',
-            image: require('../assets/images/Invoices/Bill_3.png'),
-        },
-        {
-            id: '4',
-            image: require('../assets/images/Invoices/Bill_4.png'),
-        },
-        {
-            id: '5',
-            image: require('../assets/images/Invoices/Bill_5.png'),
-        },
-        {
-            id: '6',
-            image: require('../assets/images/Invoices/Bill_6.png'),
-        },
-        {
-            id: '7',
-            image: require('../assets/images/Invoices/Bill_7.png'),
-        },
-        {
-            id: '8',
-            image: require('../assets/images/Invoices/Bill_8.png'),
-        },
-        {
-            id: '9',
-            image: require('../assets/images/Invoices/Bill_9.png'),
-        },
-        {
-            id: '10',
-            image: require('../assets/images/Invoices/Bill_10.png'),
-        },
-        {
-            id: '11',
-            image: require('../assets/images/Invoices/Bill_11.png'),
-        },
-    ]);
+    const companyName = company.name;
+    const [loadingHistory, setLoadingHistory] = useState(false);
+    const [loadingContacts, setLoadingContacts] = useState(false);
+    const [invoices, setInvoices] = useState(listInvoices);
+    const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
+    const getInvoiceByCompanys = async () => {
+        try {
+            setLoadingHistory(true);
+            const response = await getInvoiceByCompany(companyName);
+            setInvoiceByCompany(response);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingHistory(false);
+        }
+    };
 
+    const [customers, setCustomers] = useState([]);
+    const getCustomerCompany = async () => {
+        try {
+            setLoadingContacts(true);
+            const response = await getCustomerByCompany(companyName);
+            setCustomers(response);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingContacts(false);
+        }
+    };
+    const findCustomerNameByEmail = (email, customers) => {
+        const customer = customers.find((customer) => customer.email === email);
+        return customer ? customer.name : 'Không tìm thấy';
+    };
+    useEffect(() => {
+        getCustomerCompany();
+        getInvoiceByCompanys();
+    }, []);
     const [selectedTab, setSelectedTab] = useState('history');
 
     const tabActive = (key) =>
         selectedTab === key
             ? { ...styles.tab_text, borderBottomColor: 'black', borderBottomWidth: 1 }
             : styles.tab_text;
+
     return (
         <View style={styles.container}>
             <BackgroundImage>
@@ -125,7 +92,6 @@ export default function Profile() {
                         <Button
                             customStylesBtn={styles.edit_btn}
                             customStylesText={styles.btn_text}
-                            z
                             onPress={() => navigation.navigate('Setting')}
                             iconLeft={<AntDesign name="setting" size={24} color="black" />}
                             text={t('common:setting')}
@@ -153,36 +119,55 @@ export default function Profile() {
                 <View style={styles.container_bottom}>
                     <ScrollView sr style={styles.bottom_content}>
                         {selectedTab === 'history' && (
-                            <View style={styles.content}>
-                                <Text style={styles.bottom_text}>11/12/2023</Text>
-                                <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
-                                <Image
-                                    style={styles.bottom_image}
-                                    source={{
-                                        uri: 'https://accgroup.vn/wp-content/uploads/2022/08/hoa-don-ban-hang.jpg',
-                                    }}
-                                />
-                            </View>
+                            <Loading loading={loadingHistory}>
+                                <View style={styles.content}>
+                                    <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
+                                    {invoiceCByCompany.map((item) => (
+                                        <View style={styles.contact_content} key={item.id}>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:invoiceNo')}:</Text>
+                                                <Text style={styles.text_change}>{item.key}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                                <Text style={styles.text_change}>
+                                                    {findCustomerNameByEmail(item.emailGuest, customers)}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                                <Text style={styles.text_change}>{item.emailGuest}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:total')}:</Text>
+                                                <Text style={styles.text_change}>{item.totalPrice}</Text>
+                                            </View>
+                                        </View>
+                                    ))}
+                                </View>
+                            </Loading>
                         )}
                         {selectedTab === 'contact' && (
-                            <View style={styles.content}>
-                                {contacts.map((item) => (
-                                    <View style={styles.contact_content} key={item.id}>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:name')}:</Text>
-                                            <Text style={styles.text_change}>{item.name}</Text>
+                            <Loading loading={loadingContacts}>
+                                <View style={styles.content}>
+                                    {customers.map((item) => (
+                                        <View style={styles.contact_content} key={item.id}>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:name')}:</Text>
+                                                <Text style={styles.text_change}>{item.name}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:phone')}:</Text>
+                                                <Text style={styles.text_change}>{item.phone}</Text>
+                                            </View>
+                                            <View style={styles.contact_row}>
+                                                <Text style={styles.text_default}>{t('common:email')}:</Text>
+                                                <Text style={styles.text_change}>{item.email}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:phone')}:</Text>
-                                            <Text style={styles.text_change}>{item.phone}</Text>
-                                        </View>
-                                        <View style={styles.contact_row}>
-                                            <Text style={styles.text_default}>{t('common:email')}:</Text>
-                                            <Text style={styles.text_change}>{item.email}</Text>
-                                        </View>
-                                    </View>
-                                ))}
-                            </View>
+                                    ))}
+                                </View>
+                            </Loading>
                         )}
                         {selectedTab === 'like' && (
                             <InvoiceList data={invoices} isLike={true} navigation={navigation} scrollEnabled />
@@ -251,9 +236,9 @@ const styles = StyleSheet.create({
     },
     btn_text: {
         fontSize: fontSizeDefault,
-        fontWeight: '700',
+        fontWeight: 'bold',
         color: 'black',
-        marginRight: 10,
+        textAlign: 'left',
     },
     container_center: {
         flex: 0.6,
@@ -328,7 +313,6 @@ const styles = StyleSheet.create({
     bottom_content: {
         width: '100%',
         marginTop: 10,
-        flex: 1,
     },
     bottom_text: {
         fontSize: fontSizeDefault,

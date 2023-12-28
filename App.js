@@ -8,11 +8,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Profile from './screens/Profile';
 import Bills from './screens/Company/Bills';
-import Search from './screens/Search';
+import Blog from './screens/Blog';
 import Scanner from './screens/Scanner';
 import WatchBill from './screens/Company/WatchBill';
 import BillSample from './screens/Company/BillSample';
-import EditBill from './screens/Company/EditBill';
 import Staff from './screens/Company/Staff';
 import Statistical from './screens/Company/Statistical';
 import Language from './screens/Setting/Language';
@@ -32,6 +31,7 @@ import './constant/translations/DCSLocalize';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
 import { handleNotification } from './utilies/sendNotification';
+import { LikeProvider } from './components/InvoiceList/LikeContext';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -47,37 +47,38 @@ export default function App() {
 
     return (
         <UserProvider>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="Welcom">
-                    <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
-                    <Stack.Screen name="Register" component={Register} options={headerNone} />
-                    <Stack.Screen name="Login" component={Login} options={headerNone} />
-                    <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
-                    <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
-                    <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
-                    <Stack.Screen name="Scanner" component={Scanner} />
-                    <Stack.Screen name="Search" component={Search} />
-                    <Stack.Screen name="Home" component={Home} options={headerNone} />
-                    <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
-                    <Stack.Screen name="Chat" component={Chat} />
-                    <Stack.Screen name="Profile" component={Profile} />
-                    <Stack.Screen name="Bills" component={Bills} options={headerNone} />
-                    <Stack.Screen name="BillSample" component={BillSample} options={headerNone} />
-                    <Stack.Screen name="EditBill" component={EditBill} />
-                    <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
-                    <Stack.Screen name="Staff" component={Staff} options={headerNone} />
-                    <Stack.Screen name="Statistical" component={Statistical} options={headerNone} />
-                    <Stack.Screen name="WatchBill" component={WatchBill} />
-                    <Stack.Screen name="Language" component={Language} options={headerNone} />
-                    <Stack.Screen name="Notification" component={Notification} options={headerNone} />
-                    <Stack.Screen name="Setting" component={Setting} options={headerNone} />
-                    <Stack.Screen name="Support" component={Support} options={headerNone} />
-                    <Stack.Screen name="Information" component={Information} options={headerNone} />
-                    <Stack.Screen name="Header" component={Header} />
-                    <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
-                    <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <LikeProvider>
+                <NavigationContainer>
+                    <Stack.Navigator initialRouteName="Welcom">
+                        <Stack.Screen name="Welcom" component={Welcome} options={headerNone} />
+                        <Stack.Screen name="Register" component={Register} options={headerNone} />
+                        <Stack.Screen name="Login" component={Login} options={headerNone} />
+                        <Stack.Screen name="ChangePassword" component={ChangePassword} options={headerNone} />
+                        <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={headerNone} />
+                        <Stack.Screen name="TabNavigator" component={TabNavigator} options={headerNone} />
+                        <Stack.Screen name="Scanner" component={Scanner} />
+                        <Stack.Screen name="Blog" component={Blog} />
+                        <Stack.Screen name="Home" component={Home} options={headerNone} />
+                        <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
+                        <Stack.Screen name="Chat" component={Chat} />
+                        <Stack.Screen name="Profile" component={Profile} />
+                        <Stack.Screen name="Bills" component={Bills} options={headerNone} />
+                        <Stack.Screen name="BillSample" component={BillSample} options={headerNone} />
+                        <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
+                        <Stack.Screen name="Staff" component={Staff} options={headerNone} />
+                        <Stack.Screen name="Statistical" component={Statistical} options={headerNone} />
+                        <Stack.Screen name="WatchBill" component={WatchBill} />
+                        <Stack.Screen name="Language" component={Language} options={headerNone} />
+                        <Stack.Screen name="Notification" component={Notification} options={headerNone} />
+                        <Stack.Screen name="Setting" component={Setting} options={headerNone} />
+                        <Stack.Screen name="Support" component={Support} options={headerNone} />
+                        <Stack.Screen name="Information" component={Information} options={headerNone} />
+                        <Stack.Screen name="Header" component={Header} />
+                        <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </LikeProvider>
         </UserProvider>
     );
 }

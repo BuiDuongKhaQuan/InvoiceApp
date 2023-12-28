@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from '../../components/SettingItem/header';
 import { MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 
 export default function Statistical() {
     const { t } = useTranslation();
@@ -34,7 +35,7 @@ export default function Statistical() {
     ]);
 
     return (
-        <View style={styles.container}>
+        <ImageBackground>
             <Header title={t('common:statisticals')} />
             <View style={styles.container_center}>
                 <FlatList
@@ -53,18 +54,14 @@ export default function Statistical() {
                     contentContainerStyle={styles.flatListContent}
                 />
             </View>
-        </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     container_center: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#CCC',
         flexDirection: 'row',
         alignItems: 'flex-start',
     },
