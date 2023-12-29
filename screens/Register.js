@@ -16,6 +16,7 @@ import { register } from '../Service/api';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
+import { textColor } from '../constant/color';
 export default function Register() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -122,111 +123,105 @@ export default function Register() {
     };
 
     return (
-        <View style={styles.container}>
+        <BackgroundImage>
             <Loading loading={loading} />
-            <BackgroundImage>
-                <ScrollView>
-                    <View style={styles.container_top}>
-                        <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                        <Text style={styles.title}>Invoice C</Text>
-                    </View>
-                    <View style={centerStyle}>
-                        <Input
-                            onChangeText={handleChangeEmail}
-                            value={email}
-                            validate={errorEmail}
-                            validateText={t('common:formatEmail')}
-                            holder="example@example.com"
-                            iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
-                        />
-                        <Input
-                            onChangeText={handleChangeName}
-                            value={name}
-                            validate={errorName}
-                            validateText={t('common:nobankName')}
-                            holder={t('common:fullName')}
-                            iconLeft={<SimpleLineIcons name="user" size={24} color="black" />}
-                        />
-                        <Input
-                            onChangeText={handleChangePhone}
-                            value={phone}
-                            validate={errorPhone}
-                            validateText={t('common:formatPhone')}
-                            holder={t('common:phoneNumber')}
-                            iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
-                        />
-                        <Input
-                            onChangeText={handleChangeCompanyKey}
-                            value={companyKey}
-                            validate={errorCompanyKey}
-                            validateText={t('common:nobankCompany')}
-                            holder={t('common:companyKey')}
-                            iconLeft={
-                                <MaterialCommunityIcons name="office-building-marker-outline" size={24} color="black" />
-                            }
-                        />
-                        <Input
-                            onChangeText={handleChangePass}
-                            value={pass}
-                            validate={errorPass}
-                            validateText={t('common:format')}
-                            pass={!showPassword}
-                            holder={t('common:password')}
-                            onPressIconRight={togglePasswordShow}
-                            iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
-                            iconRight={<Feather name={showPass} size={24} color="black" />}
-                        />
-                        <Input
-                            onChangeText={handleChangeRePass}
-                            value={repass}
-                            validate={errorRePass}
-                            validateText={t('common:passwordIncorrect')}
-                            pass={!showRePassword}
-                            holder={t('common:rePassword')}
-                            onPressIconRight={toggleRePasswordShow}
-                            iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
-                            iconRight={<Feather name={showRePass} size={24} color="black" />}
-                        />
+            <ScrollView style={styles.container}>
+                <View style={styles.container_top}>
+                    <Image style={styles.logo} source={require('../assets/images/logo.png')} />
+                </View>
+                <View style={centerStyle}>
+                    <Input
+                        onChangeText={handleChangeEmail}
+                        value={email}
+                        validate={errorEmail}
+                        validateText={t('common:formatEmail')}
+                        holder="example@example.com"
+                        iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangeName}
+                        value={name}
+                        validate={errorName}
+                        validateText={t('common:nobankName')}
+                        holder={t('common:fullName')}
+                        iconLeft={<SimpleLineIcons name="user" size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangePhone}
+                        value={phone}
+                        validate={errorPhone}
+                        validateText={t('common:formatPhone')}
+                        holder={t('common:phoneNumber')}
+                        iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangeCompanyKey}
+                        value={companyKey}
+                        validate={errorCompanyKey}
+                        validateText={t('common:nobankCompany')}
+                        holder={t('common:companyKey')}
+                        iconLeft={
+                            <MaterialCommunityIcons name="office-building-marker-outline" size={24} color="black" />
+                        }
+                    />
+                    <Input
+                        onChangeText={handleChangePass}
+                        value={pass}
+                        validate={errorPass}
+                        validateText={t('common:format')}
+                        pass={!showPassword}
+                        holder={t('common:password')}
+                        onPressIconRight={togglePasswordShow}
+                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                        iconRight={<Feather name={showPass} size={24} color="black" />}
+                    />
+                    <Input
+                        onChangeText={handleChangeRePass}
+                        value={repass}
+                        validate={errorRePass}
+                        validateText={t('common:passwordIncorrect')}
+                        pass={!showRePassword}
+                        holder={t('common:rePassword')}
+                        onPressIconRight={toggleRePasswordShow}
+                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                        iconRight={<Feather name={showRePass} size={24} color="black" />}
+                    />
 
-                        {keyboardIsShow || (
-                            <>
-                                <Button onPress={handlePress} text={t('common:signup')} />
-                                <View style={styles.register}>
-                                    <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
-                                    <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                        {t('common:login')}
-                                    </Text>
-                                </View>
-                            </>
-                        )}
-                    </View>
                     {keyboardIsShow || (
-                        <View style={styles.container_botom}>
-                            <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                                {t('common:forgotPass')}?
-                            </Text>
-                        </View>
+                        <>
+                            <Button onPress={handlePress} text={t('common:signup')} />
+                            <View style={styles.register}>
+                                <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
+                                <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                                    {t('common:login')}
+                                </Text>
+                            </View>
+                        </>
                     )}
-                </ScrollView>
-            </BackgroundImage>
-        </View>
+                </View>
+                {keyboardIsShow || (
+                    <View style={styles.container_botom}>
+                        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                            {t('common:forgotPass')}?
+                        </Text>
+                    </View>
+                )}
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-    },
-    image: {
-        flex: 1,
+        marginHorizontal: 10,
     },
     container_top: {
-        flex: 3.5,
         alignItems: 'center',
+        justifyContent: 'center',
     },
     logo: {
-        width: 200,
-        height: 200,
+        width: 300,
+        height: 300,
         resizeMode: 'stretch',
     },
     title: {
@@ -238,9 +233,7 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: 2, height: 2 },
     },
     container_center: {
-        flex: 4.3,
         alignItems: 'center',
-        justifyContent: 'center',
     },
     register: {
         flexDirection: 'row',
@@ -251,16 +244,15 @@ const styles = StyleSheet.create({
     register_btn: {
         fontSize: fontSizeDefault,
         fontWeight: '700',
-        color: '#26B819',
+        color: textColor,
     },
     container_botom: {
-        flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
     forgot: {
         marginVertical: 15,
         fontSize: fontSizeDefault,
-        color: '#26B819',
+        color: textColor,
     },
 });

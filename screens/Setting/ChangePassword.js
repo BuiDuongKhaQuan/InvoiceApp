@@ -66,7 +66,7 @@ export default function ChangePassword() {
     };
     return (
         <BackgroundImage>
-            <Loading loading={loading} />
+            <Loading loading={loading} isFullScreen />
             <Header title={t('common:password')} />
             <ScrollView style={styles.container}>
                 <View style={styles.content_center}>

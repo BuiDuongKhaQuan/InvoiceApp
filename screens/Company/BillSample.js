@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { listInvoices } from '../../constant/listInvoice';
 import { white } from '../../constant/color';
 import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
+import { useNavigation } from '@react-navigation/native';
 
-export default function BillSample({ navigation }) {
+export default function BillSample() {
     const { t } = useTranslation();
     const [invoices, setInvoices] = useState(listInvoices);
-
+    const navigation = useNavigation();
     return (
         <ImageBackground>
             <Header title={t('common:billSample')} />
@@ -27,7 +28,7 @@ export default function BillSample({ navigation }) {
                 />
             </View>
             <View style={styles.list}>
-                <InvoiceList data={invoices} />
+                <InvoiceList data={invoices} navigation={navigation} />
             </View>
         </ImageBackground>
     );

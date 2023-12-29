@@ -26,12 +26,14 @@ import Header from './components/Header';
 import ValidateEmail from './screens/ValidateEmail';
 import ResetPassword from './screens/ResetPassword';
 import Information from './screens/Setting/Information';
+import CompanyInfo from './screens/Company/CompanyInfo';
 import { UserProvider } from './screens/UserContext';
 import './constant/translations/DCSLocalize';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
 import { handleNotification } from './utilies/sendNotification';
 import { LikeProvider } from './components/InvoiceList/LikeContext';
+import Products from './screens/Company/Products';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -67,7 +69,7 @@ export default function App() {
                         <Stack.Screen name="ProfileCompany" component={ProfileCompany} options={headerNone} />
                         <Stack.Screen name="Staff" component={Staff} options={headerNone} />
                         <Stack.Screen name="Statistical" component={Statistical} options={headerNone} />
-                        <Stack.Screen name="WatchBill" component={WatchBill} />
+                        <Stack.Screen name="WatchBill" component={WatchBill} options={headerNone} />
                         <Stack.Screen name="Language" component={Language} options={headerNone} />
                         <Stack.Screen name="Notification" component={Notification} options={headerNone} />
                         <Stack.Screen name="Setting" component={Setting} options={headerNone} />
@@ -75,7 +77,9 @@ export default function App() {
                         <Stack.Screen name="Information" component={Information} options={headerNone} />
                         <Stack.Screen name="Header" component={Header} />
                         <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
-                        <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} options={headerNone} />
+                        <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={headerNone} />
+                        <Stack.Screen name="Products" component={Products} options={headerNone} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </LikeProvider>

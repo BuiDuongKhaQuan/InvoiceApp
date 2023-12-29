@@ -3,7 +3,7 @@ import React from 'react';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 
-export default function Product({ data, isList, onRemove, onAdd }) {
+export default function Product({ data, isList, onRemove, onAdd, isReview }) {
     const { t } = useTranslation();
     return (
         <>
@@ -21,7 +21,7 @@ export default function Product({ data, isList, onRemove, onAdd }) {
                     <View style={styles.price}>
                         <Text>{t('common:price')}</Text>
                     </View>
-                    <View style={styles.delete}></View>
+                    {isReview || <View style={styles.delete}></View>}
                 </View>
             )}
 
@@ -40,11 +40,13 @@ export default function Product({ data, isList, onRemove, onAdd }) {
                         <View style={styles.price}>
                             <Text>{item.price}</Text>
                         </View>
-                        <View style={styles.delete}>
-                            <TouchableOpacity onPress={() => onAdd(item)}>
-                                <Entypo name="check" size={24} color="green" />
-                            </TouchableOpacity>
-                        </View>
+                        {isReview || (
+                            <View style={styles.delete}>
+                                <TouchableOpacity onPress={() => onAdd(item)}>
+                                    <Entypo name="check" size={24} color="green" />
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 ))
             ) : (

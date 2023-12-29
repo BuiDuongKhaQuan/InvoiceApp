@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import { getInvoiceByKey } from '../Service/api';
+import Loading from '../components/Loading';
 
 export default function Scanner() {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
-
+    const navigation = useNavigation();
     useEffect(() => {
         const getBarCodeScannerPermissions = async () => {
             const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -17,10 +21,21 @@ export default function Scanner() {
         getBarCodeScannerPermissions();
     }, []);
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
-        alert(`${t('common:idcode')} ${type} ${t('common:andData')} ${data} ${t('common:beenScanned')}?`);
-        console.log(data);
+        setLoading(true);
+        // alert(`${t('common:idcode')} ${type} ${t('common:andData')} ${data} ${t('common:beenScanned')}?`);
+        try {
+            const response = await getInvoiceByKey(data);
+            navigation.navigate('WatchBill', { data: response });
+            console.log(response);
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                Alert.alert(t('common:error'), error.response.data.message);
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (hasPermission === null) {
@@ -32,6 +47,7 @@ export default function Scanner() {
 
     return (
         <View style={styles.container}>
+            <Loading loading={loading} isFullScreen />
             <BarCodeScanner
                 onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 // style={StyleSheet.absoluteFillObject}

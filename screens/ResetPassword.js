@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Keyboard, Alert } from 'react-native';
+import { StyleSheet, View, Image, Keyboard, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -7,8 +7,10 @@ import { fontSizeDefault } from '../constant/fontSize';
 import { Ionicons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { resetPassword } from '../Service/api';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import Loading from '../components/Loading';
+import { textColor } from '../constant/color';
 
 export default function Login() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -16,7 +18,9 @@ export default function Login() {
     const [repass, setRepass] = useState('');
     const [errorRepass, setErrorRepass] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
+    const [loading, setLoading] = useState(false);
     const route = useRoute();
+    const navigation = useNavigation();
     const { t } = useTranslation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
@@ -41,16 +45,36 @@ export default function Login() {
         }
     };
 
+    const handleChangeLogin = () => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            t('common:alert_success'),
+            t('common:Đổi mật khẩu thành công'),
+            [
+                {
+                    text: t('common:alert_yes'),
+                    onPress: () => navigation.navigate('Login'),
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+
     const handleSubmit = async () => {
         console.log(route.params?.data, pass, repass);
         try {
+            setLoading(true);
             await resetPassword(route.params?.data, pass, repass);
+            handleChangeLogin();
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 Alert.alert(t('common:errResetPassword'), error.response.data.message);
             } else {
                 console.error(t('common:errResetPassword'), error.response);
             }
+        } finally {
+            setLoading(false);
         }
     };
     const validateRepass = () => repass === pass;
@@ -65,35 +89,33 @@ export default function Login() {
     };
 
     return (
-        <View style={styles.container}>
-            <BackgroundImage>
-                <View style={styles.container_top}>
-                    <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                    <Text style={styles.title}>Invoice C</Text>
-                </View>
-                <View style={centerStyle}>
-                    <Input
-                        onChangeText={handleChangePass}
-                        value={pass}
-                        validate={errorPass}
-                        validateText={t('common:format')}
-                        pass
-                        holder={t('common:newPass')}
-                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
-                    />
-                    <Input
-                        onChangeText={handleChangeRepass}
-                        value={repass}
-                        validate={errorRepass}
-                        validateText={t('common:errRenewPass')}
-                        holder={t('common:newPass')}
-                        iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
-                    />
+        <BackgroundImage>
+            <Loading loading={loading} isFullScreen />
+            <View style={styles.container_top}>
+                <Image style={styles.logo} source={require('../assets/images/logo.png')} />
+            </View>
+            <View style={centerStyle}>
+                <Input
+                    onChangeText={handleChangePass}
+                    value={pass}
+                    validate={errorPass}
+                    validateText={t('common:format')}
+                    pass
+                    holder={t('common:newPass')}
+                    iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                />
+                <Input
+                    onChangeText={handleChangeRepass}
+                    value={repass}
+                    validate={errorRepass}
+                    validateText={t('common:errRenewPass')}
+                    holder={t('common:newPass')}
+                    iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                />
 
-                    {keyboardIsShow || <Button onPress={handlePress} text={t('common:confirm')} />}
-                </View>
-            </BackgroundImage>
-        </View>
+                {keyboardIsShow || <Button onPress={handlePress} text={t('common:confirm')} />}
+            </View>
+        </BackgroundImage>
     );
 }
 
@@ -110,8 +132,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 200,
-        height: 200,
+        marginTop: 100,
+        width: 400,
+        height: 400,
     },
     title: {
         fontSize: 70,
@@ -123,6 +146,7 @@ const styles = StyleSheet.create({
     container_center: {
         flex: 4,
         alignItems: 'center',
+        marginHorizontal: 10,
     },
     register: {
         flexDirection: 'row',
@@ -133,7 +157,7 @@ const styles = StyleSheet.create({
     register_btn: {
         fontSize: fontSizeDefault,
         fontWeight: '700',
-        color: '#26B819',
+        color: textColor,
     },
     container_botom: {
         flex: 1,
@@ -143,6 +167,6 @@ const styles = StyleSheet.create({
     forgot: {
         marginBottom: 20,
         fontSize: fontSizeDefault,
-        color: '#26B819',
+        color: textColor,
     },
 });

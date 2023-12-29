@@ -2,32 +2,45 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Alert } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { Entypo } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
-import SelectDropdown from 'react-native-select-dropdown';
 import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { instance } from '../../Service/api';
 import { useTranslation } from 'react-i18next';
 import { white } from '../../constant/color';
-export default function Information({ route }) {
+import { useNavigation } from '@react-navigation/native';
+
+export default function CompanyInfo() {
     const { state } = useUserContext();
     const { user, company } = state;
     const { dispatch } = useUserContext();
-    const genders = ['Male', 'Female'];
-    const [name, setName] = useState(state.user.name);
-    const [email, setEmail] = useState(state.user.email);
-    const [phone, setPhone] = useState(state.user.phone);
-    const [selectedGender, setSelectedGender] = useState('');
-    const [photoShow, setPhotoShow] = useState(null);
-    const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
+    const [name, setName] = useState(company.name);
+    const [email, setEmail] = useState(company.email);
+    const [phone, setPhone] = useState(company.phone);
+    const [address, setAddress] = useState(company.address);
     const [loading, setLoading] = useState(false);
-
     const { t } = useTranslation();
+    const navigation = useNavigation();
+
+    const handleChangeLogin = () => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            t('common:alert_success'),
+            t('common:Đổi mật khẩu thành công'),
+            [
+                {
+                    text: t('common:alert_yes'),
+                    onPress: () => navigation.navigate('ProfileCompany'),
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -40,34 +53,27 @@ export default function Information({ route }) {
         }
 
         let localUri = result.assets[0].uri;
-        setPhotoShow(localUri);
         let filename = localUri.split('/').pop();
-        console.log(localUri);
         let match = /\.(\w+)$/.exec(filename);
         let type = match ? `image/${match[1]}` : `image`;
 
         let formData = new FormData();
-        formData.append('id', state.user.id);
-        formData.append('avartar', {
+        formData.append('id', company.id);
+        formData.append('logo', {
             uri: localUri,
             name: filename,
             type,
         });
-        console.log({
-            uri: localUri,
-            name: filename,
-            type,
-        });
-        setLoading(true);
         try {
-            const response = await instance.patch('/v1/auth/users', formData, {
+            setLoading(true);
+            const response = await instance.patch('/v1/companies', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             dispatch({
                 type: 'SIGN_IN',
-                payload: { user: response.data, company: state.company },
+                payload: { user: user, company: response.data },
             });
         } catch (error) {
             console.error('Error:', error);
@@ -75,78 +81,35 @@ export default function Information({ route }) {
             setLoading(false);
         }
     };
-    const uploadWallpaper = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            aspect: [4, 2],
-            quality: 1,
-        });
 
-        if (result.canceled) {
-            return;
-        }
-
-        let localUri = result.assets[0].uri;
-        setPhotoShowWallpaper(localUri);
-        let filename = localUri.split('/').pop();
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
-
-        let formData = new FormData();
-        formData.append('id', state.user.id);
-        formData.append('wallpaper', {
-            uri: localUri,
-            name: filename,
-            type,
-        });
-        setLoading(true);
-        try {
-            const response = await instance.patch('/v1/auth/users', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            dispatch({
-                type: 'SIGN_IN',
-                payload: { user: response.data, company: state.company },
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
     const handlerSend = async () => {
         let formData = new FormData();
-        formData.append('id', state.user.id);
-        // Kiểm tra và thêm tên nếu đã nhập
+        formData.append('id', company.id);
+
         if (name) {
             formData.append('name', name);
         }
-
-        // Kiểm tra và thêm email nếu đã nhập
         if (email) {
             formData.append('email', email);
         }
         if (phone) {
             formData.append('phone', phone);
         }
-        if (selectedGender) {
-            formData.append('gender', selectedGender);
+        if (address) {
+            formData.append('address', address);
         }
-        setLoading(true);
         try {
-            const response = await instance.patch('/v1/auth/users', formData, {
+            setLoading(true);
+            const response = await instance.patch('/v1/companies', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             dispatch({
                 type: 'SIGN_IN',
-                payload: { user: response.data, company: state.company },
+                payload: { user: user, company: response.data },
             });
-            Alert.alert('Update successful');
-            console.log(response.data);
+            handleChangeLogin();
         } catch (error) {
             console.error(' error:', error.response);
         } finally {
@@ -164,33 +127,16 @@ export default function Information({ route }) {
                         <Image
                             style={styles.avatar_img}
                             source={
-                                user.image == null
+                                company.logo == null
                                     ? require('../../assets/images/default-avatar.png')
-                                    : { uri: user.image }
+                                    : { uri: company.logo }
                             }
                         />
-
                         <Button
-                            text={t('common:changeAvt')}
+                            text={t('common:changeLogo')}
                             customStylesText={{ ...styles.text, textAlign: 'center' }}
                             customStylesBtn={{ ...styles.change_btn, height: '37%' }}
                             onPress={takePhotoAndUpload}
-                        />
-                    </View>
-                    <View style={styles.image}>
-                        <Image
-                            style={styles.wallpaper_img}
-                            source={
-                                user.wallpaper == null
-                                    ? require('../../assets/images/default-wallpaper.png')
-                                    : { uri: user.wallpaper }
-                            }
-                        />
-                        <Button
-                            text={t('common:changeWallet')}
-                            customStylesText={{ ...styles.text, textAlign: 'center' }}
-                            customStylesBtn={styles.change_btn}
-                            onPress={uploadWallpaper}
                         />
                     </View>
                 </View>
@@ -201,7 +147,7 @@ export default function Information({ route }) {
                             <Text style={styles.text}>{t('common:name')}:</Text>
                             <Input
                                 customStylesContainer={styles.container_input}
-                                holder={state.user.name}
+                                holder={company.name}
                                 value={name}
                                 onChangeText={(text) => setName(text)}
                             />
@@ -210,7 +156,7 @@ export default function Information({ route }) {
                             <Text style={styles.text}>{t('common:email')}:</Text>
                             <Input
                                 customStylesContainer={styles.container_input}
-                                holder={state.user.email}
+                                holder={company.email}
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
                             />
@@ -219,33 +165,19 @@ export default function Information({ route }) {
                             <Text style={styles.text}>{t('common:phone')}:</Text>
                             <Input
                                 customStylesContainer={styles.container_input}
-                                holder={state.user.phone}
+                                holder={company.phone}
                                 value={phone}
                                 onChangeText={(text) => setPhone(text)}
                             />
                         </View>
                         <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:gender')}:</Text>
-                            <View style={styles.dropdown}>
-                                <SelectDropdown
-                                    data={genders}
-                                    onSelect={(selectedItem, index) => {
-                                        setSelectedGender(selectedItem);
-                                    }}
-                                    buttonStyle={styles.dropdown_btn}
-                                    defaultButtonText={state.user.gender}
-                                    renderDropdownIcon={() => (
-                                        <Entypo name="chevron-small-down" size={24} color="black" />
-                                    )}
-                                    dropdownIconPosition="right"
-                                    buttonTextAfterSelection={(selectedItem, index) => {
-                                        return selectedItem;
-                                    }}
-                                    rowTextForSelection={(item, index) => {
-                                        return item;
-                                    }}
-                                />
-                            </View>
+                            <Text style={styles.text}>{t('common:address')}:</Text>
+                            <Input
+                                customStylesContainer={styles.container_input}
+                                holder={company.address}
+                                value={address}
+                                onChangeText={(text) => setAddress(text)}
+                            />
                         </View>
                     </View>
                     <View style={styles.btn}>
