@@ -44,7 +44,7 @@ export default function ChangePassword() {
     const changePass = async () => {
         try {
             await changePassword(state.user.email, passOld, passNew, confirmPass);
-            Alert.alert('Success', 'Password changed successfully');
+            Alert.alert('Success', 'common:changePasswordSuccess');
         } catch (error) {
             Alert.alert('Error', error.response.data.message);
         } finally {

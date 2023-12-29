@@ -6,6 +6,7 @@ import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { textColor, white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Language() {
     const { t, i18n } = useTranslation();
@@ -18,9 +19,15 @@ export default function Language() {
         { code: 'jp', label: 'Japan' },
         { code: 'ru', label: 'Russia' },
         { code: 'vi', label: 'VietNamese' },
+        { code: 'ko', label: 'Korea' },
     ];
-    const setLanguage = (code) => {
-        return i18n.changeLanguage(code);
+    const setLanguage = async (code) => {
+        try {
+            await AsyncStorage.setItem('user-language', code);
+            i18n.changeLanguage(code);
+        } catch (error) {
+            console.error('Error storing language', error);
+        }
     };
     const handleSubmit = (code) => {
         // Hiển thị cảnh báo cho người dùng xác nhận

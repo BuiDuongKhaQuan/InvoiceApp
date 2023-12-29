@@ -81,7 +81,7 @@ export default function WatchBill() {
                         </Text>
                     </View>
                     <View style={[styles.contact_title, styles.contact_content]}>
-                        <Text style={[styles.text_default, styles.title]}>Người tạo đơn:</Text>
+                        <Text style={[styles.text_default, styles.title]}> {t('common:creator')}:</Text>
                     </View>
                     <View style={styles.contact_content}>
                         <View style={styles.contact_row}>
@@ -98,7 +98,7 @@ export default function WatchBill() {
                         </View>
                     </View>
                     <View style={[styles.contact_title, styles.contact_content]}>
-                        <Text style={[styles.text_default, styles.title]}>Khách hàng:</Text>
+                        <Text style={[styles.text_default, styles.title]}> {t('common:customer')}:</Text>
                     </View>
                     <View style={styles.contact_content}>
                         <View style={styles.contact_row}>
@@ -115,7 +115,7 @@ export default function WatchBill() {
                         </View>
                     </View>
                     <View style={[styles.contact_title, styles.contact_content]}>
-                        <Text style={[styles.text_default, styles.title]}>Danh sách sản phẩm:</Text>
+                        <Text style={[styles.text_default, styles.title]}> {t('common:listProducts')}:</Text>
                     </View>
                     <View style={{ marginBottom: 15 }}>{products && <Product data={products} isList isReview />}</View>
                     <View style={styles.contact_number}>
@@ -123,7 +123,7 @@ export default function WatchBill() {
                         <Text style={styles.text_change}>{invoice.tax}%</Text>
                     </View>
                     <View style={styles.contact_number}>
-                        <Text style={[styles.text_default, styles.title]}>{t('common:inWords')}:</Text>
+                        <Text style={[styles.text_default, styles.title]}>{t('common:total')}:</Text>
                         <Text style={styles.text_change}>{invoice.totalPrice}đ</Text>
                     </View>
                     <View style={styles.contact_number}>

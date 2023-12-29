@@ -96,7 +96,9 @@ export default function ProfileCompany() {
                             <Text style={styles.text_bold}>
                                 {t('common:phone')}: {company.phone}
                             </Text>
-                            <Text style={styles.text_bold}>Email: {company.email}</Text>
+                            <Text style={styles.text_bold}>
+                                {t('common:email')}: {company.email}
+                            </Text>
                         </View>
                         <View style={styles.logo}>
                             <Image

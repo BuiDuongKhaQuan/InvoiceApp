@@ -186,7 +186,7 @@ export default function CreateInvoice({ route, isWatching }) {
                 printerUrl: selectedPrinter?.url,
             });
         } else {
-            Alert.alert('Error!!', 'Please provide complete information');
+            Alert.alert(t('common:error'), t('common:comppleInvoiceNote'));
         }
     };
     const printToFile = async (html) => {
@@ -195,7 +195,7 @@ export default function CreateInvoice({ route, isWatching }) {
             console.log('File has been saved to:', uri);
             await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
         } else {
-            Alert.alert('Error!!', 'Please provide complete information');
+            Alert.alert(t('common:error'), t('common:comppleInvoiceNote'));
         }
     };
 
@@ -2142,7 +2142,9 @@ export default function CreateInvoice({ route, isWatching }) {
                 </Modal>
                 <Modal animationType="slide" transparent={false} visible={isCustomersModalVisible}>
                     <View style={styles.container}>
-                        <Text style={styles.titleTable}>{customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}</Text>
+                        <Text style={styles.titleTable}>
+                            {customer.current ? t('common:replace') : t('common:addCustomer')}
+                        </Text>
                         <Customer dataList={customers} onDataChanged={handleDataChanged} />
                         <Button
                             customStylesBtn={styles.btn}

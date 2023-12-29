@@ -37,7 +37,7 @@ export default function Products() {
             setLoading(true);
             const response = await createProduct(name, price, state.company.name, stock);
             setProducts((prevProduct) => [...prevProduct, response]);
-            Alert.alert(t('common:alert_success'), t('common:Thêm sản phẩm thành công'));
+            Alert.alert(t('common:alert_success'), t('common:addProductSuccess'));
         } catch (error) {
             console.error('Lỗi: ', error);
         } finally {
@@ -54,7 +54,7 @@ export default function Products() {
             );
 
             // setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
-            Alert.alert(t('common:alert_success'), t('common:Thu hồi sản phẩm thành công'));
+            Alert.alert(t('common:alert_success'), t('common:recall'));
         } catch (error) {
             if (error.response) {
                 console.error('Server error:', error.response.data);
@@ -73,7 +73,7 @@ export default function Products() {
             setProducts((prevProducts) =>
                 prevProducts.map((product) => (product.id === id ? { ...product, status: response.status } : product)),
             );
-            Alert.alert(t('common:alert_success'), t('common:Đăng bán sản phẩm thành công'));
+            Alert.alert(t('common:alert_success'), t('common:postSuccess'));
         } catch (error) {
             if (error.response) {
                 console.error('Server error:', error.response.data);
@@ -87,16 +87,16 @@ export default function Products() {
     const handleSubmit = () => {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn tạo sản phẩm mới?',
-            'Nếu bạn chắc chắn muốn tạo sản phẩm mới, hãy chọn "Đồng ý".',
+            t('common:questionCreate'),
+            t('common:confimQuestionCreate'),
             [
                 {
-                    text: 'Không',
+                    text: t('common:noAgree'),
                     cancelable: true,
                     style: 'cancel',
                 },
                 {
-                    text: 'Đồng ý',
+                    text: t('common:agree'),
                     onPress: async () => {
                         await handleAddProduct();
                     },
@@ -150,7 +150,7 @@ export default function Products() {
                 ),
             );
 
-            Alert.alert(t('common:alert_success'), t('common:Chỉnh sửa thông tin thành công'));
+            Alert.alert(t('common:alert_success'), t('common:editInformationProduct'));
         } catch (error) {
             console.error('Lỗi: ', error);
         } finally {
@@ -164,7 +164,7 @@ export default function Products() {
             <View style={styles.container_input}>
                 <Input
                     customStylesContainer={styles.input}
-                    holder="Tìm theo tên sản phẩm"
+                    holder={t('common:searcchProduct')}
                     iconLeft={<Feather name="search" size={24} color="black" />}
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     onPressIconRight={() => navigation.navigate('Scanner')}
@@ -175,26 +175,26 @@ export default function Products() {
                     <View>
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập tên sản phẩm"
+                            placeholder={t('common:nameProduct')}
                             value={name}
                             onChangeText={(text) => setName(text)}
                         />
 
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập số lượng sản phẩm"
+                            placeholder={t('common:quantityProduct')}
                             value={stock}
                             onChangeText={(text) => setStock(text)}
                         />
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập giá sản phẩm"
+                            placeholder={t('common:priceProduct')}
                             value={price}
                             onChangeText={(text) => setPrice(text)}
                         />
                     </View>
                     <Button
-                        text="Thêm"
+                        text={t('common:add')}
                         onPress={handleSubmit}
                         customStylesBtn={{ marginVertical: 0, flex: 0.3 }}
                         customStylesText={{ fontSize: fontSizeDefault }}
@@ -204,15 +204,15 @@ export default function Products() {
                     <View style={styles.table}>
                         <View style={styles.table_colum}>
                             <Text style={[styles.text_bold, styles.colum_name]}>{t('common:item')}</Text>
-                            <Text style={[styles.text_bold, styles.colum_p]}>{t('common:proName')}</Text>
+                            <Text style={[styles.text_bold, styles.colum_p]}>{t('common:name')}</Text>
                             <Text style={[styles.text_bold, styles.colum_name]}>{t('common:stock')}</Text>
                             <Text style={[styles.text_bold, styles.colum_name]}>{t('common:price')}</Text>
                             <Text style={[styles.text_bold, styles.colum_name]}>{t('common:status')}</Text>
                         </View>
                         {products.map((product, index) => {
                             let statusString = '';
-                            if (product.status === 1) statusString = 'Đang bán';
-                            if (product.status === 2) statusString = 'Không bán';
+                            if (product.status === 1) statusString = t('common:onSale');
+                            if (product.status === 2) statusString = t('common:notSold');
                             return (
                                 <TouchableOpacity
                                     style={styles.table_colum}
@@ -222,8 +222,8 @@ export default function Products() {
                                     <Text style={[styles.text_line, styles.colum_name]}>{index + 1}</Text>
                                     <Text style={[styles.text_line, styles.colum_p]}>{product.name}</Text>
                                     <Text style={[styles.text_line, styles.colum_name]}>{product.stock}</Text>
-                                    <Text style={[styles.text_line, styles.colum_name]}>{statusString}</Text>
                                     <Text style={[styles.text_line, styles.colum_name]}>{product.price}</Text>
+                                    <Text style={[styles.text_line, styles.colum_name]}>{statusString}</Text>
                                 </TouchableOpacity>
                             );
                         })}
@@ -233,7 +233,7 @@ export default function Products() {
             <Modal animationType="slide" transparent={false} visible={isModalVisible}>
                 {productModal && (
                     <ScrollView style={styles.container}>
-                        <Text style={styles.titleTable}>Thông tin sản phẩm</Text>
+                        <Text style={styles.titleTable}>{t('common:informationProduct')}</Text>
                         <Loading loading={loadingModal}>
                             <View style={styles.modal_info}>
                                 <View style={{ ...styles.contact_row, borderBottomWidth: 1 }}>
@@ -268,7 +268,7 @@ export default function Products() {
                         <Button
                             customStylesBtn={styles.btn}
                             customStylesText={styles.btnClose}
-                            text={statusModal === 2 ? t('common:Đăng bán') : t('common:Thu hồi')}
+                            text={statusModal === 2 ? t('common:postSale') : t('common:recallSale')}
                             onPress={() =>
                                 productModal.status === 2
                                     ? handlePostProduct(productModal.id, 1)
