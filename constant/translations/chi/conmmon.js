@@ -26,6 +26,11 @@ export default {
     alert_lan: '您确定要更改语言吗？',
     change_customer: '更改客户',
     more_customer: '添加客户',
+    in_customer: '输入客户姓名',
+    num_customer: '输入客户电话号码',
+    email_customer: '输入客户电子邮件',
+    more: '添加',
+    customers: '客户名单',
 
     information: '信息',
     changeAvt: '改变头像',

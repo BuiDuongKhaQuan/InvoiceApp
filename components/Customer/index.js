@@ -32,12 +32,12 @@ export default function Customer({ dataList, onDataChanged }) {
             'Nếu bạn chắc chắn muốn tạo khách hàng mới, hãy chọn "Đồng ý".',
             [
                 {
-                    text: 'Không',
+                    text: t('common:alert_no'),
                     cancelable: true,
                     style: 'cancel',
                 },
                 {
-                    text: 'Đồng ý',
+                    text: 'alert_yes',
                     onPress: async () => {
                         await handleAddCustomer();
                     },
@@ -61,27 +61,27 @@ export default function Customer({ dataList, onDataChanged }) {
                     <View>
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập tên khách hàng"
+                            placeholder={t('common:in_customer')}
                             value={name}
                             onChangeText={(text) => setName(text)}
                         />
 
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập số điện thoại khách hàng"
+                            placeholder={t('common:num_customer')}
                             value={phone}
                             onChangeText={(text) => setPhone(text)}
                         />
 
                         <TextInput
                             style={styles.text_change}
-                            placeholder="Nhập email khách hàng"
+                            placeholder={t('common:email_customer')}
                             value={email}
                             onChangeText={(text) => setEmail(text)}
                         />
                     </View>
                     <Button
-                        text="Thêm"
+                        text={t('common:more')}
                         onPress={handleSubmit}
                         customStylesBtn={{ marginVertical: 0, flex: 0.3 }}
                         customStylesText={{ fontSize: fontSizeDefault }}
@@ -90,7 +90,7 @@ export default function Customer({ dataList, onDataChanged }) {
 
                 {dataList && (
                     <>
-                        <Text style={styles.title}>Danh sách khách hàng</Text>
+                        <Text style={styles.title}>{t('common:customers')}</Text>
                         {newDataList.map((item) => (
                             <TouchableOpacity
                                 style={styles.contact_content}

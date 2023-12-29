@@ -25,6 +25,11 @@ export default {
     alert_lan: '言語を変更してもよろしいですか？',
     change_customer: '顧客を変更',
     more_customer: '顧客を追加',
+    in_customer: 'お客様の名前を入力してください',
+    num_customer: 'お客様の電話番号を入力してください',
+    email_customer: 'お客様のメールアドレスを入力してください',
+    more: '追加',
+    customers: '顧客リスト',
 
     information: '情報',
     changeAvt: 'アバター変更',

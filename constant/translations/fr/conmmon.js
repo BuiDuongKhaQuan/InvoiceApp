@@ -28,7 +28,10 @@ export default {
     alert_lan: 'Êtes-vous sûr de vouloir changer de langue ?',
     change_customer: 'Changer de client',
     more_customer: 'Ajouter un client',
-
+    in_customer: 'Entrer le nom du client',
+    num_customer: 'Entrer le numéro de téléphone du client',
+    email_customer: 'Entrer l e-mail du client',
+    more: 'Ajouter',
     information: 'Information',
     changeAvt: "Changer l'avatar",
     changeWallet: 'Changer de portefeuille',
@@ -39,6 +42,7 @@ export default {
     male: 'Homme',
     female: 'Femme',
     save: 'Enregistrer',
+    customers: 'Liste des clients',
 
     changePassword: 'Changer le mot de passe',
     oldPass: 'Ancien mot de passe',
