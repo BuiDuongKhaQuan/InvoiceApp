@@ -218,7 +218,7 @@ export const createInvoice = async (
     if (method == '') method = 'cash';
     if (tax == '') tax = '0.0';
     if (totalPrice == '') totalPrice = '0';
-    if (address == '') address = 'No address';
+    if (address == '' || address == undefined) address = 'No address';
 
     formData.append('emailUser', emailUser);
     formData.append('phoneGuest', phoneGuest);
