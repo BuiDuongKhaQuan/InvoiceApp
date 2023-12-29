@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-    image: {
-        flex: 1,
-    },
     container_top: {
         flex: 5,
         width: '100%',
@@ -58,7 +55,6 @@ const styles = StyleSheet.create({
         textShadowRadius: 1,
         textShadowOffset: { width: 2, height: 2 },
     },
-
     container_botom: {
         flex: 4,
     },

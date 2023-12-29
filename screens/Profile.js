@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
@@ -24,10 +24,11 @@ export default function Profile() {
     const [loadingContacts, setLoadingContacts] = useState(false);
     const [invoices, setInvoices] = useState(listInvoices);
     const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
+    const [page, setPage] = useState(1);
     const getInvoiceByCompanys = async () => {
         try {
             setLoadingHistory(true);
-            const response = await getInvoiceByCompany(companyName);
+            const response = await getInvoiceByCompany(companyName, 20, page);
             setInvoiceByCompany(response);
         } catch (error) {
             console.log(error);
@@ -56,6 +57,7 @@ export default function Profile() {
         getCustomerCompany();
         getInvoiceByCompanys();
     }, []);
+
     const [selectedTab, setSelectedTab] = useState('history');
 
     const tabActive = (key) =>
@@ -123,7 +125,11 @@ export default function Profile() {
                                 <View style={styles.content}>
                                     <Text style={styles.bottom_text}>{t('common:invoiceComplete')}</Text>
                                     {invoiceCByCompany.map((item) => (
-                                        <View style={styles.contact_content} key={item.id}>
+                                        <TouchableOpacity
+                                            style={styles.contact_content}
+                                            key={item.id}
+                                            onPress={() => navigation.navigate('WatchBill', { data: item })}
+                                        >
                                             <View style={styles.contact_row}>
                                                 <Text style={styles.text_default}>{t('common:invoiceNo')}:</Text>
                                                 <Text style={styles.text_change}>{item.key}</Text>
@@ -142,7 +148,7 @@ export default function Profile() {
                                                 <Text style={styles.text_default}>{t('common:total')}:</Text>
                                                 <Text style={styles.text_change}>{item.totalPrice}</Text>
                                             </View>
-                                        </View>
+                                        </TouchableOpacity>
                                     ))}
                                 </View>
                             </Loading>
