@@ -2049,7 +2049,7 @@ export default function CreateInvoice({ route, isWatching }) {
                             <Button
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
-                                text={customer.current ? t('common:change_custommer') : t('common:more_custommer')}
+                                text={customer.current ? t('common:change_customer') : t('common:more_customer')}
                                 iconRight={<AntDesign name="pluscircleo" size={24} color={buttonColor} />}
                                 onPress={() => {
                                     setCustomersModalVisible(true);
@@ -2142,7 +2142,9 @@ export default function CreateInvoice({ route, isWatching }) {
                 </Modal>
                 <Modal animationType="slide" transparent={false} visible={isCustomersModalVisible}>
                     <View style={styles.container}>
-                        <Text style={styles.titleTable}>{customer.current ? 'Đổi khách hàng' : 'Thêm khách hàng'}</Text>
+                        <Text style={styles.titleTable}>
+                            {customer.current ? t('common:change_customer') : t('common:more_customer')}
+                        </Text>
                         <Customer dataList={customers} onDataChanged={handleDataChanged} />
                         <Button
                             customStylesBtn={styles.btn}

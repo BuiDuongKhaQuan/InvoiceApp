@@ -7,6 +7,7 @@ export default {
     notification: 'सूचना',
     support: 'समर्थन',
     logout: 'लॉगआउट',
+
     setting: 'सेटिंग',
     Blog: 'ब्लॉग',
     start: 'शुरू',
@@ -24,6 +25,10 @@ export default {
     alert_lan: 'क्या आप वाकई भाषा बदलना चाहते हैं?',
     change_customer: 'ग्राहक बदलें',
     more_customer: 'ग्राहक जोड़ें',
+    in_customer: 'ग्राहक का नाम दर्ज करें',
+    num_customer: 'ग्राहक का फ़ोन नंबर दर्ज करें',
+    email_customer: 'ग्राहक का ईमेल दर्ज करें',
+    more: 'और जोड़ें',
 
     information: 'जानकारी',
     changeAvt: 'अवतार बदलें',

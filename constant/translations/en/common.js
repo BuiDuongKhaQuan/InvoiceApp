@@ -26,6 +26,11 @@ export default {
     alert_lan: 'Are you sure you want to change the language?',
     change_customer: 'Change customer',
     more_customer: 'Add customer',
+    in_customer: 'Enter customer name',
+    num_customer: 'Enter customer phone number',
+    email_customer: 'Enter customer email',
+    more: 'Add',
+    customers: 'customers',
 
     information: 'Information',
     changeAvt: 'Change Avatar',

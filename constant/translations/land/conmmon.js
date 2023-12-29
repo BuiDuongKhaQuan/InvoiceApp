@@ -25,6 +25,11 @@ export default {
     alert_lan: 'คุณแน่ใจหรือไม่ว่าต้องการเปลี่ยนภาษา?',
     change_customer: 'เปลี่ยนลูกค้า',
     more_customer: 'เพิ่มลูกค้า',
+    in_customer: 'กรุณาใส่ชื่อลูกค้า',
+    num_customer: 'กรุณาใส่หมายเลขโทรศัพท์ลูกค้า',
+    email_customer: 'กรุณาใส่อีเมลล์ลูกค้า',
+    more: 'เพิ่ม',
+    customers: 'รายชื่อลูกค้า',
 
     information: 'ข้อมูล',
     changeAvt: 'เปลี่ยนรูปประจำตัว',

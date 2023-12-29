@@ -20,6 +20,7 @@ export default function Language() {
         { code: 'vi', label: 'VietNamese' },
         { code: 'india', label: 'India' },
         { code: 'land', label: 'ThaiLand' },
+        { code: 'y', label: 'Italia' },
     ];
     const setLanguage = (code) => {
         return i18n.changeLanguage(code);
