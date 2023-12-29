@@ -4,7 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { textColor } from '../../constant/color';
 
-export default function Loading({ loading, children, isFullScreen }) {
+export default function Loading({ loading, children, isFullScreen, isFooter, size = 'large' }) {
     const { t } = useTranslation();
     return (
         <>
@@ -13,8 +13,8 @@ export default function Loading({ loading, children, isFullScreen }) {
             ) : (
                 <>
                     {loading ? (
-                        <View style={styles.container}>
-                            <ActivityIndicator size="large" color={textColor} />
+                        <View style={isFooter ? styles.footer : styles.container}>
+                            <ActivityIndicator size={size} color={textColor} />
                         </View>
                     ) : (
                         children
@@ -30,7 +30,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginVertical: 150,
     },
-
+    footer: {
+        marginVertical: 15,
+        alignItems: 'center',
+    },
     spinnerTextStyle: {
         color: '#FFF',
     },

@@ -16,7 +16,6 @@ import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
     const { t } = useTranslation();
-
     const [staffs, setStaffs] = useState([]);
     const [error, setError] = useState(null);
     const [nameStaff, setNameStaff] = useState('');
@@ -25,6 +24,8 @@ export default function Staff({ navigation }) {
     const [dataModel, setDataModel] = useState();
     const [user, setUser] = useState(dataModel);
     const [buttonText, setButtonText] = useState('');
+    const [page, setPage] = useState(1);
+
     const handleSearch = async () => {
         try {
             setLoading(true);
@@ -37,10 +38,10 @@ export default function Staff({ navigation }) {
             setLoading(false);
         }
     };
-    const getInformationStaff = async () => {
+    const getInformationStaff = async (page) => {
         try {
             setLoading(true);
-            const response = await getUserByCompanyName(state.company.name);
+            const response = await getUserByCompanyName(state.company.name, 20, page);
             setStaffs(response);
         } catch (error) {
             setError(t('common:datanotCompany'));
@@ -51,7 +52,19 @@ export default function Staff({ navigation }) {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        getInformationStaff(page);
+    }, [page]);
 
+    const handleScroll = (event) => {
+        const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+        const paddingToBottom = 20; // Đặt một giá trị padding để xác định khi nào là cuối trang
+
+        if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+            // Nếu đã cuộn đến cuối, tăng số trang lên 1 để fetch dữ liệu trang tiếp theo
+            setPage((prevPage) => prevPage + 1);
+        }
+    };
     const [modalVisible, setModalVisible] = useState(false);
 
     const showModal = (data) => {
@@ -69,17 +82,6 @@ export default function Staff({ navigation }) {
         setModalVisible(false);
     };
 
-    useEffect(() => {
-        const focusListener = navigation.addListener('focus', () => {
-            setModalVisible(false);
-            getInformationStaff();
-        });
-
-        return () => {
-            focusListener();
-        };
-    }, [navigation]);
-    const [newStatus, setNewStatus] = useState();
     const handleLockup = async () => {
         setLoading(true);
         try {
@@ -120,90 +122,89 @@ export default function Staff({ navigation }) {
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                 />
             </View>
-            <Loading loading={loading}>
-                <ScrollView>
-                    <View style={styles.currentScreen}>
-                        {nameStaff === ''
-                            ? staffs.map((staff1, index) => (
-                                  <View style={styles.icontilte} key={index}>
-                                      <Image
-                                          style={styles.icon}
-                                          source={
-                                              staff1.image == null
-                                                  ? require('../../assets/images/default-avatar.png')
-                                                  : { uri: staff1.image }
-                                          }
-                                      />
-                                      <Text style={styles.text}>{staff1.name}</Text>
-                                      <SimpleLineIcons
-                                          name="options"
-                                          size={24}
-                                          color="black"
-                                          style={styles.iconOption}
-                                          onPress={() => showModal(staff1)}
-                                      />
-                                  </View>
-                              ))
-                            : infStaff.map((staff1, index) => (
-                                  <View style={styles.icontilte} key={index}>
-                                      <Image
-                                          style={styles.icon}
-                                          source={
-                                              staff1.image == null
-                                                  ? require('../../assets/images/default-avatar.png')
-                                                  : { uri: staff1.image }
-                                          }
-                                      />
-                                      <Text style={styles.text}>{staff1.name}</Text>
-                                      <SimpleLineIcons
-                                          name="options"
-                                          size={24}
-                                          color="black"
-                                          style={styles.iconOption}
-                                          onPress={() => showModal(staff1)}
-                                      />
-                                  </View>
-                              ))}
-                    </View>
-                    <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
-                        <View style={styles.modalBackground}>
-                            <View style={styles.modalContainer}>
-                                <View style={styles.modalContainer1}>
-                                    <View style={styles.modalContent}>
-                                        <View>
-                                            <Button
-                                                onPress={hideModal}
-                                                customStylesIcon={styles.icon_close}
-                                                iconLeft={<AntDesign name="close" size={20} color="black" />}
-                                            />
-                                        </View>
-                                        <Text style={styles.title}>{t('common:option')}</Text>
+            <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
+                <View style={styles.currentScreen}>
+                    {nameStaff === ''
+                        ? staffs.map((staff1, index) => (
+                              <View style={styles.icontilte} key={index}>
+                                  <Image
+                                      style={styles.icon}
+                                      source={
+                                          staff1.image == null
+                                              ? require('../../assets/images/default-avatar.png')
+                                              : { uri: staff1.image }
+                                      }
+                                  />
+                                  <Text style={styles.text}>{staff1.name}</Text>
+                                  <SimpleLineIcons
+                                      name="options"
+                                      size={24}
+                                      color="black"
+                                      style={styles.iconOption}
+                                      onPress={() => showModal(staff1)}
+                                  />
+                              </View>
+                          ))
+                        : infStaff.map((staff1, index) => (
+                              <View style={styles.icontilte} key={index}>
+                                  <Image
+                                      style={styles.icon}
+                                      source={
+                                          staff1.image == null
+                                              ? require('../../assets/images/default-avatar.png')
+                                              : { uri: staff1.image }
+                                      }
+                                  />
+                                  <Text style={styles.text}>{staff1.name}</Text>
+                                  <SimpleLineIcons
+                                      name="options"
+                                      size={24}
+                                      color="black"
+                                      style={styles.iconOption}
+                                      onPress={() => showModal(staff1)}
+                                  />
+                              </View>
+                          ))}
+                    <Loading loading={loading} isFooter></Loading>
+                </View>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
+                    <View style={styles.modalBackground}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalContainer1}>
+                                <View style={styles.modalContent}>
+                                    <View>
+                                        <Button
+                                            onPress={hideModal}
+                                            customStylesIcon={styles.icon_close}
+                                            iconLeft={<AntDesign name="close" size={20} color="black" />}
+                                        />
                                     </View>
-                                    <Button
-                                        customStylesBtn={styles.modalOption}
-                                        customStylesText={styles.textBtn}
-                                        text={t('common:information')}
-                                        onPress={() => {
-                                            navigation.navigate('Information', { dataModel: dataModel });
-                                        }}
-                                    />
-                                    <Button
-                                        customStylesBtn={styles.modalOption}
-                                        customStylesText={styles.textBtn}
-                                        text={t('common:chat')}
-                                    />
-                                    <Button
-                                        customStylesBtn={styles.modalOption}
-                                        customStylesText={styles.textBtn}
-                                        text={buttonText}
-                                        onPress={handleLockup}
-                                    />
+                                    <Text style={styles.title}>{t('common:option')}</Text>
                                 </View>
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text={t('common:information')}
+                                    onPress={() => {
+                                        navigation.navigate('Information', { dataModel: dataModel });
+                                    }}
+                                />
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text={t('common:chat')}
+                                />
+                                <Button
+                                    customStylesBtn={styles.modalOption}
+                                    customStylesText={styles.textBtn}
+                                    text={buttonText}
+                                    onPress={handleLockup}
+                                />
                             </View>
                         </View>
-                    </Modal>
-                </ScrollView>
-            </Loading>
+                    </View>
+                </Modal>
+            </ScrollView>
         </ImageBackground>
     );
 }

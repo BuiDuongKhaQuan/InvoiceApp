@@ -75,9 +75,9 @@ export const getUserByName = async (name) => {
         throw error;
     }
 };
-export const getUserByCompanyName = async (companyName) => {
+export const getUserByCompanyName = async (companyName, limit, page) => {
     try {
-        const response = await instance.get(`/v1/auth/users?companyName=${companyName}`);
+        const response = await instance.get(`/v1/auth/users?companyName=${companyName}&limit=${limit}&page=${page}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -105,6 +105,21 @@ export const updateUser = async (formData) => {
     }
 };
 
+export const updateStatus = async (id, status) => {
+    let formData = new FormData();
+    formData.append('id', id);
+    formData.append('status', status);
+    try {
+        const response = await instance.patch(`/v1/auth/users`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 //reset password
 export const resetPassword = async (email, password, retypePassword) => {
     try {
@@ -153,7 +168,35 @@ export const getCompaniesById = async (id) => {
         throw error;
     }
 };
-
+export const updateCompaniesById = async (id, name, email, phone, address, logo) => {
+    let formData = new FormData();
+    formData.append('id', id);
+    if (name) {
+        formData.append('name', name);
+    }
+    if (email) {
+        formData.append('email', email);
+    }
+    if (phone) {
+        formData.append('phone', phone);
+    }
+    if (address) {
+        formData.append('address', address);
+    }
+    if (logo) {
+        formData.append('logo', logo);
+    }
+    try {
+        const response = await instance.patch('/v1/companies', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(' error:', error.response);
+    }
+};
 //invoice
 export const createInvoice = async (
     emailUser,
@@ -225,32 +268,67 @@ export const getAllInvoice = async () => {
         throw error;
     }
 };
-export const getInvoiceByCompany = async (companyName) => {
+export const getInvoiceByCompany = async (companyName, limit, page) => {
     try {
-        const response = await instance.get(`/v1/invoices?companyName=${companyName}`);
+        const response = await instance.get(`/v1/invoices?companyName=${companyName}&limit=${limit}&page=${page}`);
         return response.data;
     } catch (error) {
         throw error;
     }
 };
 //products
-export const products = async (name, status, price, listImageFile, companyName, description, type) => {
+export const createProduct = async (name, price, companyName, stock) => {
+    let formdata = new FormData();
+    formdata.append('name', name);
+    formdata.append('status', '1');
+    formdata.append('price', price);
+    formdata.append('companyName', companyName);
+    formdata.append('description', 'No description');
+    formdata.append('type', '1');
+    formdata.append('stock', stock);
     try {
-        const response = await instance.post('/v1/products', {
-            name,
-            status,
-            price,
-            listImageFile,
-            companyName,
-            description,
-            type,
+        const response = await instance.post('/v1/products', formdata, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
-//product by id
+export const updateProduct = async (id, name, price, stock) => {
+    let formdata = new FormData();
+    formdata.append('id', id);
+    if (name) formdata.append('name', name);
+    if (price) formdata.append('price', price);
+    if (stock) formdata.append('stock', stock);
+    try {
+        const response = await instance.patch('/v1/products', formdata, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const postProduct = async (id, status) => {
+    let formdata = new FormData();
+    formdata.append('id', id);
+    if (status) formdata.append('status', status);
+    try {
+        const response = await instance.patch('/v1/products', formdata, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 export const getProductById = async (id) => {
     try {
         const response = await instance.get(`/v1/products/${id}`);
@@ -259,24 +337,21 @@ export const getProductById = async (id) => {
         throw error;
     }
 };
-export const getProductsByCompany = async (companyName) => {
+export const deleteProductById = async (productId) => {
     try {
-        const response = await instance.get('/v1/products', { params: { companyName } });
+        const response = await instance.delete(`/v1/products`, {
+            data: {
+                productId: productId,
+            },
+        });
         return response.data;
     } catch (error) {
         throw error;
     }
 };
-export const updateStatus = async (id, status) => {
-    let formData = new FormData();
-    formData.append('id', id);
-    formData.append('status', status);
+export const getProductsByCompany = async (companyName, limit, page) => {
     try {
-        const response = await instance.patch(`/v1/auth/users`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        const response = await instance.get('/v1/products', { params: { companyName, limit, page } });
         return response.data;
     } catch (error) {
         throw error;

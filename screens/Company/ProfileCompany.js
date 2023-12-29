@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Dimensions, StatusBar, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { backgroundColor, white } from '../../constant/color';
@@ -41,6 +41,12 @@ export default function ProfileCompany() {
             icon: <Ionicons name="newspaper-outline" size={30} color="black" />,
             router: 'BillSample',
         },
+        {
+            id: '5',
+            title: t('common:product'),
+            icon: <AntDesign name="profile" size={30} color="black" />,
+            router: 'Products',
+        },
     ]);
 
     return (
@@ -79,7 +85,7 @@ export default function ProfileCompany() {
                     </View>
                 </View>
                 <View style={styles.container_center}>
-                    <View style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('CompanyInfo')}>
                         <View style={styles.text_centent}>
                             <Text style={styles.text_bold}>
                                 {t('common:corporation')}: {company.name}
@@ -92,7 +98,17 @@ export default function ProfileCompany() {
                             </Text>
                             <Text style={styles.text_bold}>Email: {company.email}</Text>
                         </View>
-                    </View>
+                        <View style={styles.logo}>
+                            <Image
+                                style={styles.avatar}
+                                source={
+                                    company.logo == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: company.logo }
+                                }
+                            />
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.container_bottom}>
                     <Button
@@ -202,10 +218,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: 'rgba(0,0,0,0.1)',
         justifyContent: 'center',
+        flexDirection: 'row',
     },
     text_centent: {
-        width: '100%',
+        flex: 2,
         padding: 10,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    logo: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     text_bold: {
         fontWeight: 'bold',

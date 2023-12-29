@@ -141,13 +141,6 @@ const styles = StyleSheet.create({
         width: 400,
         height: 400,
     },
-    // title: {
-    //     fontSize: 70,
-    //     color: '#B3B70A',
-    //     textShadowColor: '#2AA50B',
-    //     textShadowRadius: 5,
-    //     textShadowOffset: { width: 2, height: 2 },
-    // },
     container_center: {
         flex: 4,
         alignItems: 'center',

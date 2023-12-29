@@ -14,28 +14,37 @@ import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 export default function Bills() {
     const { t } = useTranslation();
     const { state } = useUserContext();
-    const [invoices, setIncoices] = useState([]);
-    const [invoiceKey, setInvoiceKey] = useState();
+    const [invoices, setInvoices] = useState([]);
     const [error, setError] = useState(null);
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
-    const getLayout = (key) => key.match(/^(\d+)-/)[1];
+    const [page, setPage] = useState(1);
+
+    const getInvoice = async (page) => {
+        try {
+            setLoading(true);
+            const response = await getInvoiceByCompany(state.company.name, 20, page);
+            setInvoices((prevInvoices) => [...prevInvoices, ...response]);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const getInvoice = async () => {
-            try {
-                setLoading(true);
-                const response = await getInvoiceByCompany(state.company.name);
-                setIncoices(response);
-                const response1 = await getInvoiceByKey(key);
-                setInvoiceKey(response1);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        getInvoice();
-    }, []);
+        getInvoice(page);
+    }, [page]);
+
+    const handleScroll = (event) => {
+        const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+        const paddingToBottom = 20; // Đặt một giá trị padding để xác định khi nào là cuối trang
+
+        if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
+            // Nếu đã cuộn đến cuối, tăng số trang lên 1 để fetch dữ liệu trang tiếp theo
+            setPage((prevPage) => prevPage + 1);
+        }
+    };
 
     return (
         <ImageBackground style={styles.container}>
@@ -49,32 +58,29 @@ export default function Bills() {
                     onPressIconRight={() => navigation.navigate('Scanner')}
                 />
             </View>
-            <Loading loading={loading}>
-                <ScrollView style={styles.list}>
-                    <View style={styles.table}>
-                        <View style={styles.table_colum}>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
-                            <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
-                        </View>
-                        {invoices.map((invoice, index) => (
-                            <TouchableOpacity
-                                style={styles.table_colum}
-                                key={invoice.id}
-                                onPress={() =>
-                                    navigation.navigate(`Invoice${getLayout(invoice.key)}`, { data: invoice })
-                                }
-                            >
-                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
-                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.key}</Text>
-                                <Text style={{ ...styles.text_line, ...styles.colum_p }}>{invoice.emailGuest}</Text>
-                                <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
-                            </TouchableOpacity>
-                        ))}
+            <ScrollView style={styles.list} onScroll={handleScroll} scrollEventThrottle={16}>
+                <View style={styles.table}>
+                    <View style={styles.table_colum}>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
                     </View>
-                </ScrollView>
-            </Loading>
+                    {invoices.map((invoice, index) => (
+                        <TouchableOpacity
+                            style={styles.table_colum}
+                            key={index}
+                            onPress={() => navigation.navigate(`WatchBill`, { data: invoice })}
+                        >
+                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.key}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_p }}>{invoice.emailGuest}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
+                        </TouchableOpacity>
+                    ))}
+                    <Loading loading={loading} isFooter></Loading>
+                </View>
+            </ScrollView>
         </ImageBackground>
     );
 }
