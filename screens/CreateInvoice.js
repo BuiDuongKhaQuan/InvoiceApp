@@ -312,7 +312,6 @@ export default function CreateInvoice({ route }) {
                     margin-right: 10;
                     border: 2px solid black;
                     width: 617px;
-                    height: 754px;
                     font-family: Verdana,  Tahoma, sans-serif;
                 }
                 .container_top {
@@ -428,6 +427,10 @@ export default function CreateInvoice({ route }) {
                     <div style="text-align: end; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
                     <br ><b>${t('common:signature')}: _____________</b></Text>
                     </div>
+                    </div>
+                    <div style="text-align: center; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
+                    <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+
                     </div>
                 </div>
                 </div>
@@ -662,7 +665,7 @@ export default function CreateInvoice({ route }) {
                 <p>${companyEmail}</p>
                 </div>
                 <div style="text-align: center; ">
-                <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
+                <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                 </div>
                 
             </div>
@@ -741,8 +744,8 @@ export default function CreateInvoice({ route }) {
                 </div>
                 <p style="border-bottom: 1px dashed  black;"></p>
                 <p style="text-align: center;">${t('common:designed')} ${companyName}</p>
-            </div>
-            </div>
+            </div>          
+                                     
         </body>
         </html>
 
@@ -939,6 +942,9 @@ export default function CreateInvoice({ route }) {
                         </td>
                     </tr>
                 </table>
+                <div style="text-align: center; color: blue">
+                    <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+                    </div>
                 <div style="margin-top: 10px; font-size: 13px">
                     <text>${t('common:makePayable')} ${companyName} </text>
                 </div>
@@ -948,6 +954,7 @@ export default function CreateInvoice({ route }) {
                 <div style="text-align: center; font-size: 13px">
                     <text><b>${t('common:thankyou4')} </b></text>
                 </div>
+                
             </div>
         </body>
     </html>
@@ -1071,6 +1078,10 @@ export default function CreateInvoice({ route }) {
                                 </div>
                             <p style="border-bottom: 1px dashed black"></p>
                             <div style="display: flex; flex-direction: row; justify-content: right"></div>
+                                                       
+                            <div style="display: flex; flex-direction: row; justify-content: center">
+                            <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+                            </div>
                         </div>
                     </div>
                 </body>
@@ -1265,11 +1276,16 @@ export default function CreateInvoice({ route }) {
                                         </div>
                                         <div style="display: flex; flex-direction: row; justify-content: right"></div>
                                     </div>
+                                   
+
                                     
                                 </div>
                                 <div class="container_bottom_2" >
                                     <div class="container_bottom_name">
                                     </div>
+                                </div>
+                                <div style="display: flex; flex-direction: row; justify-content: center">
+                                <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                                 </div>
                             </div>
                             <div class="container_bottom_name_2">
@@ -1460,11 +1476,15 @@ export default function CreateInvoice({ route }) {
             
                                 <div style="display: flex; flex-direction: row; justify-content: right"></div>
                             </div>
+                            
                         </div>
                             <div class="container_bottom_2" >
                             <div class="container_bottom_name">
                             </div>
                         </div>
+                        <div style="display: flex; flex-direction: row; justify-content: center">
+                            <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+                            </div>
                     </div>
                     <div class="container_bottom_name_2">
                     ${t('common:authorised')}</div>
@@ -1665,9 +1685,13 @@ export default function CreateInvoice({ route }) {
             
                                 <div style="display: flex; flex-direction: row; justify-content: right"></div>
                             </div>
+                           
                         </div>
                         <div class="container_bottom_2">
                             <div class="container_bottom_name"></div>
+                        </div>
+                        <div style="display: flex; flex-direction: row; justify-content: center">
+                        <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                         </div>
                         <div ">
                         <img style="position: fixed; bottom: 0; width: 100%" src="${uri4}" />
@@ -1773,8 +1797,8 @@ export default function CreateInvoice({ route }) {
                     <div style="width: 100%; text-align: center">
                         <img
                             id="barcode"
-                            style="height: 50px"
-                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAABkAQMAAABQPCXcAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAEJJREFUSIlj+FPA8KDA/vEHC/kP9vKN/5n7D/xvPM7Af5z5A/ufwh8Mo9Kj0qPSo9Kj0qPSo9Kj0qPSo9Kj0iNDGgD7rye/sbJ7jgAAAABJRU5ErkJggg=="
+                            style="height: 90px"
+                            src="${qrResponse}"
                             alt="Mã vạch"
                         />
                     </div>
@@ -1807,7 +1831,7 @@ export default function CreateInvoice({ route }) {
                 .container {
                     display: flex;
                     flex-direction: column;
-                    width: 400px;
+                    width: 100%;
                 }
                 p {
                     margin: 0;
@@ -1915,6 +1939,9 @@ export default function CreateInvoice({ route }) {
                             <b>${t('common:due')}: ${totalBill}</b>
                         </div>
                     </div>
+                    <div style="text-align: center; justify-content: center">
+                    <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+                    </div>
                 </div>
             </div>
         </body>
@@ -1942,11 +1969,12 @@ export default function CreateInvoice({ route }) {
                     <title>Document</title>
                     <style>
                     body {
-                        max-width: 400px;
+                        max-width: 100%;
                         }
                         .container {
                             display: flex;
                             flex-direction: column;
+                        
                         }
                         p {
                             margin: 0;
@@ -1958,6 +1986,7 @@ export default function CreateInvoice({ route }) {
                         }
                         table {
                             border-collapse: collapse;
+                            width: 100%;
                         }
                         .top {
                             margin-bottom: 10px;
@@ -2018,6 +2047,9 @@ export default function CreateInvoice({ route }) {
                             <div class="flex_row">
                                 <p class="text">${t('common:due')}:  ${total}</p>
                             </div>
+                        </div>
+                        <div style="text-align: center; justify-content: center">
+                        <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                         </div>
                     </div>
                 </body>
