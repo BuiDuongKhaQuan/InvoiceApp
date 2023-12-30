@@ -20,6 +20,9 @@ export default function Language() {
         { code: 'ru', label: 'Russia' },
         { code: 'vi', label: 'VietNamese' },
         { code: 'ko', label: 'Korea' },
+        { code: 'india', label: 'India' },
+        { code: 'land', label: 'ThaiLand' },
+        { code: 'y', label: 'Italia' },
     ];
     const setLanguage = async (code) => {
         try {

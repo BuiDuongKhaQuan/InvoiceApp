@@ -11,6 +11,9 @@ import jp from '../translations/jp';
 import ru from '../translations/ru';
 import vi from '../translations/vi';
 import ko from '../translations/ko';
+import y from '../translations/y';
+import india from '../translations/india';
+import land from '../translations/land';
 
 const LANGUAGE = {
     chi,
@@ -20,6 +23,9 @@ const LANGUAGE = {
     ru,
     vi,
     ko,
+    y,
+    india,
+    land,
 };
 const LANG_CODES = Object.keys(LANGUAGE);
 

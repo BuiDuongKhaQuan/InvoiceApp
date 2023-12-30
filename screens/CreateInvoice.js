@@ -12,7 +12,7 @@ import { Asset } from 'expo-asset';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'react-native-qrcode-svg';
 import ViewShot, { captureRef } from 'react-native-view-shot';
-import { buttonColor, defaultColor, white } from '../constant/color';
+import { buttonColor, defaultColor, lightColorDefault, white } from '../constant/color';
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { getDateNow, getHouseNow } from '../utilies/date';
@@ -20,7 +20,7 @@ import * as FileSystem from 'expo-file-system';
 import Customer from '../components/Customer';
 import Loading from '../components/Loading';
 
-export default function CreateInvoice({ route, isWatching }) {
+export default function CreateInvoice({ route }) {
     const currentDate = new Date();
     const dateNow = getDateNow(currentDate);
     const houseNow = getHouseNow(currentDate);
@@ -54,7 +54,8 @@ export default function CreateInvoice({ route, isWatching }) {
     const totalBill = totalBillPrice(tax, total);
     const qrImageUri = useRef(null);
     const customer = useRef(null);
-    const qr = useRef(null);
+    const [qrResponse, setQrResponse] = useState(null);
+    const [disabled, setDisabled] = useState(true);
 
     const handleDataChanged = (newData) => {
         customer.current = newData;
@@ -118,12 +119,8 @@ export default function CreateInvoice({ route, isWatching }) {
                     type: 'image/jpg',
                 },
             );
-            qr.current = response.data.image;
-            console.log(qr.current);
-            customer.current = null;
-            setListProductsSelect([]);
-            setTax('');
-            setNote('');
+            setDisabled(false);
+            setQrResponse(response.data.image);
             Alert.alert(t('common:alert_success'), t('common:alert_success_2'));
         } catch (error) {
             console.log(error.response.data);
@@ -146,7 +143,6 @@ export default function CreateInvoice({ route, isWatching }) {
                     text: t('common:alert_yes'),
                     onPress: async () => {
                         await addInvoices();
-                        await print(htmlTemplates[idTemplate]);
                     },
                     cancelable: true,
                 },
@@ -169,8 +165,30 @@ export default function CreateInvoice({ route, isWatching }) {
                 {
                     text: t('common:alert_pdf_yes'),
                     onPress: async () => {
-                        await addInvoices();
                         await printToFile(htmlTemplates[idTemplate]);
+                    },
+                    cancelable: true,
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+    const handleSubmitPrint = () => {
+        // Hiển thị cảnh báo cho người dùng xác nhận
+        Alert.alert(
+            t('common:alert_pdf'),
+            t('common:alert_pdf_2'),
+
+            [
+                {
+                    text: t('common:alert_pdf_no'),
+                    cancelable: true,
+                    style: 'cancel',
+                },
+                {
+                    text: t('common:alert_pdf_yes'),
+                    onPress: async () => {
+                        await print(htmlTemplates[idTemplate]);
                     },
                     cancelable: true,
                 },
@@ -386,7 +404,7 @@ export default function CreateInvoice({ route, isWatching }) {
                             <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  border-right: 2px solid black;"><b>${t(
                                 'common:subTotal',
                             )}</b></td>
-                            <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  ">${total}</td>
+                            <td style="text-align: center; width: 13%; height: 40px; border-bottom: 2px solid black; border-top: 2px solid black;  ">0</td>
 
                         </tr>
                         <tr>
@@ -569,7 +587,7 @@ export default function CreateInvoice({ route, isWatching }) {
                     <text><b>${t('common:for')} ${companyName}</b></text>
                     </div>
                     <div style="text-align: center; color: blue">
-                    <img src="${qr.current}" style="width: 90px ; height: 90px" />
+                    <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                     </div>
                 </div>
             </body>
@@ -2049,7 +2067,7 @@ export default function CreateInvoice({ route, isWatching }) {
                             <Button
                                 customStylesBtn={styles.btn}
                                 customStylesText={{ ...styles.text, color: 'gray' }}
-                                text={customer.current ? t('common:change_custommer') : t('common:more_custommer')}
+                                text={customer.current ? t('common:change_customer') : t('common:more_customer')}
                                 iconRight={<AntDesign name="pluscircleo" size={24} color={buttonColor} />}
                                 onPress={() => {
                                     setCustomersModalVisible(true);
@@ -2126,6 +2144,26 @@ export default function CreateInvoice({ route, isWatching }) {
                             {IDBill && <QRCode value={IDBill} size={80} />}
                         </ViewShot>
                     </View>
+                    <View style={styles.container_bottom}>
+                        <Button customStylesBtn={styles.btn1} text={t('common:Save')} onPress={() => handleSubmit()} />
+                        <Button
+                            disabled={disabled}
+                            customStylesBtn={
+                                disabled == false ? styles.btn1 : { ...styles.btn1, backgroundColor: lightColorDefault }
+                            }
+                            text={t('common:print')}
+                            onPress={() => handleSubmitPrint()}
+                        />
+                        <Button
+                            disabled={disabled}
+                            customStylesBtn={
+                                disabled == false ? styles.btn1 : { ...styles.btn1, backgroundColor: lightColorDefault }
+                            }
+                            text={t('common:pdf')}
+                            onPress={() => handleSubmitFile()}
+                        />
+                        <Text style={styles.text_waring}>Bạn vui lòng save trước khi in hoặc PDF</Text>
+                    </View>
                 </ScrollView>
 
                 <Modal animationType="slide" transparent={false} visible={isProductModalVisible}>
@@ -2155,10 +2193,6 @@ export default function CreateInvoice({ route, isWatching }) {
                     </View>
                 </Modal>
             </View>
-            <View style={styles.container_bottom}>
-                <Button customStylesBtn={styles.btn1} text={t('common:print')} onPress={() => handleSubmit()} />
-                <Button customStylesBtn={styles.btn1} text={t('common:pdf')} onPress={() => handleSubmitFile()} />
-            </View>
         </View>
     );
 }
@@ -2172,8 +2206,11 @@ const styles = StyleSheet.create({
         flex: 10,
         backgroundColor: '#f4f4f4',
     },
-    headerleft: {},
-
+    text_waring: {
+        color: 'red',
+        fontSize: fontSizeDefault,
+        fontWeight: 'bold',
+    },
     center_row1: {
         width: '100%',
         height: 50,
@@ -2281,18 +2318,16 @@ const styles = StyleSheet.create({
         backgroundColor: white,
     },
     container_bottom: {
-        flex: 1,
-        height: 50,
+        flex: 2.3,
         width: '100%',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
     btn1: {
-        marginHorizontal: 10,
-        height: '60%',
-        width: '40%',
-        borderRadius: 5,
+        width: '100%',
+        marginVertical: 2,
+        borderRadius: 0,
         backgroundColor: buttonColor,
     },
     contact_content: {

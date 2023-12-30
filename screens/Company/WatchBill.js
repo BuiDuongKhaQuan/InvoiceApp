@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View, TextInput } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/SettingItem/header';
 import { useTranslation } from 'react-i18next';
@@ -8,19 +8,26 @@ import { useRoute } from '@react-navigation/native';
 import { getNameCustomerByEmail, getProductById, getUserByEmail } from '../../Service/api';
 import Loading from '../../components/Loading';
 import Product from '../../components/Product';
+import * as Print from 'expo-print';
+import Button from '../../components/Button';
+import { useUserContext } from '../UserContext';
+import { layoutInvoice } from '../../layouts/InvoiceLayout';
 
 export default function WatchBill() {
     const { t } = useTranslation();
+    const { state } = useUserContext();
+    const { company } = state;
     const route = useRoute();
     const invoice = route.params?.data;
     const [customer, setCustomer] = useState(null);
     const [user, setUser] = useState(null);
     const [products, setProducts] = useState(null);
+    const [loading, setLoading] = useState(false);
     const emailUser = invoice.emailUser;
     const emailGuest = invoice.emailGuest;
-    const [loading, setLoading] = useState(false);
     const listOrder = invoice.orders;
     const productIdList = listOrder.map((item) => item.productId);
+    const idTemplate = invoice.key.split('-')[1];
 
     const getInfoCustomer = async () => {
         try {
@@ -35,33 +42,47 @@ export default function WatchBill() {
             setLoading(false);
         }
     };
+
+    const [selectedPrinter, setSelectedPrinter] = useState();
+    const print = async (html) => {
+        if (html !== null) {
+            await Print.printAsync({
+                html,
+                printerUrl: selectedPrinter?.url,
+            });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
+    };
+    const printToFile = async (html) => {
+        if (html !== null) {
+            const { uri } = await Print.printToFileAsync({ html });
+            console.log('File has been saved to:', uri);
+            await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+        } else {
+            Alert.alert('Error!!', 'Please provide complete information');
+        }
+    };
     const getInfoProduct = async () => {
         try {
             const productPromises = productIdList.map(async (item) => {
                 const product = await getProductById(item);
-
-                // Tìm order tương ứng trong listOrder
                 const order = listOrder.find((orderItem) => orderItem.productId === item);
-
-                // Nếu tìm thấy order, cập nhật thuộc tính stock
                 if (order) {
                     const updatedProduct = { ...product, stock: order.quantity };
                     return updatedProduct;
                 }
-
-                // Nếu không tìm thấy order, trả về product không thay đổi
                 return product;
             });
-
             const products = await Promise.all(productPromises);
             setProducts(products);
-            console.log(products);
         } catch (error) {
             console.error('Error fetching product information:', error);
         }
     };
 
     useEffect(() => {
+        console.log(idTemplate);
         getInfoCustomer();
         getInfoProduct();
     }, []);
@@ -130,21 +151,21 @@ export default function WatchBill() {
                         <Text style={[styles.text_default, styles.title]}>{t('common:inWords')}:</Text>
                         <Text style={styles.text_change}>{invoice.note}</Text>
                     </View>
-                    {/* <View style={styles.qrcode}>
-                        <ViewShot
-                            style={{
-                                width: 90,
-                                height: 90,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: white,
-                            }}
-                            ref={viewShotRef}
-                            options={{ format: 'jpg', quality: 1 }}
-                        >
-                            {IDBill && <QRCode value={IDBill} size={80} />}
-                        </ViewShot>
-                    </View> */}
+                    <View style={styles.contact_number}>
+                        <Image style={styles.qr} source={{ uri: invoice.image }} />
+                    </View>
+                    <Button
+                        text={t('common:print')}
+                        customStylesBtn={styles.btn_1}
+                        onPress={() => print(layoutInvoice(t, idTemplate, invoice, products, company, customer[0]))}
+                    />
+                    <Button
+                        customStylesBtn={styles.btn_1}
+                        text={t('common:pdf')}
+                        onPress={() =>
+                            printToFile(layoutInvoice(t, idTemplate, invoice, products, company, customer[0]))
+                        }
+                    />
                 </ScrollView>
             </View>
         </View>
@@ -211,5 +232,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    qr: {
+        width: 80,
+        height: 80,
+    },
+    btn_1: {
+        width: '100%',
+        marginVertical: 2,
+        borderRadius: 0,
+        backgroundColor: buttonColor,
     },
 });

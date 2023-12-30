@@ -26,7 +26,10 @@ export default {
     alert_lan: 'Вы уверены, что хотите изменить язык?',
     change_customer: 'Изменить клиента',
     more_customer: 'Добавить клиента',
-
+    in_customer: 'Введите имя клиента',
+    num_customer: 'Введите номер телефона клиента',
+    email_customer: 'Введите электронную почту клиента',
+    more: 'Добавить',
     information: 'Информация',
     changeAvt: 'Изменить аватар',
     changeWallet: 'Изменить кошелек',
@@ -37,6 +40,7 @@ export default {
     male: 'Мужской',
     female: 'Женский',
     save: 'Сохранить',
+    customers: 'Список клиентов',
 
     changePassword: 'Изменить пароль',
     oldPass: 'Старый пароль',

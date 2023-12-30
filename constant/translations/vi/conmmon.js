@@ -26,6 +26,11 @@ export default {
     alert_lan: 'Bạn có chắc chắn muốn đổi ngôn ngữ?',
     change_custommer: 'Đổi khách hàng',
     more_custommer: 'Thêm khách hàng',
+    in_customer: 'Nhập tên khách hàng',
+    num_customer: 'Nhập số điện thoại khách hàng',
+    email_customer: 'Nhập email khách hàng',
+    more: 'Thêm',
+    customers: 'Danh sách khách hàng',
 
     information: 'Thông tin cá nhân',
     changeAvt: 'Đổi ảnh đại diện',
