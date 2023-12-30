@@ -1,17 +1,17 @@
 const listProductHtml11 = (data) =>
-data
-.map(
-    (product, index) =>
-        ` <tr>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
     <td class="row1">${product.name}</td>
     <td class="row2">${product.stock}</td>
     <td class="row2">${product.price}</td>
     <td class="row3">${product.price * product.stock}</td>
 </tr>`,
-)
-.join('');
+        )
+        .join('');
 
-export const html11 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYPE html>
+export const html11 = (t, invoice, listProduct, company, customer, staff) => `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -19,7 +19,6 @@ export const html11 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
         <title>Document</title>
         <style>
         body {
-            max-width: 400px;
             }
             .container {
                 display: flex;
@@ -32,6 +31,7 @@ export const html11 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
             th,
             td {
                 border: 1px solid black;
+                width: 100%;
             }
             table {
                 border-collapse: collapse;
@@ -84,7 +84,7 @@ export const html11 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
                         <th class="row2">${t('common:unitPrice')}</th>
                         <th class="row3">${t('common:totalAmount3')}</th>
                     </tr>
-                    ${listProductHtml11(listProductsSelect)}
+                    ${listProductHtml11(listProduct)}
                 </table>
             </div>
             <div class="bottom">
@@ -96,6 +96,9 @@ export const html11 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
                     <p class="text">${t('common:due')}:  ${invoice.totalPrice}</p>
                 </div>
             </div>
+            <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
         </div>
     </body>
 </html>

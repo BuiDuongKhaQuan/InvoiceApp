@@ -1,18 +1,18 @@
 const listProductHtml6 = (data) =>
-data
-.map(
-    (product , index) =>
-        ` <tr>
-                <td style="font-weight: 700">${index +1}</td>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
+                <td style="font-weight: 700">${index + 1}</td>
                 <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
                     <td style="text-align: center" ">${product.price}</td>
                     <td style="padding-left: 30px;">${product.stock}</td>
                     <td style="text-align: center">${product.price * product.stock}</td>
                 
             </tr>`,
-)
-.join('');
-export const html6 = (invoice, listProduct, t, company, customer) => `
+        )
+        .join('');
+export const html6 = (t, invoice, listProduct, company, customer, staff) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -120,9 +120,7 @@ export const html6 = (invoice, listProduct, t, company, customer) => `
                     </div>
                 </div>
                 <div class="cashier" style="display: flex; flex-direction: row">
-                    <p style="margin-right: 20; font-weight: bold">${t(
-                        'common:addressInvoice',
-                    )}:</p>
+                    <p style="margin-right: 20; font-weight: bold">${t('common:addressInvoice')}:</p>
                     <p>${company.address}s</p>
                 </div>
                 <table class="table" style="width: 100%">
@@ -138,43 +136,35 @@ export const html6 = (invoice, listProduct, t, company, customer) => `
                         </div>
                     </tr>
                     <tr>
-                    ${listProductHtml6(listProductsSelect)}
+                    ${listProductHtml6(listProduct)}
                     </tr>
                 </table>
             </div>
             <div class="container_contents">
                 <div class="container_bottom" style="justify-content: right">
                     <div style="display: flex; flex-direction: row; justify-content: left">
-                        <p style="justify-content: right; font-weight: bold">${t(
-                            'common:thankyou5',
-                        )}!</p>
+                        <p style="justify-content: right; font-weight: bold">${t('common:thankyou5')}!</p>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: left">
                         <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
                         <p>trandz</p>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: left">
-                        <p style="justify-content: left; font-weight: bold; font-size:17>${t(
-                            'common:pay6',
-                        )}:</p>
+                        <p style="justify-content: left; font-weight: bold; font-size:17>${t('common:pay6')}:</p>
                         <p>${customer.name}</p>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: right"></div>
                 </div>
                 <div class="container_bottom" style="justify-content: right">
                     <div style="display: flex; flex-direction: row; justify-content: left">
-                        <p style="justify-content: left; font-weight: bold">${t(
-                            'common:subTotal',
-                        )}:</p>
+                        <p style="justify-content: left; font-weight: bold">${t('common:subTotal')}:</p>
                         <p>${invoice.totalPrice}</p>
                     </div>
                     <div style="display: flex; 
                     flex-direction: row;                                 justify-content: space-between; 
                     justify-content: space-between; 
                     ">
-                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
-                            'common:tax',
-                        )}:</p>
+                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t('common:tax')}:</p>
                         <p>${invoice.tax}%</p>
                     </div>
                     <div style="display: flex; 
@@ -191,6 +181,9 @@ export const html6 = (invoice, listProduct, t, company, customer) => `
             <div class="container_bottom_2" >
                 <div class="container_bottom_name">
                 </div>
+            </div>
+            <div style="text-align: center; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
             </div>
         </div>
         <div class="container_bottom_name_2">

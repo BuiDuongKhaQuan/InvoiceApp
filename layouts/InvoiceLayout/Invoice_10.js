@@ -1,16 +1,16 @@
 const listProductHtml10 = (data) =>
-data
-.map(
-    (product, index) =>
-        ` <tr>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
     <td class="row1">${product.name}</td>
     <td class="row2">${product.stock}</td>
     <td class="row2">${product.price}</td>
-    <td class="row3">${product.price *product.stock}</td>
+    <td class="row3">${product.price * product.stock}</td>
 </tr>`,
-)
-.join('');
-export const html10 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYPE html>
+        )
+        .join('');
+export const html10 = (t, invoice, listProduct, company, customer, staff) => `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -20,7 +20,7 @@ export const html10 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
             .container {
                 display: flex;
                 flex-direction: column;
-                width: 400px;
+                width: 100%;
             }
             p {
                 margin: 0;
@@ -116,7 +116,7 @@ export const html10 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
                         <th class="row2">${t('common:rateHouse')}</th>
                         <th class="row3">${t('common:totalAmount3')}</th>
                     </tr>
-                   ${listProductHtml10(listProductsSelect)}
+                   ${listProductHtml10(listProduct)}
                 </table>
             </div>
             <div class="bottom">
@@ -128,6 +128,9 @@ export const html10 = (invoice, listProduct, t, company, customer) =>  `<!DOCTYP
                         <b>${t('common:due')}: ${invoice.totalPrice}</b>
                     </div>
                 </div>
+                <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
             </div>
         </div>
     </body>

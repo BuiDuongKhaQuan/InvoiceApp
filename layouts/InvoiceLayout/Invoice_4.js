@@ -1,9 +1,8 @@
 const listProductHtml4 = (data) =>
-data
-    .map(
-        (product, index
-            ) =>
-            ` <tr>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
             <td
                 style="
                     width: 15%;
@@ -13,7 +12,7 @@ data
                     border-left: 1px solid black;
                 "
             >
-            ${index +1}
+            ${index + 1}
             </td>
             <td
                 style="
@@ -51,9 +50,9 @@ data
             </td>
         </tr>
             `,
-    )
-    .join('');
-export const html4 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE html>
+        )
+        .join('');
+export const html4 = (t, invoice, listProduct, company, customer) => `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -102,9 +101,9 @@ export const html4 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE 
                 </div>
             
                 <div style="display: flex; justify-content: space-between">
-                    <Text style="margin-top: 2px; margin-bottom: 2px">${t(
-                        'common:streetAddress',
-                    )}: ${company.address}</Text>
+                    <Text style="margin-top: 2px; margin-bottom: 2px">${t('common:streetAddress')}: ${
+    company.address
+}</Text>
                     <Text style="margin-top: 2px; margin-bottom: 2px";text-transform: uppercase><b>${t(
                         'common:date',
                     )}:</b></Text>
@@ -169,7 +168,7 @@ export const html4 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE 
                         <b style="text-transform: uppercase">${t('common:amount')}</b>
                     </td>
                 </tr>
-                ${listProductHtml4(listProductsSelect)}
+                ${listProductHtml4(listProduct)}
 
                 <tr>
                     <td colspan="4" style="width: 100px; height: 30px; text-align: center; border-right: 1px solid";>
@@ -189,6 +188,9 @@ export const html4 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE 
                     </td>
                 </tr>
             </table>
+            <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
             <div style="margin-top: 10px; font-size: 13px">
                 <text>${t('common:makePayable')} ${company.name} </text>
             </div>

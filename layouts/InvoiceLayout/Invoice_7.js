@@ -1,8 +1,20 @@
+import { Asset } from 'expo-asset';
+
+const imageUri1 = require('../../assets/images/header.png');
+const imageUri2 = require('../../assets/images/botter.png');
+
+const imageAsset1 = Asset.fromModule(imageUri1);
+const imageAsset2 = Asset.fromModule(imageUri2);
+
+// Chuyển đổi tài nguyên hình ảnh thành URI
+const uri1 = imageAsset1.localUri || imageAsset1.uri;
+const uri2 = imageAsset2.localUri || imageAsset2.uri;
+
 const listProductHtml7 = (data) =>
-data
-.map(
-    (product, index) =>
-        `<tr>
+    data
+        .map(
+            (product, index) =>
+                `<tr>
                     <td style="font-weight: 700">${index + 1}</td>
                     <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
                     <td style="text-align: center" ">${product.price}</td>
@@ -10,9 +22,9 @@ data
                     <td style="text-align: center">${product.price * product.stock}</td>
                     
                 </tr>`,
-)
-.join('');
-export const html7 = (invoice, listProduct, t, company, customer) =>  `
+        )
+        .join('');
+export const html7 = (t, invoice, listProduct, company, customer, staff) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -80,9 +92,7 @@ export const html7 = (invoice, listProduct, t, company, customer) =>  `
             <div class="container_center">
                 <div style="display: flex; flex-direction: row">
                     <div style="display: flex; flex-direction: column; flex: 2">
-                        <p style="margin-right: 20; font-weight: bold; font-size: 20px">${t(
-                            'common:invoiceTo',
-                        )}:</p>
+                        <p style="margin-right: 20; font-weight: bold; font-size: 20px">${t('common:invoiceTo')}:</p>
                         <p>${customer.name}</p>
 
                     </div>
@@ -118,7 +128,7 @@ export const html7 = (invoice, listProduct, t, company, customer) =>  `
                         </div>
                     </tr>
                     <tr>
-                    ${listProductHtml7(listProductsSelect)}
+                    ${listProductHtml7(listProduct)}
 
                     </tr>
                 </table>
@@ -126,18 +136,14 @@ export const html7 = (invoice, listProduct, t, company, customer) =>  `
             <div class="container_contents">
                 <div class="container_bottom" style="justify-content: right">
                     <div style="display: flex; flex-direction: row; justify-content: left">
-                        <p style="justify-content: right; font-weight: bold">${t(
-                            'common:thankyou4',
-                        )}</p>
+                        <p style="justify-content: right; font-weight: bold">${t('common:thankyou4')}</p>
                     </div>
                     <div style="display: flex; flex-direction: column; justify-content: left">
                         <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
                         <p>${staff.name}</p>
                     </div>
                     <div style="display: flex; flex-direction: column; justify-content: left">
-                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
-                            'common:pay6',
-                        )}:</p>
+                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t('common:pay6')}:</p>
                         <p>${customer.phone}</p>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: right"></div>
@@ -172,9 +178,13 @@ export const html7 = (invoice, listProduct, t, company, customer) =>  `
             <div class="container_bottom_name">
             </div>
         </div>
-    </div>
+        
     <div class="container_bottom_name_2">
     ${t('common:authorised')}</div>
+    <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
+    </div>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right"></div>
         <img style="position: fixed; bottom: 0; width: 100%" src="${uri2}" />

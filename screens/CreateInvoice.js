@@ -1488,6 +1488,9 @@ export default function CreateInvoice({ route }) {
                     </div>
                     <div class="container_bottom_name_2">
                     ${t('common:authorised')}</div>
+                    <div style="display: flex; flex-direction: row; justify-content: center">
+                            <img src="${qrResponse}" style="width: 90px ; height: 90px" />
+                            </div>
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: right"></div>
                         <img style="position: fixed; bottom: 0; width: 100%" src="${uri2}" />
@@ -2177,7 +2180,7 @@ export default function CreateInvoice({ route }) {
                         </ViewShot>
                     </View>
                     <View style={styles.container_bottom}>
-                        <Button customStylesBtn={styles.btn1} text={t('common:Save')} onPress={() => handleSubmit()} />
+                        <Button customStylesBtn={styles.btn1} text={t('common:save')} onPress={() => handleSubmit()} />
                         <Button
                             disabled={disabled}
                             customStylesBtn={
@@ -2194,7 +2197,7 @@ export default function CreateInvoice({ route }) {
                             text={t('common:pdf')}
                             onPress={() => handleSubmitFile()}
                         />
-                        <Text style={styles.text_waring}>Bạn vui lòng save trước khi in hoặc PDF</Text>
+                        <Text style={styles.text_waring}>{t('common:warning')}</Text>
                     </View>
                 </ScrollView>
 
