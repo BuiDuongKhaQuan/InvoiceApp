@@ -1,18 +1,29 @@
+import { Asset } from 'expo-asset';
+
+const imageUri3 = require('../../assets/images/header_seven.png');
+const imageUri4 = require('../../assets/images/bottom.png');
+
+const imageAsset3 = Asset.fromModule(imageUri3);
+const imageAsset4 = Asset.fromModule(imageUri4);
+
+// Chuyển đổi tài nguyên hình ảnh thành URI
+const uri3 = imageAsset3.localUri || imageAsset3.uri;
+const uri4 = imageAsset4.localUri || imageAsset4.uri;
 const listProductHtml8 = (data) =>
-data
-.map(
-    (product, index) =>
-        ` <tr>
-                <td style="font-weight: 700">${index +1}</td>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
+                <td style="font-weight: 700">${index + 1}</td>
                 <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
                     <td style="text-align: center" ">${product.price}</td>
                     <td style="padding-left: 30px;">${product.stock}</td>
                     <td style="text-align: center">${product.price * product.stock}</td>
                 
             </tr>`,
-)
-.join('');
-export const html8 = (invoice, listProduct, t, company, customer) =>`
+        )
+        .join('');
+export const html8 = (t, invoice, listProduct, company, customer, staff) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -128,7 +139,7 @@ export const html8 = (invoice, listProduct, t, company, customer) =>`
                         </div>
                     </tr>
                     <tr style="text-align: center">
-                    ${listProductHtml8(listProductsSelect)}
+                    ${listProductHtml8(listProduct)}
                     </tr>
                 </table>
             </div>
@@ -142,9 +153,7 @@ export const html8 = (invoice, listProduct, t, company, customer) =>`
                         <p>${staff.name}</p>
                     </div>
                     <div style="display: flex; flex-direction: column; justify-content: left">
-                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t(
-                            'common:pay6',
-                        )}:</p>
+                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t('common:pay6')}:</p>
                         <p>${customer.phone}</p>
                     </div>
                     <div style="display: flex; flex-direction: row; justify-content: right"></div>
@@ -182,6 +191,9 @@ export const html8 = (invoice, listProduct, t, company, customer) =>`
             <div class="container_bottom_2">
                 <div class="container_bottom_name"></div>
             </div>
+            <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
             <div ">
             <img style="position: fixed; bottom: 0; width: 100%" src="${uri4}" />
             </div>

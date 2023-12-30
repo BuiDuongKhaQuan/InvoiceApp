@@ -1,8 +1,8 @@
 const listProductHtml3 = (data) =>
-data
-    .map(
-        (product, index) =>
-            ` <tr>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
             <td style="font-weight: 700">${index + 1}</td>
             <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
             <tr>
@@ -14,9 +14,9 @@ data
                 <td>${product.price * product.stock}</td>
             </tr>
         </tr>`,
-    )
-    .join('');
-export const html3 = (invoice, listProduct, t, company, customer) => `
+        )
+        .join('');
+export const html3 = (t, invoice, listProduct, company, customer, staff) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,15 +110,11 @@ export const html3 = (invoice, listProduct, t, company, customer) => `
     </div>
     <div class="container_bottom" style="justify-content: right; ;">
         <div style="display: flex; flex-direction: row; justify-content: right;">
-        <p style="justify-content: right; margin-right: 35%; font-weight: bold;">${t(
-            'common:totalPriceSell',
-        )}:</p>
+        <p style="justify-content: right; margin-right: 35%; font-weight: bold;">${t('common:totalPriceSell')}:</p>
         <p>0</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
-        <p style="justify-content: right; margin-right: 42%; font-weight: bold;">${t(
-            'common:totalDiscount',
-        )}:</p>
+        <p style="justify-content: right; margin-right: 42%; font-weight: bold;">${t('common:totalDiscount')}:</p>
         <p>${invoice.tax}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
@@ -134,9 +130,7 @@ export const html3 = (invoice, listProduct, t, company, customer) => `
         <p>${t('common:cash')}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
-        <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">${t(
-            'common:receiveMoney',
-        )}:</p>
+        <p style="justify-content: right; margin-right: 35%; font-weight: bold; ">${t('common:receiveMoney')}:</p>
         <p>${invoice.totalPrice}</p>
         </div>
         <div style="display: flex; flex-direction: row; justify-content: right;">
@@ -146,7 +140,10 @@ export const html3 = (invoice, listProduct, t, company, customer) => `
         <p style="border-bottom: 1px dashed  black;"></p>
         <p style="text-align: center;">${t('common:designed')} ${company.name}</p>
     </div>
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+    <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+        </div>
     </div>
 </body>
 </html>
-`
+`;

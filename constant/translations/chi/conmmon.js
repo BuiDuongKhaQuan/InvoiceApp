@@ -31,6 +31,7 @@ export default {
     email_customer: '输入客户电子邮件',
     more: '添加',
     customers: '客户名单',
+    warning: '请在打印或转换为PDF之前保存',
 
     information: '信息',
     changeAvt: '更改头像',

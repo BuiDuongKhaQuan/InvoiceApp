@@ -1,8 +1,8 @@
 const listProductHtml5 = (data) =>
-data
-.map(
-    (product, index) =>
-        ` <tr>
+    data
+        .map(
+            (product, index) =>
+                ` <tr>
             <td style="font-weight: 700">${index + 1}</td>
             <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
             <td style="text-align: center" ">${product.price}</td>
@@ -10,9 +10,9 @@ data
             <td style="text-align: center">${product.price * product.stock}</td>
         
     </tr>`,
-)
-.join('');
-export const html5 = (invoice, listProduct, t, company, customer) => `
+        )
+        .join('');
+export const html5 = (t, invoice, listProduct, company, customer, staff) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -79,7 +79,7 @@ export const html5 = (invoice, listProduct, t, company, customer) => `
                     <p style="margin-right: 20;font-weight: 600">${t('common:billTo')}:</p>
                     <div style="flexDirection: 'column'">
                     <p>${customer.name}</p>
-                    <p>${contact.address}</p>
+                    <p>${customer.address}</p>
                     </div>
                 </div>
                 
@@ -92,7 +92,7 @@ export const html5 = (invoice, listProduct, t, company, customer) => `
                         <th style="text-align: center">${t('common:amount3')}</th>
                     </tr>
                     <tr>
-                    ${listProductHtml5(listProductsSelect)}
+                    ${listProductHtml5(listProduct)}
 
                     </tr>
                 </table>
@@ -116,6 +116,9 @@ export const html5 = (invoice, listProduct, t, company, customer) => `
                     </div>
                 <p style="border-bottom: 1px dashed black"></p>
                 <div style="display: flex; flex-direction: row; justify-content: right"></div>
+                <div style="text-align: center ">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+            </div>
             </div>
         </div>
     </body>

@@ -31,6 +31,7 @@ export default {
     email_customer: 'Nhập email khách hàng',
     more: 'Thêm',
     customers: 'Danh sách khách hàng',
+    warning: 'Bạn vui lòng lưu trước khi in hoặc PDF',
 
     information: 'Thông tin cá nhân',
     changeAvt: 'Đổi ảnh đại diện',

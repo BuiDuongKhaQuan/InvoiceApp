@@ -29,6 +29,7 @@ export default {
     num_customer: 'ग्राहक का फ़ोन नंबर दर्ज करें',
     email_customer: 'ग्राहक का ईमेल दर्ज करें',
     more: 'और जोड़ें',
+    warning: ' कृपया प्रिंट या पीडीएफ में कन्वर्ट करने से पहले सेव करें',
 
     information: 'जानकारी',
     changeAvt: 'अवतार बदलें',

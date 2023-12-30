@@ -36,7 +36,6 @@ export const html1 = (t, invoice, listProduct, company, customer) => `<!DOCTYPE 
             margin-right: 10;
             border: 2px solid black;
             width: 617px;
-            height: 754px;
             font-family: Verdana,  Tahoma, sans-serif;
         }
         .container_top {
@@ -153,6 +152,9 @@ export const html1 = (t, invoice, listProduct, company, customer) => `<!DOCTYPE 
             </div>
             <div style="text-align: end; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
             <br ><b>${t('common:signature')}: _____________</b></Text>
+            </div>
+            <div style="text-align: center ">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
             </div>
             </div>
         </div>

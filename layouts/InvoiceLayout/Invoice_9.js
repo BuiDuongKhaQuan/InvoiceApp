@@ -1,17 +1,17 @@
 const listProductHtml9 = (data) =>
-data
-.map(
-    (product, index) =>
-        `<tr >
-    <td  style=" width: 10%; height: 30px; text-align: center; ">${index +1}</td>
+    data
+        .map(
+            (product, index) =>
+                `<tr >
+    <td  style=" width: 10%; height: 30px; text-align: center; ">${index + 1}</td>
     <td  style="width: 30%;  text-align: center; " >${product.name}</td>
     <td  style="width: 10%;text-align: center;   " >${product.stock}</td>
     <td  style=" width: 10%; height: 30px; text-align: center;  ">${product.price}</td>
     <td style=" text-align: center;  ">${product.price * product.stock}</td>
 </tr>`,
-)
-.join('');
-export const html9 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE html>
+        )
+        .join('');
+export const html9 = (t, invoice, listProduct, company, customer, staff) => `<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -78,7 +78,7 @@ export const html9 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE 
 
                 <table style="width: 100%; margin-top: 10px">
                     <tr>
-                        ${listProductHtml9(listProductsSelect)}
+                        ${listProductHtml9(listProduct)}
                     </tr>
                 </table>
                 <hr />
@@ -93,8 +93,8 @@ export const html9 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE 
                 <div style="width: 100%; text-align: center">
                     <img
                         id="barcode"
-                        style="height: 50px"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO0AAABkAQMAAABQPCXcAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAEJJREFUSIlj+FPA8KDA/vEHC/kP9vKN/5n7D/xvPM7Af5z5A/ufwh8Mo9Kj0qPSo9Kj0qPSo9Kj0qPSo9Kj0iNDGgD7rye/sbJ7jgAAAABJRU5ErkJggg=="
+                        style="height: 90px"
+                        src="${invoice.image}"                             
                         alt="Mã vạch"
                     />
                 </div>

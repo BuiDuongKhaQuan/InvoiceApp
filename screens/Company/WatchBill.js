@@ -85,6 +85,7 @@ export default function WatchBill() {
         console.log(idTemplate);
         getInfoCustomer();
         getInfoProduct();
+        console.log(products);
     }, []);
 
     return (
@@ -157,13 +158,15 @@ export default function WatchBill() {
                     <Button
                         text={t('common:print')}
                         customStylesBtn={styles.btn_1}
-                        onPress={() => print(layoutInvoice(t, idTemplate, invoice, products, company, customer[0]))}
+                        onPress={() =>
+                            print(layoutInvoice(t, idTemplate, invoice, products, company, customer[0], user))
+                        }
                     />
                     <Button
                         customStylesBtn={styles.btn_1}
                         text={t('common:pdf')}
                         onPress={() =>
-                            printToFile(layoutInvoice(t, idTemplate, invoice, products, company, customer[0]))
+                            printToFile(layoutInvoice(t, idTemplate, invoice, products, company, customer[0], user))
                         }
                     />
                 </ScrollView>
