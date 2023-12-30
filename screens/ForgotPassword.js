@@ -61,7 +61,7 @@ export default function ForgotPassword({ navigation }) {
         setLoading(true);
         try {
             await forgotPassword(email);
-            Alert.alert(t('common:alert_success'), t('common:Đã gửi mã OTP thành công'));
+            Alert.alert(t('common:alert_success'), t('common:OPTSuccess'));
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 Alert.alert(t('common:error'), error.response.data.message);

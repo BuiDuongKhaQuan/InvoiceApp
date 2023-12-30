@@ -75,6 +75,14 @@ export const getUserByName = async (name) => {
         throw error;
     }
 };
+export const getUserByCompanyName1 = async (companyName) => {
+    try {
+        const response = await instance.get(`/v1/auth/users?companyName=${companyName}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 export const getUserByCompanyName = async (companyName, limit, page) => {
     try {
         const response = await instance.get(`/v1/auth/users?companyName=${companyName}&limit=${limit}&page=${page}`);
@@ -263,6 +271,14 @@ export const getInvoiceByKey = async (key) => {
 export const getAllInvoice = async () => {
     try {
         const response = await instance.get('/v1/invoices');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const getInvoiceByCompany1 = async (companyName) => {
+    try {
+        const response = await instance.get(`/v1/invoices?companyName=${companyName}`);
         return response.data;
     } catch (error) {
         throw error;

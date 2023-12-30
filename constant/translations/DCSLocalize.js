@@ -10,6 +10,7 @@ import fr from '../translations/fr';
 import jp from '../translations/jp';
 import ru from '../translations/ru';
 import vi from '../translations/vi';
+import ko from '../translations/ko';
 import y from '../translations/y';
 import india from '../translations/india';
 import land from '../translations/land';
@@ -21,6 +22,7 @@ const LANGUAGE = {
     jp,
     ru,
     vi,
+    ko,
     y,
     india,
     land,

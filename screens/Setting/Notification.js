@@ -21,7 +21,7 @@ export default function Notification() {
         // Bật/tắt thông báo
         setIsEnabled(!isEnabled);
         // Hiển thị thông báo xác nhận cho người dùng (có thể thay đổi tùy ý)
-        const message = isEnabled ? 'Notifications are now disabled' : 'Notifications are now enabled';
+        const message = isEnabled ? t('common:notifyOff') : t('common:notifyOn');
         alert(message);
     };
 
@@ -39,7 +39,7 @@ export default function Notification() {
     const registerForPushNotificationsAsync = async () => {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== 'granted') {
-            alert('Failed to get push token for push notification!');
+            alert(t('common:error'));
             return;
         }
         const tokenData = await Notifications.getExpoPushTokenAsync({

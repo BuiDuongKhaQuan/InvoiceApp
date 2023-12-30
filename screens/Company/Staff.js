@@ -12,7 +12,7 @@ import { getUserByCompanyName, getUserByName, updateStatus } from '../../Service
 import Loading from '../../components/Loading';
 import { white } from '../../constant/color';
 import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
-
+import { useIsFocused } from '@react-navigation/native';
 export default function Staff({ navigation }) {
     const { state } = useUserContext();
     const { t } = useTranslation();
@@ -25,7 +25,7 @@ export default function Staff({ navigation }) {
     const [user, setUser] = useState(dataModel);
     const [buttonText, setButtonText] = useState('');
     const [page, setPage] = useState(1);
-
+    const isFocused = useIsFocused();
     const handleSearch = async () => {
         try {
             setLoading(true);
@@ -54,7 +54,7 @@ export default function Staff({ navigation }) {
     };
     useEffect(() => {
         getInformationStaff(page);
-    }, [page]);
+    }, [page, isFocused]); // Listen to isFocused here
 
     const handleScroll = (event) => {
         const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
@@ -81,7 +81,10 @@ export default function Staff({ navigation }) {
     const hideModal = () => {
         setModalVisible(false);
     };
-
+    const refreshData = async () => {
+        // Define your logic to refresh data here
+        getInformationStaff(page);
+    };
     const handleLockup = async () => {
         setLoading(true);
         try {
@@ -89,18 +92,16 @@ export default function Staff({ navigation }) {
 
             if (s === 1) {
                 setButtonText(t('common:unLock'));
-                console.log(buttonText);
                 const response = await updateStatus(dataModel.id, 2);
                 setUser(response);
             }
             if (s === 2) {
                 setButtonText(t('common:lock'));
-                console.log(buttonText);
                 const response = await updateStatus(dataModel.id, 1);
                 setUser(response);
             }
             hideModal();
-            getInformationStaff();
+            getInformationStaff(page);
         } catch (error) {
             console.log(error.message);
             Alert.alert(t('common:error'), t('common:transmissionError'));
@@ -115,7 +116,7 @@ export default function Staff({ navigation }) {
                 <Input
                     iconLeft={<Feather name="search" size={24} color="black" />}
                     customStylesContainer={styles.input}
-                    holder={'Tìm kím theo tên, email, phone'}
+                    holder={t('common:searchStaff')}
                     value={nameStaff}
                     onChangeText={(text) => setNameStaff(text)}
                     onSubmitEditing={handleSearch}
@@ -125,23 +126,23 @@ export default function Staff({ navigation }) {
             <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
                 <View style={styles.currentScreen}>
                     {nameStaff === ''
-                        ? staffs.map((staff1, index) => (
+                        ? staffs.map((staff, index) => (
                               <View style={styles.icontilte} key={index}>
                                   <Image
                                       style={styles.icon}
                                       source={
-                                          staff1.image == null
+                                          staff.image == null
                                               ? require('../../assets/images/default-avatar.png')
-                                              : { uri: staff1.image }
+                                              : { uri: staff.image }
                                       }
                                   />
-                                  <Text style={styles.text}>{staff1.name}</Text>
+                                  <Text style={styles.text}>{staff.name}</Text>
                                   <SimpleLineIcons
                                       name="options"
                                       size={24}
                                       color="black"
                                       style={styles.iconOption}
-                                      onPress={() => showModal(staff1)}
+                                      onPress={() => showModal(staff)}
                                   />
                               </View>
                           ))
@@ -186,7 +187,10 @@ export default function Staff({ navigation }) {
                                     customStylesText={styles.textBtn}
                                     text={t('common:information')}
                                     onPress={() => {
-                                        navigation.navigate('Information', { dataModel: dataModel });
+                                        navigation.navigate('Information', {
+                                            dataModel: dataModel,
+                                            refreshData: refreshData,
+                                        });
                                     }}
                                 />
                                 <Button

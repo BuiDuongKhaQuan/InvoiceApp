@@ -204,7 +204,7 @@ export default function CreateInvoice({ route }) {
                 printerUrl: selectedPrinter?.url,
             });
         } else {
-            Alert.alert('Error!!', 'Please provide complete information');
+            Alert.alert(t('common:error'), t('common:comppleInvoiceNote'));
         }
     };
     const printToFile = async (html) => {
@@ -213,7 +213,7 @@ export default function CreateInvoice({ route }) {
             console.log('File has been saved to:', uri);
             await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
         } else {
-            Alert.alert('Error!!', 'Please provide complete information');
+            Alert.alert(t('common:error'), t('common:comppleInvoiceNote'));
         }
     };
 
@@ -2181,7 +2181,7 @@ export default function CreateInvoice({ route }) {
                 <Modal animationType="slide" transparent={false} visible={isCustomersModalVisible}>
                     <View style={styles.container}>
                         <Text style={styles.titleTable}>
-                            {customer.current ? t('common:change_customer') : t('common:more_customer')}
+                            {customer.current ? t('common:replace') : t('common:addCustomer')}
                         </Text>
                         <Customer dataList={customers} onDataChanged={handleDataChanged} />
                         <Button

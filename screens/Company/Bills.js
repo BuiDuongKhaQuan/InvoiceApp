@@ -52,7 +52,7 @@ export default function Bills() {
             <View style={styles.container_input}>
                 <Input
                     customStylesContainer={styles.input}
-                    holder="Tìm theo mã hóa đơn, tên khách hàng"
+                    holder={t('common:titileSearch')}
                     iconLeft={<Feather name="search" size={24} color="black" />}
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     onPressIconRight={() => navigation.navigate('Scanner')}

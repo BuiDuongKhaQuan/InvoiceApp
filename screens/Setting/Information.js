@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Alert } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -13,8 +13,10 @@ import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { instance } from '../../Service/api';
 import { useTranslation } from 'react-i18next';
-import { white } from '../../constant/color';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 export default function Information({ route }) {
+    const navigation = useNavigation();
     const { state } = useUserContext();
     const { user, company } = state;
     const { dispatch } = useUserContext();
@@ -26,8 +28,19 @@ export default function Information({ route }) {
     const [photoShow, setPhotoShow] = useState(null);
     const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
     const [loading, setLoading] = useState(false);
-
     const { t } = useTranslation();
+    const [data, setData] = useState(route?.params?.dataModel !== undefined ? route.params.dataModel : null);
+    const { dataModel, refreshData } = route.params;
+
+    useEffect(() => {
+        // Call the refreshData function when this screen is focused
+        const unsubscribe = navigation.addListener('focus', () => {
+            refreshData();
+        });
+
+        // Cleanup the subscription when the component unmounts
+        return unsubscribe;
+    }, [refreshData]);
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -49,11 +62,6 @@ export default function Information({ route }) {
         let formData = new FormData();
         formData.append('id', state.user.id);
         formData.append('avartar', {
-            uri: localUri,
-            name: filename,
-            type,
-        });
-        console.log({
             uri: localUri,
             name: filename,
             type,
@@ -145,7 +153,7 @@ export default function Information({ route }) {
                 type: 'SIGN_IN',
                 payload: { user: response.data, company: state.company },
             });
-            Alert.alert('Update successful');
+            Alert.alert(t('common:updateSuccess'));
             console.log(response.data);
         } catch (error) {
             console.error(' error:', error.response);
@@ -157,102 +165,154 @@ export default function Information({ route }) {
     return (
         <BackgroundImage>
             <Header title={t('common:information')} />
-            <ScrollView style={styles.container}>
-                <Loading loading={loading} isFullScreen />
-                <View style={styles.top}>
-                    <View style={styles.image}>
-                        <Image
-                            style={styles.avatar_img}
-                            source={
-                                user.image == null
-                                    ? require('../../assets/images/default-avatar.png')
-                                    : { uri: user.image }
-                            }
-                        />
-
-                        <Button
-                            text={t('common:changeAvt')}
-                            customStylesText={{ ...styles.text, textAlign: 'center' }}
-                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                            onPress={takePhotoAndUpload}
-                        />
+            {route?.params?.dataModel !== undefined ? (
+                <ScrollView style={styles.container}>
+                    <Loading loading={loading} />
+                    <View style={styles.top}>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.avatar_img}
+                                source={
+                                    data.image == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: data.image }
+                                }
+                            />
+                            <Text>{t('common:avatar')} </Text>
+                        </View>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.wallpaper_img}
+                                source={
+                                    data.wallpaper == null
+                                        ? require('../../assets/images/default-wallpaper.png')
+                                        : { uri: data.wallpaper }
+                                }
+                            />
+                            <Text>{t('common:wallpaper')} </Text>
+                        </View>
                     </View>
-                    <View style={styles.image}>
-                        <Image
-                            style={styles.wallpaper_img}
-                            source={
-                                user.wallpaper == null
-                                    ? require('../../assets/images/default-wallpaper.png')
-                                    : { uri: user.wallpaper }
-                            }
-                        />
-                        <Button
-                            text={t('common:changeWallet')}
-                            customStylesText={{ ...styles.text, textAlign: 'center' }}
-                            customStylesBtn={styles.change_btn}
-                            onPress={uploadWallpaper}
-                        />
-                    </View>
-                </View>
 
-                <View>
-                    <View style={styles.bottom}>
-                        <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:name')}:</Text>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={state.user.name}
-                                value={name}
-                                onChangeText={(text) => setName(text)}
-                            />
-                        </View>
-                        <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:email')}:</Text>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={state.user.email}
-                                value={email}
-                                onChangeText={(text) => setEmail(text)}
-                            />
-                        </View>
-                        <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:phone')}:</Text>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={state.user.phone}
-                                value={phone}
-                                onChangeText={(text) => setPhone(text)}
-                            />
-                        </View>
-                        <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:gender')}:</Text>
-                            <View style={styles.dropdown}>
-                                <SelectDropdown
-                                    data={genders}
-                                    onSelect={(selectedItem, index) => {
-                                        setSelectedGender(selectedItem);
-                                    }}
-                                    buttonStyle={styles.dropdown_btn}
-                                    defaultButtonText={state.user.gender}
-                                    renderDropdownIcon={() => (
-                                        <Entypo name="chevron-small-down" size={24} color="black" />
-                                    )}
-                                    dropdownIconPosition="right"
-                                    buttonTextAfterSelection={(selectedItem, index) => {
-                                        return selectedItem;
-                                    }}
-                                    rowTextForSelection={(item, index) => {
-                                        return item;
-                                    }}
-                                />
+                    <View>
+                        <View style={styles.bottom}>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:name')}:</Text>
+                                <Text style={styles.name}>{data.name}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:email')}:</Text>
+                                <Text style={styles.name}>{data.email}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:phone')}:</Text>
+                                <Text style={styles.name}>{data.phone}</Text>
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:gender')}:</Text>
+                                <Text style={styles.name}>{data.gender}</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.btn}>
-                        <Button text={t('common:save')} onPress={handlerSend} />
+                </ScrollView>
+            ) : (
+                <ScrollView style={styles.container}>
+                    <Loading loading={loading} />
+
+                    <View style={styles.top}>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.avatar_img}
+                                source={
+                                    user.image == null
+                                        ? require('../../assets/images/default-avatar.png')
+                                        : { uri: user.image }
+                                }
+                            />
+
+                            <Button
+                                text="Change avatar"
+                                customStylesText={styles.text}
+                                customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                                onPress={takePhotoAndUpload}
+                            />
+                        </View>
+                        <View style={styles.image}>
+                            <Image
+                                style={styles.wallpaper_img}
+                                source={
+                                    user.wallpaper == null
+                                        ? require('../../assets/images/default-wallpaper.png')
+                                        : { uri: user.wallpaper }
+                                }
+                            />
+                            <Button
+                                text="Change wallpaper"
+                                customStylesText={styles.text}
+                                customStylesBtn={styles.change_btn}
+                                onPress={uploadWallpaper}
+                            />
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+
+                    <View>
+                        <View style={styles.bottom}>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:name')}:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.name}
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:email')}:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.email}
+                                    value={email}
+                                    onChangeText={(text) => setEmail(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:phone')}:</Text>
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={state.user.phone}
+                                    value={phone}
+                                    onChangeText={(text) => setPhone(text)}
+                                />
+                            </View>
+                            <View style={styles.bottom_item}>
+                                <Text style={styles.text}>{t('common:gender')}:</Text>
+                                <View style={styles.dropdown}>
+                                    <SelectDropdown
+                                        data={genders}
+                                        onSelect={(selectedItem, index) => {
+                                            setSelectedGender(selectedItem);
+                                        }}
+                                        buttonStyle={styles.dropdown_btn}
+                                        defaultButtonText={state.user.gender}
+                                        renderDropdownIcon={() => (
+                                            <Entypo name="chevron-small-down" size={24} color="black" />
+                                        )}
+                                        dropdownIconPosition="right"
+                                        buttonTextAfterSelection={(selectedItem, index) => {
+                                            return selectedItem;
+                                        }}
+                                        rowTextForSelection={(item, index) => {
+                                            return item;
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.btn}>
+                            <Button text="Save" onPress={handlerSend} />
+                        </View>
+                    </View>
+                </ScrollView>
+            )}
         </BackgroundImage>
     );
 }
@@ -302,28 +362,29 @@ const styles = StyleSheet.create({
         flex: 3,
         marginTop: 20,
         paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     bottom_item: {
         flex: 1,
         width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     text: {
-        width: '100%',
-        textAlign: 'left',
         fontWeight: 'bold',
         fontSize: fontSizeDefault,
     },
     name: {
         height: 50,
         width: '100%',
+        paddingHorizontal: 10,
+
         lineHeight: 50,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: 'gray',
-        paddingHorizontal: 10,
-        backgroundColor: white,
+        backgroundColor: 'white',
     },
     container_input: {
         height: '50%',

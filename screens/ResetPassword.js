@@ -49,7 +49,7 @@ export default function Login() {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
             t('common:alert_success'),
-            t('common:Đổi mật khẩu thành công'),
+            t('common:changePasswordSuccess'),
             [
                 {
                     text: t('common:alert_yes'),

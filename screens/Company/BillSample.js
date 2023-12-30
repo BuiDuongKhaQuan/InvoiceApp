@@ -21,7 +21,7 @@ export default function BillSample() {
                 <Input
                     iconLeft={<Feather name="search" size={24} color="black" />}
                     customStylesContainer={styles.input}
-                    holder={'Tìm kím mẫu hóa đơn'}
+                    holder={t('common:searchForInvoice')}
                     onPressIconRight={() => navigation.navigate('Scanner')}
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
                     customStylesIcon={styles.icon1}

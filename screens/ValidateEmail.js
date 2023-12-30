@@ -6,6 +6,7 @@ import { isValidateOTP } from '../utilies/validate';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { validateRegister } from '../Service/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 export default function ForgotPassword() {
     const [keyboardIsShow, setKeyboardIsShow] = useState(false);
@@ -13,7 +14,7 @@ export default function ForgotPassword() {
     const [errorCode, setErrorCode] = useState(false);
     const route = useRoute();
     const navigation = useNavigation();
-
+    const { t } = useTranslation();
     useEffect(() => {
         Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardIsShow(true);
