@@ -30,6 +30,7 @@ export default {
     email_customer: 'กรุณาใส่อีเมลล์ลูกค้า',
     more: 'เพิ่ม',
     customers: 'รายชื่อลูกค้า',
+    warning: 'โปรดบันทึกก่อนพิมพ์หรือแปลงเป็น PDF',
 
     information: 'ข้อมูล',
     changeAvt: 'เปลี่ยนรูปประจำตัว',

@@ -31,6 +31,7 @@ export default {
     email_customer: 'Enter customer email',
     more: 'Add',
     customers: 'customers',
+    warning: 'Please save before printing or converting to PDF',
 
     information: 'Information',
     changeAvt: 'Change Avatar',

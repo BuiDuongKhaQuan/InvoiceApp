@@ -1,169 +1,204 @@
+import { Asset } from 'expo-asset';
+
+const imageUri3 = require('../../assets/images/header_seven.png');
+const imageUri4 = require('../../assets/images/bottom.png');
+
+const imageAsset3 = Asset.fromModule(imageUri3);
+const imageAsset4 = Asset.fromModule(imageUri4);
+
+// Chuyển đổi tài nguyên hình ảnh thành URI
+const uri3 = imageAsset3.localUri || imageAsset3.uri;
+const uri4 = imageAsset4.localUri || imageAsset4.uri;
 const listProductHtml8 = (data) =>
     data
         .map(
             (product, index) =>
-                `<tr >
-        <td  style=" width: 10%; color: blue;  text-align: center; height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${
-            index + 1
-        }</td>
-        <td  style="width: 30%; color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue; border-right: 2px solid blue; " >${
-            product.name
-        }</td>
-        <td  style="width: 10%; color: blue; text-align: center;border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; " >${
-            product.stock
-        }</td>
-        <td  style=" width: 10%; color: blue; text-align: center;height: 30px; border-top: 2px solid blue; border-right: 2px solid blue; border-bottom: 2px solid blue; ">${
-            product.price
-        }</td>
-        <td style="color: blue;text-align: center; border-bottom: 2px solid blue; border-top: 2px solid blue;    ">${
-            product.price * product.stock
-        }</td>
-    </tr>`,
+                ` <tr>
+                <td style="font-weight: 700">${index + 1}</td>
+                <td style="font-weight: 700; padding-left: 30px;">${product.name}</td>
+                    <td style="text-align: center" ">${product.price}</td>
+                    <td style="padding-left: 30px;">${product.stock}</td>
+                    <td style="text-align: center">${product.price * product.stock}</td>
+                
+            </tr>`,
         )
         .join('');
-export const html8 = (invoice, listProduct, t, company, customer) => `<!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-            <title>Document</title>
-            <style>
-                .container {
-                    display: flex;
-                    flex-direction: column;
-                    background-color: white;
-                    margin-left: 100px;
-                    width: 491px;
-                    height: 800px;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-                .container_top {
-                    align-items: 'center';
-                    text-align: center;
-                    justify-content: 'center';
-                }
-                table,
-                th,
-                td {
-                    padding: 0 !important;
-                    border-collapse: collapse;
-                }
+export const html8 = (t, invoice, listProduct, company, customer, staff) => `
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                margin-left: 10;
+                margin-right: 10;
+            }
+            .container_top {
+                align-items: 'center';
+                flex: 1;
+                text-align: center;
+                justify-content: 'center';
+            }
+            .header_table_1 {
+                background-color: '#ffcc00';
+            }
+            .container_header_contents {
+                background-color: rgb(251, 251, 251);
+                width: 20%;
+                margin-left: 60%;
+                margin-right: 15%;
+                font-size: 40px;
+            }
+            .container_ table,
+            th,
+            td {
+                border-collapse: collapse;
+            }
+            p {
+                margin: 3px;
+            }
+            .container_contents {
+                display: flex;
+                justify-content: space-between;
+            }
+            .container_header {
+                background-color: rgb(255, 255, 255);
+                height: 100%;
+            }
+            .container_header_company_name {
+                font-size: 20px;
+                text-align: left;
+                position: absolute;
+                margin-top: 90px;
+                margin-left: 10px;
+                color: white;
+            }
+            .container_bottom_2 {
+                background-color: rgb(255, 255, 255);
+                height: 2%;
 
-                th,
-                td {
-                    padding: 10px;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="container_top">
-                    <div
-                        style="
-                            text-align: center;
-                            margin-top: 90px;
-                            font-weight: bold;
-                            font-size: 30px;
-                            color: blue;
-                        "
-                    >
-                        <Text>${company.name}</Text>
+            }
+            .container_bottom_name {
+                margin-left: 65%;
+                margin-right: 15%;
+                background-color: rgb(0, 0, 0);
+                color: white;
+                height:2px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="container_top" style="margin-top: 40px">
+                <div class="container_header">
+                    <div class="container_header_company_name">
+                        <p>${company.name}</p>
+                    </div >
+                    <div style="text-align: center; ">
+                        <img src="${uri3}" width="100%" ; />
                     </div>
-                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                        <Text>${t('common:addressInvoice')} ${company.address}</Text>
-                    </div>
-                    <div style="text-align: center; font-size: 20px; font-weight: bold; color: blue">
-                        <Text>${t('common:phoneInvoice2')} :${company.phone}</Text>
-                    </div>
-                    <hr size="2px" ; color="blue" />
-                </div>
+              </div>
+            </div>
 
-                <div style="display: flex; justify-content: space-between; color: blue">
-                    <div style="margin-left: 10px">
-                        <Text>${t('common:slNo2')}: ${invoice.key}</Text>
+            <div class="container_center">
+                <div style="display: flex; flex-direction: row">
+                    <div style="display: flex; flex-direction: row; flex: 2">
+                        <p style="margin-right: 20; font-weight: bold">${t('common:id6')}#: ${invoice.key}</p>
                     </div>
                     <div>
-                        <Text><b>${t('common:nameInvoice')}</b></Text>
+                        <div style="display: flex; flex-direction: row; flex: 1">
+                            <p style="margin-right: 20; font-weight: bold">${t('common:invoiceTo')}:</p>
+                            <p>${customer.name}</p>
+                        </div>
+                        <div class="cashier" style="display: flex; flex-direction: row">
+                        <p style="margin-right: 20; font-weight: bold">${t('common:addressInvoice')}:</p>
+                        <p>${customer.address}</p>
                     </div>
-                    <div style="margin-right: 10px">
-                        <Text>${t('common:date')}: ${invoice.createdAt} </Text>
                     </div>
                 </div>
-                <div style="color: rgb(0 0 215); margin-top: 10px; margin-left: 10px; margin-right: 10px">
-                    <Text>${t('common:receive')}: ${customer.name}</Text>
-                    <hr size="2px" ; color="blue" />
-                </div>
-                <div style="color: rgb(0 0 215); margin-top: 8px; margin-left: 14px; margin-right: 10px">
-                    <hr size="2px" ; color="blue" />
-                </div>
-                <table style="width: 100%; height: 300px">
-                    <tr>
-                        <td
-                            style="
-                                color: rgb(0 0 215);
-                                text-align: center;
-                                width: 3%;
-                                height: 5px;
-                                border-top: 2px solid rgb(0 0 215);
-                                border-right: 2px solid rgb(0 0 215);
-                            "
-                        >
-                            <b>${t('common:slN2')}</b>
-                        </td>
-                        <td
-                            style="
-                                color: rgb(0 0 215);
-                                text-align: center;
-                                width: 58%;
-                                height: 5px;
-
-                                border-top: 2px solid rgb(0 0 215);
-                                border-right: 2px solid blue;
-                            "
-                        >
-                            <b>${t('common:particular')}</b>
-                        </td>
-                        <td
-                            style="
-                                color: blue;
-                                text-align: center;
-                                width: 10%;
-                                height: 5px;
-
-                                border-top: 2px solid blue;
-                                border-right: 2px solid blue;
-                            "
-                        >
-                            <b>${t('common:qty')}</b>
-                        </td>
-                        <td
-                            style="
-                                height: 5px;
-                                color: blue;
-                                text-align: center;
-                                width: 18%;
-                                border-top: 2px solid blue;
-                            "
-                        >
-                            <b>${t('common:amount')} </b>
-
-                            <b>Rs. </b>
-                        </td>
-                        <td
-                            style="height: 5px; color: blue; text-align: center; border-top: 2px solid blue"
-                        >
-                            <b>Ps.</b>
-                        </td>
+                
+                <div style="display: flex; flex-direction: row; flex: 1">
+                <p style="margin-right: 20; font-weight: bold">${t('common:date')}:</p>
+                <p> ${invoice.createdAt}</p>
+            </div>
+                <table class="table" style="width: 100%">
+                    <tr style="background-color: rgb(255 87 87); color: aliceblue">
+                        <div class="header_table">
+                            <div class="header_table_1">
+                                <th style="text-align: center">${t('common:item')}</th>
+                                <th style="text-align: left">${t('common:description')}</th>
+                            </div>
+                            <th style="text-align: center">${t('common:price')}</th>
+                            <th style="text-align: center">${t('common:qty5')}</th>
+                            <th style="text-align: center">${t('common:totalAmount3')}</th>
+                        </div>
                     </tr>
+                    <tr style="text-align: center">
                     ${listProductHtml8(listProduct)}
+                    </tr>
                 </table>
-                <div style="text-align: end; color: blue">
-                <text><b>${t('common:for')} ${company.name}</b></text>
+            </div>
+            <div class="container_contents">
+                <div class="container_bottom" style="justify-content: right">
+                    <div style="display: flex; flex-direction: row; justify-content: left">
+                        <p style="justify-content: right; font-weight: bold">${t('common:thankyou4')}</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: left">
+                        <p style="justify-content: left; font-weight: bold">${t('common:term')}</p>
+                        <p>${staff.name}</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; justify-content: left">
+                        <p style="justify-content: left; font-weight: bold; font-size: 18px">${t('common:pay6')}:</p>
+                        <p>${customer.phone}</p>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: right"></div>
                 </div>
-                <div style="text-align: center; color: blue">
-                <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                <div class="container_bottom" style="justify-content: right">
+                    <div style="display: flex; flex-direction: row; justify-content: space-between  ">
+                        <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">${t(
+                            'common:subTotal',
+                        )}:</p>
+                        <p>${invoice.totalPrice}</p>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between">
+                        <p style="justify-content: left; font-weight: bold; color: rgb(255 87 87)">${t(
+                            'common:tax',
+                        )}:</p>
+                        <p>${invoice.tax}%</p>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;background-color: #b6b6b6;">
+                        <p
+                            style="
+                            color: rgb(255 87 87);
+                                justify-content: right;
+                                font-weight: bold;
+                                
+                            "
+                        >
+                        ${t('common:totalAmount3')}:
+                        </p>
+                        <p>${invoice.totalPrice}</p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: row; justify-content: right"></div>
                 </div>
             </div>
-        </body>
-    </html>
-    `;
+            <div class="container_bottom_2">
+                <div class="container_bottom_name"></div>
+            </div>
+            <div style="text-align: center; color: blue">
+            <img src="${invoice.image}" style="width: 90px ; height: 90px" />
+                    </div>
+            <div ">
+            <img style="position: fixed; bottom: 0; width: 100%" src="${uri4}" />
+            </div>
+        </div>
+    </body>
+</html>
+
+`;

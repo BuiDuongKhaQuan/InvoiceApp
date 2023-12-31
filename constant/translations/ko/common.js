@@ -26,6 +26,12 @@ export default {
     alert_lan: '언어를 변경하시겠습니까?',
     change_customer: '고객 변경',
     more_customer: '고객 추가',
+    warning: '인쇄 또는 PDF로 변환하기 전에 저장해주세요',
+    in_customer: '고객명을 입력하세요',
+    num_customer: '고객 전화번호를 입력하세요',
+    email_customer: '고객 이메일을 입력하세요',
+    more: '추가',
+    customers: '고객들',
 
     information: '정보',
     changeAvt: '아바타 변경',
