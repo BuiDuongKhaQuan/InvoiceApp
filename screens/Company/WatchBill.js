@@ -23,6 +23,7 @@ export default function WatchBill() {
     const [user, setUser] = useState(null);
     const [products, setProducts] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [selectedPrinter, setSelectedPrinter] = useState();
     const emailUser = invoice.emailUser;
     const emailGuest = invoice.emailGuest;
     const listOrder = invoice.orders;
@@ -43,7 +44,6 @@ export default function WatchBill() {
         }
     };
 
-    const [selectedPrinter, setSelectedPrinter] = useState();
     const print = async (html) => {
         if (html !== null) {
             await Print.printAsync({
@@ -62,6 +62,10 @@ export default function WatchBill() {
         } else {
             Alert.alert('Error!!', 'Please provide complete information');
         }
+    };
+    const selectPrinter = async () => {
+        const printer = await Print.selectPrinterAsync(); // iOS only
+        setSelectedPrinter(printer);
     };
     const getInfoProduct = async () => {
         try {

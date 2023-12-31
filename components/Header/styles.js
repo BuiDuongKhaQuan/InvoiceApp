@@ -1,12 +1,13 @@
 import { StatusBar, StyleSheet } from 'react-native';
 import { white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
+import { statusBarHeight } from '../../constant/dimistion';
 
 export const styles = StyleSheet.create({
     header: {
         position: 'absolute',
         zIndex: 100,
-        top: StatusBar.currentHeight || 0,
+        top: statusBarHeight,
         height: 67,
         backgroundColor: white,
         width: '100%',
@@ -47,5 +48,9 @@ export const styles = StyleSheet.create({
     },
     text: {
         fontSize: fontSizeDefault - 2,
+    },
+    radius_90: {
+        borderRadius: 90,
+        width: 50,
     },
 });

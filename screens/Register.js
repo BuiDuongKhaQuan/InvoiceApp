@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -18,7 +18,6 @@ import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
 import { textColor } from '../constant/color';
 export default function Register() {
-    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -38,18 +37,6 @@ export default function Register() {
     const [showRePassword, setShowRePassword] = useState(false);
     const { t } = useTranslation();
     const navigation = useNavigation();
-    useEffect(() => {
-        Keyboard.addListener('keyboardDidShow', () => {
-            setKeyboardIsShow(true);
-        });
-        Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardIsShow(false);
-        });
-    });
-
-    const centerStyle = keyboardIsShow
-        ? { ...styles.container_center, flex: 3, justifyContent: 'center' }
-        : { ...styles.container_center };
 
     const isValidateLogin = () =>
         email.length > 0 && pass.length > 0 && name.length > 0 && errorEmail == false && errorPass == false;
@@ -129,7 +116,7 @@ export default function Register() {
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
                 </View>
-                <View style={centerStyle}>
+                <View style={styles.container_center}>
                     <Input
                         onChangeText={handleChangeEmail}
                         value={email}
@@ -187,25 +174,20 @@ export default function Register() {
                         iconRight={<Feather name={showRePass} size={24} color="black" />}
                     />
 
-                    {keyboardIsShow || (
-                        <>
-                            <Button onPress={handlePress} text={t('common:signup')} />
-                            <View style={styles.register}>
-                                <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
-                                <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                    {t('common:login')}
-                                </Text>
-                            </View>
-                        </>
-                    )}
-                </View>
-                {keyboardIsShow || (
-                    <View style={styles.container_botom}>
-                        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                            {t('common:forgotPass')}?
+                    <Button onPress={handlePress} text={t('common:signup')} />
+                    <View style={styles.register}>
+                        <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
+                        <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
+                            {t('common:login')}
                         </Text>
                     </View>
-                )}
+                </View>
+
+                <View style={styles.container_botom}>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                        {t('common:forgotPass')}?
+                    </Text>
+                </View>
             </ScrollView>
         </BackgroundImage>
     );

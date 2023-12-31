@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, Keyboard, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -11,27 +11,14 @@ import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đư
 import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
 import { textColor } from '../constant/color';
+import { statusBarHeight } from '../constant/dimistion';
 export default function Login({ navigation }) {
     const { t } = useTranslation();
-    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
+    const { dispatch } = useUserContext();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
-    const { dispatch } = useUserContext();
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        Keyboard.addListener('keyboardDidShow', () => {
-            setKeyboardIsShow(true);
-        });
-        Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardIsShow(false);
-        });
-    });
-
-    const centerStyle = keyboardIsShow
-        ? { ...styles.container_center, flex: 2, justifyContent: 'center' }
-        : { ...styles.container_center };
 
     const isValidateLogin = () => email.length > 0 && pass.length > 0 && errorEmail == false;
 
@@ -76,14 +63,13 @@ export default function Login({ navigation }) {
     };
 
     return (
-        <View style={styles.container}>
-            <BackgroundImage>
+        <BackgroundImage>
+            <ScrollView>
                 <Loading loading={loading} isFullScreen />
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-                    {/* <Text style={styles.title}>Invoice C</Text> */}
                 </View>
-                <View style={centerStyle}>
+                <View style={styles.container_center}>
                     <Input
                         onChangeText={handleChangeEmail}
                         value={email}
@@ -100,34 +86,26 @@ export default function Login({ navigation }) {
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
                     />
 
-                    {keyboardIsShow || (
-                        <>
-                            <Button onPress={handlePress} text={t('common:login')} />
-                            <View style={styles.register}>
-                                <Text style={styles.register_text}>{t('common:noAccount')} </Text>
-                                <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
-                                    {t('common:signup')}
-                                </Text>
-                            </View>
-                        </>
-                    )}
-                </View>
-                {keyboardIsShow || (
-                    <View style={styles.container_botom}>
-                        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
-                            {t('common:forgotPass')}?
+                    <Button onPress={handlePress} text={t('common:login')} />
+                    <View style={styles.register}>
+                        <Text style={styles.register_text}>{t('common:noAccount')} </Text>
+                        <Text onPress={() => navigation.navigate('Register')} style={styles.register_btn}>
+                            {t('common:signup')}
                         </Text>
                     </View>
-                )}
-            </BackgroundImage>
-        </View>
+                </View>
+
+                <View style={styles.container_botom}>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
+                        {t('common:forgotPass')}?
+                    </Text>
+                </View>
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     image: {
         flex: 1,
     },
@@ -137,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        marginTop: 100,
+        marginTop: statusBarHeight,
         width: 400,
         height: 400,
     },
@@ -163,7 +141,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     forgot: {
-        marginBottom: 20,
+        marginVertical: 20,
         fontSize: fontSizeDefault,
         color: textColor,
         fontWeight: 'bold',

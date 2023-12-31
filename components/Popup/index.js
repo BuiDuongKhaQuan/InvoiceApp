@@ -8,6 +8,7 @@ import { Feather, AntDesign } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { listInvoices } from '../../constant/listInvoice';
 import { useNavigation } from '@react-navigation/native';
+import { botomHeight, statusBarHeight } from '../../constant/dimistion';
 
 export default function Popup({ visible, onClose, bottom }) {
     const { t } = useTranslation();
@@ -74,8 +75,8 @@ export default function Popup({ visible, onClose, bottom }) {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        bottom: 50,
-        height: '93%',
+        bottom: botomHeight,
+        top: statusBarHeight,
         width: '100%',
         alignItems: 'center',
         flexDirection: 'column',
@@ -123,11 +124,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-    },
-    icon_tab: {
-        backgroundColor: backgroundColor,
-        width: 50,
-        height: 50,
-        paddingHorizontal: 10,
     },
 });

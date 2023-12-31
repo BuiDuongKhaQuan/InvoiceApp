@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Home from '../../screens/Home';
 import Blog from '../../screens/Blog';
 import Chat from '../../screens/Chat';
@@ -13,6 +13,7 @@ import Profile from '../../screens/Profile';
 import { useUserContext } from '../../screens/UserContext';
 import ProfileCompany from '../../screens/Company/ProfileCompany';
 import { useTranslation } from 'react-i18next';
+import { botomHeight } from '../../constant/dimistion';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ const TabNavigator = () => {
                 screenOptions={{
                     tabBarStyle: {
                         backgroundColor: white,
-                        height: 50,
+                        height: botomHeight,
                     },
                     tabBarActiveTintColor: buttonColor,
                     tabBarInactiveTintColor: 'black',
