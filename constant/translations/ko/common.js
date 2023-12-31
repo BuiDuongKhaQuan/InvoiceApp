@@ -272,4 +272,6 @@ export default {
     OPTSuccess: 'OTP 코드 전송 성공',
     notifyOff: '알림이 비활성화되었습니다',
     notifyOn: '알림이 활성화되었습니다',
+    countProduct: '製品',
+    countSampleInvoice: 'サンプル請求書',
 };

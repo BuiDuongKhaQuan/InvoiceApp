@@ -272,4 +272,6 @@ export default {
     OPTSuccess: 'OTPコードの送信に成功しました',
     notifyOff: '通知は無効になりました',
     notifyOn: '通知は有効になりました',
+    countProduct: '製品',
+    countSampleInvoice: 'サンプル請求書',
 };
