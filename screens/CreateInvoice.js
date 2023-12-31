@@ -16,7 +16,6 @@ import { buttonColor, defaultColor, lightColorDefault, white } from '../constant
 import * as Print from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { getDateNow, getHouseNow } from '../utilies/date';
-import * as FileSystem from 'expo-file-system';
 import Customer from '../components/Customer';
 import Loading from '../components/Loading';
 
@@ -68,14 +67,7 @@ export default function CreateInvoice({ route }) {
     const captureAndSaveImage = async () => {
         try {
             const uri = await captureRef(viewShotRef, { format: 'jpg', quality: 0.8 });
-
-            // Lưu ảnh vào đường dẫn tạm thời
-            const temporaryFilePath = `${FileSystem.cacheDirectory}temp_qr_image.jpg`;
-            await FileSystem.moveAsync({
-                from: uri,
-                to: temporaryFilePath,
-            });
-            qrImageUri.current = temporaryFilePath;
+            qrImageUri.current = uri;
             console.log(qrImageUri.current);
         } catch (error) {
             console.error(error);
@@ -428,6 +420,9 @@ export default function CreateInvoice({ route }) {
                     <div style="text-align: end; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
                     <br ><b>${t('common:signature')}: _____________</b></Text>
                     </div>
+                    </div>
+                    <div style="text-align: center; font-size: 20px; margin-bottom: 15px;margin-right: 10px; ">
+                    <img src="${qrResponse}" style="width: 90px ; height: 90px" />
                     </div>
                 </div>
                 </div>
@@ -2147,7 +2142,7 @@ export default function CreateInvoice({ route }) {
                     <View style={styles.container_bottom}>
                         <Button customStylesBtn={styles.btn1} text={t('common:Save')} onPress={() => handleSubmit()} />
                         <Button
-                            disabled={disabled}
+                            // disabled={disabled}
                             customStylesBtn={
                                 disabled == false ? styles.btn1 : { ...styles.btn1, backgroundColor: lightColorDefault }
                             }

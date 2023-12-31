@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { listInvoices } from '../constant/listInvoice';
+import { statusBarHeight } from '../constant/dimistion';
 
 const { width } = Dimensions.get('screen');
 export default function Home({ navigation }) {
@@ -29,34 +30,6 @@ export default function Home({ navigation }) {
         }
     };
     const [invoices, setInvoices] = useState(listInvoices);
-
-    // const [newIDBill, setNewIDBill] = useState(''); // Sử dụng useState để lưu mã hóa đơn mới
-    // useEffect(() => {
-    //     const handerId = async () => {
-    //         try {
-    //             const response = await getAllInvoice();
-    //             const currentDate = moment().format('DDMMYYYY');
-    //             let newIDBill;
-    //             if (response.length > 0) {
-    //                 // Tìm mã hóa đơn lớn nhất trong danh sách
-    //                 const maxBill = response[response.length - 1];
-    //                 if (!isNaN(maxBill.maHoaDon)) {
-    //                     // Nếu là số hợp lệ, tạo mã hóa đơn mới bằng cách tăng nó lên 1
-    //                     newIDBill = (parseInt(maxBill.id) + 1).toString();
-    //                 }
-    //                 // Tạo mã hóa đơn mới bằng cách tăng mã hóa đơn lớn nhất thêm 1
-    //                 newIDBill = (parseInt(maxBill.id) + 1).toString();
-    //             }
-
-    //             setNewIDBill(`${currentDate}_${newIDBill}`);
-    //         } catch (error) {
-    //             console.error('Lỗi khi lấy danh sách hóa đơn:', error);
-    //         }
-    //     };
-
-    //     // Gọi hàm để tính toán và lưu mã hóa đơn mới vào state
-    //     handerId();
-    // }, []);
 
     return (
         <>
@@ -100,7 +73,7 @@ const styles = StyleSheet.create({
     input: {
         width: '100%',
         position: 'absolute',
-        paddingTop: StatusBar.currentHeight - 8 || 20,
+        paddingTop: statusBarHeight,
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 100,
