@@ -24,7 +24,7 @@ export default function BillSample() {
                     holder={t('common:searchForInvoice')}
                     onPressIconRight={() => navigation.navigate('Scanner')}
                     iconRight={<Ionicons name="ios-qr-code-outline" size={24} color="black" />}
-                    customStylesIcon={styles.icon1}
+                    customStylesIcon={styles.icon}
                 />
             </View>
             <View style={styles.list}>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         borderColor: white,
         backgroundColor: '#C9C9C9',
     },
-    icon1: {
+    icon: {
         marginHorizontal: 0,
     },
 });

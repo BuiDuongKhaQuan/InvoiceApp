@@ -216,14 +216,6 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch',
         marginHorizontal: 10,
     },
-    wallpaper_img: {
-        width: 100,
-        height: 70,
-        borderWidth: 1,
-        borderColor: 'gray',
-        resizeMode: 'stretch',
-        marginHorizontal: 10,
-    },
     change_btn: {
         flex: 0.6,
         width: '70%',
@@ -247,16 +239,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: fontSizeDefault,
     },
-    name: {
-        height: 50,
-        width: '100%',
-        lineHeight: 50,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: 'gray',
-        paddingHorizontal: 10,
-        backgroundColor: white,
-    },
     container_input: {
         height: '50%',
         paddingHorizontal: 10,
@@ -266,19 +248,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: 'gray',
     },
-    dropdown: {
-        marginHorizontal: 10,
-    },
-    dropdown_btn: {
-        height: '70%',
-        marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 5,
-    },
+
     btn: {
-        flex: 0.7,
-        justifyContent: 'center',
-        alignItems: 'center',
+        marginHorizontal: 10,
     },
 });

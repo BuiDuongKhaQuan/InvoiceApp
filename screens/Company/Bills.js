@@ -100,16 +100,6 @@ const styles = StyleSheet.create({
         borderColor: white,
         backgroundColor: '#C9C9C9',
     },
-    icon1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-
-    icon1: {
-        marginHorizontal: 0,
-        // backgroundColor
-    },
     table: {
         flexDirection: 'column',
     },

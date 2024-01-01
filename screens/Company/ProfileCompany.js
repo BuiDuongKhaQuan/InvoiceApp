@@ -165,12 +165,7 @@ const styles = StyleSheet.create({
         width: width,
         resizeMode: 'stretch',
     },
-    setting_icon: {
-        fontSize: fontSizeDefault,
-        position: 'absolute',
-        top: StatusBar.currentHeight || 20,
-        right: 10,
-    },
+
     top_avatar: {
         flex: 1,
         width: '90%',
@@ -237,12 +232,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginVertical: 2,
         fontSize: fontSizeDefault,
-    },
-    tab_text: {
-        fontSize: fontSizeDefault,
-        fontWeight: 'bold',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
     },
     container_bottom: {
         flex: 2.2,

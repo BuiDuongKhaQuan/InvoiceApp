@@ -30,6 +30,12 @@ export default function Setting() {
                     title: t('common:password'),
                     router: 'ChangePassword',
                 },
+                {
+                    id: '3',
+                    icon: <MaterialIcons name="fingerprint" size={24} color="black" />,
+                    title: t('common:touch_id'),
+                    router: 'CreateFingerprints',
+                },
             ],
         },
         {
