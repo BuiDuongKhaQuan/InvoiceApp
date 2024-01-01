@@ -106,11 +106,7 @@ export default function ChangePassword() {
                         value={confirmPass}
                     />
 
-                    <Button
-                        onPress={handlePress}
-                        customStylesBtn={{ width: 340, height: 50, marginLeft: 24 }}
-                        text={t('common:confirm')}
-                    />
+                    <Button onPress={handlePress} customStylesBtn={{ borderRadius: 0 }} text={t('common:confirm')} />
 
                     <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgot}>
                         {t('common:forgotPass')}

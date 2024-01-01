@@ -34,7 +34,7 @@ import { useEffect } from 'react';
 import { handleNotification } from './utilies/sendNotification';
 import { LikeProvider } from './components/InvoiceList/LikeContext';
 import Products from './screens/Company/Products';
-import CreateFingerprints from './screens/Setting/CreateFingerprints';
+import Fingerprints from './screens/Setting/Fingerprints';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -63,7 +63,7 @@ export default function App() {
                         <Stack.Screen name="Blog" component={Blog} />
                         <Stack.Screen name="Home" component={Home} options={headerNone} />
                         <Stack.Screen name="CreateInvoice" component={CreateInvoice} options={headerNone} />
-                        <Stack.Screen name="Chat" component={Chat} />
+                        <Stack.Screen name="Chat" component={Chat} options={headerNone} />
                         <Stack.Screen name="Profile" component={Profile} />
                         <Stack.Screen name="Bills" component={Bills} options={headerNone} />
                         <Stack.Screen name="BillSample" component={BillSample} options={headerNone} />
@@ -81,7 +81,7 @@ export default function App() {
                         <Stack.Screen name="ResetPassword" component={ResetPassword} options={headerNone} />
                         <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={headerNone} />
                         <Stack.Screen name="Products" component={Products} options={headerNone} />
-                        <Stack.Screen name="CreateFingerprints" component={CreateFingerprints} options={headerNone} />
+                        <Stack.Screen name="Fingerprints" component={Fingerprints} options={headerNone} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </LikeProvider>

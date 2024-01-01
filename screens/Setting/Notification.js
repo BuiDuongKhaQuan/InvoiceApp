@@ -8,8 +8,6 @@ import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { useTranslation } from 'react-i18next';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Button from '../../components/Button';
-import { sendNotification } from '../../utilies/sendNotification';
 
 export default function Notification() {
     const { t } = useTranslation();
@@ -68,13 +66,9 @@ export default function Notification() {
                             <Text style={{ fontSize: 20 }}>{t('common:notification')}</Text>
                             <SwitchCustom isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
                         </View>
-                        <Text style={{ color: 'gray', paddingHorizontal: 10 }}>{t('common:note')}</Text>
-                        {isEnabled && (
-                            <Button
-                                onPress={() => sendNotification('Thông báo tin nhắn', 'Bạn có 1 tin nhắn mới!', null)}
-                                text={'test'}
-                            />
-                        )}
+                        <Text style={{ color: 'gray', paddingHorizontal: 10, marginBottom: 5 }}>
+                            {t('common:note')}
+                        </Text>
                     </View>
                 </View>
             </ScrollView>

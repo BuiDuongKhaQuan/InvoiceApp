@@ -34,7 +34,7 @@ export default function Setting() {
                     id: '3',
                     icon: <MaterialIcons name="fingerprint" size={24} color="black" />,
                     title: t('common:touch_id'),
-                    router: 'CreateFingerprints',
+                    router: 'Fingerprints',
                 },
             ],
         },
