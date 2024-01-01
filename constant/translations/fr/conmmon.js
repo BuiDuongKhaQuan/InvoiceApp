@@ -273,4 +273,8 @@ export default {
     OPTSuccess: 'Envoi du code OTP réussi',
     notifyOff: 'Les notifications sont maintenant désactivées',
     notifyOn: 'Les notifications sont maintenant activées',
+    countProduct: 'Produit',
+    countSampleInvoice: 'Exemple de facture',
+    countProduct: 'Produit',
+    countSampleInvoice: 'Exemple de facture',
 };

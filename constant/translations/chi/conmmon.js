@@ -272,4 +272,6 @@ export default {
     OPTSuccess: '成功发送OTP代码',
     notifyOff: '通知已禁用',
     notifyOn: '通知现已启用',
+    countProduct: '产品',
+    countSampleInvoice: '样本发票',
 };

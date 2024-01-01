@@ -4,7 +4,7 @@ import Header from '../../components/SettingItem/header';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
-import { getInvoiceByCompany1, getUserByCompanyName1 } from '../../Service/api';
+import { getUserByCompanyName1, getProductsByCompany, getInvoiceByCompany } from '../../Service/api';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
 export default function Statistical() {
@@ -12,7 +12,8 @@ export default function Statistical() {
     const { state } = useUserContext();
     const { company } = state;
     const companyName = company.name;
-    const [loadingHistory, setLoadingHistory] = useState(false);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const [item, setItem] = useState([
         {
@@ -29,49 +30,61 @@ export default function Statistical() {
         },
         {
             id: 3,
-            title: t('common:billWeek'),
+            title: t('common:countProduct'),
             numberStatistic: 0,
             icon: <MaterialCommunityIcons name="calendar-month" size={24} color="black" />,
         },
         {
             id: 4,
-            title: t('common:billMonth'),
-            numberStatistic: 0,
+            title: t('common:countSampleInvoice'),
+            numberStatistic: 11,
             icon: <MaterialCommunityIcons name="calendar-month" size={24} color="black" />,
         },
     ]);
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true);
                 const userData = await getUserByCompanyName1(companyName);
-                const billData = await getInvoiceByCompany1(companyName);
+                const billDataResponse = await getInvoiceByCompany(companyName, 10000, page);
+                const productData = await getProductsByCompany(companyName, 10000, page);
+
+                // Lấy độ dài của danh sách hóa đơn từ API response
+                const billData = billDataResponse.invoices;
+                const totalBillData = billDataResponse.length;
+                const totalProductData = productData.length;
+                console.log(totalBillData);
+
                 const updatedItem = item.map((statistic) => {
-                    setLoadingHistory(true);
                     if (statistic.title === t('common:employee')) {
                         return { ...statistic, numberStatistic: userData.length };
                     }
                     if (statistic.title === t('common:bill')) {
-                        return { ...statistic, numberStatistic: billData.length };
+                        return { ...statistic, numberStatistic: totalBillData };
                     }
-                    // Handle other statistics if needed
+                    if (statistic.title === t('common:countProduct')) {
+                        return { ...statistic, numberStatistic: totalProductData };
+                    }
+
                     return statistic;
                 });
+
                 setItem(updatedItem);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             } finally {
-                setLoadingHistory(false);
+                setLoading(false);
             }
         };
 
         fetchData();
-    }, [companyName, t, item]);
+    }, [companyName, t]);
 
     return (
         <ImageBackground>
             <Header title={t('common:statisticals')} />
             <View style={styles.container_center}>
-                <Loading loading={loadingHistory}>
+                <Loading loading={loading}>
                     <FlatList
                         data={item}
                         numColumns={2}

@@ -273,4 +273,6 @@ export default {
     OPTSuccess: 'Đã gửi mã OTP thành công',
     notifyOff: 'Thông báo hiện đã bị tắt',
     notifyOn: 'Thông báo hiện đã được bật',
+    countProduct: 'Sản phẩm',
+    countSampleInvoice: 'Mẫu hóa đơn',
 };
