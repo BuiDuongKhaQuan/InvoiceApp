@@ -272,4 +272,6 @@ export default {
     OPTSuccess: 'Successfully sent OTP code',
     notifyOff: 'Notifications are now disabled',
     notifyOn: 'Notifications are now enabled',
+    countProduct: 'Product',
+    countSampleInvoice: 'Sample Invoice',
 };

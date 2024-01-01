@@ -271,4 +271,6 @@ export default {
     OPTSuccess: 'Успешно отправлен код OTP',
     notifyOff: 'Уведомления теперь отключены',
     notifyOn: 'Уведомления теперь включены',
+    countProduct: 'Товар',
+    countSampleInvoice: 'Образец счета',
 };
