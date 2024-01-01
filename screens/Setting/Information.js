@@ -13,34 +13,25 @@ import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { instance } from '../../Service/api';
 import { useTranslation } from 'react-i18next';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
-export default function Information({ route }) {
+export default function Information() {
     const navigation = useNavigation();
+    const route = useRoute();
     const { state } = useUserContext();
     const { user, company } = state;
     const { dispatch } = useUserContext();
     const genders = ['Male', 'Female'];
-    const [name, setName] = useState(state.user.name);
-    const [email, setEmail] = useState(state.user.email);
-    const [phone, setPhone] = useState(state.user.phone);
+    const userData = route.params?.data ? route.params.data : user;
+    const [name, setName] = useState(userData.name);
+    const [email, setEmail] = useState(userData.email);
+    const [phone, setPhone] = useState(userData.phone);
     const [selectedGender, setSelectedGender] = useState('');
     const [photoShow, setPhotoShow] = useState(null);
     const [photoShowWallpaper, setPhotoShowWallpaper] = useState(null);
     const [loading, setLoading] = useState(false);
     const { t } = useTranslation();
-    const [data, setData] = useState(route?.params?.dataModel !== undefined ? route.params.dataModel : null);
-    const { dataModel, refreshData } = route.params;
 
-    useEffect(() => {
-        // Call the refreshData function when this screen is focused
-        const unsubscribe = navigation.addListener('focus', () => {
-            refreshData();
-        });
-
-        // Cleanup the subscription when the component unmounts
-        return unsubscribe;
-    }, [refreshData]);
     const takePhotoAndUpload = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -165,154 +156,104 @@ export default function Information({ route }) {
     return (
         <BackgroundImage>
             <Header title={t('common:information')} />
-            {route?.params?.dataModel !== undefined ? (
-                <ScrollView style={styles.container}>
-                    <Loading loading={loading} />
-                    <View style={styles.top}>
-                        <View style={styles.image}>
-                            <Image
-                                style={styles.avatar_img}
-                                source={
-                                    data.image == null
-                                        ? require('../../assets/images/default-avatar.png')
-                                        : { uri: data.image }
-                                }
-                            />
-                            <Text>{t('common:avatar')} </Text>
-                        </View>
-                        <View style={styles.image}>
-                            <Image
-                                style={styles.wallpaper_img}
-                                source={
-                                    data.wallpaper == null
-                                        ? require('../../assets/images/default-wallpaper.png')
-                                        : { uri: data.wallpaper }
-                                }
-                            />
-                            <Text>{t('common:wallpaper')} </Text>
-                        </View>
+            <ScrollView style={styles.container}>
+                <Loading loading={loading} isFullScreen />
+                <View style={styles.top}>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.avatar_img}
+                            source={
+                                userData.image == null
+                                    ? require('../../assets/images/default-avatar.png')
+                                    : { uri: userData.image }
+                            }
+                        />
+
+                        <Button
+                            text="Change avatar"
+                            customStylesText={styles.text}
+                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                            onPress={takePhotoAndUpload}
+                        />
                     </View>
-
-                    <View>
-                        <View style={styles.bottom}>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:name')}:</Text>
-                                <Text style={styles.name}>{data.name}</Text>
-                            </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:email')}:</Text>
-                                <Text style={styles.name}>{data.email}</Text>
-                            </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:phone')}:</Text>
-                                <Text style={styles.name}>{data.phone}</Text>
-                            </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:gender')}:</Text>
-                                <Text style={styles.name}>{data.gender}</Text>
-                            </View>
-                        </View>
+                    <View style={styles.image}>
+                        <Image
+                            style={styles.wallpaper_img}
+                            source={
+                                userData.wallpaper == null
+                                    ? require('../../assets/images/default-wallpaper.png')
+                                    : { uri: userData.wallpaper }
+                            }
+                        />
+                        <Button
+                            text="Change wallpaper"
+                            customStylesText={styles.text}
+                            customStylesBtn={styles.change_btn}
+                            onPress={uploadWallpaper}
+                        />
                     </View>
-                </ScrollView>
-            ) : (
-                <ScrollView style={styles.container}>
-                    <Loading loading={loading} />
+                </View>
 
-                    <View style={styles.top}>
-                        <View style={styles.image}>
-                            <Image
-                                style={styles.avatar_img}
-                                source={
-                                    user.image == null
-                                        ? require('../../assets/images/default-avatar.png')
-                                        : { uri: user.image }
-                                }
-                            />
-
-                            <Button
-                                text="Change avatar"
-                                customStylesText={styles.text}
-                                customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                                onPress={takePhotoAndUpload}
+                <View>
+                    <View style={styles.bottom}>
+                        <View style={styles.bottom_item}>
+                            <Text style={styles.text}>{t('common:name')}:</Text>
+                            <Input
+                                customStylesContainer={styles.container_input}
+                                holder={userData.name}
+                                value={name}
+                                onChangeText={(text) => setName(text)}
                             />
                         </View>
-                        <View style={styles.image}>
-                            <Image
-                                style={styles.wallpaper_img}
-                                source={
-                                    user.wallpaper == null
-                                        ? require('../../assets/images/default-wallpaper.png')
-                                        : { uri: user.wallpaper }
-                                }
-                            />
-                            <Button
-                                text="Change wallpaper"
-                                customStylesText={styles.text}
-                                customStylesBtn={styles.change_btn}
-                                onPress={uploadWallpaper}
+                        <View style={styles.bottom_item}>
+                            <Text style={styles.text}>{t('common:email')}:</Text>
+                            <Input
+                                customStylesContainer={styles.container_input}
+                                holder={userData.email}
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
                             />
                         </View>
-                    </View>
-
-                    <View>
-                        <View style={styles.bottom}>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:name')}:</Text>
-                                <Input
-                                    customStylesContainer={styles.container_input}
-                                    holder={state.user.name}
-                                    value={name}
-                                    onChangeText={(text) => setName(text)}
+                        <View style={styles.bottom_item}>
+                            <Text style={styles.text}>{t('common:phone')}:</Text>
+                            <Input
+                                customStylesContainer={styles.container_input}
+                                holder={userData.phone}
+                                value={phone}
+                                onChangeText={(text) => setPhone(text)}
+                            />
+                        </View>
+                        <View style={styles.bottom_item}>
+                            <Text style={styles.text}>{t('common:gender')}:</Text>
+                            <View style={styles.dropdown}>
+                                <SelectDropdown
+                                    data={genders}
+                                    onSelect={(selectedItem, index) => {
+                                        setSelectedGender(selectedItem);
+                                    }}
+                                    buttonStyle={styles.dropdown_btn}
+                                    defaultButtonText={userData.gender}
+                                    renderDropdownIcon={() => (
+                                        <Entypo name="chevron-small-down" size={24} color="black" />
+                                    )}
+                                    dropdownIconPosition="right"
+                                    buttonTextAfterSelection={(selectedItem, index) => {
+                                        return selectedItem;
+                                    }}
+                                    rowTextForSelection={(item, index) => {
+                                        return item;
+                                    }}
                                 />
                             </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:email')}:</Text>
-                                <Input
-                                    customStylesContainer={styles.container_input}
-                                    holder={state.user.email}
-                                    value={email}
-                                    onChangeText={(text) => setEmail(text)}
-                                />
-                            </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:phone')}:</Text>
-                                <Input
-                                    customStylesContainer={styles.container_input}
-                                    holder={state.user.phone}
-                                    value={phone}
-                                    onChangeText={(text) => setPhone(text)}
-                                />
-                            </View>
-                            <View style={styles.bottom_item}>
-                                <Text style={styles.text}>{t('common:gender')}:</Text>
-                                <View style={styles.dropdown}>
-                                    <SelectDropdown
-                                        data={genders}
-                                        onSelect={(selectedItem, index) => {
-                                            setSelectedGender(selectedItem);
-                                        }}
-                                        buttonStyle={styles.dropdown_btn}
-                                        defaultButtonText={state.user.gender}
-                                        renderDropdownIcon={() => (
-                                            <Entypo name="chevron-small-down" size={24} color="black" />
-                                        )}
-                                        dropdownIconPosition="right"
-                                        buttonTextAfterSelection={(selectedItem, index) => {
-                                            return selectedItem;
-                                        }}
-                                        rowTextForSelection={(item, index) => {
-                                            return item;
-                                        }}
-                                    />
-                                </View>
-                            </View>
                         </View>
+                    </View>
+                    {route.params?.data == undefined && (
                         <View style={styles.btn}>
                             <Button text="Save" onPress={handlerSend} />
                         </View>
-                    </View>
-                </ScrollView>
-            )}
+                    )}
+                </View>
+            </ScrollView>
         </BackgroundImage>
     );
 }

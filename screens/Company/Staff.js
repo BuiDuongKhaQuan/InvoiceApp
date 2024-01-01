@@ -13,7 +13,9 @@ import Loading from '../../components/Loading';
 import { white } from '../../constant/color';
 import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 import { useIsFocused } from '@react-navigation/native';
-export default function Staff({ navigation }) {
+import { useNavigation } from '@react-navigation/native';
+
+export default function Staff() {
     const { state } = useUserContext();
     const { t } = useTranslation();
     const [staffs, setStaffs] = useState([]);
@@ -21,10 +23,11 @@ export default function Staff({ navigation }) {
     const [nameStaff, setNameStaff] = useState('');
     const [infStaff, setInfStaff] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [dataModel, setDataModel] = useState();
+    const [dataModel, setDataModel] = useState(null);
     const [user, setUser] = useState(dataModel);
     const [buttonText, setButtonText] = useState('');
     const [page, setPage] = useState(1);
+    const navigation = useNavigation();
     const isFocused = useIsFocused();
     const handleSearch = async () => {
         try {
@@ -67,24 +70,21 @@ export default function Staff({ navigation }) {
     };
     const [modalVisible, setModalVisible] = useState(false);
 
-    const showModal = (data) => {
-        if (data.status === 1) {
+    const showModal = (staff) => {
+        if (staff.status == 1) {
             setButtonText(t('common:lock'));
         }
-        if (data.status === 2) {
+        if (staff.status == 2) {
             setButtonText(t('common:unLock'));
         }
-        setDataModel(data);
+        setDataModel(staff);
         setModalVisible(true);
     };
 
     const hideModal = () => {
         setModalVisible(false);
     };
-    const refreshData = async () => {
-        // Define your logic to refresh data here
-        getInformationStaff(page);
-    };
+
     const handleLockup = async () => {
         setLoading(true);
         try {
@@ -188,8 +188,7 @@ export default function Staff({ navigation }) {
                                     text={t('common:information')}
                                     onPress={() => {
                                         navigation.navigate('Information', {
-                                            dataModel: dataModel,
-                                            refreshData: refreshData,
+                                            data: dataModel,
                                         });
                                     }}
                                 />
@@ -255,7 +254,13 @@ const styles = StyleSheet.create({
         marginLeft: 20,
     },
 
-    iconOption: { flex: 1, marginLeft: 'auto', width: 50, height: 50, justifyContent: 'flex-end' },
+    iconOption: {
+        flex: 1,
+        marginLeft: 'auto',
+        width: 50,
+        height: 50,
+        justifyContent: 'flex-end',
+    },
     modalContainer: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -275,11 +280,6 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
-    modalText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
     modalOption: {
         fontSize: 16,
         backgroundColor: 'white',
@@ -297,11 +297,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
     },
-    iconOption: {
-        width: 50,
-        height: 50,
-    },
-
     title: {
         fontSize: 20,
         fontWeight: 'bold',

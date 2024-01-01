@@ -358,7 +358,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         marginVertical: 1,
     },
-
     btnClose: {
         color: white,
         textAlign: 'center',

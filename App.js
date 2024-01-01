@@ -34,6 +34,7 @@ import { useEffect } from 'react';
 import { handleNotification } from './utilies/sendNotification';
 import { LikeProvider } from './components/InvoiceList/LikeContext';
 import Products from './screens/Company/Products';
+import CreateFingerprints from './screens/Setting/CreateFingerprints';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -80,6 +81,7 @@ export default function App() {
                         <Stack.Screen name="ResetPassword" component={ResetPassword} options={headerNone} />
                         <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={headerNone} />
                         <Stack.Screen name="Products" component={Products} options={headerNone} />
+                        <Stack.Screen name="CreateFingerprints" component={CreateFingerprints} options={headerNone} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </LikeProvider>
