@@ -274,4 +274,16 @@ export default {
     notifyOn: 'Notifications are now enabled',
     countProduct: 'Product',
     countSampleInvoice: 'Sample Invoice',
+    frequentlyQuestions: 'Frequently Asked Questions',
+    ques1: '1. How do I use the invoice creation feature?',
+    ques2: '2. How do I save an invoice?',
+    ques3: '3. What should I do if I encounter an error during account registration?',
+    ques4: '4. What to do if I can not upload images?',
+    ans1: 'To use the invoice creation feature, visit the homepage or the invoice creation page. Then choose the invoice template you want. Next, fill in the relevant information for the invoice. Finally, select "Save".',
+    ans2: 'To save an invoice, simply click on the "Save" button.',
+    ans3: 'If you just encountered a registration error, try closing the application and trying again. If you still encounter this error, please contact us via email. Our support team will try to resolve the issue as soon as possible.',
+    ans4: 'Check if the size of your image exceeds our required limits. If the issue is not related to image size, try exiting the application and trying again.',
+
+    typeSupport: 'Support Channels',
+    switchboard: 'Switchboard',
 };

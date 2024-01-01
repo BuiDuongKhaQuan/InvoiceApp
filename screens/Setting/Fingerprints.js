@@ -11,7 +11,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 
 export default function Fingerprints() {
     const { t } = useTranslation();
-    const [isEnabled, setIsEnabled] = useState(true);
+    const [isEnabled, setIsEnabled] = useState(false);
 
     const toggleSwitch = async () => {
         try {

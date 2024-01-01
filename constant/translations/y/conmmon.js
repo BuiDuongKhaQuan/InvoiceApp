@@ -267,4 +267,16 @@ export default {
     notifyOn: 'Le notifiche sono ora abilitate',
     countProduct: 'Prodotto',
     countSampleInvoice: 'Fattura di esempio',
+    frequentlyQuestions: 'Domande frequenti',
+    ques1: '1. Come si utilizza la funzione di creazione della fattura?',
+    ques2: '2. Come si salva una fattura?',
+    ques3: '3. Cosa fare in caso di errore durante la registrazione dell account?',
+    ques4: '4. Cosa fare se non riesco a caricare le immagini?',
+    ans1: 'Per utilizzare la funzione di creazione della fattura, visita la homepage o la pagina di creazione della fattura. Scegli quindi il modello di fattura desiderato. Successivamente, inserisci le informazioni rilevanti per la fattura. Infine, seleziona "Salva".',
+    ans2: 'Per salvare una fattura, basta cliccare sul pulsante "Salva".',
+    ans3: 'Se hai appena riscontrato un errore durante la registrazione, prova a chiudere l applicazione e riprova. Se lerrore persiste, contattaci via email. Il nostro team di supporto cercherà di risolvere il problema al più presto.',
+    ans4: 'Verifica se le dimensioni della tua immagine superano i limiti da noi richiesti. Se il problema non riguarda le dimensioni dellimmagine, prova a uscire dallapplicazione e riprova.',
+
+    typeSupport: 'Canali di supporto',
+    switchboard: 'Centralino',
 };
