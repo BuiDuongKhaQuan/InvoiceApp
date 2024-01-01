@@ -7,6 +7,7 @@ import { useUserContext } from './UserContext';
 import { ref, push, set, onValue } from 'firebase/database';
 import { fireDatabase } from '../config/firebaseConfig';
 import { statusBarHeight } from '../constant/dimistion';
+import { sendNotification } from '../utilies/sendNotification';
 
 export default function Chat({ navigation }) {
     const { state } = useUserContext();
@@ -63,6 +64,7 @@ export default function Chat({ navigation }) {
                     });
 
                     setMessages(messagesArray.reverse());
+                    sendNotification('Thông báo tin nhắn', 'Bạn có 1 tin nhắn mới!', null);
                 }
             },
             (error) => {

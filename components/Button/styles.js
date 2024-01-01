@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     btn: {
         width: '100%',
         height: 50,
-        borderRadius: 15,
+        borderRadius: 7,
         borderWidth: 1,
         backgroundColor: buttonColor,
         flexDirection: 'row',

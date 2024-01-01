@@ -197,7 +197,9 @@ export default function Information() {
                 <View>
                     <View style={styles.bottom}>
                         <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:name')}:</Text>
+                            <View style={styles.container_text}>
+                                <Text style={styles.text}>{t('common:name')}:</Text>
+                            </View>
                             <Input
                                 customStylesContainer={styles.container_input}
                                 holder={userData.name}
@@ -206,7 +208,9 @@ export default function Information() {
                             />
                         </View>
                         <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:email')}:</Text>
+                            <View style={styles.container_text}>
+                                <Text style={styles.text}>{t('common:email')}:</Text>
+                            </View>
                             <Input
                                 customStylesContainer={styles.container_input}
                                 holder={userData.email}
@@ -215,7 +219,9 @@ export default function Information() {
                             />
                         </View>
                         <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:phone')}:</Text>
+                            <View style={styles.container_text}>
+                                <Text style={styles.text}>{t('common:phone')}:</Text>
+                            </View>
                             <Input
                                 customStylesContainer={styles.container_input}
                                 holder={userData.phone}
@@ -224,7 +230,9 @@ export default function Information() {
                             />
                         </View>
                         <View style={styles.bottom_item}>
-                            <Text style={styles.text}>{t('common:gender')}:</Text>
+                            <View style={styles.container_text}>
+                                <Text style={styles.text}>{t('common:gender')}:</Text>
+                            </View>
                             <View style={styles.dropdown}>
                                 <SelectDropdown
                                     data={genders}
@@ -261,6 +269,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 10,
+        marginHorizontal: 10,
     },
     top: {
         flex: 2,
@@ -302,14 +311,17 @@ const styles = StyleSheet.create({
     bottom: {
         flex: 3,
         marginTop: 20,
-        paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },
     bottom_item: {
         flex: 1,
         width: '100%',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    container_text: {
+        width: '100%',
         alignItems: 'flex-start',
     },
     text: {
@@ -320,7 +332,6 @@ const styles = StyleSheet.create({
         height: 50,
         width: '100%',
         paddingHorizontal: 10,
-
         lineHeight: 50,
         borderWidth: 1,
         borderRadius: 5,
@@ -330,7 +341,6 @@ const styles = StyleSheet.create({
     container_input: {
         height: '50%',
         paddingHorizontal: 10,
-        marginBottom: 0,
         elevation: 0,
         borderWidth: 1,
         borderRadius: 5,

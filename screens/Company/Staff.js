@@ -1,4 +1,14 @@
-import { StatusBar, StyleSheet, Text, View, Image, Modal, ScrollView, Alert } from 'react-native';
+import {
+    StatusBar,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    Modal,
+    ScrollView,
+    Alert,
+    TouchableWithoutFeedback,
+} from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../components/Input';
 import Header from '../../components/SettingItem/header';
@@ -28,7 +38,8 @@ export default function Staff() {
     const [buttonText, setButtonText] = useState('');
     const [page, setPage] = useState(1);
     const navigation = useNavigation();
-    const isFocused = useIsFocused();
+    const [modalVisible, setModalVisible] = useState(false);
+
     const handleSearch = async () => {
         try {
             setLoading(true);
@@ -57,7 +68,7 @@ export default function Staff() {
     };
     useEffect(() => {
         getInformationStaff(page);
-    }, [page, isFocused]); // Listen to isFocused here
+    }, [page]); // Listen to isFocused here
 
     const handleScroll = (event) => {
         const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
@@ -68,7 +79,15 @@ export default function Staff() {
             setPage((prevPage) => prevPage + 1);
         }
     };
-    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(() => {
+        const focusListener = navigation.addListener('focus', () => {
+            setModalVisible(false);
+        });
+        return () => {
+            focusListener();
+        };
+    }, [navigation]);
 
     const showModal = (staff) => {
         if (staff.status == 1) {
@@ -168,8 +187,8 @@ export default function Staff() {
                           ))}
                     <Loading loading={loading} isFooter></Loading>
                 </View>
-                <Modal animationType="slide" transparent={true} visible={modalVisible} onBackdropPress={showModal}>
-                    <View style={styles.modalBackground}>
+                <Modal animationType="slide" transparent={true} visible={modalVisible}>
+                    <TouchableWithoutFeedback onPress={hideModal} style={styles.modalBackground}>
                         <View style={styles.modalContainer}>
                             <View style={styles.modalContainer1}>
                                 <View style={styles.modalContent}>
@@ -182,30 +201,33 @@ export default function Staff() {
                                     </View>
                                     <Text style={styles.title}>{t('common:option')}</Text>
                                 </View>
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={t('common:information')}
-                                    onPress={() => {
-                                        navigation.navigate('Information', {
-                                            data: dataModel,
-                                        });
-                                    }}
-                                />
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={t('common:chat')}
-                                />
-                                <Button
-                                    customStylesBtn={styles.modalOption}
-                                    customStylesText={styles.textBtn}
-                                    text={buttonText}
-                                    onPress={handleLockup}
-                                />
+                                <View style={{ marginHorizontal: 10 }}>
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={t('common:information')}
+                                        onPress={() => {
+                                            navigation.navigate('Information', {
+                                                data: dataModel,
+                                            });
+                                        }}
+                                    />
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={t('common:chat')}
+                                        onPress={() => navigation.navigate('Chat')}
+                                    />
+                                    <Button
+                                        customStylesBtn={styles.modalOption}
+                                        customStylesText={styles.textBtn}
+                                        text={buttonText}
+                                        onPress={handleLockup}
+                                    />
+                                </View>
                             </View>
                         </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                 </Modal>
             </ScrollView>
         </ImageBackground>
@@ -281,15 +303,15 @@ const styles = StyleSheet.create({
         height: 20,
     },
     modalOption: {
+        width: '100%',
         fontSize: 16,
         backgroundColor: 'white',
-        width: '100%',
         marginVertical: 10,
         borderRadius: 24,
     },
     modalBackground: {
-        backgroundColor: 'red',
         flex: 1,
+        backgroundColor: 'red',
         backgroundColor: 'transparent',
         justifyContent: 'flex-end',
     },

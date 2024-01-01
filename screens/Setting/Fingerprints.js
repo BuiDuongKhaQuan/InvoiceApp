@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import SwitchCustom from '../../components/Switch';
 import Header from '../../components/SettingItem/header';
 import { white } from '../../constant/color';
@@ -7,33 +7,30 @@ import { fontSizeMenuTitle } from '../../constant/fontSize';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as LocalAuthentication from 'expo-local-authentication';
 
-export default function CreateFingerprints() {
+export default function Fingerprints() {
     const { t } = useTranslation();
     const [isEnabled, setIsEnabled] = useState(true);
 
     const toggleSwitch = async () => {
-        // Lưu trạng thái thông báo vào AsyncStorage
-        await AsyncStorage.setItem('biometricEnabledStatus', (!isEnabled).toString());
-        // Bật/tắt thông báo
-        setIsEnabled(!isEnabled);
-    };
+        try {
+            const isSupported = await LocalAuthentication.hasHardwareAsync();
 
-    useEffect(() => {
-        const loadBiometricEnabledStatus = async () => {
-            try {
-                const storedStatus = await AsyncStorage.getItem('biometricEnabledStatus');
-                if (storedStatus !== null) {
-                    setIsEnabled(storedStatus === 'true');
-                    console.log(storedStatus);
-                }
-            } catch (error) {
-                console.error('Error loading biometric status:', error);
+            if (isSupported) {
+                // Lưu trạng thái thông báo vào AsyncStorage
+                await AsyncStorage.setItem('biometricEnabledStatus', (!isEnabled).toString());
+                // Bật/tắt thông báo
+                setIsEnabled(!isEnabled);
+            } else {
+                // Thiết bị không hỗ trợ xác thực vân tay
+                Alert.alert('Thông báo!', 'Thiết bị không hỗ trợ xác thực vân tay.');
+                // Thực hiện các xử lý khác nếu cần
             }
-        };
-
-        loadBiometricEnabledStatus();
-    }, []);
+        } catch (error) {
+            console.error('Error checking biometric support:', error);
+        }
+    };
 
     return (
         <BackgroundImage>
