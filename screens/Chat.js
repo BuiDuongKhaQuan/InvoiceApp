@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Header from '../components/Header';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { GiftedChat } from 'react-native-gifted-chat';

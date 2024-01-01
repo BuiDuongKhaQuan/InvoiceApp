@@ -1204,7 +1204,7 @@ export default function CreateInvoice({ route }) {
                                         <p style="margin-right: 20; font-weight: bold">${t(
                                             'common:addressInvoice',
                                         )}:</p>
-                                        <p>${companyAddress}s</p>
+                                        <p>${contactAddress}s</p>
                                     </div>
                                     <table class="table" style="width: 100%">
                                         <tr style="background-color: #595959; color: aliceblue">
@@ -2132,7 +2132,16 @@ export default function CreateInvoice({ route }) {
                             />
                         </>
                     )}
-
+                    {idTemplate != 1 && idTemplate != 2 && idTemplate != 3 && idTemplate != 10 && idTemplate != 11 && (
+                        <View style={styles.center_row1}>
+                            <TextInput
+                                style={styles.text_line}
+                                onChangeText={(text) => setContactAddress(text)}
+                                value={contactAddress}
+                                placeholder={t('common:address')}
+                            />
+                        </View>
+                    )}
                     {idTemplate != 2 && idTemplate != 4 && idTemplate != 5 && idTemplate != 9 && idTemplate != 11 && (
                         <>
                             <View style={styles.center_row1}>
@@ -2173,7 +2182,7 @@ export default function CreateInvoice({ route }) {
                     <View style={styles.container_bottom}>
                         <Button customStylesBtn={styles.btn1} text={t('common:save')} onPress={() => handleSubmit()} />
                         <Button
-                            // disabled={disabled}
+                            disabled={disabled}
                             customStylesBtn={
                                 disabled == false ? styles.btn1 : { ...styles.btn1, backgroundColor: lightColorDefault }
                             }
