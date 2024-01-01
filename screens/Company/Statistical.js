@@ -7,6 +7,9 @@ import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 import { getUserByCompanyName1, getProductsByCompany, getInvoiceByCompany } from '../../Service/api';
 import { useUserContext } from '../UserContext';
 import Loading from '../../components/Loading';
+import { LineChart } from 'react-native-chart-kit';
+import { Dimensions } from 'react-native';
+
 export default function Statistical() {
     const { t } = useTranslation();
     const { state } = useUserContext();
@@ -36,11 +39,20 @@ export default function Statistical() {
         },
         {
             id: 4,
-            title: t('common:countSampleInvoice'),
-            numberStatistic: 11,
+            title: t('common:revenue'),
+            numberStatistic: 0 + ' VND',
             icon: <MaterialCommunityIcons name="calendar-month" size={24} color="black" />,
         },
     ]);
+    const [chartData, setChartData] = useState({
+        labels: [t('common:employee'), t('common:bill'), t('common:countProduct')],
+        datasets: [
+            {
+                data: [0, 0, 0], // Initial values, you can update these after fetching data
+            },
+        ],
+    });
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -50,11 +62,16 @@ export default function Statistical() {
                 const productData = await getProductsByCompany(companyName, 10000, page);
 
                 // Lấy độ dài của danh sách hóa đơn từ API response
-                const billData = billDataResponse.invoices;
+
                 const totalBillData = billDataResponse.length;
                 const totalProductData = productData.length;
-                console.log(totalBillData);
-
+                const billData = billDataResponse || [];
+                const totalRevenue = billData.reduce((total, invoice) => total + (invoice.totalPrice || 0), 0);
+                console.log(totalRevenue);
+                const formattedRevenue = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                }).format(totalRevenue);
                 const updatedItem = item.map((statistic) => {
                     if (statistic.title === t('common:employee')) {
                         return { ...statistic, numberStatistic: userData.length };
@@ -65,11 +82,23 @@ export default function Statistical() {
                     if (statistic.title === t('common:countProduct')) {
                         return { ...statistic, numberStatistic: totalProductData };
                     }
-
+                    if (statistic.title === t('common:revenue')) {
+                        return { ...statistic, numberStatistic: formattedRevenue };
+                    }
                     return statistic;
                 });
 
                 setItem(updatedItem);
+                const updatedChartData = {
+                    labels: [t('common:employee'), t('common:bill'), t('common:countProduct')],
+                    datasets: [
+                        {
+                            data: [userData.length, totalBillData, totalProductData],
+                        },
+                    ],
+                };
+
+                setChartData(updatedChartData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             } finally {
@@ -83,8 +112,9 @@ export default function Statistical() {
     return (
         <ImageBackground>
             <Header title={t('common:statisticals')} />
+            <Loading loading={loading} isFullScreen />
             <View style={styles.container_center}>
-                <Loading loading={loading}>
+                <View>
                     <FlatList
                         data={item}
                         numColumns={2}
@@ -100,7 +130,38 @@ export default function Statistical() {
                         keyExtractor={(item) => item.id.toString()}
                         contentContainerStyle={styles.flatListContent}
                     />
-                </Loading>
+                </View>
+
+                <View style={{ paddingHorizontal: 1, justifyContent: 'center' }}>
+                    <LineChart
+                        data={chartData}
+                        width={Dimensions.get('window').width - 16}
+                        height={220}
+                        yAxisLabel=""
+                        yAxisSuffix=""
+                        chartConfig={{
+                            backgroundColor: '#ffffff',
+                            backgroundGradientFrom: '#ffffff',
+                            backgroundGradientTo: '#ffffff',
+                            decimalPlaces: 0,
+                            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                            style: {
+                                borderRadius: 16,
+                            },
+                            propsForDots: {
+                                r: '6',
+                                strokeWidth: '2',
+                                stroke: '#ffa726',
+                            },
+                        }}
+                        bezier
+                        style={{
+                            marginVertical: 8,
+                            borderRadius: 16,
+                        }}
+                    />
+                </View>
             </View>
         </ImageBackground>
     );
@@ -110,8 +171,7 @@ const styles = StyleSheet.create({
     container_center: {
         flex: 1,
         width: '100%',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
+        flexDirection: 'column',
     },
     flatListContent: {
         paddingVertical: 8,
@@ -119,7 +179,7 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flex: 1,
-        width: '40%',
+        width: '48%', // Adjusted width to accommodate 2 columns with a small gap
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -128,7 +188,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 8,
     },
-
+    list: {
+        flex: 1,
+    },
     items: {
         alignItems: 'center',
     },

@@ -275,4 +275,16 @@ export default {
     notifyOn: 'Thông báo hiện đã được bật',
     countProduct: 'Sản phẩm',
     countSampleInvoice: 'Mẫu hóa đơn',
+    frequentlyQuestions: 'Câu hỏi thường gặp',
+    ques1: '1. Làm thế nào để sử dụng tạo hóa đơn?',
+    ques2: '2. Làm thế nào để lưu hóa đơn?',
+    ques3: '3. Tôi bị lỗi không thể đăng kí tài khoản?',
+    ques4: '4. Lỗi không upload được hình ảnh?',
+    ans1: 'Hãy truy cập vào trang chủ hoăc trang tạo hóa đơn. Sau đó chọn mẫu hóa đơn mà bạn muốn. Tiếp the nhập các thông tin vào hóa đơn. Cuối cùng chọn "Lưu"',
+    ans2: 'Để lưu hóa đơn bạn chỉ cần nhấn vào nút "Lưu" là sẽ được lưu lại.',
+    ans3: 'Nếu bạn vừa mới bị lỗi 1 lần. Hãy thử tắt ứng dụng và thử lại lần nữa. Nếu vẫn bị lỗi này hãy liên vệ với chúng tôi qua email. Đội ngũ hỗ trợ của chúng tôi sẽ cố gắng giải quyết vấn đề sớm nhất cho bạn.',
+    ans4: 'Bạn hãy kiểm tra xem kích thước hình ảnh của bạn có vượt quá giới hạn yều cầu của chúng tôi không. Nếu vấn đề không nằm ở kích thước file ảnh., Bạn hãy thử thoát ứng ụng và thực hiện lại.',
+
+    typeSupport: 'Các hình thức hỗ trợ',
+    switchboard: 'Tổng đài',
 };

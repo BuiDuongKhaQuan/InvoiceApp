@@ -277,4 +277,17 @@ export default {
     countSampleInvoice: 'Exemple de facture',
     countProduct: 'Produit',
     countSampleInvoice: 'Exemple de facture',
+
+    frequentlyQuestions: 'Foire aux questions',
+    ques1: '1. Comment utiliser la fonction de création de facture ?',
+    ques2: '2. Comment enregistrer une facture ?',
+    ques3: '3. Que faire en cas derreur lors de linscription au compte ?',
+    ques4: '4. Que faire si je ne peux pas télécharger dimages ?',
+    ans1: 'Pour utiliser la fonction de création de facture, rendez-vous sur la page daccueil ou la page de création de facture. Ensuite, choisissez le modèle de facture que vous souhaitez. Ensuite, remplissez les informations pertinentes pour la facture. Enfin, sélectionnez "Enregistrer".',
+    ans2: 'Pour enregistrer une facture, il vous suffit de cliquer sur le bouton "Enregistrer".',
+    ans3: 'Si vous venez de rencontrer une erreur dinscription, essayez de fermer lapplication et de réessayer. Si vous rencontrez toujours cette erreur, veuillez nous contacter par e-mail. Notre équipe dssistance sefforcera de résoudre le problème dès que possible.',
+    ans4: 'Vérifiez si la taille de votre image dépasse nos limites requises. Si le problème ne concerne pas la taille de limage, essayez de quitter lapplication et de réessayer.',
+
+    typeSupport: 'Canaux de support',
+    switchboard: 'Standard',
 };

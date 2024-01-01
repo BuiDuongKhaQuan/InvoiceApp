@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Header from '../../components/SettingItem/header';
@@ -6,41 +6,36 @@ import { fontSizeMenuTitle } from '../../constant/fontSize';
 import Input from '../../components/Input';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function Support() {
-    const [title, setTitle] = useState('');
-    const [name, setName] = useState('');
-    const [content, setContent] = useState('');
-    const [errorTitle, setErrorTitle] = useState(false);
-    const [errorName, setErrorName] = useState(false);
-    const [errorContent, setErrorContent] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState(null);
     const { t } = useTranslation();
 
-    const checkError = () =>
-        title.length > 0 &&
-        name.length > 0 &&
-        content.length > 0 &&
-        errorTitle == false &&
-        errorName == false &&
-        errorContent == false;
+    const questions = [
+        {
+            question: t('common:ques1'),
+            answer: t('common:ans1'),
+        },
+        {
+            question: t('common:ques2'),
+            answer: t('common:ans2'),
+        },
+        {
+            question: t('common:ques3'),
+            answer: t('common:ans3'),
+        },
+        {
+            question: t('common:ques4'),
+            answer: t('common:ans4'),
+        },
+    ];
 
-    const handlePress = () => {
-        if (!checkError()) return;
-        alert(checkError());
-    };
-
-    const handleChangeTitle = (text) => {
-        setErrorTitle(text.trim() === '' ? true : false);
-        setTitle(text);
-    };
-
-    const handleChangeName = (text) => {
-        setErrorName(text.trim() === '' ? true : false);
-        setName(text);
-    };
-    const handleChangeContent = (text) => {
-        setErrorContent(text.trim() === '' ? true : false);
-        setContent(text);
+    const handleQuestionPress = (question) => {
+        const selectedAnswer = questions.find((q) => q.question === question)?.answer;
+        if (selectedAnswer) {
+            Alert.alert(question, selectedAnswer, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+        }
     };
 
     return (
@@ -48,52 +43,34 @@ export default function Support() {
             <BackgroundImage>
                 <Header title={t('common:support')} />
                 <View style={styles.content_center}>
-                    <Text style={styles.content_title}>{t('common:supportCenter')} </Text>
-                    <Input
-                        customStylesInput={styles.input}
-                        customStylesContainer={styles.input_container}
-                        customStylesTextValidate={styles.validate}
-                        onChangeText={handleChangeTitle}
-                        validateText={t('common:errSup')}
-                        validate={errorTitle}
-                        holder={t('common:topic')}
-                        value={title}
-                        text
-                    />
-                    <Input
-                        customStylesInput={styles.input}
-                        customStylesContainer={styles.input_container}
-                        customStylesTextValidate={styles.validate}
-                        onChangeText={handleChangeName}
-                        validateText={t('common:errSup')}
-                        validate={errorName}
-                        holder={t('common:userSend')}
-                        value={name}
-                        text
-                    />
-                    <Input
-                        customStylesInput={styles.textArea}
-                        customStylesTextValidate={styles.validate}
-                        customStylesContainer={styles.input_container}
-                        underlineColorAndroid="transparent"
-                        validateText={t('common:errSup')}
-                        onChangeText={handleChangeContent}
-                        validate={errorContent}
-                        numberOfLines={15}
-                        multiline={true}
-                        holder={t('common:content')}
-                        value={content}
-                        text
-                    />
-                    {errorContent !== '' && <Text style={styles.errorText}>{errorContent}</Text>}
-                </View>
-                <View style={styles.content_botom}>
-                    <Button onPress={handlePress} customStylesBtn={styles.send_btn} text={t('common:send')} />
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
+                        {t('common:frequentlyQuestions')}
+                    </Text>
+                    {/* Map through questions and attach onPress handlers */}
+                    {questions.map(({ question }) => (
+                        <Text key={question} style={styles.content_title} onPress={() => handleQuestionPress(question)}>
+                            {question}
+                        </Text>
+                    ))}
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
+                        {t('common:typeSupport')}
+                    </Text>
+                    <Text style={styles.content_title}>
+                        <Icon name="envelope" size={16} color="#000" /> {t('common:email')}: buiduongkhaquan@gmail.com
+                    </Text>
+                    <Text style={styles.content_title}>
+                        <Icon name="phone" size={16} color="#000" /> {t('common:phone')}: 05261811991
+                    </Text>
+                    <Text style={styles.content_title}>
+                        <Icon name="headphones" size={16} color="#000" />
+                        {t('common:switchboard')}: 19001991
+                    </Text>
                 </View>
             </BackgroundImage>
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -108,31 +85,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     content_title: {
+        paddingVertical: 10,
         fontSize: fontSizeMenuTitle,
-        marginHorizontal: 10,
-        marginVertical: 20,
-    },
-    send_btn: {
-        width: '95%',
-    },
-    textArea: {
-        flex: 1,
-        height: '75%',
-        backgroundColor: 'white',
-        textAlignVertical: 'top',
-        textAlign: 'left',
-        paddingHorizontal: 10,
-    },
-    input: {
-        width: '100%',
-        textAlign: 'left',
-        paddingHorizontal: 10,
-    },
-    input_container: {
-        height: 60,
-        marginTop: -5,
-    },
-    validate: {
-        marginLeft: 10,
+        backgroundColor: '#ffffff',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        borderBottomStyle: 'dashed',
     },
 });
