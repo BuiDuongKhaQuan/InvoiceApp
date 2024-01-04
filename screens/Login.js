@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, Image, Alert, ScrollView, TouchableOpacity } fr
 import React, { useEffect, useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import { isValidateEmail, isValidatePass } from '../utilies/validate';
+import { isValidateEmail } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
-import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons, MaterialIcons, Feather } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { getCompaniesById, login } from '../Service/api';
 import { useUserContext } from './UserContext'; // Đảm bảo thay đổi đường dẫn đúng
@@ -25,6 +25,8 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [bioSupport, setBioSupport] = useState(false);
     const [preLog, setPreLog] = useState(false);
+    const [showPass, setShowPass] = useState('eye-off');
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const checkBiome = async () => {
@@ -140,7 +142,10 @@ export default function Login({ navigation }) {
     const handleChangePass = (pass) => {
         setPass(pass);
     };
-
+    const togglePasswordShow = () => {
+        setShowPassword(!showPassword);
+        showPassword ? setShowPass('eye-off') : setShowPass('eye');
+    };
     return (
         <BackgroundImage>
             <ScrollView style={styles.container}>
@@ -160,9 +165,11 @@ export default function Login({ navigation }) {
                     <Input
                         onChangeText={handleChangePass}
                         value={pass}
-                        pass
+                        pass={!showPassword}
+                        onPressIconRight={togglePasswordShow}
                         holder={t('common:password')}
                         iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                        iconRight={<Feather name={showPass} size={24} color="black" />}
                     />
 
                     <View style={styles.view_login}>

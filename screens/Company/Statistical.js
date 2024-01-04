@@ -132,7 +132,7 @@ export default function Statistical() {
                     />
                 </View>
 
-                <View style={{ paddingHorizontal: 1, justifyContent: 'center' }}>
+                <View style={{ paddingHorizontal: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <LineChart
                         data={chartData}
                         width={Dimensions.get('window').width - 16}

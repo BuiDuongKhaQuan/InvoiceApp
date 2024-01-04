@@ -4,7 +4,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidatePass } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { resetPassword } from '../Service/api';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -19,6 +19,10 @@ export default function Login() {
     const [errorRepass, setErrorRepass] = useState(false);
     const [errorPass, setErrorPass] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showPass, setShowPass] = useState('eye-off');
+    const [showRePass, setShowRePass] = useState('eye-off');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showRePassword, setShowRePassword] = useState(false);
     const route = useRoute();
     const navigation = useNavigation();
     const { t } = useTranslation();
@@ -87,6 +91,14 @@ export default function Login() {
         setErrorRepass(!validateRepass);
         setRepass(text);
     };
+    const togglePasswordShow = () => {
+        setShowPassword(!showPassword);
+        showPassword ? setShowPass('eye-off') : setShowPass('eye');
+    };
+    const toggleRePasswordShow = () => {
+        setShowRePassword(!showRePassword);
+        showRePassword ? setShowRePass('eye-off') : setShowRePass('eye');
+    };
 
     return (
         <BackgroundImage>
@@ -100,17 +112,22 @@ export default function Login() {
                     value={pass}
                     validate={errorPass}
                     validateText={t('common:format')}
-                    pass
+                    pass={!showPassword}
+                    onPressIconRight={togglePasswordShow}
                     holder={t('common:newPass')}
                     iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                    iconRight={<Feather name={showPass} size={24} color="black" />}
                 />
                 <Input
                     onChangeText={handleChangeRepass}
                     value={repass}
+                    pass={!showRePassword}
                     validate={errorRepass}
                     validateText={t('common:errRenewPass')}
-                    holder={t('common:newPass')}
+                    holder={t('common:renewPass')}
+                    onPressIconRight={toggleRePasswordShow}
                     iconLeft={<Ionicons name="lock-closed-outline" size={24} color="black" />}
+                    iconRight={<Feather name={showRePass} size={24} color="black" />}
                 />
 
                 {keyboardIsShow || <Button onPress={handlePress} text={t('common:confirm')} />}
