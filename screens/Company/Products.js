@@ -200,35 +200,34 @@ export default function Products() {
                         customStylesText={{ fontSize: fontSizeDefault }}
                     />
                 </View>
-                <Loading loading={loading}>
-                    <View style={styles.table}>
-                        <View style={styles.table_colum}>
-                            <Text style={[styles.text_bold, styles.colum_name]}>{t('common:item')}</Text>
-                            <Text style={[styles.text_bold, styles.colum_p]}>{t('common:name')}</Text>
-                            <Text style={[styles.text_bold, styles.colum_name]}>{t('common:stock')}</Text>
-                            <Text style={[styles.text_bold, styles.colum_name]}>{t('common:price')}</Text>
-                            <Text style={[styles.text_bold, styles.colum_name]}>{t('common:status')}</Text>
-                        </View>
-                        {products.map((product, index) => {
-                            let statusString = '';
-                            if (product.status === 1) statusString = t('common:onSale');
-                            if (product.status === 2) statusString = t('common:notSold');
-                            return (
-                                <TouchableOpacity
-                                    style={styles.table_colum}
-                                    key={index}
-                                    onPress={() => handleShowProductModal(product)}
-                                >
-                                    <Text style={[styles.text_line, styles.colum_name]}>{index + 1}</Text>
-                                    <Text style={[styles.text_line, styles.colum_p]}>{product.name}</Text>
-                                    <Text style={[styles.text_line, styles.colum_name]}>{product.stock}</Text>
-                                    <Text style={[styles.text_line, styles.colum_name]}>{product.price}</Text>
-                                    <Text style={[styles.text_line, styles.colum_name]}>{statusString}</Text>
-                                </TouchableOpacity>
-                            );
-                        })}
+                <View style={styles.table}>
+                    <View style={styles.table_colum}>
+                        <Text style={[styles.text_bold, styles.colum_name]}>{t('common:item')}</Text>
+                        <Text style={[styles.text_bold, styles.colum_p]}>{t('common:name')}</Text>
+                        <Text style={[styles.text_bold, styles.colum_name]}>{t('common:stock')}</Text>
+                        <Text style={[styles.text_bold, styles.colum_name]}>{t('common:price')}</Text>
+                        <Text style={[styles.text_bold, styles.colum_name]}>{t('common:status')}</Text>
                     </View>
-                </Loading>
+                    {products.map((product, index) => {
+                        let statusString = '';
+                        if (product.status === 1) statusString = t('common:onSale');
+                        if (product.status === 2) statusString = t('common:notSold');
+                        return (
+                            <TouchableOpacity
+                                style={styles.table_colum}
+                                key={index}
+                                onPress={() => handleShowProductModal(product)}
+                            >
+                                <Text style={[styles.text_line, styles.colum_name]}>{index + 1}</Text>
+                                <Text style={[styles.text_line, styles.colum_p]}>{product.name}</Text>
+                                <Text style={[styles.text_line, styles.colum_name]}>{product.stock}</Text>
+                                <Text style={[styles.text_line, styles.colum_name]}>{product.price}</Text>
+                                <Text style={[styles.text_line, styles.colum_name]}>{statusString}</Text>
+                            </TouchableOpacity>
+                        );
+                    })}
+                </View>
+                <Loading loading={loading} isFooter></Loading>
             </ScrollView>
             <Modal animationType="slide" transparent={false} visible={isModalVisible}>
                 {productModal && (

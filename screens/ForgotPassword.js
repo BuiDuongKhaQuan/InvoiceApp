@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View, Image, Keyboard, ImageBackground, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import { isValidateEmail, isValidateOTP } from '../utilies/validate';
-import { fontSizeDefault } from '../constant/fontSize';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { forgotPassword, validateReset } from '../Service/api';
 import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
-import { textColor } from '../constant/color';
+import { statusBarHeight } from '../constant/dimistion';
+import { ScrollView } from 'react-native';
 
 export default function ForgotPassword({ navigation }) {
     const { t } = useTranslation();
@@ -18,19 +18,6 @@ export default function ForgotPassword({ navigation }) {
     const [errorEmail, setErrorEmail] = useState(false);
     const [errorCode, setErrorCode] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        Keyboard.addListener('keyboardDidShow', () => {
-            setKeyboardIsShow(true);
-        });
-        Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardIsShow(false);
-        });
-    });
-
-    const centerStyle = keyboardIsShow
-        ? { ...styles.container_center, flex: 2, justifyContent: 'center' }
-        : { ...styles.container_center };
 
     const isValidateConfirm = () => code.length > 0 && errorCode == false;
 
@@ -75,8 +62,8 @@ export default function ForgotPassword({ navigation }) {
     const handleSendOTP = async () => {
         setLoading(true);
         try {
-            const re = await validateReset(email, code);
-            navigation.navigate('ResetPassword', { data: email });
+            const re = await validateReset(email.trim(), code);
+            navigation.navigate('ResetPassword', { data: email.trim() });
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status === 404) {
@@ -102,7 +89,7 @@ export default function ForgotPassword({ navigation }) {
                         onChangeText={handleChangeEmail}
                         value={email}
                         validate={errorEmail}
-                        validateText={t('common:format')}
+                        validateText={t('common:formatEmail')}
                         holder="Email"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                         btnSend

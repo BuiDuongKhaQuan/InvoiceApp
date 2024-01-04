@@ -99,6 +99,7 @@ export default function Staff() {
 
     const hideModal = () => {
         setModalVisible(false);
+        setDataModel(null);
     };
 
     const handleLockup = async () => {

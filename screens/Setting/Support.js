@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Header from '../../components/SettingItem/header';
@@ -39,35 +39,33 @@ export default function Support() {
     };
 
     return (
-        <View style={styles.container}>
-            <BackgroundImage>
-                <Header title={t('common:support')} />
-                <View style={styles.content_center}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
-                        {t('common:frequentlyQuestions')}
+        <BackgroundImage>
+            <Header title={t('common:support')} />
+            <ScrollView style={styles.content_center}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
+                    {t('common:frequentlyQuestions')}
+                </Text>
+                {/* Map through questions and attach onPress handlers */}
+                {questions.map(({ question }) => (
+                    <Text key={question} style={styles.content_title} onPress={() => handleQuestionPress(question)}>
+                        {question}
                     </Text>
-                    {/* Map through questions and attach onPress handlers */}
-                    {questions.map(({ question }) => (
-                        <Text key={question} style={styles.content_title} onPress={() => handleQuestionPress(question)}>
-                            {question}
-                        </Text>
-                    ))}
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
-                        {t('common:typeSupport')}
-                    </Text>
-                    <Text style={styles.content_title}>
-                        <Icon name="envelope" size={16} color="#000" /> {t('common:email')}: buiduongkhaquan@gmail.com
-                    </Text>
-                    <Text style={styles.content_title}>
-                        <Icon name="phone" size={16} color="#000" /> {t('common:phone')}: 05261811991
-                    </Text>
-                    <Text style={styles.content_title}>
-                        <Icon name="headphones" size={16} color="#000" />
-                        {t('common:switchboard')}: 19001991
-                    </Text>
-                </View>
-            </BackgroundImage>
-        </View>
+                ))}
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginHorizontal: 10, marginVertical: 10 }}>
+                    {t('common:typeSupport')}
+                </Text>
+                <Text style={styles.content_title}>
+                    <Icon name="envelope" size={16} color="#000" /> {t('common:email')}: buiduongkhaquan@gmail.com
+                </Text>
+                <Text style={styles.content_title}>
+                    <Icon name="phone" size={16} color="#000" /> {t('common:phone')}: 05261811991
+                </Text>
+                <Text style={styles.content_title}>
+                    <Icon name="headphones" size={16} color="#000" />
+                    {t('common:switchboard')}: 19001991
+                </Text>
+            </ScrollView>
+        </BackgroundImage>
     );
 }
 
@@ -88,8 +86,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         fontSize: fontSizeMenuTitle,
         backgroundColor: '#ffffff',
+        paddingHorizontal: 10,
         borderBottomColor: 'black',
-        borderBottomWidth: 1, // Replace `borderBottomStyle` with `borderBottomWidth`
-        // borderBottomStyle: 'dashed', // If you want a dashed border, you can keep this property
+        borderBottomWidth: 1,
     },
 });
