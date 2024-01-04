@@ -11,7 +11,7 @@ export default {
     logout: 'Đăng xuất',
     //new
     Blog: 'Blog',
-    start: 'Bắt đầu',
+    start: 'BẮT ĐẦU',
     alert_hd: 'Bạn có chắc chắn muốn in hóa đơn?',
     alert_hd_2: 'Sau khi chọn "Đồng ý" hóa đơn sẽ được lưu vào dữ liệu của công ty!',
     alert_no: 'Không',
@@ -239,7 +239,7 @@ export default {
     listProducts: 'Danh sách sản phẩm',
     postSuccess: 'Đăng bán sản phẩm thành công',
     recall: 'Thu hồi sản phẩm thành công',
-    addProductSuccess: 'Added product successfully',
+    addProductSuccess: 'Thêm sản phẩm thnahf công',
     questionCreate: 'Bạn có chắc chắn muốn tạo sản phẩm mới?',
     confimQuestionCreate: 'Nếu bạn chắc chắn muốn tạo sản phẩm mới, hãy chọn "Đồng ý".',
     noAgree: 'Không',
@@ -287,4 +287,13 @@ export default {
 
     typeSupport: 'Các hình thức hỗ trợ',
     switchboard: 'Tổng đài',
+    editFingerprint: 'Cài đặt vân tay',
+    loginFingerprint: 'Đăng nhập bằng vân tay',
+    fingerprint: 'Vâng tay',
+    noSupportFingerprint: 'Thiết bị không hỗ trợ xác thực vân tay.',
+    turnoffFingerprint: 'Bạn vui lòng bật xác thực vâng tay trong phần "Cài đặt" của ứng dụng.',
+    touch_id: 'Cài đặt vân tay',
+    notifyMes: 'Thông báo tin nhắn',
+    notifyNew: 'Bạn có 1 tin nhắn mới!',
+    noSystem: 'Chưa có thông tin trong hệ thống',
 };

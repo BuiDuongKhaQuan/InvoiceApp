@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import SwitchCustom from '../../components/Switch';
 import Header from '../../components/SettingItem/header';
@@ -20,24 +20,38 @@ export default function Fingerprints() {
             if (isSupported) {
                 // Lưu trạng thái thông báo vào AsyncStorage
                 await AsyncStorage.setItem('biometricEnabledStatus', (!isEnabled).toString());
+                console.log('Trạng thái đã được lưu:', !isEnabled);
                 // Bật/tắt thông báo
                 setIsEnabled(!isEnabled);
             } else {
                 // Thiết bị không hỗ trợ xác thực vân tay
-                Alert.alert('Thông báo!', 'Thiết bị không hỗ trợ xác thực vân tay.');
+                Alert.alert(t('common:notification'), t('common:noSupportFingerprint'));
                 // Thực hiện các xử lý khác nếu cần
             }
         } catch (error) {
-            console.error('Error checking biometric support:', error);
+            console.error('Lỗi kiểm tra hỗ trợ xác thực hoặc thiết lập mục:', error);
         }
     };
+    useEffect(() => {
+        const loadBiometricStatus = async () => {
+            try {
+                const storedStatus = await AsyncStorage.getItem('biometricEnabledStatus');
+                if (storedStatus !== null) {
+                    setIsEnabled(storedStatus === 'true');
+                }
+            } catch (error) {
+                console.error('Lỗi khi đọc trạng thái từ AsyncStorage:', error);
+            }
+        };
 
+        loadBiometricStatus();
+    }, []);
     return (
         <BackgroundImage>
-            <Header title={t('common:Vâng tay')} />
+            <Header title={t('common:fingerprint')} />
             <View style={{ flex: 1, flexDirection: 'column', width: '100%' }}>
                 <Text style={{ paddingVertical: 15, paddingLeft: 10, fontSize: fontSizeMenuTitle }}>
-                    {t('common:Cài đặt vâng tay')}
+                    {t('common:editFingerprint')}
                 </Text>
                 <View style={{ paddingVertical: 10, backgroundColor: white, flexDirection: 'column' }}>
                     <View
@@ -47,7 +61,7 @@ export default function Fingerprints() {
                             justifyContent: 'space-between',
                         }}
                     >
-                        <Text style={{ fontSize: 20 }}>{t('common:Đăng nhập bằng vâng tay')}</Text>
+                        <Text style={{ fontSize: 20 }}>{t('common:loginFingerprint')}</Text>
                         <SwitchCustom isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
                     </View>
                 </View>

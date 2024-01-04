@@ -285,4 +285,13 @@ export default {
 
     typeSupport: 'ช่องทางการสนับสนุน',
     switchboard: 'สวิตช์บอร์ด',
+    editFingerprint: 'ตั้งค่าลายนิ้วมือ',
+    loginFingerprint: 'เข้าสู่ระบบด้วยลายนิ้วมือ',
+    fingerprint: 'ลายนิ้วมือ',
+    noSupportFingerprint: 'อุปกรณ์ไม่รองรับการตรวจสอบด้วยลายนิ้วมือ',
+    turnoffFingerprint: 'โปรดเปิดใช้งานการตรวจสอบด้วยลายนิ้วมือในส่วน "ตั้งค่า" ของแอป',
+    touch_id: 'ตั้งค่าลายนิ้วมือ',
+    notifyMes: 'การแจ้งเตือนข้อความ',
+    notifyNew: 'คุณมีข้อความใหม่ 1 ข้อความ!',
+    noSystem: 'ยังไม่มีข้อมูลในระบบ',
 };

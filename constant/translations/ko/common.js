@@ -287,4 +287,13 @@ export default {
 
     typeSupport: '지원 채널',
     switchboard: '스위치보드',
+    editFingerprint: '지문 설정',
+    loginFingerprint: '지문으로 로그인',
+    fingerprint: '지문',
+    noSupportFingerprint: '장치가 지문 인증을 지원하지 않습니다.',
+    turnoffFingerprint: '앱의 "설정" 섹션에서 지문 인증을 활성화하십시오.',
+    touch_id: '지문 설정',
+    notifyMes: '메시지 알림',
+    notifyNew: '새로운 메시지가 1개 있습니다!',
+    noSystem: '시스템에 아직 정보가 없습니다',
 };

@@ -168,13 +168,16 @@ export default function Information() {
                                     : { uri: userData.image }
                             }
                         />
-
-                        <Button
-                            text="Change avatar"
-                            customStylesText={styles.text}
-                            customStylesBtn={{ ...styles.change_btn, height: '37%' }}
-                            onPress={takePhotoAndUpload}
-                        />
+                        {route.params?.data === undefined ? (
+                            <Button
+                                text={t('common:changeAvt')}
+                                customStylesText={styles.text}
+                                customStylesBtn={{ ...styles.change_btn, height: '37%' }}
+                                onPress={takePhotoAndUpload}
+                            />
+                        ) : (
+                            <Text>{t('common:avatar')}</Text>
+                        )}
                     </View>
                     <View style={styles.image}>
                         <Image
@@ -185,12 +188,16 @@ export default function Information() {
                                     : { uri: userData.wallpaper }
                             }
                         />
-                        <Button
-                            text="Change wallpaper"
-                            customStylesText={styles.text}
-                            customStylesBtn={styles.change_btn}
-                            onPress={uploadWallpaper}
-                        />
+                        {route.params?.data === undefined ? (
+                            <Button
+                                text={t('common:changeWallet')}
+                                customStylesText={styles.text}
+                                customStylesBtn={styles.change_btn}
+                                onPress={uploadWallpaper}
+                            />
+                        ) : (
+                            <Text>{t('common:wallpaper')}</Text>
+                        )}
                     </View>
                 </View>
 
@@ -200,59 +207,75 @@ export default function Information() {
                             <View style={styles.container_text}>
                                 <Text style={styles.text}>{t('common:name')}:</Text>
                             </View>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={userData.name}
-                                value={name}
-                                onChangeText={(text) => setName(text)}
-                            />
+                            {route.params?.data === undefined ? (
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={userData.name}
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
+                                />
+                            ) : (
+                                <Text style={styles.name}>{userData.name}</Text>
+                            )}
                         </View>
                         <View style={styles.bottom_item}>
                             <View style={styles.container_text}>
                                 <Text style={styles.text}>{t('common:email')}:</Text>
                             </View>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={userData.email}
-                                value={email}
-                                onChangeText={(text) => setEmail(text)}
-                            />
+                            {route.params?.data === undefined ? (
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={userData.email}
+                                    value={email}
+                                    onChangeText={(text) => setEmail(text)}
+                                />
+                            ) : (
+                                <Text style={styles.name}>{userData.email}</Text>
+                            )}
                         </View>
                         <View style={styles.bottom_item}>
                             <View style={styles.container_text}>
                                 <Text style={styles.text}>{t('common:phone')}:</Text>
                             </View>
-                            <Input
-                                customStylesContainer={styles.container_input}
-                                holder={userData.phone}
-                                value={phone}
-                                onChangeText={(text) => setPhone(text)}
-                            />
+                            {route.params?.data === undefined ? (
+                                <Input
+                                    customStylesContainer={styles.container_input}
+                                    holder={userData.phone}
+                                    value={phone}
+                                    onChangeText={(text) => setPhone(text)}
+                                />
+                            ) : (
+                                <Text style={styles.name}>{userData.phone}</Text>
+                            )}
                         </View>
                         <View style={styles.bottom_item}>
                             <View style={styles.container_text}>
                                 <Text style={styles.text}>{t('common:gender')}:</Text>
                             </View>
-                            <View style={styles.dropdown}>
-                                <SelectDropdown
-                                    data={genders}
-                                    onSelect={(selectedItem, index) => {
-                                        setSelectedGender(selectedItem);
-                                    }}
-                                    buttonStyle={styles.dropdown_btn}
-                                    defaultButtonText={userData.gender}
-                                    renderDropdownIcon={() => (
-                                        <Entypo name="chevron-small-down" size={24} color="black" />
-                                    )}
-                                    dropdownIconPosition="right"
-                                    buttonTextAfterSelection={(selectedItem, index) => {
-                                        return selectedItem;
-                                    }}
-                                    rowTextForSelection={(item, index) => {
-                                        return item;
-                                    }}
-                                />
-                            </View>
+                            {route.params?.data === undefined ? (
+                                <View style={styles.dropdown}>
+                                    <SelectDropdown
+                                        data={genders}
+                                        onSelect={(selectedItem, index) => {
+                                            setSelectedGender(selectedItem);
+                                        }}
+                                        buttonStyle={styles.dropdown_btn}
+                                        defaultButtonText={userData.gender}
+                                        renderDropdownIcon={() => (
+                                            <Entypo name="chevron-small-down" size={24} color="black" />
+                                        )}
+                                        dropdownIconPosition="right"
+                                        buttonTextAfterSelection={(selectedItem, index) => {
+                                            return selectedItem;
+                                        }}
+                                        rowTextForSelection={(item, index) => {
+                                            return item;
+                                        }}
+                                    />
+                                </View>
+                            ) : (
+                                <Text style={styles.name}>{userData.gender}</Text>
+                            )}
                         </View>
                     </View>
                     {route.params?.data == undefined && (

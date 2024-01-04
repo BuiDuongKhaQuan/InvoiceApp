@@ -111,7 +111,7 @@ export default function Register() {
 
     return (
         <BackgroundImage>
-            <Loading loading={loading} />
+            <Loading loading={loading} isFullScreen />
             <ScrollView style={styles.container}>
                 <View style={styles.container_top}>
                     <Image style={styles.logo} source={require('../assets/images/logo.png')} />

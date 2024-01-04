@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         fontSize: fontSizeMenuTitle,
         backgroundColor: '#ffffff',
         borderBottomColor: 'black',
-        borderBottomWidth: 1,
-        borderBottomStyle: 'dashed',
+        borderBottomWidth: 1, // Replace `borderBottomStyle` with `borderBottomWidth`
+        // borderBottomStyle: 'dashed', // If you want a dashed border, you can keep this property
     },
 });
