@@ -11,7 +11,7 @@ export default {
     //new
     setting: 'Setting',
     Blog: 'Blog',
-    start: 'Start',
+    start: 'START',
     alert_hd: 'Are you sure you want to print the invoice?',
     alert_hd_2: 'Once you select "Agree," the invoice will be saved in the company is data!',
     alert_no: 'No',
@@ -286,4 +286,13 @@ export default {
 
     typeSupport: 'Support Channels',
     switchboard: 'Switchboard',
+    editFingerprint: 'Set Up Fingerprint',
+    loginFingerprint: 'Login with Fingerprint',
+    fingerprint: 'Fingerprint',
+    noSupportFingerprint: 'Device does not support fingerprint authentication.',
+    turnoffFingerprint: 'Please enable fingerprint authentication in the "Settings" section of the app.',
+    touch_id: 'Set Up Fingerprint',
+    notifyMes: 'Message Notifications',
+    notifyNew: 'You have 1 new message!',
+    noSystem: 'No information in the system yet',
 };

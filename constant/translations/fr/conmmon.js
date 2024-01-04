@@ -290,4 +290,14 @@ export default {
 
     typeSupport: 'Canaux de support',
     switchboard: 'Standard',
+    editFingerprint: 'Configurer lempreinte digitale',
+    loginFingerprint: 'Connexion par empreinte digitale',
+    fingerprint: 'Empreinte digitale',
+    noSupportFingerprint: 'Lappareil ne prend pas en charge lauthentification par empreinte digitale.',
+    turnoffFingerprint:
+        'Veuillez activer lauthentification par empreinte digitale dans la section "Paramètres" de lapplication.',
+    touch_id: 'Configurer lempreinte digitale',
+    notifyMes: 'Notifications de message',
+    notifyNew: 'Vous avez 1 nouveau message!',
+    noSystem: 'Aucune information dans le système pour le moment',
 };

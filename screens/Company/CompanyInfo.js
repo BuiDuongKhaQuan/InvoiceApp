@@ -29,7 +29,7 @@ export default function CompanyInfo() {
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
             t('common:alert_success'),
-            t('common:changePasswordSuccess'),
+            t('common:updateSuccess'),
             [
                 {
                     text: t('common:alert_yes'),

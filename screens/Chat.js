@@ -8,13 +8,14 @@ import { ref, push, set, onValue } from 'firebase/database';
 import { fireDatabase } from '../config/firebaseConfig';
 import { statusBarHeight } from '../constant/dimistion';
 import { sendNotification } from '../utilies/sendNotification';
+import { useTranslation } from 'react-i18next';
 
 export default function Chat({ navigation }) {
     const { state } = useUserContext();
     const { user, company } = state;
     const [messages, setMessages] = useState([]);
     const databaseRef = ref(fireDatabase, `/rooms/${company.id}`);
-
+    const { t } = useTranslation();
     const sendMessage = async (newMessage) => {
         const messagesRef = ref(fireDatabase, `/rooms/${company.id}/messages`);
         try {
@@ -64,7 +65,7 @@ export default function Chat({ navigation }) {
                     });
 
                     setMessages(messagesArray.reverse());
-                    sendNotification('Thông báo tin nhắn', 'Bạn có 1 tin nhắn mới!', null);
+                    sendNotification(t('common:notifyMes'), t('common:notifyNew'), null);
                 }
             },
             (error) => {
