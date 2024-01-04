@@ -13,7 +13,6 @@ import { textColor } from '../constant/color';
 
 export default function ForgotPassword({ navigation }) {
     const { t } = useTranslation();
-    const [keyboardIsShow, setKeyboardIsShow] = useState(false);
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
     const [errorEmail, setErrorEmail] = useState(false);
@@ -92,89 +91,68 @@ export default function ForgotPassword({ navigation }) {
 
     return (
         <BackgroundImage>
-            <Loading loading={loading} isFullScreen />
-            <View style={styles.container_top}>
-                <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-            </View>
+            <ScrollView style={styles.container}>
+                <Loading loading={loading} isFullScreen />
+                <View style={styles.container_top}>
+                    <Image style={styles.logo} source={require('../assets/images/logo.png')} />
+                </View>
 
-            <View style={centerStyle}>
-                <Input
-                    onChangeText={handleChangeEmail}
-                    value={email}
-                    onPressSend={handleSend}
-                    validate={errorEmail}
-                    validateText={t('common:formatEmail')}
-                    holder="example@example.com"
-                    iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
-                    btnSend
-                />
-                <Input
-                    onChangeText={handleChangeCode}
-                    value={code}
-                    validate={errorCode}
-                    validateText={t('common:verifyCode')}
-                    customStylesInput={{ marginLeft: 50 }}
-                    holder={t('common:otpCode')}
-                />
+                <View style={styles.container_center}>
+                    <Input
+                        onChangeText={handleChangeEmail}
+                        value={email}
+                        validate={errorEmail}
+                        validateText={t('common:format')}
+                        holder="Email"
+                        iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
+                        btnSend
+                        onPressSend={handleSend}
+                    />
+                    <Input
+                        onChangeText={handleChangeCode}
+                        value={code}
+                        validate={errorCode}
+                        validateText={t('common:verifyCode')}
+                        customStylesInput={{ marginLeft: 50 }}
+                        holder={t('common:verify')}
+                    />
 
-                {keyboardIsShow || (
-                    <>
-                        <Button onPress={handlePress} text={t('common:confirm')} />
-                        <View style={styles.register}>
-                            <Text style={styles.register_text}>{t('common:haveAccount')}</Text>
-                            <Text onPress={() => navigation.navigate('Login')} style={styles.register_btn}>
-                                {t('common:login')}
-                            </Text>
+                    <View style={styles.view_login}>
+                        <View style={styles.btn_login}>
+                            <Button onPress={handlePress} text={t('common:confirm')} />
                         </View>
-                    </>
-                )}
-            </View>
+                    </View>
+                </View>
+            </ScrollView>
         </BackgroundImage>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        marginHorizontal: 10,
     },
-
     container_top: {
         flex: 4,
-        height: 100,
         justifyContent: 'center',
         alignItems: 'center',
     },
     logo: {
-        marginTop: 100,
+        marginTop: statusBarHeight,
         width: 400,
         height: 400,
     },
-    title: {
-        fontSize: 70,
-        marginTop: -10,
-        marginBottom: 10,
-        color: '#B3B70A',
-        textShadowColor: '#2AA50B',
-        textShadowRadius: 5,
-        textShadowOffset: { width: 2, height: 2 },
-    },
-
     container_center: {
-        flex: 5,
+        flex: 4,
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        marginHorizontal: 10,
     },
 
-    register: {
+    view_login: {
+        width: '100%',
         flexDirection: 'row',
+        alignItems: 'center',
     },
-    register_text: {
-        fontSize: fontSizeDefault,
-    },
-    register_btn: {
-        fontSize: fontSizeDefault,
-        fontWeight: '700',
-        color: textColor,
+    btn_login: {
+        flex: 1,
     },
 });

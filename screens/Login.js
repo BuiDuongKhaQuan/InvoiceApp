@@ -124,11 +124,7 @@ export default function Login({ navigation }) {
             await SecureStore.setItemAsync('password', pass);
             navigation.navigate('TabNavigator');
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                Alert.alert(t('common:error'), error.response.data.message);
-            } else {
-                console.log(t('common:error'), error);
-            }
+            Alert.alert(t('common:error'), 'Sai tài khoản hoặc mật khẩu');
         } finally {
             setLoading(false);
         }
