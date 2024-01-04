@@ -23,7 +23,7 @@
             "permissions": ["android.permission.RECORD_AUDIO"]
         },
         "web": {
-            "favicon": "./assets/favicon.png"
+            "favicon": "./assets/icon.png"
         },
         "plugins": [
             [

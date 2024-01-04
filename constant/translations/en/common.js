@@ -70,7 +70,6 @@ export default {
     invoiceComplete: 'Invoice Complete',
 
     login: 'Login',
-    send: 'Send',
     otpCode: 'Enter otp code',
     haveAccount: 'Do you have an account? ',
 

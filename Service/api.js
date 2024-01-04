@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const instance = axios.create({
+
     baseURL: 'http://rest-bill.ap-southeast-2.elasticbeanstalk.com/api',
     // baseURL: 'http://192.168.1.6:8080/api',
     // 192.168.1.111 lấy ở click chuột phải vào wifi đang kết nối chọn properties
