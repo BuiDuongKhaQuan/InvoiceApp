@@ -15,6 +15,7 @@ import { statusBarHeight } from '../constant/dimistion';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Login({ navigation }) {
     const { t } = useTranslation();
     const { dispatch } = useUserContext();
@@ -36,10 +37,10 @@ export default function Login({ navigation }) {
     }, []);
 
     useEffect(() => {
-        if (bioSupport) {
+        if (bioSupport && !preLog) {
             authenticateWithBiometrics();
         }
-    }, [bioSupport]);
+    }, [bioSupport, preLog]);
 
     useEffect(() => {
         if (preLog) {
@@ -57,11 +58,12 @@ export default function Login({ navigation }) {
                 if (isSupported) {
                     setBioSupport(true);
                 } else {
-                    Alert.alert('Thông báo!', 'Thiết bị không hỗ trợ xác thực vân tay.');
+                    Alert.alert(t('common:notification'), t('common:enoSupportFingerprintrror'));
                 }
             } else {
-                Alert.alert('Thông báo!', 'Bạn vui lòng bật xác thực vâng tay trong phần "Cài đặt" của ứng dụng.');
+                Alert.alert(t('common:notification'), t('common:turnoffFingerprint'));
             }
+            console.log('Biometric support status:', bioSupport);
         } catch (error) {
             console.error('Error checking biometric support:', error);
         }
@@ -77,6 +79,7 @@ export default function Login({ navigation }) {
                 getUserData(); // Proceed to get user data if authentication is successful
             } else {
                 setBioSupport(false);
+                console.log('Biometric authentication failed. Error:', result.error);
             }
         } catch (error) {
             console.log("Biometrics couldn't be accessed!", error);
@@ -93,11 +96,10 @@ export default function Login({ navigation }) {
                 setPass(storedPassword);
                 setPreLog(true);
             } else {
-                Alert.alert('Notification', 'Chưa có thông tin trong hệ thống');
+                Alert.alert(t('common:notification'), t('common:noSystem'));
             }
         } catch (error) {
             console.log("SecureStore couldn't be accessed!", error);
-            // Handle the error
         }
     };
 

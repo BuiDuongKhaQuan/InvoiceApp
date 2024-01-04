@@ -277,6 +277,16 @@ export default {
     ans3: 'Se hai appena riscontrato un errore durante la registrazione, prova a chiudere l applicazione e riprova. Se lerrore persiste, contattaci via email. Il nostro team di supporto cercherà di risolvere il problema al più presto.',
     ans4: 'Verifica se le dimensioni della tua immagine superano i limiti da noi richiesti. Se il problema non riguarda le dimensioni dellimmagine, prova a uscire dallapplicazione e riprova.',
 
-    typeSupport: 'Canali di supporto',
+    typeSupport: 'Canali di Supporto',
     switchboard: 'Centralino',
+    editFingerprint: 'Imposta limpronta digitale',
+    loginFingerprint: 'Accesso con limpronta digitale',
+    fingerprint: 'Impronta digitale',
+    noSupportFingerprint: 'Il dispositivo non supporta lautenticazione con limpronta digitale.',
+    turnoffFingerprint:
+        'Si prega di abilitare lautenticazione con limpronta digitale nella sezione "Impostazioni" dellapp.',
+    touch_id: 'Imposta limpronta digitale',
+    notifyMes: 'Notifiche messaggi',
+    notifyNew: 'Hai 1 nuovo messaggio!',
+    noSystem: 'Nessuna informazione nel sistema al momento',
 };

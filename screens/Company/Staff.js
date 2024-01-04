@@ -55,13 +55,10 @@ export default function Staff() {
     const getInformationStaff = async (page) => {
         try {
             setLoading(true);
-            const response = await getUserByCompanyName(state.company.name, 20, page);
-            setStaffs(response);
+            const response = await getUserByCompanyName(state.company.name, 10, page);
+            setStaffs((prevStaff) => [...prevStaff, ...response]);
         } catch (error) {
-            setError(t('common:datanotCompany'));
-            setStaffs(null);
-            if (error.response) {
-            }
+            setError(error);
         } finally {
             setLoading(false);
         }
@@ -72,7 +69,7 @@ export default function Staff() {
 
     const handleScroll = (event) => {
         const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-        const paddingToBottom = 20; // Đặt một giá trị padding để xác định khi nào là cuối trang
+        const paddingToBottom = 10; // Đặt một giá trị padding để xác định khi nào là cuối trang
 
         if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
             // Nếu đã cuộn đến cuối, tăng số trang lên 1 để fetch dữ liệu trang tiếp theo
