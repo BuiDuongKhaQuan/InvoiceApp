@@ -9,7 +9,7 @@ export default {
     notification: 'Thông báo',
     support: 'Hỗ trợ',
     logout: 'Đăng xuất',
-    //new
+    check: 'Vui lòng điền đầy đủ thông tin',
     Blog: 'Blog',
     start: 'BẮT ĐẦU',
     alert_hd: 'Bạn có chắc chắn muốn in hóa đơn?',

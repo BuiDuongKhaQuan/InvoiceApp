@@ -8,7 +8,7 @@ export default {
     notification: '通知',
     support: '支持',
     logout: '注销',
-    //new
+    check: '请填写所有字段。',
     setting: '设置',
     Blog: '博客',
     start: '开始',

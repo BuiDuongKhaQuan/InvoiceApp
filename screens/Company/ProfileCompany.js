@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, Image, Dimensions, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
-import { backgroundColor, white } from '../../constant/color';
+import { backgroundColor, defaultColor, white } from '../../constant/color';
 import { fontSizeDefault } from '../../constant/fontSize';
 import { AntDesign, MaterialCommunityIcons, Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useUserContext } from '../UserContext';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { useTranslation } from 'react-i18next';
+import * as Clipboard from 'expo-clipboard';
 
 const { width } = Dimensions.get('screen');
 
@@ -111,6 +112,15 @@ export default function ProfileCompany() {
                             />
                         </View>
                     </TouchableOpacity>
+                    <Button
+                        iconRight={<Ionicons name="copy-outline" size={30} color={defaultColor} />}
+                        onPress={async () => {
+                            await Clipboard.setStringAsync(company.keyCompany);
+                        }}
+                        customStylesText={styles.text_bold}
+                        customStylesBtn={styles.copy_btn}
+                        text={`${t('common:companyKey')}: ${company.keyCompany}`}
+                    />
                 </View>
                 <View style={styles.container_bottom}>
                     <Button
@@ -202,20 +212,26 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     container_center: {
-        flex: 0.8,
+        flex: 1,
         marginTop: 10,
-        alignItems: 'center',
+        marginHorizontal: 10,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'gray',
+        backgroundColor: 'rgba(0,0,0,0.08)',
     },
     btn: {
         flex: 2,
-        width: '90%',
-        marginTop: 10,
         borderColor: 'gray',
-        borderRadius: 5,
-        borderWidth: 1,
-        backgroundColor: 'rgba(0,0,0,0.1)',
-        justifyContent: 'center',
         flexDirection: 'row',
+        borderBottomWidth: 1,
+    },
+    copy_btn: {
+        borderColor: 0,
+        borderWidth: 1,
+        marginVertical: 0,
+        paddingHorizontal: 10,
+        backgroundColor: 'transparent',
     },
     text_centent: {
         flex: 2,
@@ -232,6 +248,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginVertical: 2,
         fontSize: fontSizeDefault,
+        color: 'black',
+        textAlign: 'left',
     },
     container_bottom: {
         flex: 2.2,

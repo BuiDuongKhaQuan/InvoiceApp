@@ -2,7 +2,14 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, Alert,
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
-import { getProductsByCompany, createProduct, deleteProductById, updateProduct, postProduct } from '../../Service/api';
+import {
+    getProductsByCompany,
+    createProduct,
+    deleteProductById,
+    updateProduct,
+    postProduct,
+    getProductByName,
+} from '../../Service/api';
 import { useUserContext } from '../UserContext';
 import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +19,7 @@ import { buttonColor, white } from '../../constant/color';
 import ImageBackground from '../../layouts/DefaultLayout/BackgroundImage';
 import { fontSizeDefault } from '../../constant/fontSize';
 import Button from '../../components/Button';
+import HeaderModal from '../../components/HeaderModal';
 
 export default function Products() {
     const { t } = useTranslation();
@@ -31,15 +39,34 @@ export default function Products() {
     const [statusModal, setStatusModal] = useState();
     const [productModal, setProductModal] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const [nameProduct, setNameProduct] = useState('');
     const handleAddProduct = async () => {
+        if (!name || !stock || !price) {
+            Alert.alert(t('common:error'), t('common:check'));
+            return;
+        }
+
         try {
             setLoading(true);
             const response = await createProduct(name, price, state.company.name, stock);
             setProducts((prevProduct) => [...prevProduct, response]);
             Alert.alert(t('common:alert_success'), t('common:addProductSuccess'));
+            setName('');
+            setStock('');
+            setPrice('');
         } catch (error) {
             console.error('Lỗi: ', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const handleSearch = async () => {
+        try {
+            setLoading(true);
+            const response = await getProductByName(nameProduct);
+            setProducts(response);
+        } catch (error) {
+            setError(t('common:errorStaff'));
         } finally {
             setLoading(false);
         }
@@ -85,6 +112,11 @@ export default function Products() {
         }
     };
     const handleSubmit = () => {
+        if (!name || !stock || !price) {
+            // Display an error message or alert
+            Alert.alert(t('common:error'), t('common:check'));
+            return; // Do not proceed further if any field is empty
+        }
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
             t('common:questionCreate'),
@@ -163,6 +195,9 @@ export default function Products() {
             <Header title={t('common:product')} />
             <View style={styles.container_input}>
                 <Input
+                    value={nameProduct}
+                    onChangeText={(text) => setNameProduct(text)}
+                    onSubmitEditing={handleSearch}
                     customStylesContainer={styles.input}
                     holder={t('common:searcchProduct')}
                     iconLeft={<Feather name="search" size={24} color="black" />}
@@ -232,7 +267,7 @@ export default function Products() {
             <Modal animationType="slide" transparent={false} visible={isModalVisible}>
                 {productModal && (
                     <ScrollView style={styles.container}>
-                        <Text style={styles.titleTable}>{t('common:informationProduct')}</Text>
+                        <HeaderModal title={t('common:informationProduct')} onPress={() => setIsModalVisible(false)} />
                         <Loading loading={loadingModal}>
                             <View style={styles.modal_info}>
                                 <View style={{ ...styles.contact_row, borderBottomWidth: 1 }}>
@@ -280,12 +315,6 @@ export default function Products() {
                             text={t('common:save')}
                             onPress={() => handleUpdateProduct()}
                         />
-                        <Button
-                            customStylesBtn={styles.btn}
-                            customStylesText={styles.btnClose}
-                            text={t('common:close')}
-                            onPress={() => setIsModalVisible(false)}
-                        />
                     </ScrollView>
                 )}
             </Modal>
@@ -318,7 +347,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: 'black',
-        paddingVertical: 5,
+        paddingVertical: 10,
     },
     colum_p: {
         flex: 3,
@@ -363,12 +392,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: fontSizeDefault,
         marginHorizontal: 10,
-    },
-    titleTable: {
-        fontSize: fontSizeDefault + 10,
-        textAlign: 'center',
-        padding: 10,
-        backgroundColor: white,
     },
     modal_info: {
         flexDirection: 'column',

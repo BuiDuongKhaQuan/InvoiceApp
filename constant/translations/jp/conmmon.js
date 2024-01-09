@@ -8,7 +8,7 @@ export default {
     notification: '通知',
     support: 'サポート',
     logout: 'ログアウト',
-    //new
+    check: 'すべてのフィールドに記入してください。',
     setting: '設定',
     Blog: 'ブログ',
     start: 'スタート',

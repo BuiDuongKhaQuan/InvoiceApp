@@ -7,7 +7,7 @@ export default {
     notification: 'การแจ้งเตือน',
     support: 'สนับสนุน',
     logout: 'ออกจากระบบ',
-    //new
+    check: 'กรุณากรอกข้อมูลในทุกช่อง.',
     setting: 'ตั้งค่า',
     Blog: 'บล็อก',
     start: 'เริ่ม',
