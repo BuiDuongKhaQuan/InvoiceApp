@@ -61,8 +61,8 @@ export default function Bills() {
             <ScrollView style={styles.list} onScroll={handleScroll} scrollEventThrottle={16}>
                 <View style={styles.table}>
                     <View style={styles.table_colum}>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:item')}</Text>
-                        <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:no')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_id }}>{t('common:item')}</Text>
+                        <Text style={{ ...styles.text_bold, ...styles.colum_no }}>{t('common:no')}</Text>
                         <Text style={{ ...styles.text_bold, ...styles.colum_p }}>{t('common:cus')}</Text>
                         <Text style={{ ...styles.text_bold, ...styles.colum_name }}>{t('common:totalBill')}</Text>
                     </View>
@@ -72,8 +72,8 @@ export default function Bills() {
                             key={index}
                             onPress={() => navigation.navigate(`WatchBill`, { data: invoice })}
                         >
-                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{index + 1}</Text>
-                            <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.key}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_id }}>{index + 1}</Text>
+                            <Text style={{ ...styles.text_line, ...styles.colum_no }}>{invoice.key}</Text>
                             <Text style={{ ...styles.text_line, ...styles.colum_p }}>{invoice.emailGuest}</Text>
                             <Text style={{ ...styles.text_line, ...styles.colum_name }}>{invoice.totalPrice}</Text>
                         </TouchableOpacity>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     container_input: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
     input: {
         height: 50,
@@ -104,12 +104,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     table_colum: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        paddingVertical: 10,
         borderBottomWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomColor: 'black',
-        paddingVertical: 5,
+    },
+    colum_id: {
+        flex: 0.7,
+        marginLeft: 0,
     },
     colum_p: {
         flex: 3,
@@ -117,8 +120,13 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginRight: 5,
     },
-    colum_name: {
+    colum_no: {
         flex: 1.2,
+        marginLeft: 0,
+        marginRight: 5,
+    },
+    colum_name: {
+        flex: 1,
         marginLeft: 0,
     },
 });

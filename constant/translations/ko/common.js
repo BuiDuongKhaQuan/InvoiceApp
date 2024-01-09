@@ -8,7 +8,7 @@ export default {
     notification: '알림',
     support: '지원',
     logout: '로그아웃',
-    //new
+    check: '모든 필드를 채워주세요.',
     setting: '설정',
     Blog: '블로그',
     start: '시작',

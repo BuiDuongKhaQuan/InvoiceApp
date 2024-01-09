@@ -8,7 +8,7 @@ export default {
     notification: 'Уведомление',
     support: 'Поддержка',
     logout: 'Выйти',
-    // новое
+    check: 'Пожалуйста, заполните все поля.',
     setting: 'Настройки',
     Blog: 'Блог',
     start: 'Начать',

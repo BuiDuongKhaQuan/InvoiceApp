@@ -8,7 +8,7 @@ export default {
     notification: 'Notifica',
     support: 'Supporto',
     logout: 'Logout',
-    //new
+    check: 'Si prega di compilare tutti i campi.',
     setting: 'Impostazione',
     Blog: 'Blog',
     start: 'Inizia',

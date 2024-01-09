@@ -8,7 +8,8 @@ export default {
     notification: 'Notification',
     support: 'Support',
     logout: 'Déconnexion',
-    // nouveau
+    check: 'Veuillez remplir tous les champs.',
+
     setting: 'Réglage',
     Blog: 'Blog',
     start: 'Démarrer',

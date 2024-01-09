@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, TextInput, Modal, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Modal, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import Header from '../components/SettingItem/header';
 import Button from '../components/Button';
 import { fontSizeDefault } from '../constant/fontSize';
@@ -18,6 +18,7 @@ import { shareAsync } from 'expo-sharing';
 import { getDateNow, getHouseNow } from '../utilies/date';
 import Customer from '../components/Customer';
 import Loading from '../components/Loading';
+import HeaderModal from '../components/HeaderModal';
 
 export default function CreateInvoice({ route }) {
     const currentDate = new Date();
@@ -90,34 +91,50 @@ export default function CreateInvoice({ route }) {
         quantity: product.quantity,
     }));
 
+    const ModalHeader = ({ title, onPress }) => (
+        <View style={styles.model_header}>
+            <Button
+                onPress={onPress}
+                customStylesBtn={{ flex: 1 }}
+                iconLeft={<Ionicons name="arrow-back" size={24} color="black" />}
+            />
+            <Text style={styles.titleTable}>{title}</Text>
+            <View style={{ flex: 1 }}></View>
+        </View>
+    );
+
     const addInvoices = async () => {
-        try {
-            setLoading(true);
-            const response = await createInvoice(
-                staffEmail,
-                customer.current.phone,
-                note,
-                'true',
-                JSON.stringify(formattedProducts),
-                'cash',
-                companyName,
-                IDBill,
-                String(totalBill),
-                tax,
-                contactAddress,
-                {
-                    uri: qrImageUri.current,
-                    name: 'qr_image.jpg',
-                    type: 'image/jpg',
-                },
-            );
-            setDisabled(false);
-            setQrResponse(response.data.image);
-            Alert.alert(t('common:alert_success'), t('common:alert_success_2'));
-        } catch (error) {
-            console.log(error.response.data);
-        } finally {
-            setLoading(false);
+        if (products.length > 0 && listProductsSelect.length > 0) {
+            try {
+                setLoading(true);
+                const response = await createInvoice(
+                    staffEmail,
+                    customer.current.phone,
+                    note,
+                    'true',
+                    JSON.stringify(formattedProducts),
+                    'cash',
+                    companyName,
+                    IDBill,
+                    String(totalBill),
+                    tax,
+                    contactAddress,
+                    {
+                        uri: qrImageUri.current,
+                        name: 'qr_image.jpg',
+                        type: 'image/jpg',
+                    },
+                );
+                setDisabled(false);
+                setQrResponse(response.data.image);
+                Alert.alert(t('common:alert_success'), t('common:alert_success_2'));
+            } catch (error) {
+                console.log(error.response.data);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            Alert.alert(t('common:error'), t('common:check'));
         }
     };
     const handleSubmit = () => {
@@ -2150,6 +2167,7 @@ export default function CreateInvoice({ route }) {
                                     onChangeText={(text) => setTax(text)}
                                     value={tax}
                                     placeholder={t('common:tax')}
+                                    keyboardType="number-pad"
                                 />
                             </View>
                             {idTemplate != 3 && idTemplate != 7 && idTemplate != 8 && idTemplate != 10 && (
@@ -2203,28 +2221,17 @@ export default function CreateInvoice({ route }) {
 
                 <Modal animationType="slide" transparent={false} visible={isProductModalVisible}>
                     <View style={styles.container}>
-                        <Text style={styles.titleTable}>{t('common:listProduct')}</Text>
+                        <HeaderModal title={t('common:listProduct')} onPress={() => setProductModalVisible(false)} />
                         <Product data={products} isList onAdd={(item) => handleAddProduct(item)} />
-                        <Button
-                            customStylesBtn={styles.btn}
-                            customStylesText={{ ...styles.text, ...styles.textBtnClose }}
-                            text={t('common:close')}
-                            onPress={() => setProductModalVisible(false)}
-                        />
                     </View>
                 </Modal>
                 <Modal animationType="slide" transparent={false} visible={isCustomersModalVisible}>
                     <View style={styles.container}>
-                        <Text style={styles.titleTable}>
-                            {customer.current ? t('common:replace') : t('common:addCustomer')}
-                        </Text>
-                        <Customer dataList={customers} onDataChanged={handleDataChanged} />
-                        <Button
-                            customStylesBtn={styles.btn}
-                            customStylesText={{ ...styles.text, ...styles.textBtnClose }}
-                            text={t('common:close')}
+                        <HeaderModal
+                            title={customer.current ? t('common:replace') : t('common:addCustomer')}
                             onPress={() => setCustomersModalVisible(false)}
                         />
+                        <Customer dataList={customers} onDataChanged={handleDataChanged} />
                     </View>
                 </Modal>
             </View>
@@ -2332,12 +2339,6 @@ const styles = StyleSheet.create({
     },
     productInfoContainer: {
         flex: 1,
-    },
-    titleTable: {
-        fontSize: fontSizeDefault + 10,
-        textAlign: 'center',
-        padding: 10,
-        backgroundColor: white,
     },
     textBtnClose: {
         color: 'gray',

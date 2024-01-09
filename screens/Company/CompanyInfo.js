@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,8 +11,8 @@ import Header from '../../components/SettingItem/header';
 import BackgroundImage from '../../layouts/DefaultLayout/BackgroundImage';
 import { instance } from '../../Service/api';
 import { useTranslation } from 'react-i18next';
-import { white } from '../../constant/color';
 import { useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 
 export default function CompanyInfo() {
     const { state } = useUserContext();
@@ -177,6 +178,19 @@ export default function CompanyInfo() {
                                 holder={company.address}
                                 value={address}
                                 onChangeText={(text) => setAddress(text)}
+                            />
+                        </View>
+                        <View style={styles.bottom_item}>
+                            <Text style={styles.text}>{t('common:companyKey')}:</Text>
+                            <Input
+                                customStylesContainer={styles.container_input}
+                                holder={company.keyCompany}
+                                value={company.keyCompany}
+                                editable={false}
+                                iconRight={<Ionicons name="copy-outline" size={25} color="black" />}
+                                onPressIconRight={async () => {
+                                    await Clipboard.setStringAsync(company.keyCompany);
+                                }}
                             />
                         </View>
                     </View>

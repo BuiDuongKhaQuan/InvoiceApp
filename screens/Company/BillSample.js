@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     container_input: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
     input: {
         height: 50,

@@ -43,7 +43,7 @@ export default {
     male: 'Male',
     female: 'Female',
     save: 'Save',
-
+    check: 'Please fill in all the fields.',
     changePassword: 'Change Password',
     oldPass: 'Old Password',
     newPass: 'New Password',
@@ -236,7 +236,7 @@ export default {
     listProducts: 'List of products',
     postSuccess: 'Successfully post',
     recall: 'Successful product recall',
-    addProductSuccess: 'Thêm sản phẩm thành công',
+    addProductSuccess: 'Add product success',
     questionCreate: 'Are you sure you want to create a new product?',
     confimQuestionCreate: 'If you are sure you want to create a new product, select "Agree".',
     noAgree: 'No',

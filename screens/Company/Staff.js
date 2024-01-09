@@ -8,6 +8,7 @@ import {
     ScrollView,
     Alert,
     TouchableWithoutFeedback,
+    TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
 import Input from '../../components/Input';
@@ -126,6 +127,24 @@ export default function Staff() {
             setLoading(false);
         }
     };
+
+    const Staff = ({ staff }) => (
+        <TouchableOpacity style={styles.item_customer} onPress={() => showModal(staff)}>
+            <View>
+                <Image
+                    style={styles.icon}
+                    source={
+                        staff.image == null ? require('../../assets/images/default-avatar.png') : { uri: staff.image }
+                    }
+                />
+            </View>
+            <Text style={styles.text}>{staff.name}</Text>
+            <View>
+                <Ionicons name="options-outline" size={30} color="black" />
+            </View>
+        </TouchableOpacity>
+    );
+
     return (
         <ImageBackground>
             <Header title={t('common:staff')} />
@@ -143,46 +162,8 @@ export default function Staff() {
             <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
                 <View style={styles.currentScreen}>
                     {nameStaff === ''
-                        ? staffs.map((staff, index) => (
-                              <View style={styles.icontilte} key={index}>
-                                  <Image
-                                      style={styles.icon}
-                                      source={
-                                          staff.image == null
-                                              ? require('../../assets/images/default-avatar.png')
-                                              : { uri: staff.image }
-                                      }
-                                  />
-                                  <Text style={styles.text}>{staff.name}</Text>
-                                  <SimpleLineIcons
-                                      name="options"
-                                      size={24}
-                                      color="black"
-                                      style={styles.iconOption}
-                                      onPress={() => showModal(staff)}
-                                  />
-                              </View>
-                          ))
-                        : infStaff.map((staff1, index) => (
-                              <View style={styles.icontilte} key={index}>
-                                  <Image
-                                      style={styles.icon}
-                                      source={
-                                          staff1.image == null
-                                              ? require('../../assets/images/default-avatar.png')
-                                              : { uri: staff1.image }
-                                      }
-                                  />
-                                  <Text style={styles.text}>{staff1.name}</Text>
-                                  <SimpleLineIcons
-                                      name="options"
-                                      size={24}
-                                      color="black"
-                                      style={styles.iconOption}
-                                      onPress={() => showModal(staff1)}
-                                  />
-                              </View>
-                          ))}
+                        ? staffs.map((staff, index) => <Staff staff={staff} key={index} />)
+                        : infStaff.map((staff1, index) => <Staff staff={staff1} key={index} />)}
                     <Loading loading={loading} isFooter></Loading>
                 </View>
                 <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -236,7 +217,7 @@ const styles = StyleSheet.create({
     container_input: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: 15,
+        marginHorizontal: 10,
     },
     input: {
         height: 50,
@@ -248,22 +229,20 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 50,
         height: 50,
-        borderRadius: 24,
-        marginBottom: '2%',
+        borderRadius: 50,
+        borderColor: 'gray',
+        borderWidth: 1,
     },
 
-    icontilte: {
+    item_customer: {
         flexDirection: 'row',
-        marginHorizontal: 10,
-        marginBottom: 10,
+        backgroundColor: 'rgba(0, 0, 0,0.1)',
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        padding: 10,
     },
     currentScreen: {
         flex: 1,
-        padding: 16,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -272,14 +251,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: fontSizeDefault,
         marginLeft: 20,
-    },
-
-    iconOption: {
-        flex: 1,
-        marginLeft: 'auto',
-        width: 50,
-        height: 50,
-        justifyContent: 'flex-end',
     },
     modalContainer: {
         flex: 1,

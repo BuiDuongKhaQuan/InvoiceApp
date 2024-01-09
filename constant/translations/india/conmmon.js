@@ -7,7 +7,7 @@ export default {
     notification: 'सूचना',
     support: 'समर्थन',
     logout: 'लॉगआउट',
-
+    check: 'कृपया सभी क्षेत्रों को भरें।',
     setting: 'सेटिंग',
     Blog: 'ब्लॉग',
     start: 'शुरू',

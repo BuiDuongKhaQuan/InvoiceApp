@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { createCustomerByCompany } from '../../Service/api';
 import { useUserContext } from '../../screens/UserContext';
+import Loading from '../Loading';
 
 export default function Customer({ dataList, onDataChanged }) {
     const { t } = useTranslation();
@@ -15,21 +16,37 @@ export default function Customer({ dataList, onDataChanged }) {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleAddCustomer = async () => {
+        if (!name || !phone || !email) {
+            Alert.alert(t('common:error'), t('common:check'));
+            return;
+        }
         try {
+            setLoading(true);
             const newCustomer = await createCustomerByCompany(name, email, phone, state.company.name, '1');
             setNewDataList((prev) => [...prev, newCustomer]);
+            setName('');
+            setPhone('');
+            setEmail('');
         } catch (error) {
             Alert.alert('Error', error.response.data.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSubmit = () => {
+        if (!name || !phone || !email) {
+            // Display an error message or alert
+            Alert.alert(t('common:error'), t('common:check'));
+            return; // Do not proceed further if any field is empty
+        }
         // Hiển thị cảnh báo cho người dùng xác nhận
         Alert.alert(
-            'Bạn có chắc chắn muốn tạo khách hàng mới?',
-            'Nếu bạn chắc chắn muốn tạo khách hàng mới, hãy chọn "Đồng ý".',
+            t('common:alert_hd'),
+            t('common:alert_hd_2'),
             [
                 {
                     text: t('common:alert_no'),
@@ -37,7 +54,7 @@ export default function Customer({ dataList, onDataChanged }) {
                     style: 'cancel',
                 },
                 {
-                    text: 'alert_yes',
+                    text: t('common:alert_yes'),
                     onPress: async () => {
                         await handleAddCustomer();
                     },
@@ -57,6 +74,7 @@ export default function Customer({ dataList, onDataChanged }) {
     return (
         <>
             <ScrollView style={styles.content}>
+                <Loading isFullScreen loading={loading} />
                 <View style={styles.waper_add}>
                     <View>
                         <TextInput
@@ -71,6 +89,7 @@ export default function Customer({ dataList, onDataChanged }) {
                             placeholder={t('common:num_customer')}
                             value={phone}
                             onChangeText={(text) => setPhone(text)}
+                            keyboardType="phone-pad"
                         />
 
                         <TextInput
@@ -78,6 +97,7 @@ export default function Customer({ dataList, onDataChanged }) {
                             placeholder={t('common:email_customer')}
                             value={email}
                             onChangeText={(text) => setEmail(text)}
+                            keyboardType="email-address"
                         />
                     </View>
                     <Button
