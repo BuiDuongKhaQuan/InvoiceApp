@@ -59,7 +59,7 @@ export default function ProfileCompany() {
                             style={styles.img_default}
                             source={
                                 user.wallpaper == null
-                                    ? require('../../assets/images/default-wallpaper.png')
+                                    ? require('../../assets/images/default-wallpaper.jpg')
                                     : { uri: user.wallpaper }
                             }
                         />

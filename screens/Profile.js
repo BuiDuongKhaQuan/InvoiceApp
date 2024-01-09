@@ -25,6 +25,7 @@ export default function Profile() {
     const [invoices, setInvoices] = useState(listInvoices);
     const [invoiceCByCompany, setInvoiceByCompany] = useState([]);
     const [page, setPage] = useState(1);
+
     const getInvoiceByCompanys = async () => {
         try {
             setLoadingHistory(true);
@@ -74,7 +75,7 @@ export default function Profile() {
                             style={styles.img_default}
                             source={
                                 user.wallpaper == null
-                                    ? require('../assets/images/default-wallpaper.png')
+                                    ? require('../assets/images/default-wallpaper.jpg')
                                     : { uri: user.wallpaper }
                             }
                         />

@@ -184,7 +184,7 @@ export default function Information() {
                             style={styles.wallpaper_img}
                             source={
                                 userData.wallpaper == null
-                                    ? require('../../assets/images/default-wallpaper.png')
+                                    ? require('../../assets/images/default-wallpaper.jpg')
                                     : { uri: userData.wallpaper }
                             }
                         />

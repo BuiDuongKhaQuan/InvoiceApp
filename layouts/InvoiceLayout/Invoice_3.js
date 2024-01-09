@@ -66,7 +66,7 @@ export const html3 = (t, invoice, listProduct, company, customer, staff) => `
         <p>${company.email}</p>
         </div>
         <div style="text-align: center; ">
-        <img src="https://vienthonglaw.vn/wp-content/uploads/2021/12/Ma-Vach-1.jpg" alt="" style="height: 30; width: 50%;"/>
+        <img src="${invoice.image}" style="width: 90px ; height: 90px" />
         </div>
         
     </div>
@@ -140,9 +140,6 @@ export const html3 = (t, invoice, listProduct, company, customer, staff) => `
         <p style="border-bottom: 1px dashed  black;"></p>
         <p style="text-align: center;">${t('common:designed')} ${company.name}</p>
     </div>
-    <div style="display: flex; flex-direction: row; justify-content: center;">
-    <img src="${invoice.image}" style="width: 90px ; height: 90px" />
-        </div>
     </div>
 </body>
 </html>

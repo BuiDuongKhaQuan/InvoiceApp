@@ -1,65 +1,60 @@
 {
-  "expo": {
-    "name": "InvoiceApp",
-    "slug": "invoiceapp",
-    "version": "1.0.0",
-    "icon": "./assets/icon.png",
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "useNextNotificationsApi": true,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.khaquan.invoiceapp"
-    },
-    "web": {
-      "favicon": "./assets/icon.png"
-    },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "cameraPermission": "Allow $(INVOIDAPP) to access your camera.",
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
-        "expo-document-picker",
-        {
-          "iCloudContainerEnvironment": "Production"
-        }
-      ],
-      "expo-localization",
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff",
-          "sounds": []
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "6543f9e9-7465-4329-9d6a-396c9e14511f"
-      }
-    },
-    "owner": "khaquan"
-  }
+    "expo": {
+        "name": "InvoiceApp",
+        "slug": "invoiceapp",
+        "version": "1.0.0",
+        "icon": "./assets/icon.png",
+        "orientation": "portrait",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/icon.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "permissions": ["android.permission.RECORD_AUDIO"],
+            "package": "com.khaquan.invoiceapp"
+        },
+        "web": {
+            "favicon": "./assets/icon.png"
+        },
+        "plugins": [
+            [
+                "expo-image-picker",
+                {
+                    "cameraPermission": "Allow $(INVOIDAPP) to access your camera.",
+                    "photosPermission": "The app accesses your photos to let you share them with your friends."
+                }
+            ],
+            [
+                "expo-document-picker",
+                {
+                    "iCloudContainerEnvironment": "Production"
+                }
+            ],
+            "expo-localization",
+            [
+                "expo-notifications",
+                {
+                    "icon": "./assets/icon.png",
+                    "color": "#ffffff",
+                    "sounds": []
+                }
+            ]
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "6543f9e9-7465-4329-9d6a-396c9e14511f"
+            }
+        },
+        "owner": "khaquan"
+    }
 }

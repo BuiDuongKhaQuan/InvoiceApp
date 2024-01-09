@@ -92,7 +92,7 @@ export default function CreateInvoice({ route }) {
     }));
 
     const addInvoices = async () => {
-        if (customer != null && listProductsSelect.length > 0) {
+        if (customer.current != null && listProductsSelect.length > 0) {
             try {
                 setLoading(true);
                 const response = await createInvoice(
@@ -2144,7 +2144,7 @@ export default function CreateInvoice({ route }) {
                                 style={styles.text_line}
                                 onChangeText={(text) => setContactAddress(text)}
                                 value={contactAddress}
-                                placeholder={t('common:address')}
+                                placeholder={t('common:addressInvoice')}
                             />
                         </View>
                     )}
