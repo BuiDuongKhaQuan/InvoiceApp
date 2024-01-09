@@ -2194,7 +2194,9 @@ export default function CreateInvoice({ route }) {
                             ref={viewShotRef}
                             options={{ format: 'jpg', quality: 1 }}
                         >
-                            {IDBill && <QRCode value={IDBill} size={80} />}
+                            {IDBill && (
+                                <QRCode value={IDBill} size={80} logo={require('../assets/icon.png')} logoSize={25} />
+                            )}
                         </ViewShot>
                     </View>
                     <View style={styles.container_bottom}>
