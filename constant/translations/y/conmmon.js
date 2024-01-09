@@ -32,7 +32,7 @@ export default {
     more: 'Aggiungi',
     customers: 'Lista clienti',
     warning: 'Si prega di salvare prima di stampare o convertire in PDF',
-
+    revenue: 'Ricavo',
     information: 'Informazione',
     changeAvt: 'Cambia Avatar',
     changeWallet: 'Cambia Portafoglio',

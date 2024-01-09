@@ -91,20 +91,8 @@ export default function CreateInvoice({ route }) {
         quantity: product.quantity,
     }));
 
-    const ModalHeader = ({ title, onPress }) => (
-        <View style={styles.model_header}>
-            <Button
-                onPress={onPress}
-                customStylesBtn={{ flex: 1 }}
-                iconLeft={<Ionicons name="arrow-back" size={24} color="black" />}
-            />
-            <Text style={styles.titleTable}>{title}</Text>
-            <View style={{ flex: 1 }}></View>
-        </View>
-    );
-
     const addInvoices = async () => {
-        if (products.length > 0 && listProductsSelect.length > 0) {
+        if (customer != null && listProductsSelect.length > 0) {
             try {
                 setLoading(true);
                 const response = await createInvoice(
@@ -259,6 +247,7 @@ export default function CreateInvoice({ route }) {
             ]);
         }
         setShowListProductSelected(listProductsSelect.length > 0);
+        Alert.alert(t('common:information'), t('common:alert_success'));
         console.log(listProductsSelect);
     };
 
@@ -2194,7 +2183,9 @@ export default function CreateInvoice({ route }) {
                             ref={viewShotRef}
                             options={{ format: 'jpg', quality: 1 }}
                         >
-                            {IDBill && <QRCode value={IDBill} size={80} />}
+                            {IDBill && (
+                                <QRCode value={IDBill} size={80} logo={require('../assets/icon.png')} logoSize={25} />
+                            )}
                         </ViewShot>
                     </View>
                     <View style={styles.container_bottom}>

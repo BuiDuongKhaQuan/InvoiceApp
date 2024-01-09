@@ -91,6 +91,7 @@ export default function ForgotPassword({ navigation }) {
                         validate={errorEmail}
                         validateText={t('common:formatEmail')}
                         holder="Email"
+                        keyboardType="email-address"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                         btnSend
                         onPressSend={handleSend}

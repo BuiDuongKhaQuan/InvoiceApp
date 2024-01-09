@@ -32,7 +32,7 @@ export default {
     more: 'Thêm',
     customers: 'Danh sách khách hàng',
     warning: 'Bạn vui lòng lưu trước khi in hoặc PDF',
-
+    revenue: 'Doanh thu',
     information: 'Thông tin cá nhân',
     changeAvt: 'Đổi ảnh đại diện',
     changeWallet: 'Thay đổi ảnh bìa',

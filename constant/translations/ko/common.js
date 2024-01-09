@@ -32,7 +32,7 @@ export default {
     email_customer: '고객 이메일을 입력하세요',
     more: '추가',
     customers: '고객들',
-
+    revenue: '수익',
     information: '정보',
     changeAvt: '아바타 변경',
     changeWallet: '지갑 변경',

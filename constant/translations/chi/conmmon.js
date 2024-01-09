@@ -32,7 +32,7 @@ export default {
     more: '添加',
     customers: '客户名单',
     warning: '请在打印或转换为PDF之前保存',
-
+    revenue: '收入',
     information: '信息',
     changeAvt: '更改头像',
     changeWallet: '更改钱包',

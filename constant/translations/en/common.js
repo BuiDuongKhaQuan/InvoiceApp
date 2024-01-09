@@ -81,13 +81,13 @@ export default {
     noAccount: 'Do not have an account? ',
     signup: 'Signup',
 
-    searchForInvoice: 'Search for invoice templates',
+    searchForInvoice: 'Search for invoice',
     home: 'Home',
     plus: 'Plus',
     search: 'Search',
     profile: 'Profile',
     chat: 'Chat',
-
+    revenue: 'Revenue',
     fullName: 'Full Name',
     phoneNumber: 'Phone Number',
     companyKey: 'Company Key',

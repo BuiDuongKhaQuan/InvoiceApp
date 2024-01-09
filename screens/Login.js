@@ -21,11 +21,11 @@ export default function Login({ navigation }) {
     const { dispatch } = useUserContext();
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [showPass, setShowPass] = useState('eye-off');
     const [errorEmail, setErrorEmail] = useState(false);
     const [loading, setLoading] = useState(false);
     const [bioSupport, setBioSupport] = useState(false);
     const [preLog, setPreLog] = useState(false);
-    const [showPass, setShowPass] = useState('eye-off');
     const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
@@ -53,10 +53,8 @@ export default function Login({ navigation }) {
     const checkBiometricSupport = async () => {
         try {
             const storedStatus = await AsyncStorage.getItem('biometricEnabledStatus');
-
             if (storedStatus && storedStatus === 'true') {
                 const isSupported = await LocalAuthentication.hasHardwareAsync();
-
                 if (isSupported) {
                     setBioSupport(true);
                 } else {
@@ -160,6 +158,7 @@ export default function Login({ navigation }) {
                         validate={errorEmail}
                         validateText={t('common:formatEmail')}
                         holder="example@example.com"
+                        keyboardType="email-address"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                     />
                     <Input

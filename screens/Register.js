@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, ImageBackground, ScrollView, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, ScrollView, Alert } from 'react-native';
+import React, { useState } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import {
@@ -10,13 +10,15 @@ import {
     isValidateRePass,
 } from '../utilies/validate';
 import { fontSizeDefault } from '../constant/fontSize';
-import { MaterialCommunityIcons, SimpleLineIcons, Ionicons, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, SimpleLineIcons, Ionicons, Feather, Fontisto } from '@expo/vector-icons';
 import BackgroundImage from '../layouts/DefaultLayout/BackgroundImage';
 import { register } from '../Service/api';
 import { useNavigation } from '@react-navigation/native';
 import Loading from '../components/Loading';
 import { useTranslation } from 'react-i18next';
 import { textColor } from '../constant/color';
+import * as Clipboard from 'expo-clipboard';
+
 export default function Register() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
@@ -123,6 +125,7 @@ export default function Register() {
                         validate={errorEmail}
                         validateText={t('common:formatEmail')}
                         holder="example@example.com"
+                        keyboardType="email-address"
                         iconLeft={<MaterialCommunityIcons name="email-outline" size={24} color="black" />}
                     />
                     <Input
@@ -139,6 +142,7 @@ export default function Register() {
                         validate={errorPhone}
                         validateText={t('common:formatPhone')}
                         holder={t('common:phoneNumber')}
+                        keyboardType="phone-pad"
                         iconLeft={<MaterialCommunityIcons name="phone-outline" size={24} color="black" />}
                     />
                     <Input
@@ -150,6 +154,12 @@ export default function Register() {
                         iconLeft={
                             <MaterialCommunityIcons name="office-building-marker-outline" size={24} color="black" />
                         }
+                        iconRight={<Fontisto name="paste" size={24} color="black" />}
+                        onPressIconRight={async () => {
+                            const value = await Clipboard.getStringAsync();
+                            setComapanyKey(value);
+                            setErrorCompanyKey(!isValidateFullName(value));
+                        }}
                     />
                     <Input
                         onChangeText={handleChangePass}
