@@ -33,7 +33,7 @@ export default {
     email_customer: 'Entrer l e-mail du client',
     more: 'Ajouter',
     warning: 'Veuillez enregistrer avant d imprimer ou de convertir en PDF',
-
+    revenue: 'Revenu',
     information: 'Information',
     changeAvt: "Changer l'avatar",
     changeWallet: 'Changer le portefeuille',

@@ -30,7 +30,7 @@ export default {
     email_customer: 'ग्राहक का ईमेल दर्ज करें',
     more: 'और जोड़ें',
     warning: ' कृपया प्रिंट या पीडीएफ में कन्वर्ट करने से पहले सेव करें',
-
+    revenue: 'राजस्व',
     information: 'जानकारी',
     changeAvt: 'अवतार बदलें',
     changeWallet: 'वॉलेट बदलें',

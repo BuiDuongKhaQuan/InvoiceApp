@@ -77,7 +77,7 @@ export default function App() {
                         <Stack.Screen name="Support" component={Support} options={headerNone} />
                         <Stack.Screen name="Information" component={Information} options={headerNone} />
                         <Stack.Screen name="Header" component={Header} />
-                        <Stack.Screen name="ValidateEmail" component={ValidateEmail} />
+                        <Stack.Screen name="ValidateEmail" component={ValidateEmail} options={headerNone} />
                         <Stack.Screen name="ResetPassword" component={ResetPassword} options={headerNone} />
                         <Stack.Screen name="CompanyInfo" component={CompanyInfo} options={headerNone} />
                         <Stack.Screen name="Products" component={Products} options={headerNone} />

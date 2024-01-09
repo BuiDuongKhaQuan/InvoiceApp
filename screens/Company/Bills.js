@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/SettingItem/header';
 import Input from '../../components/Input';
@@ -19,6 +19,7 @@ export default function Bills() {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
+    const [keySearch, setKeySearch] = useState('');
 
     const getInvoice = async (page) => {
         try {
@@ -46,11 +47,26 @@ export default function Bills() {
         }
     };
 
+    const handleSearch = async () => {
+        try {
+            setLoading(true);
+            const response = await getInvoiceByKey(keySearch);
+            navigation.navigate(`WatchBill`, { data: response });
+        } catch (error) {
+            Alert.alert(t('common:error'), error.response.data.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <ImageBackground style={styles.container}>
             <Header title={t('common:bill')} />
             <View style={styles.container_input}>
                 <Input
+                    value={keySearch}
+                    onChangeText={(name) => setKeySearch(name)}
+                    onSubmitEditing={handleSearch}
                     customStylesContainer={styles.input}
                     holder={t('common:titileSearch')}
                     iconLeft={<Feather name="search" size={24} color="black" />}

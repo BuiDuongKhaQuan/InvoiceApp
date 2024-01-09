@@ -52,12 +52,12 @@ const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name={t('common:Blog')}
-                    component={Blog}
+                    name={t('common:chat')}
+                    component={Chat}
                     options={{
                         headerShown: false,
                         tabBarHideOnKeyboard: true,
-                        tabBarIcon: ({ color, size }) => <FontAwesome name="newspaper-o" size={24} color={color} />,
+                        tabBarIcon: ({ color, size }) => <AntDesign name="message1" size={size} color={color} />,
                     }}
                 />
 
@@ -81,13 +81,14 @@ const TabNavigator = () => {
                         ),
                     }}
                 />
+
                 <Tab.Screen
-                    name={t('common:chat')}
-                    component={Chat}
+                    name={t('common:Blog')}
+                    component={Blog}
                     options={{
                         headerShown: false,
                         tabBarHideOnKeyboard: true,
-                        tabBarIcon: ({ color, size }) => <AntDesign name="message1" size={size} color={color} />,
+                        tabBarIcon: ({ color, size }) => <FontAwesome name="newspaper-o" size={24} color={color} />,
                     }}
                 />
                 <Tab.Screen

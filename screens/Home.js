@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Image, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, View, Dimensions, Image, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import InvoiceList from '../components/InvoiceList';
 import Swiper from 'react-native-swiper';
@@ -21,6 +21,7 @@ export default function Home({ navigation }) {
         require('../assets/images/Slider/6.jpg'),
         require('../assets/images/Slider/7.jpg'),
     ]);
+    const [nameSearch, setNameSearch] = useState('');
     const [inputColor, setInputColor] = useState('transparent');
     const handleScroll = (event) => {
         if (event.nativeEvent.contentOffset.y > 0) {
@@ -31,10 +32,21 @@ export default function Home({ navigation }) {
     };
     const [invoices, setInvoices] = useState(listInvoices);
 
+    const handleSearch = () => {
+        const filteredInvoices = invoices.filter((invoice) =>
+            invoice.name.toLowerCase().includes(nameSearch.toLowerCase()),
+        );
+
+        setInvoices(nameSearch.length > 0 ? filteredInvoices : listInvoices);
+    };
+
     return (
         <>
             <View style={{ ...styles.input, backgroundColor: inputColor }}>
                 <Input
+                    value={nameSearch}
+                    onChangeText={(text) => setNameSearch(text)}
+                    onSubmitEditing={handleSearch}
                     customStylesContainer={styles.input_item}
                     customStylesInput={styles.input_text}
                     holder={t('common:searchForInvoice')}
@@ -43,8 +55,8 @@ export default function Home({ navigation }) {
                     onPressIconRight={() => navigation.navigate('Scanner')}
                 />
             </View>
-            <ScrollView style={styles.container} onScroll={handleScroll}>
-                <BackgroundImage>
+            <BackgroundImage>
+                <ScrollView style={styles.container} onScroll={handleScroll}>
                     <View style={styles.slider}>
                         <Swiper style={styles.wrapper} autoplay={true} autoplayTimeout={4}>
                             {imageSliders.map((image, index) => (
@@ -52,13 +64,11 @@ export default function Home({ navigation }) {
                             ))}
                         </Swiper>
                     </View>
-                    {/* <Text>{newIDBill}</Text>
-                    <View>{newIDBill && <QRCode value={newIDBill} size={200} />}</View> */}
                     <View style={styles.list}>
                         <InvoiceList navigation={navigation} data={invoices} scrollEnabled={false} isOnPress />
                     </View>
-                </BackgroundImage>
-            </ScrollView>
+                </ScrollView>
+            </BackgroundImage>
         </>
     );
 }

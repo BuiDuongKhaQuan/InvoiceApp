@@ -31,7 +31,7 @@ export default {
     more: 'เพิ่ม',
     customers: 'รายชื่อลูกค้า',
     warning: 'โปรดบันทึกก่อนพิมพ์หรือแปลงเป็น PDF',
-
+    revenue: 'รายได้',
     information: 'ข้อมูล',
     changeAvt: 'เปลี่ยนรูปประจำตัว',
     changeWallet: 'เปลี่ยนวอลเล็ต',

@@ -42,7 +42,7 @@ export default {
     save: 'Сохранить',
     customers: 'Список клиентов',
     warning: 'Пожалуйста, сохраните перед печатью или преобразованием в PDF',
-
+    revenue: 'Доход',
     changePassword: 'Изменить пароль',
     oldPass: 'Старый пароль',
     newPass: 'Новый пароль',
