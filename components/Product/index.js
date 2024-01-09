@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 export default function Product({ data, isList, onRemove, onAdd, isReview }) {
     const { t } = useTranslation();
     return (
-        <>
+        <ScrollView>
             {isList && (
                 <View style={{ ...styles.container, borderBottomWidth: 1 }}>
                     <View style={styles.id}>
@@ -70,7 +70,7 @@ export default function Product({ data, isList, onRemove, onAdd, isReview }) {
                     </View>
                 </View>
             )}
-        </>
+        </ScrollView>
     );
 }
 
