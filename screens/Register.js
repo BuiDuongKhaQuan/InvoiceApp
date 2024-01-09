@@ -101,11 +101,7 @@ export default function Register() {
             );
             navigation.navigate('ValidateEmail', { data: email });
         } catch (error) {
-            if (error.response && error.response.status === 400) {
-                Alert.alert(t('common:loginerror'), error.response.data.message);
-            } else {
-                console.error(t('common:loginerror'), error);
-            }
+            Alert.alert(t('common:loginerror'), error.response.data.message);
         } finally {
             setLoading(false);
         }
