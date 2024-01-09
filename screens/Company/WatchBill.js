@@ -12,6 +12,7 @@ import * as Print from 'expo-print';
 import Button from '../../components/Button';
 import { useUserContext } from '../UserContext';
 import { layoutInvoice } from '../../layouts/InvoiceLayout';
+import { shareAsync } from 'expo-sharing';
 
 export default function WatchBill() {
     const { t } = useTranslation();
@@ -144,6 +145,10 @@ export default function WatchBill() {
                         <Text style={[styles.text_default, styles.title]}> {t('common:listProducts')}:</Text>
                     </View>
                     <View style={{ marginBottom: 15 }}>{products && <Product data={products} isList isReview />}</View>
+                    <View style={styles.contact_number}>
+                        <Text style={[styles.text_default, styles.title]}>{t('common:addressInvoice')}:</Text>
+                        <Text style={styles.text_change}>{invoice.address}</Text>
+                    </View>
                     <View style={styles.contact_number}>
                         <Text style={[styles.text_default, styles.title]}>{t('common:tax')}:</Text>
                         <Text style={styles.text_change}>{invoice.tax}%</Text>

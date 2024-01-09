@@ -45,7 +45,6 @@ export default function Products() {
             Alert.alert(t('common:error'), t('common:check'));
             return;
         }
-
         try {
             setLoading(true);
             const response = await createProduct(name, price, state.company.name, stock);
